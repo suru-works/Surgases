@@ -12,7 +12,6 @@ pedidoRouter.route("/")
 })
 .get(asyncHandler(async (req, res, next) => {
     const query = db.buildQuery('pedido', req.query);
-    console.log(query.query);
     const results = await pool.execute(query.query, query.values);
     if (results) {
         res.json(JSON.parse(JSON.stringify(results))[0])

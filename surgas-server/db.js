@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 module.exports.pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    database: 'gases2',
+    database: 'gases2copia',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
