@@ -13,12 +13,12 @@ const MainComponent = () => {
     }
     return (
         <div>
-            <Header/>
+            <Header />
             <Switch location={location}>
-                    <Route path="/inicio" component={HomePage} />
-                    <Redirect to="/inicio"></Redirect>
+                <Route path="/inicio" component={HomePage} />
+                <Redirect to="/inicio"></Redirect>
             </Switch>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

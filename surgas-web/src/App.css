@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar-dark {
+  background-color: #1a3b70;
+  color: white;
+}
+
+.footer {
+  background-color: #4d659f;
+  color: white;
+}
