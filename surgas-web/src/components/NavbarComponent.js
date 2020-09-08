@@ -16,7 +16,7 @@ const NavbarComponent = () => {
             <div className='container'>
                 <NavbarToggler onClick={toggleNav} />
                 <NavbarBrand className='mr-auto' href='/'>
-                    <img src='localhost:3000/public/logo192.png' height='46' width='41' alt='small-company-logo' />
+                    <img src={baseFrontUrl + "public/logo/transparent-logo-icon.png"} height='31.5' width='32' alt='small-company-logo' />
                 </NavbarBrand>
                 <Collapse isOpen={navIsOpen} navbar>
                     <Nav navbar>
