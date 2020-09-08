@@ -6,12 +6,7 @@ import { NavLink } from 'react-router-dom';
 import NavbarComponent from './NavbarComponent';
 
 const HeaderComponent = () => {
-    const [navIsOpen, setNavIsOpen] = useState(true);
-
-    const toggleNav = () => {
-        setNavIsOpen(!navIsOpen);
-    }
-
+    
     return (
         <div>
             <NavbarComponent />
