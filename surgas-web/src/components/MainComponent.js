@@ -8,6 +8,7 @@ import Contact from './ContactComponent';
 import Sales from './SalesComponent';
 import Administrator from './AdministratorComponent';
 import { Switch, Route, Redirect, withRouter, useLocation } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 const MainComponent = () => {
     const location = useLocation();
     const HomePage = () => {
@@ -18,14 +19,18 @@ const MainComponent = () => {
     return (
         <div>
             <Header />
-            <Switch location={location}>
-                <Route path="/inicio" component={HomePage} />
-                <Route path="/productos" component={() => <Products />} />
-                <Route path='/contacto' component={() => <Contact />} />
-                <Route path='/ventas' component={() => <Sales />} />
-                <Route path='/administrador' component={() => <Administrator />} />
-                <Redirect to="/inicio"></Redirect>
-            </Switch>
+            <TransitionGroup>
+                <CSSTransition key={location.key} classNames="page" timeout={500}>
+                    <Switch location={location}>
+                        <Route path="/inicio" component={HomePage} />
+                        <Route path="/productos" component={() => <Products />} />
+                        <Route path='/contacto' component={() => <Contact />} />
+                        <Route path='/ventas' component={() => <Sales />} />
+                        <Route path='/administrador' component={() => <Administrator />} />
+                        <Redirect to="/inicio"></Redirect>
+                    </Switch>
+                </CSSTransition>
+            </TransitionGroup>
             <Footer />
         </div>
     );
