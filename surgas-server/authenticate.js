@@ -42,6 +42,14 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     }
 }));
 
-
-
 module.exports.login = passport.authenticate('local');
+
+module.exports.isAdmin = (req, res, next) => {
+    if (req.user.admin == '1') {
+        next();
+    } else {
+        err = new Error('not authorized');
+        err.status = 403;
+        next(err);
+    }
+}
