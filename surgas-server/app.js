@@ -11,6 +11,10 @@ const usersRouter = require('./routes/users');
 const pedidoRouter = require('./routes/pedidoRouter');
 const empleadoRouter = require('./routes/empleadoRouter');
 
+// authentication imports
+const passport = require('passport');
+const session = require('express-session');
+
 const app = express();
 
 // view engine setup
@@ -23,6 +27,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// configuring environment variables
+require('dotenv').config();
+
+// authentication settings
+const MySQLStore = require('express-mysql-session')(session);
+const sessionStore = new MySQLStore({}, require('./db').pool.promise());
+app.use(session({
+  cookie: {
+    httpOnly: true,
+    sameSite: true
+  },
+  secret: process.env.SESSION_SECRET,
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // using routes
 app.use('/', indexRouter);
