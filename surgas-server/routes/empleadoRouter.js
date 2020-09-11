@@ -26,7 +26,7 @@ empleadoRouter.route("/")
         'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?, ?)',
         [req.body.cedula, req.body.nombre, req.body.direccion, req.body.telefono, '1', '0', '0']
     );
-    if (result) {
+    if (result[0].affectedRows == 1) {
         res.json(req.body);
     } else {
         throw {

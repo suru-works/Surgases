@@ -44,11 +44,21 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 
 module.exports.login = passport.authenticate('local');
 
+module.exports.isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        let err = new Error('not authenticated');
+        err.status = 401;
+        next(err);
+    }
+}
+
 module.exports.isAdmin = (req, res, next) => {
     if (req.user.admin == '1') {
         next();
     } else {
-        err = new Error('not authorized');
+        let err = new Error('not authorized');
         err.status = 403;
         next(err);
     }
