@@ -1,3 +1,6 @@
+// configuring environment variables
+require('dotenv').config();
+
 // default express imports
 const createError = require('http-errors');
 const express = require('express');
@@ -30,9 +33,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
-
-// configuring environment variables
-require('dotenv').config();
 
 // authentication settings
 const MySQLStore = require('express-mysql-session')(session);
