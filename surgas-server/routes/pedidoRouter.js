@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 const pedidoRouter = require('express').Router();
 pedidoRouter.use(require('body-parser').json());
-const pool = db.pool.promise();
+const pool = db.pool;
 
 pedidoRouter.route("/")
 .all((req, res, next) => {
@@ -12,7 +12,7 @@ pedidoRouter.route("/")
 })
 .get(asyncHandler(async (req, res, next) => {
     const query = db.buildQuery('pedido', req.query);
-    const results = await pool.execute(query.query, query.values);
+    const results = await pool.promise().execute(query.query, query.values);
     if (results) {
         res.json(JSON.parse(JSON.stringify(results))[0])
     } else {
