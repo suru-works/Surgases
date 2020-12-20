@@ -1,10 +1,11 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import { Register } from './register';
 
  export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
-            
+            register: Register
         }),
        compose(applyMiddleware(thunk)
 

@@ -3,11 +3,14 @@ import { Navbar, NavbarToggler, NavbarBrand, Collapse, Nav, NavItem, Button } fr
 import { baseFrontUrl } from '../shared/baseUrl';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import RegisterComponent from './RegisterComponent';
+import LoginComponent from './LoginComponent';
 
 
 const AuthOptions = () => {
-    const [isLoginModalOpened,setIsLoginModalOpened] = useState(false);
-    const [isRegisterModalOpened,setIsRegisterModalOpened] = useState(false);
+    const [isLoginModalOpened, setIsLoginModalOpened] = useState(false);
+    const [isRegisterModalOpened, setIsRegisterModalOpened] = useState(false);
+
     const toggleLoginModal = () => {
         if(isLoginModalOpened) {
             setIsLoginModalOpened(false)
@@ -16,6 +19,7 @@ const AuthOptions = () => {
             setIsLoginModalOpened(true)
         }
     }
+
     const toggleRegisterModal = () => {
         if(isRegisterModalOpened) {
             setIsRegisterModalOpened(false)
@@ -25,19 +29,23 @@ const AuthOptions = () => {
         }
     }
     return (
-        <Nav className="ml-auto" navbar>
-            <NavItem>
-                <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLoginModal}>
-                    <span className="fa fa-sign-in"></span> Iniciar sesión
-                        </Button>
-            </NavItem>
+        <div>
+            <Nav className="ml-auto" navbar>
+                <NavItem>
+                    <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLoginModal}>
+                        <span className="fa fa-sign-in"></span> Iniciar sesión
+                    </Button>
+                </NavItem>
 
-            <NavItem>
-                <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={toggleRegisterModal}>
-                    <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
-                        </Button>
-            </NavItem>
-        </Nav>
+                <NavItem>
+                    <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={toggleRegisterModal}>
+                        <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
+                    </Button>
+                </NavItem>
+            </Nav>
+            <RegisterComponent isOpen={isRegisterModalOpened} toggle={toggleRegisterModal} />
+            <LoginComponent isOpen={isLoginModalOpened} toggle={toggleLoginModal} />
+        </div>
     );
 }
 

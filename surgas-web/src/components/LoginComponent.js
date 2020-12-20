@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 
 import { Loading } from './LoadingComponent';
-import { login, loginReset, restoreReset, restorePassword } from '../redux/ActionCreators';
+import { login, loginReset/*, restoreReset, restorePassword*/ } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 
@@ -84,7 +84,7 @@ const RenderLoginComponent = (props) => {
     );
 }
 
-const RenderRestoreComponent = (props) => {
+/*const RenderRestoreComponent = (props) => {
 
     const validationSchema = yup.object(
         {
@@ -144,7 +144,7 @@ const RenderRestoreComponent = (props) => {
             </ModalBody>
         </div>
     );
-}
+}*/
 
 const LoginComponent = (props) => {
 
@@ -152,17 +152,17 @@ const LoginComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const error = useSelector(state => state.auth.errMess);
+    /*const error = useSelector(state => state.auth.errMess);
     const result = useSelector(state => state.auth.result);
     const loading = useSelector(state => state.auth.isLoading);
 
     const restoreError = useSelector(state => state.restore.errMess);
     const restoreResult = useSelector(state => state.restore.result);
-    const restoreLoading = useSelector(state => state.restore.isLoading);
+    const restoreLoading = useSelector(state => state.restore.isLoading);*/
 
 
     const toogleAndReset = () => {
-        dispatch(restoreReset());
+        //dispatch(restoreReset());
         dispatch(loginReset());
         setRestore(false);
         props.toggle();
@@ -178,7 +178,7 @@ const LoginComponent = (props) => {
     }
 
     const options = () => {
-        if (error) {
+        /*if (error) {
             return (
                 <div>
                     <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
@@ -252,7 +252,8 @@ const LoginComponent = (props) => {
                 }
                 else {
                     return (
-                        <RenderRestoreComponent toogleAndReset={toogleAndReset} switchRestore={switchRestore} />
+                        //<RenderRestoreComponent toogleAndReset={toogleAndReset} switchRestore={switchRestore} />
+                        <div></div>
                     );
                 }
 
@@ -264,7 +265,10 @@ const LoginComponent = (props) => {
             }
 
 
-        }
+        }*/
+        return (
+            <RenderLoginComponent toogleAndReset={toogleAndReset} switchRestore={switchRestore} />
+        );
     }
 
     return (

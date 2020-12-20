@@ -1,0 +1,11 @@
+// Registration
+export const REGISTER_RESET = 'REGISTER_RESET';
+export const REGISTER_REQUEST = 'REGISTER_LOADING';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_FAILED = 'REGISTER_FAILED';
+
+// Login
+export const LOGIN_RESET = 'LOGIN_RESET';
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILED = 'LOGIN_FAILED';

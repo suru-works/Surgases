@@ -18,20 +18,25 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 const validationSchema = Yup.object(
     {   
-        user: Yup
-        .string()
-        .email("Ingresa un correo electronico valido.")
-        .required("Este campo es obligatorio"),
+        username: Yup
+            .string()
+            .min(4, "El nombre de usuario debe ser de mínimo 4 caracteres")
+            .max(15, "El nombre de usuario debe ser de mínimo 4 caracteres")
+            .required("Este campo es obligatorio"),
+        email: Yup
+            .string()
+            .email("Ingresa un correo electronico valido.")
+            .required("Este campo es obligatorio"),
         password: Yup
             .string()
             .min(8, "la contraseña debe ser de minimo 8 caracteres")
             .max(40, "la contraseña debe ser de maximo 40 caracteres")
             .required("Este campo es obligatorio"),
         name: Yup
-        .string(),
+            .string(),
         phoneNumber: Yup
-        .string()
-        .matches(phoneRegExp, 'Ingresa un telefono valido'),
+            .string()
+            .matches(phoneRegExp, 'Ingresa un telefono valido'),
     });
 
 
@@ -51,12 +56,20 @@ const RegisterComponent = (props) => {
     const doRegister = data => dispatch(register(data));
 
     const handleRegister = values => {
-        doRegister({ username: values.user, password: values.password, admin: false, name: values.name, phoneNumber: values.phoneNumber });
+        doRegister({
+            email: values.email,
+            username: values.username,
+            password: values.password,
+            admin: false,
+            name: values.name,
+            phoneNumber: values.phoneNumber
+        });
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            user: '',
+            email: '',
+            username: '',
             password: '',
             name: '',
             phoneNumber: ''
@@ -98,8 +111,6 @@ const RegisterComponent = (props) => {
                 </Modal>
             );
         }
-
-
     }
     else {
         return (
@@ -109,12 +120,22 @@ const RegisterComponent = (props) => {
                 <ModalBody>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Label htmlFor="user">Correo electrónico</Label>
-                            <Input type="user" id="user" name="user" className="form-control" values={values}
+                            <Label htmlFor="email">Correo electrónico*</Label>
+                            <Input type="email" id="email" name="email" className="form-control" values={values}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                            {(touched.user && errors.user) ? (<Alert color="danger">{errors.user}</Alert>) : null}
+                            {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label htmlFor="username">Nombre de usuario*</Label>
+                            <Input type="text" id="username" name="username" className="form-control" values={values}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
 
                         </FormGroup>
 
