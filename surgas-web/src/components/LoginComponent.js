@@ -19,11 +19,10 @@ const RenderLoginComponent = (props) => {
         {
             user: yup
                 .string()
-                .email("Ingresa un correo electronico valido.")
                 .required("Este campo es obligatorio"),
             password: yup
                 .string()
-                .min(8, "la contraseña debe ser de minimo 8 caracteres")
+                /*.min(8, "la contraseña debe ser de minimo 8 caracteres")*/
                 .max(40, "la contraseña debe ser de maximo 40 caracteres")
                 .required("Este campo es obligatorio"),
         });
