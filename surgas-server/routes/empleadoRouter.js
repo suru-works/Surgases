@@ -22,7 +22,7 @@ empleadoRouter.route("/")
     }
 }))
 .post(asyncHandler(async (req, res, next) => {
-    pool.getConnection((err, conn) => {
+    pool.getConnection(async (err, conn) => {
         const emp = req.body;
         const result = await conn.promise().execute(
             'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?, ?)',
