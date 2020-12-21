@@ -23,9 +23,11 @@ const app = express();
 
 //middleware for cross origin
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Host');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Expose-Headers', 'Set-Cookie');
 
   //intercepts OPTIONS method
   if ('OPTIONS' === req.method) {
@@ -51,13 +53,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 
+// CORS
+cors = require('./routes/cors');
+app.use(cors.corsWithOptions)
+
 // authentication settings
 const MySQLStore = require('express-mysql-session')(session);
 const sessionStore = new MySQLStore({}, require('./db').pool.promise());
 app.use(session({
   cookie: {
     httpOnly: true,
-    sameSite: true
+    sameSite: 'none'
   },
   secret: process.env.SESSION_SECRET,
   store: sessionStore,

@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const auth = require('../auth');
+const cors = require('./cors');
 
 const router = express.Router();
 const pool = require('../db').pool;
