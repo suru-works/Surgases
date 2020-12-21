@@ -2,6 +2,7 @@ import * as ActionTypes from './ActionTypes';
 import axios from 'axios';
 import { baseBackUrl } from '../shared/baseUrl';
 
+axios.defaults.withCredentials = true;
 
 // Register
 
@@ -59,7 +60,12 @@ export const login = (user) => async (dispatch) => {
     dispatch(loginRequest());
 
     try {
-        const res = await axios.post(baseBackUrl + 'users/login', user);
+        const res = await axios.post(baseBackUrl + 'users/login', user, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
         dispatch(loginSuccess(res));
     } catch (err) {
         dispatch(loginFailed(err));
