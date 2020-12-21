@@ -40,7 +40,8 @@ const AuthOptions = () => {
         return(
             <Loading />
         );
-    } else if (error) {
+    }
+    if (error) {
         if (error.response && error.response.status == 401) {
             return (
                 <div>
@@ -68,13 +69,17 @@ const AuthOptions = () => {
                 </div>
             );
         }
-    } else {
+    }
+    if (result) {
+        console.log('puto el que lo lea');
+        console.log(result);
         return (
             <div>
                 <p>Logeado</p>
             </div>
         );
     }
+    return(<p>ERROR</p>);
 }
 
 const NavbarComponent = () => {
