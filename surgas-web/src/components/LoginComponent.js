@@ -198,7 +198,6 @@ const LoginComponent = (props) => {
             );
         }
         if (result) {
-            if (result.success) {
                 return (
                     <div>
                         
@@ -209,7 +208,7 @@ const LoginComponent = (props) => {
 
                     </div >
                 );
-            }
+            
 
 
         }
