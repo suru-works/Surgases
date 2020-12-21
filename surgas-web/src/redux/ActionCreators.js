@@ -27,7 +27,7 @@ export const register = (user) => async (dispatch) => {
     dispatch(registerRequest());
 
     try {
-        const res = await axios.post(baseBackUrl + 'signup', user);
+        const res = await axios.post(baseBackUrl + 'users/signup', user);
         dispatch(registerSuccess(res));
     } catch (err) {
         dispatch(registerFailed(err));
@@ -59,10 +59,41 @@ export const login = (user) => async (dispatch) => {
     dispatch(loginRequest());
 
     try {
-        const res = await axios.post(baseBackUrl + 'login', user);
+        const res = await axios.post(baseBackUrl + 'users/login', user);
         dispatch(loginSuccess(res));
     } catch (err) {
         dispatch(loginFailed(err));
+    }
+}
+
+// User
+
+export const userReset = () => ({
+    type: ActionTypes.USER_RESET
+});
+
+export const userRequest = () => ({
+    type: ActionTypes.USER_REQUEST
+});
+
+export const userSuccess = (result) => ({
+    type: ActionTypes.USER_SUCCESS,
+    payload: result
+});
+
+export const userFailed = (errmess) => ({
+    type: ActionTypes.USER_FAILED,
+    payload: errmess
+});
+
+export const user = () => async (dispatch) => {
+    dispatch(userRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'users/current');
+        dispatch(userSuccess(res));
+    } catch (err) {
+        dispatch(userFailed(err));
     }
 }
 
@@ -86,38 +117,7 @@ export const restoreFailed = (errmess) => ({
 });
 
 export const restorePassword = (user) => (dispatch) => {
-    dispatch(restoreRequest());
-
-    return fetch(baseBackUrl + 'users/forgot', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(user)
-    })
-        .then(response => {
-            if (response.ok) {
-                return response;
-            } else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText);
-                error.response = response;
-                throw error;
-            }
-        }, error => {
-            throw error;
-        })
-        .then(response => response.json())
-        .then(response => {
-            if (response.success) {
-                dispatch(restoreSuccess(response));
-            } else {
-                var error = new Error('Error ' + response.status);
-                error.response = response;
-                throw error;
-            }
-        })
-        .catch(error => dispatch(restoreFailed(error)));
+    // IMPLEMENTAR
 }
 
 export const changePasswordRequest = () => ({
@@ -139,36 +139,5 @@ export const changePasswordFailed = (errmess) => ({
 });
 
 export const changePassword = (data) => (dispatch) => {
-    dispatch(changePasswordRequest());
-
-    return fetch(baseBackUrl + 'users/forgot/'+data.token, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(data)
-    })
-        .then(response => {
-            if (response.status === 200) {
-                return response;
-            } else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText);
-                error.response = response;
-                throw error;
-            }
-        }, error => {
-            throw error;
-        })
-        .then(response => response.json())
-        .then(response => {
-            if (response.status === 200) {
-                dispatch(changePasswordSuccess(response));
-            } else {
-                var error = new Error('Error ' + response.status);
-                error.response = response;
-                throw error;
-            }
-        })
-        .catch(error => dispatch(changePasswordFailed(error)));
+    // IMPLEMENTAR
 }

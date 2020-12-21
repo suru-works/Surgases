@@ -10,6 +10,12 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 
+// User
+export const USER_RESET = 'USER_RESET';
+export const USER_REQUEST = 'USER_REQUEST';
+export const USER_SUCCESS = 'USER_SUCCESS';
+export const USER_FAILED = 'USER_FAILED';
+
 //Restore and change password 
 export const RESTORE_RESET = 'RESTORE_RESET';
 export const RESTORE_REQUEST = 'RESTORE_REQUEST';

@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import RegisterComponent from './RegisterComponent';
 import LoginComponent from './LoginComponent';
+import { Loading } from './LoadingComponent';
+import { useSelector } from 'react-redux';
+import { __esModule } from 'reactstrap/lib/Row';
 
 
 const AuthOptions = () => {
@@ -28,25 +31,50 @@ const AuthOptions = () => {
             setIsRegisterModalOpened(true)
         }
     }
-    return (
-        <div>
-            <Nav className="ml-auto" navbar>
-                <NavItem>
-                    <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLoginModal}>
-                        <span className="fa fa-sign-in"></span> Iniciar sesión
-                    </Button>
-                </NavItem>
 
-                <NavItem>
-                    <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={toggleRegisterModal}>
-                        <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
-                    </Button>
-                </NavItem>
-            </Nav>
-            <RegisterComponent isOpen={isRegisterModalOpened} toggle={toggleRegisterModal} />
-            <LoginComponent isOpen={isLoginModalOpened} toggle={toggleLoginModal} />
-        </div>
-    );
+    const error = useSelector(state => state.user.errMess);
+    const result = useSelector(state => state.user.result);
+    const loading = useSelector(state => state.user.isLoading);
+
+    if (loading) {
+        return(
+            <Loading />
+        );
+    } else if (error) {
+        if (error.response && error.response.status == 401) {
+            return (
+                <div>
+                    <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLoginModal}>
+                                <span className="fa fa-sign-in"></span> Iniciar sesión
+                            </Button>
+                        </NavItem>
+        
+                        <NavItem>
+                            <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={toggleRegisterModal}>
+                                <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
+                            </Button>
+                        </NavItem>
+                    </Nav>
+                    <RegisterComponent isOpen={isRegisterModalOpened} toggle={toggleRegisterModal} />
+                    <LoginComponent isOpen={isLoginModalOpened} toggle={toggleLoginModal} />
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <p>Hubo un error</p>
+                </div>
+            );
+        }
+    } else {
+        return (
+            <div>
+                <p>Logeado</p>
+            </div>
+        );
+    }
 }
 
 const NavbarComponent = () => {

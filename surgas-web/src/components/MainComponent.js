@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Header from './HeaderComponent'
 import Footer from './FooterComponent';
@@ -9,8 +9,16 @@ import Sales from './SalesComponent';
 import Administrator from './AdministratorComponent';
 import { Switch, Route, Redirect, withRouter, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { useSelector, useDispatch } from 'react-redux';
+import { user, userReset } from '../redux/ActionCreators';
 const MainComponent = () => {
     const location = useLocation();
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(user());
+    });
+    
     const HomePage = () => {
         return (
             <Home />

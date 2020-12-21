@@ -12,6 +12,14 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.get('/current', auth.isAuthenticated, (req, res, next) => {
+  const user = req.user;
+  res.json({
+    username: user.nick,
+    admin: user.administrador
+  });
+});
+
 router.post('/signup', asyncHandler(async (req, res, next) => {
   const user = req.body;
   const hash = await bcrypt.hash(user.password, 10);

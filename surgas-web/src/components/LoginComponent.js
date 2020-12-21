@@ -152,9 +152,9 @@ const LoginComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const error = useSelector(state => state.auth.errMess);
-    const result = useSelector(state => state.auth.result);
-    const loading = useSelector(state => state.auth.isLoading);
+    const error = useSelector(state => state.login.errMess);
+    const result = useSelector(state => state.login.result);
+    const loading = useSelector(state => state.login.isLoading);
 
     const restoreError = useSelector(state => state.restore.errMess);
     const restoreResult = useSelector(state => state.restore.result);
