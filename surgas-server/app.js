@@ -21,6 +21,23 @@ const session = require('express-session');
 
 const app = express();
 
+//middleware for cross origin
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Host');
+
+  //intercepts OPTIONS method
+  if ('OPTIONS' === req.method) {
+    //respond with 200
+    res.sendStatus(200);
+  }
+  else {
+  //move on
+    next();
+  }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
