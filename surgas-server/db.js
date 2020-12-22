@@ -10,7 +10,7 @@ module.exports.pool = mysql.createPool({
     queueLimit: 0
 });
 
-module.exports.buildQuery = (table, params) => {
+module.exports.buildQuery = (table, params, cols) => {
     let conditions = [];
     let values = [];
 
@@ -21,12 +21,12 @@ module.exports.buildQuery = (table, params) => {
     
     if (conditions.length > 0) {
         return {
-            query: 'SELECT * FROM ' + table + ' WHERE ' + conditions.join(' AND '),
+            query: 'SELECT ' + cols.join(' , ') + ' FROM ' + table + ' WHERE ' + conditions.join(' AND '),
             values: values
         };
     } else {
         return {
-            query: 'SELECT * FROM ' + table
+            query: 'SELECT ' + cols.join(' , ') + ' FROM ' + table
         };
     }
 }
