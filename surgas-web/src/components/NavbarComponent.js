@@ -75,10 +75,10 @@ const AuthOptions = () => {
             );
         } else {
             return (
-               <div>
-                   Hubo un error
-               </div>
-            
+                <div>
+                    Hubo un error
+                </div>
+
             );
         }
     }
@@ -97,6 +97,56 @@ const AuthOptions = () => {
         );
     }
     return (<p>ERROR</p>);
+}
+
+const UserOptionsSales = () => {
+    const result = useSelector(state => state.user.result);
+    if (result) {
+        if (result.data.admin == '1' || result.data.comun == '1') {
+            return (
+                <NavItem >
+                    <NavLink className='nav-link' to='/ventas'><span className='fa fa-list fa-lg'></span> Ventas</NavLink>
+                </NavItem>
+            );
+        }
+        else {
+            return (
+                <div></div>
+            );
+        }
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+
+}
+
+const UserOptionsAdmin = () => {
+    const result = useSelector(state => state.user.result);
+    if (result) {       
+        console.log(result); 
+        if (result.data.admin == '1') {
+            return (
+                <NavItem >
+                    <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administracion</NavLink>
+                </NavItem>
+            );
+        }
+        else {
+            return (
+                <div />
+            );
+        }
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+
+
 }
 
 const NavbarComponent = () => {
@@ -127,10 +177,10 @@ const NavbarComponent = () => {
 
                         {/* NOTA: LAS SIGUIENTES SOLO DEBEN APARECER DEPENDIENDO DEL USUARIO */}
                         <NavItem>
-                            <NavLink className='nav-link' to='/ventas'><span className='fa fa-list fa-lg'></span> Ventas</NavLink>
+                            <UserOptionsSales />
                         </NavItem>
                         <NavItem>
-                            <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administrador</NavLink>
+                            <UserOptionsAdmin />
                         </NavItem>
                     </Nav>
                     <AuthOptions />

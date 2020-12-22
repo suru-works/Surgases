@@ -27,8 +27,6 @@ const MainComponent = () => {
     return (
         <div>
             <Header />
-            <TransitionGroup>
-                <CSSTransition key={location.key} classNames="page" timeout={500}>
                     <Switch location={location}>
                         <Route path="/inicio" component={HomePage} />
                         <Route path="/productos" component={() => <Products />} />
@@ -37,8 +35,6 @@ const MainComponent = () => {
                         <Route path='/administrador' component={() => <Administrator />} />
                         <Redirect to="/inicio"></Redirect>
                     </Switch>
-                </CSSTransition>
-            </TransitionGroup>
             <Footer />
         </div>
     );

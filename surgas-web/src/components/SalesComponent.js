@@ -8,7 +8,7 @@ const SalesComponent = () => {
     return (
         <div>
             <ProSidebar>
-                <Menu iconShape="square">
+                 <Menu iconShape="square">
                     <MenuItem icon={<i className="fa fa-gem"></i>}>Dashboard</MenuItem>
                     <SubMenu title="Components" icon={<i className="fa fa-heart"></i>}>
                         <MenuItem>
