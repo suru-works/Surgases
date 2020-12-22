@@ -24,7 +24,10 @@ router.get('/current', auth.isAuthenticated, (req, res, next) => {
 router.post('/signup', asyncHandler(async (req, res, next) => {
   const user = req.body;
   const hash = await bcrypt.hash(user.password, 10);
-  
+
+  console.log("SOLICITUD");
+  console.log(req.body);
+
   pool.getConnection(async (err, conn) => {
     if (err) {
       console.log(err);
