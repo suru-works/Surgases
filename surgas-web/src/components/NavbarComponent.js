@@ -49,7 +49,7 @@ const AuthOptions = () => {
 
     if (loading) {
         return (
-            <Loading />
+            <div/>
         );
     }
     if (error) {
