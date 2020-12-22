@@ -8,6 +8,8 @@ const cors = require('./cors');
 const router = express.Router();
 const pool = require('../db').pool;
 
+const expires = 54000000;
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -56,7 +58,22 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
 }));
 
 router.post('/login', auth.login, (req, res, next) => {
-  res.json(req.user);
+  const credentials = req.body;
+  if (credentials.remember) {
+    // PERSISTENCIA
+    req.session.cookie.expires = new Date(Date.now() + expires);
+    req.session.cookie.maxAge = expires;
+  }
+  res.json({
+    nick: req.user.nick
+  });
+});
+
+router.post('/logout', auth.isAuthenticated, (req, res, next) => {
+  req.logout();
+  res.json({
+    msg: 'logged out successfully'
+  });
 });
 
 module.exports = router;

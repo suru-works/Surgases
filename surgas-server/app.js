@@ -65,8 +65,8 @@ app.use(session({
   cookie: {
     httpOnly: true,
     sameSite: 'none',
-    secure: true,
-    maxAge: 60000 // SIN ESTO NO ES PERSISTENTE
+    secure: true/*,
+    maxAge: 60000*/ // SIN ESTO NO ES PERSISTENTE
   },
   proxy: true,
   secret: process.env.SESSION_SECRET,
