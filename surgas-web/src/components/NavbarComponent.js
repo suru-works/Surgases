@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import RegisterComponent from './RegisterComponent';
 import LoginComponent from './LoginComponent';
+import LogoutComponent from './LogoutComponent';
 import { Loading } from './LoadingComponent';
 import { useSelector } from 'react-redux';
 import { __esModule } from 'reactstrap/lib/Row';
@@ -12,10 +13,11 @@ import { __esModule } from 'reactstrap/lib/Row';
 
 const AuthOptions = () => {
     const [isLoginModalOpened, setIsLoginModalOpened] = useState(false);
+    const [isLogoutModalOpened, setIsLogoutModalOpened] = useState(false);
     const [isRegisterModalOpened, setIsRegisterModalOpened] = useState(false);
 
     const toggleLoginModal = () => {
-        if(isLoginModalOpened) {
+        if (isLoginModalOpened) {
             setIsLoginModalOpened(false)
         }
         else {
@@ -23,8 +25,17 @@ const AuthOptions = () => {
         }
     }
 
+    const toggleLogoutModal = () => {
+        if (isLogoutModalOpened) {
+            setIsLogoutModalOpened(false)
+        }
+        else {
+            setIsLogoutModalOpened(true)
+        }
+    }
+
     const toggleRegisterModal = () => {
-        if(isRegisterModalOpened) {
+        if (isRegisterModalOpened) {
             setIsRegisterModalOpened(false)
         }
         else {
@@ -37,7 +48,7 @@ const AuthOptions = () => {
     const loading = useSelector(state => state.user.isLoading);
 
     if (loading) {
-        return(
+        return (
             <Loading />
         );
     }
@@ -51,7 +62,7 @@ const AuthOptions = () => {
                                 <span className="fa fa-sign-in"></span> Iniciar sesión
                             </Button>
                         </NavItem>
-        
+
                         <NavItem>
                             <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={toggleRegisterModal}>
                                 <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
@@ -64,22 +75,28 @@ const AuthOptions = () => {
             );
         } else {
             return (
-                <div>
-                    <p>Hubo un error</p>
-                </div>
+               <div>
+                   Hubo un error
+               </div>
+            
             );
         }
     }
     if (result) {
-        console.log('puto el que lo lea');
-        console.log(result);
         return (
             <div>
-                <p>Logeado</p>
+                <Nav className="ml-auto" navbar>
+                    <NavItem>
+                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLogoutModal}>
+                            <span className="fa fa-sign-in"></span> Cerrar sesión
+                    </Button>
+                    </NavItem>
+                </Nav>
+                <LogoutComponent isOpen={isLogoutModalOpened} toggle={toggleLogoutModal} />
             </div>
         );
     }
-    return(<p>ERROR</p>);
+    return (<p>ERROR</p>);
 }
 
 const NavbarComponent = () => {
@@ -116,7 +133,7 @@ const NavbarComponent = () => {
                             <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administrador</NavLink>
                         </NavItem>
                     </Nav>
-                    <AuthOptions/>
+                    <AuthOptions />
                 </Collapse>
             </div>
         </Navbar>

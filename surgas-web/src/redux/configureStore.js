@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Register } from './register';
 import { Login } from './login';
+import { Logout } from './logout';
 import { User } from './user';
 import { Restore } from './restore';
 
@@ -10,6 +11,7 @@ import { Restore } from './restore';
         combineReducers({
             register: Register,
             login: Login,
+            logout: Logout,
             user: User,
             restore: Restore,
         }),

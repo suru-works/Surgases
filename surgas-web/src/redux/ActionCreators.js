@@ -72,6 +72,42 @@ export const login = (user) => async (dispatch) => {
     }
 }
 
+//logout
+
+export const logoutReset = () => ({
+    type: ActionTypes.LOGOUT_RESET
+});
+
+export const logoutRequest = () => ({
+    type: ActionTypes.LOGOUT_REQUEST
+});
+
+export const logoutSuccess = (result) => ({
+    type: ActionTypes.LOGOUT_SUCCESS,
+    payload: result
+});
+
+export const logoutFailed = (errmess) => ({
+    type: ActionTypes.LOGOUT_FAILED,
+    payload: errmess
+});
+
+export const logout = (user) => async (dispatch) => {
+    dispatch(logoutRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/logout', user, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(logoutSuccess(res));
+    } catch (err) {
+        dispatch(logoutFailed(err));
+    }
+}
+
 // User
 
 export const userReset = () => ({

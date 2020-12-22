@@ -5,17 +5,20 @@ import {
 } from 'reactstrap';
 
 import SessionExpiredComponent from './SessionExpiredComponent';
-import {Loading} from './LoadingComponent';
+import { Loading } from './LoadingComponent';
 import { logout, logoutReset } from '../redux/ActionCreators';
+import { user, userReset } from '../redux/ActionCreators';
 
 const LogOutComponent = (props) => {
-    const error = useSelector(state => state.auth.errMess);
-    const result = useSelector(state => state.auth.result);
-    const loading = useSelector(state => state.auth.isLoading);
+    const error = useSelector(state => state.logout.errMess);
+    const result = useSelector(state => state.logout.result);
+    const loading = useSelector(state => state.logout.isLoading);
 
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
+        dispatch(userReset());
+        dispatch(user());
         dispatch(logoutReset());
         props.toggle();
     }
@@ -28,15 +31,15 @@ const LogOutComponent = (props) => {
     }
 
     if (error) {
-        if(error.response){
-            if(error.response.status===401){
+        if (error.response) {
+            if (error.response.status === 401) {
                 return (
-                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset}/>
+                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
             }
         }
-        
-        else{
+
+        else {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
@@ -46,29 +49,28 @@ const LogOutComponent = (props) => {
                 </Modal>
             );
         }
-        
+
     }
-    if(loading){
-        return(
+    if (loading) {
+        return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
                 <ModalBody>
-                    <Loading/>
+                    <Loading />
                 </ModalBody>
             </Modal>
         );
     }
     if (result) {
-        if(result.success){
-            return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
-                    <ModalBody>
-                        <p>Cierre de sesion exitoso</p>
-                    </ModalBody>
-                </Modal>
-            );
-        }
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                <ModalBody>
+                    <p>Cierre de sesion exitoso</p>
+                </ModalBody>
+            </Modal>
+        );
+
     }
     else {
         return (

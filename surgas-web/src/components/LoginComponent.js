@@ -7,14 +7,14 @@ import {
 
 import { Loading } from './LoadingComponent';
 import { login, loginReset, restoreReset, restorePassword } from '../redux/ActionCreators';
-
+import { user, userReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 
 import * as yup from "yup";
 
 
 const RenderLoginComponent = (props) => {
-
+    const dispatch = useDispatch();
     const validationSchema = yup.object(
         {
             user: yup
@@ -27,19 +27,19 @@ const RenderLoginComponent = (props) => {
                 .required("Este campo es obligatorio"),
         });
 
-    const dispatch = useDispatch();
 
     const doLogin = credentials => dispatch(login(credentials));
 
     const handleLogin = values => {
 
-        doLogin({ username: values.user, password: values.password });
+        doLogin({ username: values.user, password: values.password, remember: values.remember });
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             user: '',
-            password: ''
+            password: '',
+            remember: false
         },
         validationSchema,
         onSubmit(values) {
@@ -54,7 +54,7 @@ const RenderLoginComponent = (props) => {
             <ModalBody>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                        <Label htmlFor="user">Correo electrónico</Label>
+                        <Label htmlFor="user">Usuario</Label>
                         <Input type="user" id="user" name="user" className="form-control" values={values}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -71,6 +71,16 @@ const RenderLoginComponent = (props) => {
                         />
                         {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
 
+                    </FormGroup>
+
+                    <FormGroup check>
+                        <Label check>
+                            <Input type = "checkbox" id = "remember" name = "remember" className="form-control" values={values}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />{' '}
+                            Recuerdame
+                        </Label>
                     </FormGroup>
 
                     <div className="d-flex justify-content-center">
@@ -161,6 +171,8 @@ const LoginComponent = (props) => {
 
 
     const toogleAndReset = () => {
+        dispatch(userReset());
+        dispatch(user());
         dispatch(restoreReset());
         dispatch(loginReset());
         setRestore(false);
@@ -198,6 +210,7 @@ const LoginComponent = (props) => {
             );
         }
         if (result) {
+                
                 return (
                     <div>
                         
