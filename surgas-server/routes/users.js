@@ -57,7 +57,7 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
   });
 }));
 
-router.post('/login', auth.login, (req, res, next) => {
+router.post('/login',auth.login, (req, res, next) => {
   const credentials = req.body;
   if (credentials.remember) {
     // PERSISTENCIA
