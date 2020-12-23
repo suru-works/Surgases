@@ -18,7 +18,7 @@ module.exports.buildQuery = (table, params, cols) => {
         conditions.push(key + ' = ? ');
         values.push(params[key]);
     }
-    
+
     if (conditions.length > 0) {
         return {
             query: 'SELECT ' + cols.join(' , ') + ' FROM ' + table + ' WHERE ' + conditions.join(' AND '),
@@ -29,4 +29,19 @@ module.exports.buildQuery = (table, params, cols) => {
             query: 'SELECT ' + cols.join(' , ') + ' FROM ' + table
         };
     }
+}
+
+module.exports.buildUpdate = (table, id, params) => {
+    let changes = [];
+    let values = [];
+
+    for (let key in params) {
+        changes.push(key + ' = ? ');
+        values.push(params[key]);
+    }
+
+    return {
+        query: 'UPDATE ' + table + ' SET ' + changes.join(' , ') + ' WHERE ' + id.name + ' = ?',
+        values: concat(values, [id.value])
+    };
 }

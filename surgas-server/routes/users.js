@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const auth = require('../auth');
 const cors = require('./cors');
 const db = require('../db');
+const { concat } = require('mysql2/lib/constants/charset_encodings');
 
 const router = express.Router();
 const pool = db.pool;
@@ -78,6 +79,32 @@ router.post('/logout', auth.isAuthenticated, (req, res, next) => {
     msg: 'logged out successfully'
   });
 });
+
+router.put('/:nick', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+  pool.getConnection(async (err, conn) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    let cols = [];
+    for (let key in req.body) {
+      cols.push(key);
+    }
+
+    const query = db.buildUpdate('usuario', { name: 'nick', value: req.params.nick }, cols);
+    const result = await conn.promise().execute(query.query, query.values);
+    if (result[0].affectedRows == 1) {
+      conn.commit();
+      res.json({
+        msg: 'user updated successfully'
+      });
+    } else {
+      conn.rollback();
+      next(new Error('update error'));
+    }
+  });
+}));
 
 router.delete('/:nick', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
   pool.getConnection(async (err, conn) => {
