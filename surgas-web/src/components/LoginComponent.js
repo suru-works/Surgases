@@ -73,19 +73,26 @@ const RenderLoginComponent = (props) => {
 
                     </FormGroup>
 
-                    <FormGroup check>
-                        <Label check>
-                            <Input type = "checkbox" id = "remember" name = "remember" className="form-control" values={values}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />{' '}
-                            Recuerdame
-                        </Label>
+                    <FormGroup>
+
+                        <div className="l-flex ml-auto" class="col-12">
+                            <div class="col-8">
+                                <Label check  >
+                                    <Input  type = "checkbox" id = "remember" name = "remember" className="form-control" values={values}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />{' '}
+                                    Recuerdame
+                                </Label>
+                            </div>
+                        </div>
                     </FormGroup>
 
+                    <br></br>
+
                     <div className="d-flex justify-content-center">
-                        <Button type="submit" value="submit" className="primary-button">Ingresar</Button>
-                        <Button onClick={props.switchRestore} className="secondary-button">Olvidé mi contraseña</Button>
+                        <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Ingresar</Button>
+                        <Button onClick={props.switchRestore} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
                     </div>
                 </Form>
             </ModalBody>

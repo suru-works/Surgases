@@ -10,11 +10,11 @@ const FooterComponent = () => {
                     <div className="col-4 col-sm-2">
                         <h5>Navegar</h5>
                         <ul className="list-unstyled">
-                            <li><Link to="/inicio" className="link"> Inicio </Link></li>
-                            <li><Link to="/productos" className="link"> Productos </Link></li>
-                            <li><Link to="/contacto" className="link"> Contactanos</Link></li>
-                            <li><Link to="/ventas" className="link"> Ventas </Link></li>
-                            <li><Link to="/administrador" className="link"> Administrador </Link></li>
+                            <li ><Link to="/inicio"  style={{color: '#FFFFFF' }} className="link" > Inicio </Link></li>
+                            <li ><Link to="/productos" style={{color: '#FFFFFF' }} className="link"> Productos </Link></li>
+                            <li ><Link to="/contacto"  style={{color: '#FFFFFF' }} className="link"> Contactanos</Link></li>
+                            <li><Link to="/ventas"  style={{color: '#FFFFFF' }} className="link"> Ventas </Link></li>
+                            <li><Link to="/administrador"  style={{color: '#FFFFFF' }} className="link"> Administrador </Link></li>
                         </ul>
                     </div>
 
@@ -42,7 +42,7 @@ const FooterComponent = () => {
                 </div>
 
                 <div className="row">
-                    <div className="col-auto">
+                    <div className="col-12  ext-center">
                         <p>© 2020 Surgas de Antioquia. todos los derechos reservados.</p>
                         <p>desarrollado por suruworks.</p>
                     </div>

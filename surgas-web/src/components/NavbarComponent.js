@@ -58,13 +58,13 @@ const AuthOptions = () => {
                 <div>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLoginModal}>
+                            <Button outline style={{ margin: 10, borderColor: '#fdd835', color: '#fdd835' }} onClick={toggleLoginModal}>
                                 <span className="fa fa-sign-in"></span> Iniciar sesión
                             </Button>
                         </NavItem>
 
                         <NavItem>
-                            <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={toggleRegisterModal}>
+                            <Button variant="contained" style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toggleRegisterModal}>
                                 <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
                             </Button>
                         </NavItem>
@@ -157,34 +157,58 @@ const NavbarComponent = () => {
     }
 
     return (
-        <Navbar dark expand='md'>
+        <Navbar class="navbar navbar-expand-md" dark expand='md'>
             <div className='container'>
-                <NavbarToggler onClick={toggleNav} />
-                <NavbarBrand className='mr-auto' href='/'>
-                    <img src={baseFrontUrl + "public/logo/transparent-logo-icon.png"} height='31.5' width='32' alt='small-company-logo' />
-                </NavbarBrand>
-                <Collapse isOpen={navIsOpen} navbar>
-                    <Nav navbar>
-                        <NavItem>
-                            <NavLink className='nav-link' to='/inicio'><span className='fa fa-home fa-lg'></span> Inicio</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink className='nav-link' to='/productos'><span className='fa fa-list fa-lg'></span> Productos</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink className='nav-link' to='/contacto'><span className='fa fa-address-card fa-lg'></span> Contáctanos</NavLink>
-                        </NavItem>
+                <div class="collapse navbar-collapse">
 
-                        {/* NOTA: LAS SIGUIENTES SOLO DEBEN APARECER DEPENDIENDO DEL USUARIO */}
-                        <NavItem>
-                            <UserOptionsSales />
-                        </NavItem>
-                        <NavItem>
-                            <UserOptionsAdmin />
-                        </NavItem>
-                    </Nav>
-                    <AuthOptions />
-                </Collapse>
+
+
+                    <div class="navbar-nav">
+
+                        <NavbarToggler onClick={toggleNav} />
+                        <NavbarBrand className='mr-auto' href='/'>
+                            <img src={baseFrontUrl + "public/logo/transparent-logo-icon.png"} height='31.5' width='32' alt='small-company-logo' />
+                        </NavbarBrand>
+                        <Collapse isOpen={navIsOpen} navbar>
+                            <Nav navbar>
+                                <NavItem>
+                                    <NavLink className='nav-link' to='/inicio'><span className='fa fa-home fa-lg'></span> Inicio</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className='nav-link' to='/productos'><span className='fa fa-list fa-lg'></span> Productos</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className='nav-link' to='/contacto'><span className='fa fa-address-card fa-lg'></span> Contáctanos</NavLink>
+                                </NavItem>
+
+                                <NavItem>
+                                        <UserOptionsSales />
+                                    </NavItem>
+                                    <NavItem>
+                                        <UserOptionsAdmin />
+                                    </NavItem>
+
+
+                            </Nav>
+
+                        </Collapse>
+
+                    </div>
+
+
+                    <div class="ml-auto navbar-nav">
+
+
+
+                        <Collapse isOpen={navIsOpen} navbar>
+
+                            <AuthOptions />
+                        </Collapse>
+
+                        </div>
+
+
+                </div>
             </div>
         </Navbar>
     );
