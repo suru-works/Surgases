@@ -108,7 +108,7 @@ export const logout = (user) => async (dispatch) => {
     }
 }
 
-// User
+// User (AUTENTIFICACION)
 
 export const userReset = () => ({
     type: ActionTypes.USER_RESET
@@ -167,6 +167,62 @@ export const users = () => async (dispatch) => {
         dispatch(usersSuccess(res));
     } catch (err) {
         dispatch(usersFailed(err));
+    }
+}
+
+export const usersUpdateReset = () => ({
+    type: ActionTypes.USERS_UPDATE_RESET
+});
+
+export const usersUpdateRequest = () => ({
+    type: ActionTypes.USERS_UPDATE_REQUEST
+});
+
+export const usersUpdateSuccess = (result) => ({
+    type: ActionTypes.USERS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const usersUpdateFailed = (errmess) => ({
+    type: ActionTypes.USERS_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateUser = (userData) => async (dispatch) => {
+    dispatch(usersUpdateRequest());
+    const id = userData.nick;
+    const user = {
+        nombre: userData.nombre,
+        administrador: userData.administrador,
+        comun: userData.comun
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'users/'+ id, user, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(usersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(usersUpdateFailed(err));
+    }
+}
+
+export const deleteUser = (userData) => async (dispatch) => {
+    dispatch(usersUpdateRequest());
+    const id = userData.nick;
+    try {
+        const res = await axios.delete(baseBackUrl + 'users/'+ id, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(usersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(usersUpdateFailed(err));
     }
 }
 

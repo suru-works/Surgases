@@ -17,7 +17,7 @@ const MainComponent = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(user());
-    });
+    },[]);
     
     const HomePage = () => {
         return (

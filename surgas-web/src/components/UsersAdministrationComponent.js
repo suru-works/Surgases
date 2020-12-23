@@ -6,16 +6,30 @@ import CardTitle from 'reactstrap/lib/CardTitle';
 import CardText from 'reactstrap/lib/CardText';
 import CardBody from 'reactstrap/lib/CardBody';
 import { Loading } from './LoadingComponent';
-import  User  from './UserComponent';
+import User from './UserComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { users } from '../redux/ActionCreators';
 
-const RenderSearchResultTuple = (props) => {
-    const user = props.user;
-    return (
-        <User user={user}/>
+
+const SearchCriteria = () =>{ 
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(users());
+    }, []);
+    return(
+        <div></div>
     );
 }
+
+const RenderSearchResultTuple = (props) => {
+    const userData = props.user;
+    return (
+        <User user={userData} />
+    );
+    
+}
+
+
 
 const SearchResult = () => {
 
@@ -23,10 +37,7 @@ const SearchResult = () => {
     const result = useSelector(state => state.users.result);
     const loading = useSelector(state => state.users.isLoading);
 
-    const dispatch = useDispatch();
-    /* useEffect(() => {
-        dispatch(users());
-    },[result]); */
+
 
     if (loading) {
         return (
@@ -69,7 +80,9 @@ const SearchResult = () => {
 
 }
 
-const UsersAdministration = () => {    
+const UsersAdministration = () => {
+
+    
 
     return (
         <div className='col'>
@@ -78,6 +91,7 @@ const UsersAdministration = () => {
                     <CardText>Criterios de busqueda</CardText>
                 </CardTitle>
                 <CardBody>
+                    <SearchCriteria></SearchCriteria>
                 </CardBody>
             </Card>
             <Card className='col-9 '>

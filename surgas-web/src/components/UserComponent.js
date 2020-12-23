@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
-const EditUserModal = () => {
-    
-}
+import EditUserComponent from './EditUserComponent';
 
 const User = (props) => {
     const [isEditClientModalOPen, setIsEditClientModalOPen] = useState(false);
@@ -16,15 +13,13 @@ const User = (props) => {
         }
     }
     return (
-        <div className="container">
-            <tr onClick={toggleEditModal()}>
+            <tr  onClick={() => toggleEditModal()}>
                 <th scope="row">{props.user.nick}</th>
                 <td>{props.user.nombre}</td>
                 <td>{props.user.administrador}</td>
                 <td>{props.user.comun}</td>
+                <EditUserComponent user={props.user} isOpen={isEditClientModalOPen} toggle={toggleEditModal}></EditUserComponent>
             </tr>
-
-        </div>
     );
 
 }
