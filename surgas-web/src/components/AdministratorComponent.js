@@ -19,8 +19,8 @@ const AdministratorComponent = () => {
 
     return (
         <div className = 'row'>
-            <ProSidebar className = 'col-1'>
-                <Menu iconShape="square">
+            <ProSidebar className = 'col-1' popperArrow = {true}>
+                <Menu iconShape="circle">
                     <MenuItem  icon={<i className="fa fa-user"></i>}>
                         Gestionar usuarios
                         <Link to="/administrador/usuarios" />
@@ -31,7 +31,7 @@ const AdministratorComponent = () => {
                         <Link to="/administrador/productos" />
                     </MenuItem>
 
-                    <MenuItem icon={<i className="fa fa-shopping-cart"></i>}>
+                    <MenuItem icon={<i className="fa fa-globe"></i>}>
                     Gestionar municipios
                         <Link to="/administrador/municipios" />
                     </MenuItem>

@@ -139,6 +139,37 @@ export const user = () => async (dispatch) => {
     }
 }
 
+//Users
+
+export const usersReset = () => ({
+    type: ActionTypes.USERS_RESET
+});
+
+export const usersRequest = () => ({
+    type: ActionTypes.USERS_REQUEST
+});
+
+export const usersSuccess = (result) => ({
+    type: ActionTypes.USERS_SUCCESS,
+    payload: result
+});
+
+export const usersFailed = (errmess) => ({
+    type: ActionTypes.USERS_FAILED,
+    payload: errmess
+});
+
+export const users = () => async (dispatch) => {
+    dispatch(usersRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'users');
+        dispatch(usersSuccess(res));
+    } catch (err) {
+        dispatch(usersFailed(err));
+    }
+}
+
 //Restore and change password 
 export const restoreRequest = () => ({
     type: ActionTypes.RESTORE_REQUEST

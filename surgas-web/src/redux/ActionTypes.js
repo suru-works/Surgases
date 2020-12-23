@@ -22,6 +22,12 @@ export const USER_REQUEST = 'USER_REQUEST';
 export const USER_SUCCESS = 'USER_SUCCESS';
 export const USER_FAILED = 'USER_FAILED';
 
+// Users
+export const USERS_RESET = 'USERS_RESET';
+export const USERS_REQUEST = 'USERS_REQUEST';
+export const USERS_SUCCESS = 'USERS_SUCCESS';
+export const USERS_FAILED = 'USERS_FAILED';
+
 //Restore and change password 
 export const RESTORE_RESET = 'RESTORE_RESET';
 export const RESTORE_REQUEST = 'RESTORE_REQUEST';
