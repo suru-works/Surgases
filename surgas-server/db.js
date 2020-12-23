@@ -34,14 +34,16 @@ module.exports.buildQuery = (table, params, cols) => {
 module.exports.buildUpdate = (table, id, params) => {
     let changes = [];
     let values = [];
-
-    for (let key in params) {
+    
+    Object.keys(params).forEach((key) => {
         changes.push(key + ' = ? ');
         values.push(params[key]);
-    }
+    });
+
+    values = values.concat([id.value]);
 
     return {
         query: 'UPDATE ' + table + ' SET ' + changes.join(' , ') + ' WHERE ' + id.name + ' = ?',
-        values: concat(values, [id.value])
+        values: values
     };
 }

@@ -87,12 +87,7 @@ router.put('/:nick', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req
       return;
     }
 
-    let cols = [];
-    for (let key in req.body) {
-      cols.push(key);
-    }
-
-    const query = db.buildUpdate('usuario', { name: 'nick', value: req.params.nick }, cols);
+    const query = db.buildUpdate('usuario', { name: 'nick', value: req.params.nick }, req.body);
     const result = await conn.promise().execute(query.query, query.values);
     if (result[0].affectedRows == 1) {
       conn.commit();
