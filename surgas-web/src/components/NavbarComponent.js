@@ -125,8 +125,7 @@ const UserOptionsSales = () => {
 
 const UserOptionsAdmin = () => {
     const result = useSelector(state => state.user.result);
-    if (result) {       
-        console.log(result); 
+    if (result) {
         if (result.data.admin == '1') {
             return (
                 <NavItem >

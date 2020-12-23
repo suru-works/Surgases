@@ -9,6 +9,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UsersAdministration from './UsersAdministrationComponent';
 import ProductsAdministration from './ProductsAdministrationComponent';
 import MunicipalitiesAdministration from './MunicipalitiesAdministrationComponent';
+import SystemParametersAdministration from './SystemParametersAdministrationComponent';
 
 
 
@@ -36,12 +37,19 @@ const AdministratorComponent = () => {
                         <Link to="/administrador/municipios" />
                     </MenuItem>
 
+                    <MenuItem icon={<i className="fa fa-cogs"></i>}>
+                    Parametros del sistema
+                        <Link to="/administrador/parametros" />
+                    </MenuItem>
+
+
                 </Menu>
             </ProSidebar>
             <Switch location={location} className = 'col'>
                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
                 <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
                 <Route path='/administrador/municipios' component={() => <MunicipalitiesAdministration />} />
+                <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
             </Switch>
         </div>
     );

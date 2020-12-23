@@ -6,20 +6,14 @@ import CardTitle from 'reactstrap/lib/CardTitle';
 import CardText from 'reactstrap/lib/CardText';
 import CardBody from 'reactstrap/lib/CardBody';
 import { Loading } from './LoadingComponent';
+import  User  from './UserComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { users } from '../redux/ActionCreators';
 
 const RenderSearchResultTuple = (props) => {
     const user = props.user;
-    console.log("Usuario");
-    console.log(user);
     return (
-        <tr>
-            <th scope="row">{user.nick}</th>
-            <td>{user.nombre}</td>
-            <td>{user.administrador}</td>
-            <td>{user.comun}</td>
-        </tr>
+        <User user={user}/>
     );
 }
 
@@ -29,6 +23,11 @@ const SearchResult = () => {
     const result = useSelector(state => state.users.result);
     const loading = useSelector(state => state.users.isLoading);
 
+    const dispatch = useDispatch();
+    /* useEffect(() => {
+        dispatch(users());
+    },[result]); */
+
     if (loading) {
         return (
             <Loading />
@@ -36,11 +35,10 @@ const SearchResult = () => {
 
     }
     if (result) {
-        console.log("USUARIOS");
-        console.log(result.data);
         const ResultTuples = result.data.map((user) => {
             return (
                 <RenderSearchResultTuple user={user} key={user.nick}></RenderSearchResultTuple>
+
             );
         })
         return (
@@ -71,18 +69,13 @@ const SearchResult = () => {
 
 }
 
-const UsersAdministration = () => {
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(users());
-    });
+const UsersAdministration = () => {    
 
     return (
         <div className='col'>
             <Card className='col-9 '>
                 <CardTitle>
-                    <CardText>Cristerios de busqueda</CardText>
+                    <CardText>Criterios de busqueda</CardText>
                 </CardTitle>
                 <CardBody>
                 </CardBody>
