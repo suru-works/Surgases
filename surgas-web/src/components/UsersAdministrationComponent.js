@@ -23,7 +23,7 @@ const validationSchema = yup.object(
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
     }
 );
-/* TO DO: implementar la busqueda de usuarios */
+/* TO DO: implementar la busqueda de usuarios y añadir la columna de correo electronico*/
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
