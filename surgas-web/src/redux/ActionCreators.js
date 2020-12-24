@@ -226,6 +226,39 @@ export const deleteUser = (userData) => async (dispatch) => {
     }
 }
 
+export const addUser = (userData) => async (dispatch) => {
+    dispatch(usersUpdateRequest());
+    const user = userData;
+    try {
+        const res = await axios.post(baseBackUrl + 'users/signup', user,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(usersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(usersUpdateFailed(err));
+    }
+}
+/* TO DO: implementar la busqueda de usuarios */
+export const searchUser = (userData) => async (dispatch) => {
+    dispatch(usersRequest());
+    const user = userData;
+    try {
+        const res = await axios.post(baseBackUrl + 'users/', user,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(usersSuccess(res));
+    } catch (err) {
+        dispatch(usersFailed(err));
+    }
+}
+
+
 //Restore and change password 
 export const restoreRequest = () => ({
     type: ActionTypes.RESTORE_REQUEST
