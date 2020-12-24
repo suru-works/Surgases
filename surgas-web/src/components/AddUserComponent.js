@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
-
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { users, updateUser, deleteUser, usersUpdateReset } from '../redux/ActionCreators';
+import { users, addUser, usersUpdateReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -15,13 +14,12 @@ const validationSchema = yup.object(
             .string()
             .min(2, "El nombre debe ser de mínimo 2 caracteres")
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
-    });
-const EditUserComponent = (props) => {
-    const [nick] = useState(props.user.nick);
-    const [nombre] = useState(props.user.nombre);
-    const [administrador] = useState(props.user.administrador);
-    const [comun] = useState(props.user.comun);
+    }
+);
 
+const AddUserComponent = (props) => {
+ //TO DO
+/*  Las inserciones de nuevos usuarios no estan funcionando... posiblemente por el json que se esta mandando en la solicitud */
     const error = useSelector(state => state.usersUpdate.errMess);
     const result = useSelector(state => state.usersUpdate.result);
     const loading = useSelector(state => state.usersUpdate.isLoading);
@@ -34,32 +32,25 @@ const EditUserComponent = (props) => {
         props.toggle();
     }
 
-    const doUpdateUser = (userData) => dispatch(updateUser(userData));
+    const doAddUser = (userData) => dispatch(addUser(userData));
 
     const uploadChanges = (values) => {
         const userData = {
-            nick: props.user.nick,
+            nick: values.nick,
             nombre: values.nombre,
             administrador: values.administrador,
             comun: values.comun
         }
-        doUpdateUser(userData);
+        doAddUser(userData);        
     }
-
-    const doDeleteUser = (userData) => dispatch(deleteUser(userData));
-
-    const deleteThatUser = () =>{
-        const userData = {
-            nick: props.user.nick
-        }
-        doDeleteUser(userData);
-    }
-
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            nombre: nombre,
-            administrador: administrador,
-            comun: comun
+            nick:'',
+            nombre: '', 
+            password: '11111',
+            correo: 'squirozu@unal.edu.co',
+            administrador: '0',
+            comun: '1'
         },
         validationSchema,
         onSubmit(values) {
@@ -67,10 +58,11 @@ const EditUserComponent = (props) => {
         }
     });
 
+
     if (loading) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -80,7 +72,7 @@ const EditUserComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -90,9 +82,9 @@ const EditUserComponent = (props) => {
     else if (result) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
                 <ModalBody>
-                    <p>Usuario Editado correctamente.</p>
+                    <p>Usuario añadido correctamente.</p>
                 </ModalBody>
                 <Button onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
@@ -103,7 +95,7 @@ const EditUserComponent = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
 
                 <ModalBody>
 
@@ -114,6 +106,13 @@ const EditUserComponent = (props) => {
                                 <CardBody style={{ padding: 8 }}>
                                     <CardTitle> Ingresa los datos del usuario </CardTitle>
 
+                                    <Label htmlFor="nick">Usuario</Label>
+                                    <Input type="text" id="nick" name="nick" value={values.nick}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
+
+
                                     <Label htmlFor="nombre">Nombre</Label>
                                     <Input type="text" id="nombre" name="nombre" value={values.nombre}
                                         onChange={handleChange}
@@ -122,10 +121,6 @@ const EditUserComponent = (props) => {
 
                                     <div class="d-flex justify-content-center" >
                                         <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center" >
-                                        <Button className="secondary-button" onClick={()=>deleteThatUser()}  >Eliminar</Button>
                                     </div>
 
                                 </CardBody>
@@ -145,6 +140,6 @@ const EditUserComponent = (props) => {
     }
 
 }
-EditUserComponent.propTypes = {};
+AddUserComponent.propTypes = {};
 
-export default EditUserComponent;
+export default AddUserComponent;
