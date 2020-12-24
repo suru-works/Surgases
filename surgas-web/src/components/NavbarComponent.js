@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navbar, NavbarToggler, NavbarBrand, Collapse, Nav, NavItem, Button } from 'reactstrap';
+import { Navbar, NavbarToggler, NavbarBrand, Collapse, Nav, NavItem, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { baseFrontUrl } from '../shared/baseUrl';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
@@ -15,6 +15,16 @@ const AuthOptions = () => {
     const [isLoginModalOpened, setIsLoginModalOpened] = useState(false);
     const [isLogoutModalOpened, setIsLogoutModalOpened] = useState(false);
     const [isRegisterModalOpened, setIsRegisterModalOpened] = useState(false);
+    const [btnDroplistSesion, setDroplistSesionOpened] = useState(false);
+
+    const toggleDroplistSesion = () => {
+        if (btnDroplistSesion) {
+            setDroplistSesionOpened(false)
+        }
+        else {
+            setDroplistSesionOpened(true)
+        }
+    }
 
     const toggleLoginModal = () => {
         if (isLoginModalOpened) {
@@ -84,16 +94,18 @@ const AuthOptions = () => {
     }
     if (result) {
         return (
-            <div>
-                <Nav className="ml-auto" navbar>
-                    <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={toggleLogoutModal}>
-                            <span className="fa fa-sign-in"></span> Cerrar sesión
-                    </Button>
-                    </NavItem>
-                </Nav>
-                <LogoutComponent isOpen={isLogoutModalOpened} toggle={toggleLogoutModal} />
-            </div>
+
+
+            <ButtonDropdown direction="left" isOpen={btnDroplistSesion} toggle={ toggleDroplistSesion }  >
+                <DropdownToggle caret  style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }}>
+                    Sesión
+                </DropdownToggle>
+                <DropdownMenu>
+                <DropdownItem>Cerrar sesión</DropdownItem>
+                <DropdownItem>Gestionar cuenta</DropdownItem>
+                </DropdownMenu>
+            </ButtonDropdown>
+
         );
     }
     return (<p>ERROR</p>);
