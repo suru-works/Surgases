@@ -14,6 +14,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const pedidoRouter = require('./routes/pedidoRouter');
 const empleadoRouter = require('./routes/empleadoRouter');
+const systemRouter = require('./routes/systemRouter');
 
 // authentication imports
 const passport = require('passport');
@@ -82,6 +83,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pedidos', pedidoRouter);
 app.use('/empleados', empleadoRouter);
+app.use('/system', systemRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
