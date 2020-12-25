@@ -19,12 +19,19 @@ systemRouter.get('/parameters/:codigo', auth.isAuthenticated, auth.isAdmin, asyn
 }));
 
 systemRouter.post('/backup', auth.isAuthenticated, auth.isAdmin, (req, res, next) => {
-    exec(__dirname + '/backup.bat', (err, stdout, stderr) => {
+    exec(__dirname + '\\backup.bat', (err, stdout, stderr) => {
         if (err) {
             console.log(err);
+            throw {
+                status: 500
+            };
         }
 
         console.log(stdout);
+
+        res.json({
+            msg: 'backup successful'
+        });
     });
 });
 
