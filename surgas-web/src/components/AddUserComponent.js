@@ -38,6 +38,8 @@ const AddUserComponent = (props) => {
         const userData = {
             nick: values.nick,
             nombre: values.nombre,
+            password: values.pasword,
+            email: values.email,
             administrador: values.administrador,
             comun: values.comun
         }
@@ -47,8 +49,8 @@ const AddUserComponent = (props) => {
         initialValues: {
             nick:'',
             nombre: '', 
-            password: '11111',
-            correo: 'squirozu@unal.edu.co',
+            password: '',
+            email: '',
             administrador: '0',
             comun: '1'
         },

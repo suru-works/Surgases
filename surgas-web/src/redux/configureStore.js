@@ -4,8 +4,9 @@ import { Register } from './register';
 import { Login } from './login';
 import { Logout } from './logout';
 import { User } from './user';
+import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
-import { SystemParameters, SystemParametersUpdate } from './system';
+import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
 
  export const ConfigureStore = () => {
@@ -19,7 +20,9 @@ import { Restore } from './restore';
             usersUpdate:UsersUpdate,
             systemParameters: SystemParameters,
             systemParametersUpdate:SystemParametersUpdate,
+            systemBackup: SystemBackup,
             restore: Restore,
+            maps: Maps,
         }),
        compose(applyMiddleware(thunk),
        typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f 

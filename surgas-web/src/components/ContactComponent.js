@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Breadcrumb, BreadcrumbItem, Button, Row, Label, Col, Card, CardBody, CardText, CardHeader, UncontrolledCollapse } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import Map from './MapComponent';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
+
+import {maps} from '../redux/ActionCreators';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -16,11 +18,19 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
 
 
 const RenderMap = () => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(maps());
+    }, []);
+
+
     const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=`;
 
 
     const error = useSelector(state => state.maps.errMess);
-    const result = useSelector(state => state.maps.maps);
+    const result = useSelector(state => state.maps.result);
     const loading = useSelector(state => state.maps.isLoading);
 
     if (error) {

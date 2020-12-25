@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState}  from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,10 @@ import UsersAdministration from './UsersAdministrationComponent';
 import ProductsAdministration from './ProductsAdministrationComponent';
 import MunicipalitiesAdministration from './MunicipalitiesAdministrationComponent';
 import SystemParametersAdministration from './SystemParametersAdministrationComponent';
+import  SystemBackup  from './SystemBackupComponent'
 import { Loading } from './LoadingComponent'
+
+
 
 
 
@@ -23,6 +26,17 @@ const AdministratorComponent = () => {
     const error = useSelector(state => state.user.errMess);
     const result = useSelector(state => state.user.result);
     const loading = useSelector(state => state.user.isLoading);
+
+    const [isSystemBackupModalOPen, setIsSystemBackupModalOPen] = useState(false);
+
+    const toggleSystemBackupModal = () => {
+        if (isSystemBackupModalOPen) {
+            setIsSystemBackupModalOPen(false);
+        } else {
+            setIsSystemBackupModalOPen(true);
+        }
+    }
+
     if (loading) {
         return (
             <Loading></Loading>
@@ -63,8 +77,9 @@ const AdministratorComponent = () => {
                                         Parametros
                                     <Link to="/administrador/parametros" />
                                     </MenuItem>
-                                    <MenuItem title="Respaldos" icon={<i className="fa fa-info"></i>}>
+                                    <MenuItem title="Respaldos" icon={<i className="fa fa-info"></i>} onClick={()=>toggleSystemBackupModal()}>
                                         Respaldar sistema
+                                        <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
                                 </MenuItem>
                                 </SubMenu>
 

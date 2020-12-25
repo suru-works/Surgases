@@ -304,6 +304,38 @@ export const changePassword = (data) => (dispatch) => {
     // TO DO
 }
 
+//maps
+
+export const mapsReset = () => ({
+    type: ActionTypes.MAPS_RESET
+});
+
+export const mapsRequest = () => ({
+    type: ActionTypes.MAPS_REQUEST
+});
+
+export const mapsSuccess = (result) => ({
+    type: ActionTypes.MAPS_SUCCESS,
+    payload: result
+});
+
+export const mapsFailed = (errmess) => ({
+    type: ActionTypes.MAPS_FAILED,
+    payload: errmess
+});
+
+export const maps = () => async (dispatch) => {
+    dispatch(mapsRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'maps');
+        dispatch(mapsSuccess(res));
+    } catch (err) {
+        dispatch(mapsFailed(err));
+    }
+}
+
+
 // System
 
 export const systemParametersReset = () => ({
@@ -365,5 +397,39 @@ export const systemParametersUpdate = (parameters) => async (dispatch) => {
         dispatch(systemParametersUpdateSuccess(res));
     } catch (err) {
         dispatch(systemParametersUpdateFailed(err));
+    }
+}
+
+export const systemBackupReset = () => ({
+    type: ActionTypes.SYSTEM_BACKUP_RESET
+});
+
+export const systemBackupRequest = () => ({
+    type: ActionTypes.SYSTEM_BACKUP_REQUEST
+});
+
+export const systemBackupSuccess = (result) => ({
+    type: ActionTypes.SYSTEM_BACKUP_SUCCESS,
+    payload: result
+});
+
+export const systemBackupFailed = (errmess) => ({
+    type: ActionTypes.SYSTEM_BACKUP_FAILED,
+    payload: errmess
+});
+
+export const systemBackup = () => async (dispatch) => {
+    dispatch(systemBackupRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'system/backup', {}, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(systemBackupSuccess(res));
+    } catch (err) {
+        dispatch(systemBackupFailed(err));
     }
 }

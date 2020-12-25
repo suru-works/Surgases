@@ -36,3 +36,22 @@ export const SystemParametersUpdate = (state = {
             return state;
     }
 }
+
+export const SystemBackup = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.SYSTEM_BACKUP_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.SYSTEM_BACKUP_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.SYSTEM_BACKUP_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.SYSTEM_BACKUP_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
