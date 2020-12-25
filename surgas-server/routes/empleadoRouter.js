@@ -14,7 +14,7 @@ empleadoRouter.route("/")
     const query = db.buildQuery('empleado', req.query);
     const results = await pool.promise().execute(query.query, query.values);
     if (results) {
-        res.json(JSON.parse(JSON.stringify(results))[0])
+        res.json(JSON.parse(JSON.stringify(results[0])))
     } else {
         throw {
             status: 500
