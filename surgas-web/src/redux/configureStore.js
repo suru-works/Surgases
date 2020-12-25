@@ -5,6 +5,7 @@ import { Login } from './login';
 import { Logout } from './logout';
 import { User } from './user';
 import { Users, UsersUpdate } from './users';
+import { SystemParameters, SystemParametersUpdate } from './system';
 import { Restore } from './restore';
 
  export const ConfigureStore = () => {
@@ -16,6 +17,8 @@ import { Restore } from './restore';
             user: User,
             users: Users,
             usersUpdate:UsersUpdate,
+            systemParameters: SystemParameters,
+            systemParametersUpdate:SystemParametersUpdate,
             restore: Restore,
         }),
        compose(applyMiddleware(thunk),

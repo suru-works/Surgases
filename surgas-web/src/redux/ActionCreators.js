@@ -279,7 +279,7 @@ export const restoreFailed = (errmess) => ({
 });
 
 export const restorePassword = (user) => (dispatch) => {
-    // IMPLEMENTAR
+    // TO DO
 }
 
 export const changePasswordRequest = () => ({
@@ -301,5 +301,69 @@ export const changePasswordFailed = (errmess) => ({
 });
 
 export const changePassword = (data) => (dispatch) => {
-    // IMPLEMENTAR
+    // TO DO
+}
+
+// System
+
+export const systemParametersReset = () => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_RESET
+});
+
+export const systemParametersRequest = () => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_REQUEST
+});
+
+export const systemParametersSuccess = (result) => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_SUCCESS,
+    payload: result
+});
+
+export const systemParametersFailed = (errmess) => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_FAILED,
+    payload: errmess
+});
+
+export const systemParameters = () => async (dispatch) => {
+    dispatch(systemParametersRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'system/parameters');
+        dispatch(systemParametersSuccess(res));
+    } catch (err) {
+        dispatch(systemParametersFailed(err));
+    }
+}
+
+export const systemParametersUpdateReset = () => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_UPDATE_RESET
+});
+
+export const systemParametersUpdateRequest = () => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_UPDATE_REQUEST
+});
+
+export const systemParametersUpdateSuccess = (result) => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const systemParametersUpdateFailed = (errmess) => ({
+    type: ActionTypes.SYSTEM_PARAMETERS_UPDATE_FAILED,
+    payload: errmess    
+});
+
+export const systemParametersUpdate = (parameters) => async (dispatch) => {
+    dispatch(systemParametersUpdateRequest());
+    try {
+        const res = await axios.put(baseBackUrl + 'system/parameters/1', parameters, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(systemParametersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(systemParametersUpdateFailed(err));
+    }
 }
