@@ -43,8 +43,8 @@ router.post('/signup', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (r
     }
 
     const result = await conn.promise().execute(
-      'INSERT INTO usuario VALUES (?, ?, ?, ?, ?)',
-      [user.nick, user.nombre, user.administrador, user.comun, hash]
+      'INSERT INTO usuario VALUES (?, ?, ?, ?, ?, ?)',
+      [user.nick, user.nombre, user.administrador, user.comun, hash, user.email]
     );
 
     if (result[0].affectedRows == 1) {
@@ -53,7 +53,8 @@ router.post('/signup', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (r
         nick: user.nick,
         nombre: user.nombre,
         administrador: user.administrador,
-        comun: user.comun
+        comun: user.comun,
+        email: user.email
       });
     } else {
       conn.rollback();
@@ -68,8 +69,13 @@ router.post('/login', auth.login, (req, res, next) => {
     req.session.cookie.expires = new Date(Date.now() + expires);
     req.session.cookie.maxAge = expires;
   }
+  const user = req.user;
   res.json({
-    nick: req.user.nick
+    nick: user.nick,
+    nombre: user.nombre,
+    administrador: user.administrador,
+    comun: user.comun,
+    email: user.email
   });
 });
 
