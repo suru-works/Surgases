@@ -75,8 +75,8 @@ const RenderLoginComponent = (props) => {
 
                     <FormGroup>
 
-                        <div className="l-flex ml-auto" class="col-12">
-                            <div class="col-8">
+                        <div className="l-flex ml-auto " class="col-12" >
+                            <div class="col-12 col-sm-8">
                                 <Label check  >
                                     <Input  type = "checkbox" id = "remember" name = "remember" className="form-control" values={values}
                                         onChange={handleChange}
@@ -90,7 +90,7 @@ const RenderLoginComponent = (props) => {
 
                     <br></br>
 
-                    <div className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center" >
                         <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Ingresar</Button>
                         <Button onClick={props.switchRestore} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
                     </div>

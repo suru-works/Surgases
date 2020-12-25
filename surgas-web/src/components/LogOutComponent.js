@@ -80,7 +80,7 @@ const LogOutComponent = (props) => {
                 <ModalBody>
                     <p>¿Está seguro de que quiere cerrar sesión?</p>
                     <div className="d-flex justify-content-center">
-                        <Button onClick={handleLogout} className="primary-button">Cerrar sesion</Button>
+                        <Button onClick={handleLogout} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" >Cerrar sesión</Button>
                     </div>
                 </ModalBody>
             </Modal>
