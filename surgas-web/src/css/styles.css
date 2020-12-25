@@ -14,7 +14,10 @@
   80% {
     transform: rotate(-5deg); } }
 
+.plusbutton {
+  color: 	#000000;
 
+}
 
 .pro-sidebar {
   color: #ffffff;

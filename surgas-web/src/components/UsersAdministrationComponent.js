@@ -171,10 +171,10 @@ const UsersAdministration = () => {
                     <SearchResult></SearchResult>
                 </CardBody>
             </Card>
-            <FloatingButtonContainer>
-                <FloatingButtonLink tooltip="Añadir un usuario" >
-                    <div  onClick={toggleAddUserModal}>
-                        <i className="fa fa-plus fa-2x"></i>
+            <FloatingButtonContainer >
+                <FloatingButtonLink tooltip="Añadir un usuario" styles={{backgroundColor: "#fdd835"}} >
+                    <div onClick={toggleAddUserModal}>
+                        <i className="fa fa-plus fa-2x plusbutton" ></i>
                     </div >
                 </FloatingButtonLink>
             </FloatingButtonContainer>
