@@ -108,11 +108,6 @@ const AuthOptions = () => {
                     
                 </ButtonDropdown>
 
-
-
-
-                
-
             </div>
 
         );
@@ -150,7 +145,7 @@ const UserOptionsAdmin = () => {
         if (result.data.admin == '1') {
             return (
                 <NavItem >
-                    <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administracion</NavLink>
+                    <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administración</NavLink>
                 </NavItem>
             );
         }
@@ -179,13 +174,10 @@ const NavbarComponent = () => {
     return (
         <Navbar class="navbar navbar-expand-md" dark expand='md'>
             <div className='container'>
-                
-
-
 
                 <NavbarToggler onClick={toggleNav} />
                 <NavbarBrand className='mr-auto' href='/'>
-                    <img src={baseFrontUrl + "public/logo/transparent-logo-icon.png"} height='31.5' width='32' alt='small-company-logo' />
+                    <img src={baseFrontUrl + "public/logo/S-14-cropped.png"} height='31.5' alt='small-company-logo' />
                 </NavbarBrand>
                 <Collapse isOpen={navIsOpen} navbar>
                     <Nav className="ml-auto" navbar>
@@ -223,7 +215,6 @@ const NavbarComponent = () => {
                     </Nav>
 
                 </Collapse>
-
 
             </div>
 

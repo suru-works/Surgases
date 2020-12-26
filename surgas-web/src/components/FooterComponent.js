@@ -1,5 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+const FooterLinksAdmin = () => {
+    const result = useSelector(state => state.user.result);
+    if (result) {
+        if (result.data.admin == '1') {
+            return (
+
+                <ul className="list-unstyled">
+                    <li><Link to="/ventas"  style={{color: '#FFFFFF' }} className="link"> Ventas </Link></li>
+                    <li><Link to="/administrador"  style={{color: '#FFFFFF' }} className="link"> Administración </Link></li>
+                </ul>
+
+            );
+        }
+        else {
+            return (
+                <div />
+            );
+        }
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+
+
+}
 
 const FooterComponent = () => {
     return (
@@ -12,10 +41,12 @@ const FooterComponent = () => {
                         <ul className="list-unstyled">
                             <li ><Link to="/inicio"  style={{color: '#FFFFFF' }} className="link" > Inicio </Link></li>
                             <li ><Link to="/productos" style={{color: '#FFFFFF' }} className="link"> Productos </Link></li>
-                            <li ><Link to="/contacto"  style={{color: '#FFFFFF' }} className="link"> Contactanos</Link></li>
-                            <li><Link to="/ventas"  style={{color: '#FFFFFF' }} className="link"> Ventas </Link></li>
-                            <li><Link to="/administrador"  style={{color: '#FFFFFF' }} className="link"> Administrador </Link></li>
+                            <li ><Link to="/contacto"  style={{color: '#FFFFFF' }} className="link"> Contáctanos</Link></li>
+
+                            <FooterLinksAdmin />
+
                         </ul>
+                        
                     </div>
 
                     <div className="col-7 col-sm-5">
@@ -31,7 +62,7 @@ const FooterComponent = () => {
 
                     <div className="col-12 col-sm-4">
                         <div className="text-center">
-                            <h5>Conectate con Nosotros</h5>
+                            <h5>Conéctate con Nosotros</h5>
                             <br></br>
                             <a className="btn btn-social-icon btn-facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/Surgasdeantioquia" style={{ margin: 5 }}><i className="fa fa-facebook"></i></a>
                             <a className="btn btn-social-icon btn-instagram" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/surgasdeantioquia/" style={{ margin: 5 }}><i className="fa fa-instagram"></i></a>

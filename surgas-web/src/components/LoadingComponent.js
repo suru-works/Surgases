@@ -7,7 +7,7 @@ export const Loading = () => {
         <div>
 
             <div className="row justify-content-center" >            
-                <Spinner  animation="border" variant="danger" />
+                <Spinner  animation="border"  variant="warning" />
             </div>
 
             <div className="row justify-content-center" >            

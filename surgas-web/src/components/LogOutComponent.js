@@ -64,9 +64,9 @@ const LogOutComponent = (props) => {
     if (result) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
                 <ModalBody>
-                    <p>Cierre de sesion exitoso</p>
+                    <p>Cierre de sesión exitoso</p>
                 </ModalBody>
             </Modal>
         );

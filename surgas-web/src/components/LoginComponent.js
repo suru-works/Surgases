@@ -82,7 +82,7 @@ const RenderLoginComponent = (props) => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />{' '}
-                                    Recuerdame
+                                    Recuérdame
                                 </Label>
                             </div>
                         </div>
