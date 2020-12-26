@@ -11,13 +11,9 @@ import UsersAdministration from './UsersAdministrationComponent';
 import ProductsAdministration from './ProductsAdministrationComponent';
 import MunicipalitiesAdministration from './MunicipalitiesAdministrationComponent';
 import SystemParametersAdministration from './SystemParametersAdministrationComponent';
+import SystemPrintersAdministration from './SystemPrintersAdministrationComponent';
 import  SystemBackup  from './SystemBackupComponent'
 import { Loading } from './LoadingComponent'
-
-
-
-
-
 
 const AdministratorComponent = () => {
 
@@ -77,6 +73,10 @@ const AdministratorComponent = () => {
                                         Parametros
                                     <Link to="/administrador/parametros" />
                                     </MenuItem>
+                                    <MenuItem title="Impresoras" icon={<i className="fa fa-print"></i>}>
+                                        Impresoras
+                                    <Link to="/administrador/impresoras" />
+                                    </MenuItem>
                                     <MenuItem title="Respaldos" icon={<i className="fa fa-info"></i>} onClick={()=>toggleSystemBackupModal()}>
                                         Respaldar sistema
                                         <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
@@ -96,6 +96,7 @@ const AdministratorComponent = () => {
                         <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
                         <Route path='/administrador/municipios' component={() => <MunicipalitiesAdministration />} />
                         <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
+                        <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
                     </Switch>
                 </div >
             );

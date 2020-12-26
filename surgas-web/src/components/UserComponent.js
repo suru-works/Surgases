@@ -12,12 +12,30 @@ const User = (props) => {
             setIsEditClientModalOPen(true);
         }
     }
+    const tipo = (user) =>{
+        if(user.administrador == '1'){
+            return(
+                "administrador"
+            );
+        }
+        else if (user.comun === '1'){
+            return(
+                "comun"
+            );
+        }
+        else{
+            return(
+                "sin definir"
+            );
+        }
+    }
+    
     return (
             <tr  onClick={() => toggleEditModal()}>
                 <th scope="row">{props.user.nick}</th>
                 <td>{props.user.nombre}</td>
-                <td>{props.user.administrador}</td>
-                <td>{props.user.comun}</td>
+                <td>{props.user.email}</td>
+                <td>{tipo(props.user)}</td>
                 <EditUserComponent user={props.user} isOpen={isEditClientModalOPen} toggle={toggleEditModal}></EditUserComponent>
             </tr>
     );

@@ -119,8 +119,8 @@ const SearchResult = () => {
                     <tr>
                         <th>Usuario</th>
                         <th>Nombre</th>
-                        <th>Administrador</th>
-                        <th>Comun</th>
+                        <th>Correo</th>
+                        <th>Tipo</th>
                     </tr>
                 </thead>
                 <tbody>
