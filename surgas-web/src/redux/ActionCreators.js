@@ -301,7 +301,7 @@ export const changePasswordFailed = (errmess) => ({
 });
 
 export const changePassword = (data) => (dispatch) => {
-    // TO DO
+    // TO DO implementar
 }
 
 //maps
@@ -360,7 +360,7 @@ export const systemParameters = () => async (dispatch) => {
     dispatch(systemParametersRequest());
 
     try {
-        const res = await axios.get(baseBackUrl + 'system/parameters');
+        const res = await axios.get(baseBackUrl + 'system/parameters/1');
         dispatch(systemParametersSuccess(res));
     } catch (err) {
         dispatch(systemParametersFailed(err));

@@ -13,7 +13,7 @@ export const SystemParameters = (state = {
         case ActionTypes.SYSTEM_PARAMETERS_SUCCESS:
             return {...state, isLoading: false, errMess: null, result: action.payload};
         case ActionTypes.SYSTEM_PARAMETERS_FAILED:
-            return {...state, isLoading: false, errMess: action.payload};
+            return {...state, isLoading: false, errMess: action.payload,result: null};
         default:
             return state;
     }
@@ -31,7 +31,7 @@ export const SystemParametersUpdate = (state = {
         case ActionTypes.SYSTEM_PARAMETERS_SUCCESS:
             return {...state, isLoading: false, errMess: null, result: action.payload};
         case ActionTypes.SYSTEM_PARAMETERS_FAILED:
-            return {...state, isLoading: false, errMess: action.payload};
+            return {...state, isLoading: false, errMess: action.payload,result: null};
         default:
             return state;
     }
@@ -50,7 +50,7 @@ export const SystemBackup = (state = {
         case ActionTypes.SYSTEM_BACKUP_SUCCESS:
             return {...state, isLoading: false, errMess: null, result: action.payload};
         case ActionTypes.SYSTEM_BACKUP_FAILED:
-            return {...state, isLoading: false, errMess: action.payload};
+            return {...state, isLoading: false, errMess: action.payload,result: null};
         default:
             return state;
     }

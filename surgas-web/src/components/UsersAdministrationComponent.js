@@ -23,7 +23,7 @@ const validationSchema = yup.object(
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
     }
 );
-/* TO DO: implementar la busqueda de usuarios y añadir la columna de correo electronico*/
+/* TO DO: implementar la busqueda de usuarios */
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -34,11 +34,10 @@ const SearchCriteria = () => {
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            nick:'',
+            nick: '',
             nombre: '',
             correo: '',
-            administrador: '0',
-            comun: '0'
+            tipo: 'sin especificar'
         },
         validationSchema,
         onSubmit(values) {
@@ -48,37 +47,65 @@ const SearchCriteria = () => {
 
     return (
         <div className="d-flex space-around row">
-                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
-                            <Card style={{ padding: 11 }}>
+            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
+                <Card style={{ padding: 11 }}>
+                    <CardTitle> Ingresa los datos de la busqueda</CardTitle>
+                    <CardBody style={{ padding: 8 }}>
 
-                                <CardBody style={{ padding: 8 }}>
-                                    <CardTitle> Ingresa los datos de la busqueda </CardTitle>
+                        <FormGroup>
+                            <Label htmlFor="nick">Usuario</Label>
+                            <Input type="text" id="nick" name="nick" value={values.nick}
+                                onChange={handleChange}
+                                onBlur={handleBlur} />
+                            {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
 
-                                    <Label htmlFor="nick">Usuario</Label>
-                                    <Input type="text" id="nick" name="nick" value={values.nick}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                    {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label htmlFor="nombre">Nombre</Label>
+                            <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                                onChange={handleChange}
+                                onBlur={handleBlur} />
+                            {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label htmlFor="email">Correo</Label>
+                            <Input type="email" id="correo" name="correo" value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur} />
+                            {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
+
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="tipo">Tipo</Label>
+                            <Input type="select" name="tipo" id="tipo" value={values.tipo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}>
+                                <option>sin especificar</option>
+                                <option>comun</option>
+                                <option>administrador</option>
+                            </Input>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <div class="d-flex justify-content-center" >
+                                <Button className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                            </div>
+                        </FormGroup>
 
 
-                                    <Label htmlFor="nombre">Nombre</Label>
-                                    <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                    {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
-                                    <div class="d-flex justify-content-center" >
-                                        <Button className="secondary-button" type="submit" value="submit"  >Buscar</Button>
-                                    </div>
+                    </CardBody>
 
-                                </CardBody>
-
-                            </Card>
+                </Card>
 
 
-                        </Form>
+            </Form>
 
-                    </div>
+        </div>
     );
 }
 
@@ -172,7 +199,7 @@ const UsersAdministration = () => {
                 </CardBody>
             </Card>
             <FloatingButtonContainer >
-                <FloatingButtonLink tooltip="Añadir un usuario" styles={{backgroundColor: "#fdd835"}} >
+                <FloatingButtonLink tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} >
                     <div onClick={toggleAddUserModal}>
                         <i className="fa fa-plus fa-2x plusbutton" ></i>
                     </div >

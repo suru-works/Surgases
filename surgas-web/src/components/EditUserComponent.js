@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const validationSchema = yup.object(
-
+    //TO DO: hacer las validaciones
     {
         nombre: yup
             .string()
@@ -106,8 +106,6 @@ const EditUserComponent = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log("TIPO");
-            console.log(values.tipo);
             const typeData = getFinalTypeData(values.tipo);
             const userData={
                 nombre: values.nombre,
