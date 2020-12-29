@@ -24,12 +24,21 @@ const AdministratorComponent = () => {
     const loading = useSelector(state => state.user.isLoading);
 
     const [isSystemBackupModalOPen, setIsSystemBackupModalOPen] = useState(false);
+    const [isBlueBarOpen, setIsBlueBarOpen] = useState(true);
 
     const toggleSystemBackupModal = () => {
         if (isSystemBackupModalOPen) {
             setIsSystemBackupModalOPen(false);
         } else {
             setIsSystemBackupModalOPen(true);
+        }
+    }
+
+    const toggleBlueBar = () => {
+        if (isBlueBarOpen) {
+            setIsBlueBarOpen(false);
+        } else {
+            setIsBlueBarOpen(true);
         }
     }
 
@@ -51,8 +60,8 @@ const AdministratorComponent = () => {
                 <div class="container m-0 p-0">
                     <div  class="row row-content p-0 m-0" >
 
-                        <div class="col-3 col-sm-2 p-0">
-                            <ProSidebar  collapsed={true} >
+                        <div class="col-3 col-sm-1 p-0">
+                            <ProSidebar  collapsed={isBlueBarOpen} >
                                 <SidebarHeader>
                                     <Loading></Loading>
                                 </SidebarHeader>
@@ -86,6 +95,9 @@ const AdministratorComponent = () => {
                                                 <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
                                         </MenuItem>
                                         </SubMenu>
+                                        <MenuItem icon={<i className="fa fa-arrow-left"></i>} onClick={()=>toggleBlueBar()}>
+                                            Esconder menú
+                                        </MenuItem>
 
 
                                     </Menu>
@@ -97,7 +109,7 @@ const AdministratorComponent = () => {
                             </ProSidebar>
                         </div>
 
-                        <div class="col-9 col-sm-10 p-0">
+                        <div class="col-9 col-sm-11 p-0">
 
                             <Switch location={location} >
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
