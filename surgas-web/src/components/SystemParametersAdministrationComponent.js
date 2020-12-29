@@ -1,13 +1,84 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { systemParameters, systemParametersUpdate } from '../redux/ActionCreators';
+import { systemParameters, systemParametersReset } from '../redux/ActionCreators';
 import { Loading } from './LoadingComponent';
 
 import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useFormik } from "formik";
 import * as yup from "yup";
+
+import { systemParametersUpdate, systemParametersUpdateReset } from '../redux/ActionCreators';
+
+const SystemParametersUpdateModalAlert = (props) => {
+
+    const error = useSelector(state => state.systemParametersUpdate.errMess);
+    const result = useSelector(state => state.systemParametersUpdate.result);
+    const loading = useSelector(state => state.systemParametersUpdate.isLoading);
+
+    const dispatch = useDispatch();
+
+    const toogleAndReset = () => {
+        dispatch(systemParametersUpdateReset());
+        dispatch(systemParameters());
+        props.toggle();
+    }
+
+    if (loading) {
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Actualizar parametros del sistema</ModalHeader>
+                <ModalBody>
+                    <Loading />
+                </ModalBody>
+            </Modal>
+        );
+    }
+    else if (error) {
+        return (
+            <Modal isOpen={props.isOpen} toggle={props.toggle}>
+                <ModalHeader toggle={toogleAndReset}>Actualizar parametros del sistema  </ModalHeader>
+                <ModalBody>
+                    <p>Hubo un error.</p>
+                </ModalBody>
+            </Modal>
+        );
+    }
+    else if (result) {
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Actualizar parametros del sistema</ModalHeader>
+                <ModalBody>
+                    <p>Parametros del sistema actualizados correctamente.</p>
+                </ModalBody>
+                <Button onClick={toogleAndReset}>Aceptar</Button>
+            </Modal>
+        );
+    }
+    else {
+        return (
+
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+
+                <ModalHeader toggle={toogleAndReset}>Actualizar parametros del sistema</ModalHeader>
+
+                <ModalBody>
+
+                    <div className="d-flex space-around row">
+                        <div class="d-flex justify-content-center" >
+                            <Label>Error desconocido</Label>
+                        </div>
+
+                    </div>
+
+                </ModalBody>
+            </Modal>
+
+
+        );
+    }
+}
 
 
 /* TO DO: realizar validaciones de los parametos, implementar actualizacion de parametros */
@@ -25,9 +96,20 @@ const RenderSystemParameters = (props) => {
     
     const dispatch = useDispatch();
 
+    const [isSystemParametersUpdateModalOPen, setIsSystemParametersUpdateModalOPen] = useState(false);
+
+    const toggleSystemParametersUpdateModal = () => {
+        if (isSystemParametersUpdateModalOPen) {
+            setIsSystemParametersUpdateModalOPen(false);
+        } else {
+            setIsSystemParametersUpdateModalOPen(true);
+        }
+    }
+
     const doUpdateParams = (ParamsData) => dispatch(systemParametersUpdate(ParamsData));
 
     const uploadChanges = (values) => {
+        setIsSystemParametersUpdateModalOPen(true);
         doUpdateParams(values);
     }
 
@@ -136,6 +218,7 @@ const RenderSystemParameters = (props) => {
 
                     </div>
                 </CardBody>
+                <SystemParametersUpdateModalAlert toggle = {toggleSystemParametersUpdateModal} isOpen={isSystemParametersUpdateModalOPen}></SystemParametersUpdateModalAlert>
             </Card>
         );
     
