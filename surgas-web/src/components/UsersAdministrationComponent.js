@@ -47,48 +47,61 @@ const SearchCriteria = () => {
 
     return (
         <div className="d-flex space-around row">
-            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
+            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
                 <Card style={{ padding: 11 }}>
+                    <br></br>
                     <CardTitle> Ingresa los datos de la busqueda</CardTitle>
                     <CardBody style={{ padding: 8 }}>
 
-                        <FormGroup>
-                            <Label htmlFor="nick">Usuario</Label>
-                            <Input type="text" id="nick" name="nick" value={values.nick}
-                                onChange={handleChange}
-                                onBlur={handleBlur} />
-                            {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
+                        <hr />
 
-                        </FormGroup>
+                        <div className='row'>
 
-                        <FormGroup>
-                            <Label htmlFor="nombre">Nombre</Label>
-                            <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                onChange={handleChange}
-                                onBlur={handleBlur} />
-                            {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                            <FormGroup className='col-12 col-sm-6'>
+                                <Label htmlFor="nick">Usuario</Label>
+                                <Input type="text" id="nick" name="nick" value={values.nick}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
 
-                        </FormGroup>
+                            </FormGroup>
 
-                        <FormGroup>
-                            <Label htmlFor="email">Correo</Label>
-                            <Input type="email" id="correo" name="correo" value={values.email}
-                                onChange={handleChange}
-                                onBlur={handleBlur} />
-                            {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
+                            <FormGroup className='col-12 col-sm-6'>
+                                <Label htmlFor="nombre">Nombre</Label>
+                                <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
-                        </FormGroup>
+                            </FormGroup>
 
-                        <FormGroup>
-                            <Label for="tipo">Tipo</Label>
-                            <Input type="select" name="tipo" id="tipo" value={values.tipo}
-                                onChange={handleChange}
-                                onBlur={handleBlur}>
-                                <option>sin especificar</option>
-                                <option>comun</option>
-                                <option>administrador</option>
-                            </Input>
-                        </FormGroup>
+
+                        </div>
+
+                        <div className='row'>
+
+                            <FormGroup className='col-12 col-sm-6'>
+                                <Label htmlFor="email">Correo</Label>
+                                <Input type="email" id="correo" name="correo" value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
+
+                            </FormGroup>
+
+                            <FormGroup className='col-12 col-sm-6'>
+                                <Label for="tipo">Tipo</Label>
+                                <Input type="select" name="tipo" id="tipo" value={values.tipo}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}>
+                                    <option>sin especificar</option>
+                                    <option>comun</option>
+                                    <option>administrador</option>
+                                </Input>
+                            </FormGroup>
+
+                        </div>
+
 
                         <FormGroup>
                             <div class="d-flex justify-content-center" >
@@ -181,16 +194,16 @@ const UsersAdministration = () => {
     }
 
     return (
-        <div className='col'>
-            <Card className='col-9 '>
-                <CardTitle>
+        <div className='col' >
+            <Card  >
+                <CardTitle >
                     <CardText>Criterios de busqueda</CardText>
                 </CardTitle>
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
                 </CardBody>
             </Card>
-            <Card className='col-9 '>
+            <Card>
                 <CardTitle>
                     <CardText>Usuarios</CardText>
                 </CardTitle>

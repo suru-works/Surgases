@@ -47,58 +47,69 @@ const AdministratorComponent = () => {
     else if (result) {
         if (result.data.admin == '1') {
             return (
-                <div className='row'>
-                    <ProSidebar className='col-1' popperArrow={true} toggled={true}>
-                        <SidebarHeader>
-                            <Loading></Loading>
-                        </SidebarHeader>
-                        <SidebarContent>
-                            <Menu iconShape="circle">
-                                <MenuItem icon={<i className="fa fa-user"></i>}>
-                                    Gestionar usuarios
-                            <Link to="/administrador/usuarios" />
-                                </MenuItem>
 
-                                <MenuItem icon={<i className="fa fa-shopping-cart"></i>}>
-                                    Gestionar productos
-                            <Link to="/administrador/productos" />
-                                </MenuItem>
+                <div class="container m-0 p-0">
+                    <div  class="row row-content p-0 m-0" >
 
-                                <MenuItem icon={<i className="fa fa-globe"></i>}>
-                                    Gestionar municipios
-                            <Link to="/administrador/municipios" />
-                                </MenuItem>
-                                <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
-                                    <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
-                                        Parametros
-                                    <Link to="/administrador/parametros" />
-                                    </MenuItem>
-                                    <MenuItem title="Impresoras" icon={<i className="fa fa-print"></i>}>
-                                        Impresoras
-                                    <Link to="/administrador/impresoras" />
-                                    </MenuItem>
-                                    <MenuItem title="Respaldos" icon={<i className="fa fa-info"></i>} onClick={()=>toggleSystemBackupModal()}>
-                                        Respaldar sistema
-                                        <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
-                                </MenuItem>
-                                </SubMenu>
+                        <div class="col-3 col-sm-2 p-0">
+                            <ProSidebar  collapsed={true} >
+                                <SidebarHeader>
+                                    <Loading></Loading>
+                                </SidebarHeader>
+                                <SidebarContent>
+                                    <Menu iconShape="circle">
+                                        <MenuItem icon={<i className="fa fa-user"></i>}>
+                                            Gestionar usuarios
+                                    <Link to="/administrador/usuarios" />
+                                        </MenuItem>
+
+                                        <MenuItem icon={<i className="fa fa-shopping-cart"></i>}>
+                                            Gestionar productos
+                                    <Link to="/administrador/productos" />
+                                        </MenuItem>
+
+                                        <MenuItem icon={<i className="fa fa-globe"></i>}>
+                                            Gestionar municipios
+                                    <Link to="/administrador/municipios" />
+                                        </MenuItem>
+                                        <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
+                                            <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
+                                                Parametros
+                                            <Link to="/administrador/parametros" />
+                                            </MenuItem>
+                                            <MenuItem title="Impresoras" icon={<i className="fa fa-print"></i>}>
+                                                Impresoras
+                                            <Link to="/administrador/impresoras" />
+                                            </MenuItem>
+                                            <MenuItem title="Respaldos" icon={<i className="fa fa-info"></i>} onClick={()=>toggleSystemBackupModal()}>
+                                                Respaldar sistema
+                                                <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
+                                        </MenuItem>
+                                        </SubMenu>
 
 
-                            </Menu>
-                        </SidebarContent>
-                        <SidebarFooter>
-                            <Loading></Loading>
-                        </SidebarFooter>
+                                    </Menu>
+                                </SidebarContent>
+                                <SidebarFooter>
+                                    <Loading></Loading>
+                                </SidebarFooter>
 
-                    </ProSidebar>
-                    <Switch location={location} className='col'>
-                        <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
-                        <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
-                        <Route path='/administrador/municipios' component={() => <MunicipalitiesAdministration />} />
-                        <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
-                        <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
-                    </Switch>
-                </div >
+                            </ProSidebar>
+                        </div>
+
+                        <div class="col-9 col-sm-10 p-0">
+
+                            <Switch location={location} >
+                                <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
+                                <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
+                                <Route path='/administrador/municipios' component={() => <MunicipalitiesAdministration />} />
+                                <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
+                                <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
+                            </Switch>
+                        </div>
+
+                    </div >
+                </div>
             );
         }
         else {

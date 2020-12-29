@@ -16,7 +16,6 @@
 
 .plusbutton {
   color: 	#000000;
-
 }
 
 .pro-sidebar {
@@ -27,7 +26,9 @@
   text-align: left;
   transition: width, left, right, 0.3s;
   position: relative;
-  z-index: 1009; }
+  z-index: 1009; 
+  padding: 0px;
+}
   .pro-sidebar > .pro-sidebar-inner {
     background: #001644;
     height: 100%;
