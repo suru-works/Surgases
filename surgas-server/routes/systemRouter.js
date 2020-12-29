@@ -27,9 +27,6 @@ systemRouter.put('/parameters/:codigo', auth.isAuthenticated, auth.isAdmin, asyn
         }
 
         const query = db.buildUpdate('static', { name: 'codigo', value: req.params.codigo }, req.body);
-        console.log(query.query);
-        console.log("VALUES");
-        console.log(query.values);
         const result = await conn.promise().execute(query.query, query.values);
         if (result[0].affectedRows == 1) {
             conn.commit();

@@ -26,8 +26,10 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
 router.get('/current', auth.isAuthenticated, (req, res, next) => {
   const user = req.user;
   res.json({
-    username: user.nick,
-    admin: user.administrador,
+    nick: user.nick,
+    nombre: user.nombre,
+    email: user.email,
+    administrador: user.administrador,
     comun: user.comun
   });
 });
