@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import RegisterComponent from './RegisterComponent';
 import LoginComponent from './LoginComponent';
+import AcountManagement from './AcountManagementComponent';
 import LogoutComponent from './LogoutComponent';
 import { Loading } from './LoadingComponent';
 import { useSelector } from 'react-redux';
@@ -14,6 +15,7 @@ import { __esModule } from 'reactstrap/lib/Row';
 const AuthOptions = () => {
     const [isLoginModalOpened, setIsLoginModalOpened] = useState(false);
     const [isLogoutModalOpened, setIsLogoutModalOpened] = useState(false);
+    const [isAcountManagementModalOpened, setIsAcountManagementModalOpened] = useState(false);
     const [isRegisterModalOpened, setIsRegisterModalOpened] = useState(false);
     const [btnDroplistSesion, setDroplistSesionOpened] = useState(false);
 
@@ -41,6 +43,15 @@ const AuthOptions = () => {
         }
         else {
             setIsLogoutModalOpened(true)
+        }
+    }
+
+    const toggleAcountManagementModal = () => {
+        if (isAcountManagementModalOpened) {
+            setIsAcountManagementModalOpened(false)
+        }
+        else {
+            setIsAcountManagementModalOpened(true)
         }
     }
 
@@ -103,7 +114,8 @@ const AuthOptions = () => {
                     <DropdownMenu>
                         <DropdownItem style={{ color: '#001644'}} onClick={toggleLogoutModal} >Cerrar sesión</DropdownItem>
                             <LogoutComponent isOpen={isLogoutModalOpened} toggle={toggleLogoutModal} />
-                        <DropdownItem style={{ color: '#001644'}} >Gestionar cuenta</DropdownItem>
+                        <DropdownItem style={{ color: '#001644'}} onClick={toggleAcountManagementModal} >Gestionar cuenta</DropdownItem>
+                            <AcountManagement isOpen={isAcountManagementModalOpened} toggle={toggleAcountManagementModal} user={result.data } />
                     </DropdownMenu>
                     
                 </ButtonDropdown>
@@ -118,7 +130,7 @@ const AuthOptions = () => {
 const UserOptionsSales = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.admin == '1' || result.data.comun == '1') {
+        if (result.data.administrador == '1' || result.data.comun == '1') {
             return (
                 <NavItem >
                     <NavLink className='nav-link' to='/ventas'><span className='fa fa-list fa-lg'></span> Ventas</NavLink>
@@ -142,7 +154,7 @@ const UserOptionsSales = () => {
 const UserOptionsAdmin = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.admin == '1') {
+        if (result.data.administrador == '1') {
             return (
                 <NavItem >
                     <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administración</NavLink>

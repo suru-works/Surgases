@@ -26,7 +26,7 @@ const SalesComponent = () => {
 
     }
     else if (result) {
-        if (result.data.comun == '1' || result.data.admin == '1') {
+        if (result.data.comun == '1' || result.data.administrador == '1') {
             return (
                 <div className="row">
                     <ProSidebar className="col-1">

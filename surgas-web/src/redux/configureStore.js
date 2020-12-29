@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { Register } from './register';
 import { Login } from './login';
 import { Logout } from './logout';
-import { User } from './user';
+import { User, UserUpdate } from './user';
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
@@ -16,6 +16,7 @@ import { Restore } from './restore';
             login: Login,
             logout: Logout,
             user: User,
+            userUpdate: UserUpdate,
             users: Users,
             usersUpdate:UsersUpdate,
             systemParameters: SystemParameters,
