@@ -8,11 +8,26 @@ import PropTypes from 'prop-types';
 const HomeComponent = () => {
     return (
         <div>
+            <br></br>
+            <br></br>
             <Jambo />
             <br></br>
             <br></br>
+            <hr />
+            <br></br>
+            <br></br>
             <Vitrina />
+            <br></br>
+            <br></br>
+            <hr />
+            <br></br>
+            <br></br>
             <Promos />
+            <br></br>
+            <br></br>
+            <hr />
+            <br></br>
+            <br></br>
 
         </div>
     );
@@ -35,40 +50,40 @@ const Jambo = () => {
     if (abierto){
         return(
 
-            <Jumbotron className="jumbotron">
-                <div className="container">
-                    <div className="row row-header">
-                        <div className="col-12 col-sm-6">
-                            <img className="float-right d-none d-md-block" height="150" 
-                            src={baseFrontUrl + "public/logo/S-14-cropped.png"} alt="company-logo"></img>
+            
+            <div className="container">
+                <div className="row row-header">
+                    <div className="col-12 col-sm-6">
+                        <img className="float-right d-none d-md-block" height="150" 
+                        src={baseFrontUrl + "public/logo/S-14-cropped.png"} alt="company-logo"></img>
 
-                            <br></br>
-                            <br></br>
-                            <h3>Calidad de servicios y productos garantizada</h3>
-                            
-                            <h3>Nos enorgullecemos de tener el mejor servicio postventa</h3>
+                        <br></br>
+                        <br></br>
+                        <h3>Calidad de servicios y productos garantizada</h3>
+                        
+                        <h3>Nos enorgullecemos de tener el mejor servicio postventa</h3>
 
-                            <div className="col-12">
+                        <div className="col-12">
 
-                                <Link to='/contacto'>
-                                    <Button style={{ backgroundColor: '#f9683a', color: '#ffffff' }} variant="contained">
-                                        Contáctanos
-                                    </Button>
-                                </Link>
-
-                                <Button className="jumbo-button-1" onClick={switchAbierto} >
-                                    <i className="fa fa-angle-double-up fa-2x" ></i>
+                            <Link to='/contacto'>
+                                <Button style={{ backgroundColor: '#f9683a', color: '#ffffff' }} variant="contained">
+                                    Contáctanos
                                 </Button>
-                            </div>
+                            </Link>
 
+                            <Button className="jumbo-button-1" onClick={switchAbierto} >
+                                <i className="fa fa-angle-double-up fa-2x" ></i>
+                            </Button>
                         </div>
-                        <div className="ml-auto">
-                            <img className="float-right d-none d-md-block" height="300" 
-                            src={baseFrontUrl + "public/home/DSC_0133.jpg"} alt="personal"></img>
-                        </div>
+
+                    </div>
+                    <div className="ml-auto">
+                        <img className="float-right d-none d-md-block" height="300" 
+                        src={baseFrontUrl + "public/home/DSC_0052.jpg"} alt="pipetas_azules"></img>
                     </div>
                 </div>
-            </Jumbotron>
+            </div>
+            
 
         );
     
@@ -99,27 +114,27 @@ const Vitrina = () => {
 
     return (
 
-        <Jumbotron className="jumbotron">
-            <div className="container">
-                <div className="row">
-                    <div className="col-12 col-sm-6">
-                        
-                        <h3>Nuestros productos más vendidos</h3>
-                        
-                        <h3>Linea industrial. Materias premium</h3>
 
-                    </div>
-                    <div className="ml-auto">
-                        <img className="float-right d-none d-md-block" height="150" 
-                        src={baseFrontUrl + "public/home/DSC_0018.jpg"} alt="prod1"></img>
-                    </div>
-                    <div className="ml-auto">
-                        <img className="float-right d-none d-md-block" height="150" 
-                        src={baseFrontUrl + "public/home/DSC_0048.jpg"} alt="prod2"></img>
-                    </div>
+        <div className="container">
+            <div className="row">
+                <div className="col-12 col-sm-6">
+                    
+                    <h3>Nuestros productos más vendidos</h3>
+                    
+                    <h3>Linea industrial. Materias premium</h3>
+
+                </div>
+                <div className="ml-auto">
+                    <img className="float-right d-none d-md-block" height="150" 
+                    src={baseFrontUrl + "public/home/DSC_0018.jpg"} alt="prod1"></img>
+                </div>
+                <div className="ml-auto">
+                    <img className="float-right d-none d-md-block" height="150" 
+                    src={baseFrontUrl + "public/home/DSC_0048.jpg"} alt="prod2"></img>
                 </div>
             </div>
-        </Jumbotron>
+        </div>
+
 
     );
 };
@@ -128,13 +143,13 @@ const Promos = () => {
 
     return (
 
-        <Jumbotron className="jumbotron">
+        <div>
             <div className="container">
                 <div className="row">
                     
                     <div className="ml-auto">
                         <img className="float-right d-none d-md-block" height="200" 
-                        src={baseFrontUrl + "public/home/demo1Puntos.png"} alt="prod1"></img>
+                        src={baseFrontUrl + "public/home/demo1Puntos.png"} alt="puntos"></img>
                     </div>
 
                 </div>
@@ -155,7 +170,7 @@ const Promos = () => {
                    
                 </div>
             </div>
-        </Jumbotron>
+        </div>
 
     );
 };

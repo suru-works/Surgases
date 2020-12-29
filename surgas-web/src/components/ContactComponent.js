@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Button, Row, Label, Col, Card, CardBody, Ca
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import Map from './MapComponent';
+import { baseFrontUrl } from '../shared/baseUrl';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
@@ -74,8 +75,40 @@ const RenderMap = () => {
 
 const Contact = () => {
     return(
-        <div>puto el que lo lea en contactanos</div>
+        <div>
+            <br></br>
+            <br></br>
+            <Personal />
+            <br></br>
+            <br></br>
+        </div>
     );
 }
+
+const Personal = () => {
+
+    return (
+
+
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-sm-6">
+                        
+                        <h3>Nuestros personal es el mejor del área metropolitana </h3>
+                        <br></br>
+                        <h3>Servicio garantizado </h3>
+
+                    </div>
+
+                    <div className="ml-auto">
+                        <img className="float-right d-none d-md-block" height="150" 
+                        src={baseFrontUrl + "public/contactanos/DSC_0133.jpg"} alt="personal"></img>
+                    </div>
+                </div>
+            </div>
+
+
+    );
+};
 
 export default Contact;
