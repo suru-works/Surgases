@@ -11,7 +11,13 @@ pedidoRouter.route("/")
     res.setHeader('Content-Type', 'application/json');
     next();
 })
-.get(asyncHandler(async (req, res, next) => {
+.get(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    if (req.user.tipo == 'cliente') {
+        let err = new Error('not authorized');
+        err.status = 403;
+        next(err);
+    }
+
     //const query = db.buildQuery('producto', req.query);
     let query = 'SELECT * FROM pedido';
     const params = req.query;
@@ -135,11 +141,11 @@ pedidoRouter.route("/")
             let precio_bruto = 0;
             pedido.productos.forEach((val, idx, arr) => {
                 results = conn.promise().execute(
-                    'INSERT INTO productoxpedido VALUES(?, ?, ?, ?)',
-                    [val.codigo, pedido.fecha, pedido.numero, val.precio]
+                    'INSERT INTO productoxpedido VALUES(?, ?, ?, ?, ?)',
+                    [val.codigo, pedido.fecha, pedido.numero, val.precio, val.cantidad]
                 );
 
-                precio_bruto += val.precio;
+                precio_bruto += val.precio * val.cantidad;
 
                 if (results[0].affectedRows != 1) {
                     conn.rollback();
@@ -235,6 +241,27 @@ pedidoRouter.route("/")
             next(new Error('update error'));
         }
     });
+}));
+
+pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    if (req.user.tipo == 'cliente') {
+        let err = new Error('not authorized');
+        err.status = 403;
+        next(err);
+    }
+
+    const results = pool.promise().execute(
+        'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+        [req.query.fecha, req.query.numero]
+    );
+
+    if (results) {
+        res.json(JSON.parse(JSON.stringify(results[0])));
+    } else {
+        throw {
+            status: 500
+        };
+    }
 }));
 
 pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res, next) => {

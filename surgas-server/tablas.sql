@@ -80,6 +80,8 @@ CREATE TABLE pedidoxproducto(
     producto BIGINT UNSIGNED NOT NULL,
     fecha_pedido DATE NOT NULL,
     numero_pedido INT NOT NULL,
+    precio_venta INT NOT NULL,
+    unidades INT NOT NULL,
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
     CONSTRAINT `fk_pedido` FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
     CONSTRAINT `fk_producto` FOREIGN KEY (producto) REFERENCES producto(codigo)
