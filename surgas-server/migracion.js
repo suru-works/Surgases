@@ -62,8 +62,8 @@ async function migrar() {
             tipo = 'comun';
         }
         [rows, fields] = await conn2.promise().execute(
-            "INSERT INTO cliente VALUES(?, NULL, ?, ?, ?, 0.0, ?, NULL, NULL, NULL, NULL)",
-            [clientes[i].telefono, clientes[i].nombre, clientes[i].fecha_registro, clientes[i].puntos, tipo]
+            "INSERT INTO cliente VALUES(?, NULL, ?, ?, ?, 0.0, ?, ?, NULL, ?, NULL)",
+            [clientes[i].telefono, clientes[i].nombre, clientes[i].fecha_registro, clientes[i].puntos, tipo, clientes[i].fecha_ultimo_pedido, clientes[i].numero_pedidos]
         );
     }
 }
