@@ -2,6 +2,7 @@ import React , {useState}  from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 import { ProSidebar, SidebarHeader, SidebarFooter, SidebarContent, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import '../css/styles.css';
@@ -62,8 +63,10 @@ const AdministratorComponent = () => {
 
                         <div class="col-2 col-sm-1 col-lg-3 p-0">
                             <ProSidebar  collapsed={isBlueBarOpen} >
-                                <SidebarHeader>
-                                    <Loading></Loading>
+                                <SidebarHeader style={{ textAlign: 'right' }}>
+                                    <Button className="jumbo-button-1" style={{ backgroundColor: '#fdd835', color: '#000000' }}  onClick={toggleBlueBar} >
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                    </Button>
                                 </SidebarHeader>
                                 <SidebarContent>
                                     <Menu iconShape="circle">
@@ -95,18 +98,18 @@ const AdministratorComponent = () => {
                                                 <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
                                         </MenuItem>
                                         </SubMenu>
-                                        <MenuItem icon={<i className="fa fa-arrow-left"></i>} onClick={()=>toggleBlueBar()}>
-                                            Esconder menú
-                                        </MenuItem>
-
 
                                     </Menu>
                                 </SidebarContent>
-                                <SidebarFooter style={{ textAlign: 'center' }}>
-                                    <div className="sidebar-btn-wrapper" >
-                                        <a>Suruworks</a>
-                                        
-                                    </div>
+                                <SidebarFooter >
+
+                                    <Menu iconShape="circle">
+                                        <MenuItem icon={<i className="fa fa-wrench"></i>}>
+                                                Soporte
+                                            <Link to="/administrador/usuarios" />
+                                        </MenuItem>
+                                    </Menu>
+                                    
                                 </SidebarFooter>
 
                             </ProSidebar>
