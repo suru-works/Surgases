@@ -16,7 +16,6 @@ import AddUserComponent from './AddUserComponent';
 
 
 
-/* puto el que lo lea */
 
 const validationSchema = yup.object(
 
