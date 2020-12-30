@@ -153,7 +153,7 @@ const SearchResult = () => {
     if (result) {
         const ResultTuples = result.data.map((user) => {
             return (
-                <RenderSearchResultTuple user={user} key={user.nick}></RenderSearchResultTuple>
+                <RenderSearchResultTuple user={user} key={user.username}></RenderSearchResultTuple>
 
             );
         })
