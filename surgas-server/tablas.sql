@@ -34,7 +34,7 @@ CREATE TABLE cliente(
 
 CREATE TABLE pago(
     codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    fechaHora DATETIME PRIMARY KEY,
+    fechaHora DATETIME NOT NULL,
     monto INT NOT NULL,
     empleado VARCHAR(100) NOT NULL,
     usuario VARCHAR(30) NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE pedidoxproducto(
 );
 
 CREATE TABLE static(
-    codigo VARCHAR(8) PRIMARY KEY
+    codigo VARCHAR(8) PRIMARY KEY,
     limite_puntos INT NOT NULL,
     puntos_libra INT NOT NULL
 );
