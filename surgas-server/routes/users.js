@@ -12,7 +12,7 @@ const pool = db.pool;
 const expires = 54000000;
 
 router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-  const query = db.buildQuery('usuario', req.query, ['nick', 'nombre', 'email', 'administrador', 'comun']);
+  const query = db.buildQuery('usuario', req.query, ['username', 'nombre', 'email', 'administrador', 'comun']);
   const results = await pool.promise().execute(query.query, query.values);
   if (results) {
     res.json(JSON.parse(JSON.stringify(results[0])));
@@ -130,7 +130,7 @@ router.post('/login', auth.login, (req, res, next) => {
   }
   const user = req.user;
   res.json({
-    nick: user.nick,
+    username: user.username,
     nombre: user.nombre,
     email: user.email,
     administrador: user.administrador,
@@ -145,14 +145,14 @@ router.post('/logout', auth.isAuthenticated, (req, res, next) => {
   });
 });
 
-router.put('/:nick', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+router.put('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
   pool.getConnection(async (err, conn) => {
     if (err) {
       console.log(err);
       return;
     }
 
-    const query = db.buildUpdate('usuario', { name: 'nick', value: req.params.nick }, req.body);
+    const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
     const result = await conn.promise().execute(query.query, query.values);
     if (result[0].affectedRows == 1) {
       conn.commit();
@@ -166,14 +166,14 @@ router.put('/:nick', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req
   });
 }));
 
-router.delete('/:nick', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+router.delete('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
   pool.getConnection(async (err, conn) => {
     if (err) {
       console.log(err);
       return;
     }
 
-    const result = await conn.promise().execute('DELETE FROM usuario WHERE nick = ?', [req.params.nick]);
+    const result = await conn.promise().execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
     if (result[0].affectedRows == 1) {
       conn.commit();
       res.json({

@@ -1,4 +1,5 @@
 const db = require('../db');
+const auth = require('../auth');
 const asyncHandler = require('express-async-handler');
 
 const pagoRouter = require('express').Router();

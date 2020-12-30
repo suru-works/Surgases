@@ -5,11 +5,11 @@ const pool = require('./db').pool.promise();
 const LocalStrategy = require('passport-local').Strategy;
 
 passport.serializeUser((user, cb) => {
-    cb(null, user.nick);
+    cb(null, user.username);
 });
-passport.deserializeUser(async (nick, cb) => {
+passport.deserializeUser(async (username, cb) => {
     try {
-        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE nick = ?', [nick]);
+        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE username = ?', [username]);
         if (rows.length == 0) {
             throw new Error('user does not exist');
         }
@@ -22,7 +22,7 @@ passport.deserializeUser(async (nick, cb) => {
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE nick = ?', [username]);
+        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE username = ?', [username]);
         if (rows.length == 0) {
             return done(null, false, {
                 message: 'user does not exist'

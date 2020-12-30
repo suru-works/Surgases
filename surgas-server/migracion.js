@@ -66,6 +66,8 @@ async function migrar() {
             [clientes[i].telefono, clientes[i].nombre, clientes[i].fecha_registro, clientes[i].puntos, tipo, clientes[i].fecha_ultimo_pedido, clientes[i].numero_pedidos]
         );
     }
+
+    console.log("FIN");
 }
 
 migrar();
