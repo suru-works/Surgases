@@ -14,6 +14,10 @@ import * as yup from "yup";
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import AddUserComponent from './AddUserComponent';
 
+
+
+/* puto el que lo lea */
+
 const validationSchema = yup.object(
 
     {
