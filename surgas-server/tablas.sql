@@ -14,11 +14,11 @@ CREATE TABLE empleado(
     telefono VARCHAR(15) NOT NULL,
     estado ENUM('activo', 'inactivo', 'despedido') NOT NULL,
     username VARCHAR(30),
-    CONSTRAINT 'fk_emp_usuario' FOREIGN KEY (username) REFERENCES usuario(username)
+    CONSTRAINT `fk_emp_usuario` FOREIGN KEY (username) REFERENCES usuario(username)
 );
 
 CREATE TABLE cliente(
-    telefono VARCHAR(15) PRIMARY KEY,
+    telefono VARCHAR(50) PRIMARY KEY,
     email VARCHAR(100),
     nombre VARCHAR(100),
     fecha_registro DATE NOT NULL,
@@ -28,13 +28,17 @@ CREATE TABLE cliente(
     fecha_ultimo_pedido DATE,
     numero_ultimo_pedido INT,
     numero_pedidos INT,
-    username VARCHAR(30) NOT NULL,
-    CONSTRAINT 'fk_cl_usuario' FOREIGN KEY (username) REFERENCES usuario(username)
+    username VARCHAR(30),
+    CONSTRAINT `fk_cl_usuario` FOREIGN KEY (username) REFERENCES usuario(username)
 );
 
 CREATE TABLE pago(
     fechaHora DATE PRIMARY KEY,
-    monto INT NOT NULL
+    monto INT NOT NULL,
+    empleado VARCHAR(100) NOT NULL,
+    usuario VARCHAR(30) NOT NULL,
+    CONSTRAINT `fk_pago_emp` FOREIGN KEY (empleado) REFERENCES empleado(id),
+    CONSTRAINT `fk_pago_user` FOREIGN KEY (usuario) REFERENCES usuario(username)
 );
 
 CREATE TABLE producto(
@@ -64,9 +68,9 @@ CREATE TABLE pedido(
     cliente_pedidor VARCHAR(15) NOT NULL,
     empleado_despachador VARCHAR(100) NOT NULL,
     PRIMARY KEY (fecha, numero),
-    CONSTRAINT 'fk_pedido_usuario' FOREIGN KEY (usuario_registrador) REFERENCES usuario(username),
-    CONSTRAINT 'fk_pedido_cliente' FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono),
-    CONSTRAINT 'fk_pedido_empleado' FOREIGN KEY (empleado_despachador) REFERENCES empleado(id)
+    CONSTRAINT `fk_pedido_usuario` FOREIGN KEY (usuario_registrador) REFERENCES usuario(username),
+    CONSTRAINT `fk_pedido_cliente` FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono),
+    CONSTRAINT `fk_pedido_empleado` FOREIGN KEY (empleado_despachador) REFERENCES empleado(id)
 );
 
 CREATE TABLE pedidoxproducto(
@@ -74,8 +78,8 @@ CREATE TABLE pedidoxproducto(
     fecha_pedido DATE NOT NULL,
     numero_pedido INT NOT NULL,
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
-    CONSTRAINT 'fk_pedido' FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
-    CONSTRAINT 'fk_producto' FOREIGN KEY (producto) REFERENCES producto(codigo)
+    CONSTRAINT `fk_pedido` FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
+    CONSTRAINT `fk_producto` FOREIGN KEY (producto) REFERENCES producto(codigo)
 );
 
 CREATE TABLE static(
@@ -83,17 +87,3 @@ CREATE TABLE static(
     limite_puntos INT NOT NULL,
     puntos_libra INT NOT NULL
 );
-
-CREATE TRIGGER fecha_ultimo_pedido_cliente
-AFTER INSERT ON pedido
-FOR EACH ROW
-UPDATE cliente SET fecha_ultimo_pedido = NEW.fecha, numero_ultimo_pedido = NEW.numero WHERE telefono = NEW.cliente_pedidor;
-
-CREATE TRIGGER precios_pedido
-AFTER INSERT ON productoxpedido
-FOR EACH ROW
-UPDATE pedido
-SET precio_bruto = (SELECT SUM(precio_venta) FROM productoxpedido WHERE fecha_ultimo_pedido = NEW.fecha_ultimo_pedido AND numero_ultimo_pedido = NEW.numero_ultimo_pedido)
-WHERE fecha = NEW.fecha_ultimo_pedido AND numero = NEW.numero_ultimo_pedido;
-
-UPDATE pedido SET precio_final = precio_bruto * (SELECT descuento FROM cliente WHERE telefono = cliente_pedidor);
