@@ -55,21 +55,23 @@ const SystemBackup = (props) => {
     else {
         return (
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+            <Modal isOpen={props.isOpen} toggle={props.toggle}>
 
                 <ModalHeader toggle={toogleAndReset}>Respaldar el sistema</ModalHeader>
 
                 <ModalBody>
 
-                    <div className="d-flex space-around row">
-                        <div class="d-flex justify-content-center" >
-                            <Label>Esta seguro que desea respaldar los datos del sistema?</Label>
-                            <Label>Una vez respaldados los datos, se subira una copia con la fecha actual a google drive.</Label>
-                            <Button className="primary-button" onClick={()=> doSystemBackup()} >Respaldar</Button>
-                            <Button className="secondary-button" onClick={props.toggle} >Cancelar</Button>
-                        </div>
+                    
+                        <p>¿Esta seguro que desea respaldar los datos del sistema?</p>
+                        <p>Una vez respaldados los datos, se subirá una copia con la fecha actual a Google drive.</p>
+                        
+                     
+                        <br></br>
 
-                    </div>
+                        <div className="d-flex justify-content-center" >
+                            <Button className="primary-button" onClick={()=> doSystemBackup()} style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Respaldar</Button>
+                            <Button className="secondary-button" onClick={props.toggle}  style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Cancelar</Button>
+                        </div>
 
                 </ModalBody>
             </Modal>

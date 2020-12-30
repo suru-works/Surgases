@@ -24,7 +24,7 @@ const AdministratorComponent = () => {
     const loading = useSelector(state => state.user.isLoading);
 
     const [isSystemBackupModalOPen, setIsSystemBackupModalOPen] = useState(false);
-    const [isBlueBarOpen, setIsBlueBarOpen] = useState(true);
+    const [isBlueBarOpen, setIsBlueBarOpen] = useState(false);
 
     const toggleSystemBackupModal = () => {
         if (isSystemBackupModalOPen) {
@@ -60,7 +60,7 @@ const AdministratorComponent = () => {
                 <div class="container m-0 p-0">
                     <div  class="row row-content p-0 m-0" >
 
-                        <div class="col-3 col-sm-1 p-0">
+                        <div class="col-2 col-sm-1 col-lg-3 p-0">
                             <ProSidebar  collapsed={isBlueBarOpen} >
                                 <SidebarHeader>
                                     <Loading></Loading>
@@ -102,14 +102,17 @@ const AdministratorComponent = () => {
 
                                     </Menu>
                                 </SidebarContent>
-                                <SidebarFooter>
-                                    <Loading></Loading>
+                                <SidebarFooter style={{ textAlign: 'center' }}>
+                                    <div className="sidebar-btn-wrapper" >
+                                        <a>Suruworks</a>
+                                        
+                                    </div>
                                 </SidebarFooter>
 
                             </ProSidebar>
                         </div>
 
-                        <div class="col-9 col-sm-11 p-0">
+                        <div class="col-10 col-sm-11 col-lg p-0">
 
                             <Switch location={location} >
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />

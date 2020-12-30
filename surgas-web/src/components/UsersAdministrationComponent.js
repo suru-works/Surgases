@@ -105,7 +105,8 @@ const SearchCriteria = () => {
 
                         <FormGroup>
                             <div class="d-flex justify-content-center" >
-                                <Button className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
+                                className="secondary-button" type="submit" value="submit"  >Buscar</Button>
                             </div>
                         </FormGroup>
 
