@@ -1,4 +1,5 @@
 const db = require('../db');
+const auth = require('../auth');
 const asyncHandler = require('express-async-handler');
 
 const pedidoRouter = require('express').Router();
@@ -11,295 +12,271 @@ pedidoRouter.route("/")
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
+    //const query = db.buildQuery('producto', req.query);
+    let query = 'SELECT * FROM pedido';
     const params = req.query;
+    let conditions = [];
+    let values = [];
 
-    let query = '';
+    if (Object.keys(params).length !== 0) {
+        query = query + ' WHERE ';
 
-    if (params.type == 'comun') {
-        query = ''
-        + 'SELECT'
-        + ' pedido.horaRegistro AS hora',
-        + ' pedido.numero AS numero',
-        + ' pedido.id_cliente AS cliente',
-        + ' pedido.direccion AS direccion',
-        + ' pedido.id_municipio AS municipio',
-        + ' pedido.nota AS nota',
-        + ' pedido.precio_total AS precio_total',
-        + ' pedido.estado AS estado',
-        + ' pedido.id_usuario AS usuario',
-        + ' pedido.id_empleado AS empleado',
-        + ' pedido.tipo AS tipo',
-        + ' pedido.bodega AS bodega',
-        + ' productomxpedido.consecutivo AS consecutivo',
-        + ' productomxpedido.id_productom_codigo AS codigo_producto',
-        + ' productomxpedido.nombre AS nombre_producto',
-        + ' productomxpedido.color AS color_producto',
-        + ' productomxpedido.peso AS peso_producto',
-        + ' productomxpedido.precio AS precio_unidad_ofertado',
-        + ' productomxpedido.puntos AS puntos_unidad'
-        + ' FROM pedido INNER JOIN productomxpedido'
-        + ' ON pedido.fecha = productomxpedido.id_pedido_fecha AND pedido.numero = productomxpedido.id_pedido_numero'
-        + ' WHERE'
-        + ' fecha BETWEEN ? AND ?'
-        + ' AND hora LIKE ?'
-        + ' AND numero LIKE ?'
-        + ' AND cliente LIKE ?'
-        + ' AND direccion LIKE ?'
-        + ' AND municipio LIKE ?'
-        + ' AND precio_total LIKE ?'
-        + ' AND empleado LIKE ?'
-        + ' AND tipo LIKE ?'
-        + ' AND bodega LIKE ?'
-        + ' AND nota LIKE ?'
-        + ' AND usuario LIKE ?'
-        + ' AND consecutivo LIKE ?'
-        + ' AND codigo_producto LIKE ?'
-        + ' AND nombre_producto LIKE ?'
-        + ' AND color_producto LIKE ?'
-        + ' AND peso_producto LIKE ?'
-        + ' AND precio_unidad_ofertado LIKE ?'
-        + ' AND puntos_unidad LIKE ?';
-    } else if (params.type == 'empresarial') {
-        query = ''
-        + 'SELECT'
-        + ' pedido.horaRegistro AS hora',
-        + ' pedido.numero AS numero',
-        + ' pedido.id_cliente AS cliente',
-        + ' pedido.direccion AS direccion',
-        + ' pedido.id_municipio AS municipio',
-        + ' pedido.nota AS nota',
-        + ' pedido.precio_total AS precio_total',
-        + ' pedido.estado AS estado',
-        + ' pedido.id_usuario AS usuario',
-        + ' pedido.id_empleado AS empleado',
-        + ' pedido.tipo AS tipo',
-        + ' pedido.bodega AS bodega',
-        + ' productoexpedido.consecutivo AS consecutivo',
-        + ' productoexpedido.id_productom_codigo AS codigo_producto',
-        + ' productoexpedido.nombre AS nombre_producto',
-        + ' productoexpedido.color AS color_producto',
-        + ' productoexpedido.peso AS peso_producto',
-        + ' productoexpedido.precio AS precio_unidad_ofertado',
-        + ' productoexpedido.puntos AS puntos_unidad'
-        + ' FROM pedido INNER JOIN productoexpedido'
-        + ' ON pedido.fecha = productoexpedido.id_pedido_fecha AND pedido.numero = productoexpedido.id_pedido_numero'
-        + ' WHERE'
-        + ' fecha BETWEEN ? AND ?'
-        + ' AND hora LIKE ?'
-        + ' AND numero LIKE ?'
-        + ' AND cliente LIKE ?'
-        + ' AND direccion LIKE ?'
-        + ' AND municipio LIKE ?'
-        + ' AND precio_total LIKE ?'
-        + ' AND empleado LIKE ?'
-        + ' AND tipo LIKE ?'
-        + ' AND bodega LIKE ?'
-        + ' AND nota LIKE ?'
-        + ' AND usuario LIKE ?'
-        + ' AND consecutivo LIKE ?'
-        + ' AND codigo_producto LIKE ?'
-        + ' AND nombre_producto LIKE ?'
-        + ' AND color_producto LIKE ?'
-        + ' AND peso_producto LIKE ?'
-        + ' AND precio_unidad_ofertado LIKE ?'
-        + ' AND puntos_unidad LIKE ?';
-    } else {
-        query = 'SELECT * FROM'
-        + ' ((SELECT'
-        + ' pedido.horaRegistro AS hora',
-        + ' pedido.numero AS numero',
-        + ' pedido.id_cliente AS cliente',
-        + ' pedido.direccion AS direccion',
-        + ' pedido.id_municipio AS municipio',
-        + ' pedido.nota AS nota',
-        + ' pedido.precio_total AS precio_total',
-        + ' pedido.estado AS estado',
-        + ' pedido.id_usuario AS usuario',
-        + ' pedido.id_empleado AS empleado',
-        + ' pedido.tipo AS tipo',
-        + ' pedido.bodega AS bodega',
-        + ' productomxpedido.consecutivo AS consecutivo',
-        + ' productomxpedido.id_productom_codigo AS codigo_producto',
-        + ' productomxpedido.nombre AS nombre_producto',
-        + ' productomxpedido.color AS color_producto',
-        + ' productomxpedido.peso AS peso_producto',
-        + ' productomxpedido.precio AS precio_unidad_ofertado',
-        + ' productomxpedido.puntos AS puntos_unidad'
-        + ' FROM pedido INNER JOIN productomxpedido'
-        + ' ON pedido.fecha = productomxpedido.id_pedido_fecha AND pedido.numero = productomxpedido.id_pedido_numero)'
-        + ' UNION'
-        + ' (SELECT'
-        + ' pedido.horaRegistro AS hora',
-        + ' pedido.numero AS numero',
-        + ' pedido.id_cliente AS cliente',
-        + ' pedido.direccion AS direccion',
-        + ' pedido.id_municipio AS municipio',
-        + ' pedido.nota AS nota',
-        + ' pedido.precio_total AS precio_total',
-        + ' pedido.estado AS estado',
-        + ' pedido.id_usuario AS usuario',
-        + ' pedido.id_empleado AS empleado',
-        + ' pedido.tipo AS tipo',
-        + ' pedido.bodega AS bodega',
-        + ' productoexpedido.consecutivo AS consecutivo',
-        + ' productoexpedido.id_productom_codigo AS codigo_producto',
-        + ' productoexpedido.nombre AS nombre_producto',
-        + ' productoexpedido.color AS color_producto',
-        + ' productoexpedido.peso AS peso_producto',
-        + ' productoexpedido.precio AS precio_unidad_ofertado',
-        + ' productoexpedido.puntos AS puntos_unidad'
-        + ' FROM pedido INNER JOIN productoexpedido'
-        + ' ON pedido.fecha = productoexpedido.id_pedido_fecha AND pedido.numero = productoexpedido.id_pedido_numero))'
-        + ' WHERE'
-        + ' fecha BETWEEN ? AND ?'
-        + ' AND hora LIKE ?'
-        + ' AND numero LIKE ?'
-        + ' AND cliente LIKE ?'
-        + ' AND direccion LIKE ?'
-        + ' AND municipio LIKE ?'
-        + ' AND precio_total LIKE ?'
-        + ' AND empleado LIKE ?'
-        + ' AND tipo LIKE ?'
-        + ' AND bodega LIKE ?'
-        + ' AND nota LIKE ?'
-        + ' AND usuario LIKE ?'
-        + ' AND consecutivo LIKE ?'
-        + ' AND codigo_producto LIKE ?'
-        + ' AND nombre_producto LIKE ?'
-        + ' AND color_producto LIKE ?'
-        + ' AND peso_producto LIKE ?'
-        + ' AND precio_unidad_ofertado LIKE ?'
-        + ' AND puntos_unidad LIKE ?';
+        if (params.fechaMinima) {
+            conditions.push('fecha >= ?');
+            values.push(params.fechaMinima);
+        }
+
+        if (params.fechaMaxima) {
+            conditions.push('fecha <= ?');
+            values.push(params.fechaMaxima);
+        }
+
+        if (params.numeroMinimo) {
+            conditions.push('numero >= ?');
+            values.push(params.numeroMinimo);
+        }
+
+        if (params.numeroMaximo) {
+            conditions.push('numero <= ?');
+            values.push(params.numeroMaximo);
+        }
+
+        if (params.horaMinima) {
+            conditions.push('hora_registro >= ?');
+            values.push(params.horaMinima);
+        }
+
+        if (params.horaMaxima) {
+            conditions.push('hora_registro <= ?');
+            values.push(params.horaMaxima);
+        }
+
+        if (params.direccion) {
+            conditions.push('direccion LIKE %?%');
+            values.push(params.direccion);
+        }
+
+        if (params.precioBrutoMinimo) {
+            conditions.push('precio_bruto >= ?');
+            values.push(params.precioBrutoMinimo);
+        }
+
+        if (params.precioBrutoMaximo) {
+            conditions.push('precio_bruto <= ?');
+            values.push(params.precioBrutoMaximo);
+        }
+
+        if (params.precioFinalMinimo) {
+            conditions.push('precio_final >= ?');
+            values.push(params.precioFinalMinimo);
+        }
+
+        if (params.precioFinalMaximo) {
+            conditions.push('precio_final <= ?');
+            values.push(params.precioFinalMaximo);
+        }
+
+        if (params.estado) {
+            conditions.push('estado = ?');
+            values.push(params.estado);
+        }
+
+        if (params.bodega) {
+            conditions.push('bodega LIKE %?%');
+            values.push(params.bodega);
+        }
+
+        if (params.puntosMinimos) {
+            conditions.push('puntos_compra >= ?');
+            values.push(params.puntosMinimos);
+        }
+
+        if (params.puntosMaximos) {
+            conditions.push('puntos_compra <= ?');
+            values.push(params.puntosMaximos);
+        }
+
+        if (params.tipoCliente) {
+            conditions.push('tipo_cliente = ?');
+            values.push(params.tipoCliente);
+        }
+
+        if (params.nota) {
+            conditions.push('nota LIKE %?%');
+            values.push(params.nota);
+        }
     }
-    
-    const results = await db.pool.promise().execute(query, [
-        params.fechaInicio,
-        params.fechaFin,
-        params.hora,
-        params.numero,
-        params.cliente,
-        params.direccion,
-        params.municipio,
-        params.precio_total,
-        params.empleado,
-        params.tipo,
-        params.bodega,
-        params.nota,
-        params.usuario,
-        params.consecutivo,
-        params.codigo_producto,
-        params.nombre_producto,
-        params.color_producto,
-        params.peso_producto,
-        params.precio_unidad_ofertado,
-        params.puntos_unidad
-    ]);
 
+    const results = await pool.promise().execute(query + conditions.join(' AND '), values);
     if (results) {
-        res.json(JSON.parse(JSON.stringify(results[0])));
+        res.json(JSON.parse(JSON.stringify(results[0])))
     } else {
         throw {
             status: 500
         };
     }
 }))
-.post(asyncHandler(async (req, res, next) => {
+.post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    const pedido = req.body;
+    let results = await pool.promise().execute('SELECT tipo FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
+    const tipoCliente = JSON.parse(JSON.stringify(results[0]))[0].tipo;
+    pool.getConnection(async (err, conn) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        results = await conn.promise().execute(
+            "INSERT INTO pedido VALUES(?, ?, ?, ?, NULL, NULL, 'verificacion', NULL, NULL, ?, ?, NULL)",
+            [pedido.fecha, pedido.numero, pedido.hora_registro, pedido.direccion, tipoCliente, pedido.nota, req.user.username, pedido.cliente_pedidor]
+        );
+
+        if (results[0].affectedRows == 1) {
+            let precio_bruto = 0;
+            pedido.productos.forEach((val, idx, arr) => {
+                results = conn.promise().execute(
+                    'INSERT INTO productoxpedido VALUES(?, ?, ?, ?)',
+                    [val.codigo, pedido.fecha, pedido.numero, val.precio]
+                );
+
+                precio_bruto += val.precio;
+
+                if (results[0].affectedRows != 1) {
+                    conn.rollback();
+                    throw {
+                        status: 500
+                    }
+                }
+            });
+
+            results = pool.promise().execute('SELECT descuento FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
+            const descuento = JSON.parse(JSON.stringify(results[0]))[0].descuento;
+            const precio_final = precio_bruto * (1 - descuento);
+            results = conn.promise().execute(
+                'UPDATE pedido SET precio_bruto = ?, precio_final = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?',
+                [precio_bruto, precio_final, pedido.empleado, pedido.fecha, pedido.numero]
+            );
+
+            if (results[0].affectedRows == 1) {
+                conn.commit();
+                results = pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, pedido.numero]);
+                res.json(JSON.parse(JSON.stringify(results[0])));
+            } else {
+                conn.rollback();
+                throw {
+                    status: 500
+                }
+            }
+        } else {
+            conn.rollback();
+            throw {
+                status: 500
+            }
+        }
+    });
+}))
+.put(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    if (req.user.tipo == 'cliente') {
+        let err = new Error('not authorized');
+        err.status = 403;
+        next(err);
+    }
+
+    pool.getConnection(async (err, conn) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
     
+        let changes = [];
+        let values = [];
+
+        const params = req.body;
+
+        if (params.direccion) {
+            changes.push('direccion = ? ');
+            values.push(params.direccion);
+        }
+
+        if (params.nota) {
+            changes.push('nota = ? ');
+            values.push(params.nota);
+        }
+
+        if (params.bodega) {
+            changes.push('bodega = ?');
+            values.push(params.bodega);
+        }
+
+        if (params.estado) {
+            changes.push('estado = ? ');
+            values.push(params.estado);
+        }
+
+        if (params.empleado) {
+            changes.push('empleado_despachador = ? ');
+            values.push(params.empleado);
+        }
+
+        values.push(params.fecha);
+        values.push(params.numero);
+
+        const result = await conn.promise().execute(
+            'UPDATE pedido SET ' + changes.join(', ') + 'WHERE fecha = ? AND numero = ?',
+            values
+        );
+        if (result[0].affectedRows == 1) {
+            conn.commit();
+            res.json({
+                msg: 'pedido updated successfully'
+            });
+        } else {
+            conn.rollback();
+            next(new Error('update error'));
+        }
+    });
 }));
 
-/*
-comun:
-SELECT pedido.fecha AS fecha, pedido.horaRegistro AS hora, pedido.numero AS numero, pedido.id_cliente AS cliente,
-pedido.direccion AS direccion, pedido.id_municipio AS municipio, pedido.nota AS nota, pedido.precio_total AS precio_total,
-pedido.estado AS estado, pedido.id_usuario AS usuario, pedido.id_empleado AS empleado, pedido.tipo AS tipo, pedido.bodega AS bodega,
-productomxpedido.consecutivo,productomxpedido.id_productom_codigo AS codigo_producto ,productomxpedido.nombre, productomxpedido.color,
-productomxpedido.peso, productomxpedido.precio AS precio_unidad_ofertado, productomxpedido.puntos AS puntos_unidad
-FROM pedido INNER JOIN productomxpedido ON pedido.fecha = productomxpedido.id_pedido_fecha
-AND pedido.numero = productomxpedido.id_pedido_numero INNER JOIN productom ON productomxpedido.id_productom_codigo = productom.codigo
+pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    if (req.user.tipo == 'cliente') {
+        let err = new Error('not authorized');
+        err.status = 403;
+        next(err);
+    }
 
-(SELECT pedido.fecha AS fecha, pedido.horaRegistro AS hora, pedido.numero AS numero, pedido.id_cliente AS cliente,
-    pedido.direccion AS direccion, pedido.id_municipio AS municipio, pedido.nota AS nota, pedido.precio_total AS precio_total,
-    pedido.estado AS estado, pedido.id_usuario AS usuario, pedido.id_empleado AS empleado, pedido.tipo AS tipo, pedido.bodega AS bodega,
-    productoexpedido.consecutivo,productoexpedido.id_productoe_codigo AS codigo_producto ,productoexpedido.nombre,
-    productoexpedido.color,productoexpedido.peso, productoexpedido.precio AS precio_unidad_ofertado,
-    productoexpedido.puntos AS puntos_unidad FROM pedido INNER JOIN productoexpedido ON pedido.fecha = productoexpedido.id_pedido_fecha
-    AND pedido.numero = productoexpedido.id_pedido_numero INNER JOIN productoe ON productoexpedido.id_productoe_codigo = productoe.codigo)
+    const pedido = req.body;
 
-SELECT * FROM ("+consulta +") AS resultado WHERE (fecha <= '"+fecha+"' AND fecha >= '"+fechaInicial+"' AND hora like '"+hora+"' AND numero like '"+numero+"' AND cliente LIKE '"+cliente+"' AND direccion LIKE '"+direccion+"' AND municipio LIKE '"+municipio+"' AND precio_total LIKE '"+precio_total+"' AND empleado LIKE '"+empleado+"' AND estado LIKE '"+estado+"' AND tipo LIKE '"+tipo+"' AND bodega LIKE '"+bodega+"' AND nota LIKE '"+nota+"' AND usuario LIKE '"+usuario+"' AND consecutivo like '"+concecutivo+"' AND codigo_producto LIKE '"+codigo_producto+"' AND nombre LIKE '"+nombre+"' AND color LIKE '"+color+"' AND peso LIKE '"+peso+"' AND precio_unidad_ofertado LIKE '"+precio_ofertado+"' AND puntos_unidad LIKE '"+puntos_unidad+"')" 
+    let results = pool.promise().execute(
+        'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+        [pedido.fecha, pedido.numero]
+    );
+    const peso_total = JSON.parse(JSON.stringify(results[0])).peso_total;
+    results = pool.promise().execute('SELECT puntos_libra FROM static');
+    const puntos_libra = JSON.parse(JSON.stringify(results[0])).puntos_libra;
+    const puntos_compra = peso_total * puntos_libra;
+    pool.getConnection(async (err, conn) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
 
-(SELECT
-    pedido.fecha AS fecha,
-    pedido.horaRegistro AS hora,
-    pedido.numero AS numero,
-    pedido.id_cliente AS cliente,
-    pedido.direccion AS direccion,
-    pedido.id_municipio AS municipio,
-    pedido.nota AS nota,
-    pedido.precio_total AS precio_total,
-    pedido.estado AS estado,
-    pedido.id_usuario AS usuario,
-    pedido.id_empleado AS empleado,
-    pedido.tipo AS tipo,
-    pedido.bodega AS bodega,
-    productomxpedido.consecutivo,
-    productomxpedido.id_productom_codigo AS codigo_producto,
-    productomxpedido.nombre,
-    productomxpedido.color,
-    productomxpedido.peso,
-    productomxpedido.precio AS precio_unidad_ofertado,
-    productomxpedido.puntos AS puntos_unidad
-FROM
-    pedido
-    INNER JOIN productomxpedido ON pedido.fecha = productomxpedido.id_pedido_fecha AND pedido.numero = productomxpedido.id_pedido_numero
-    INNER JOIN productom ON productomxpedido.id_productom_codigo = productom.codigo)
-UNION
-(SELECT
-    pedido.fecha AS fecha,
-    pedido.horaRegistro AS hora,
-    pedido.numero AS numero,
-    pedido.id_cliente AS cliente,
-    pedido.direccion AS direccion,
-    pedido.id_municipio AS municipio,
-    pedido.nota AS nota,
-    pedido.precio_total AS precio_total,
-    pedido.estado AS estado,
-    pedido.id_usuario AS usuario,
-    pedido.id_empleado AS empleado,
-    pedido.tipo AS tipo,
-    pedido.bodega AS bodega,
-    productoexpedido.consecutivo,
-    productoexpedido.id_productoe_codigo AS codigo_producto,
-    productoexpedido.nombre,
-    productoexpedido.color,
-    productoexpedido.peso,
-    productoexpedido.precio AS precio_unidad_ofertado,
-    productoexpedido.puntos AS puntos_unidad
-FROM pedido
-    INNER JOIN productoexpedido ON pedido.fecha = productoexpedido.id_pedido_fecha AND pedido.numero = productoexpedido.id_pedido_numero
-    INNER JOIN productoe ON productoexpedido.id_productoe_codigo = productoe.codigo)
+        results = conn.promise().execute(
+            'UPDATE pedido SET puntos_compra = ? AND bodega = ? WHERE fecha = ? AND numero = ?',
+            [puntos_compra, pedido.bodega, pedido.fecha, pedido.numero]
+        );
 
-
-WHERE
-(fecha <= '"+fecha+"' AND fecha >= '"+fechaInicial+"'
-AND hora like '"+hora+"'
-AND numero like '"+numero+"'
-AND cliente LIKE '"+cliente+"'
-AND direccion LIKE '"+direccion+"'
-AND municipio LIKE '"+municipio+"'
-AND precio_total LIKE '"+precio_total+"'
-AND empleado LIKE '"+empleado+"'
-AND estado LIKE '"+estado+"'
-AND tipo LIKE '"+tipo+"'
-AND bodega LIKE '"+bodega+"'
-AND nota LIKE '"+nota+"'
-AND usuario LIKE '"+usuario+"'
-AND consecutivo like '"+concecutivo+"'
-AND codigo_producto LIKE '"+codigo_producto+"'
-AND nombre LIKE '"+nombre+"'
-AND color LIKE '"+color+"'
-AND peso LIKE '"+peso+"'
-AND precio_unidad_ofertado LIKE '"+precio_ofertado+"'
-AND puntos_unidad LIKE '"+puntos_unidad+"')"
-*/
+        if (results[0].affectedRows == 1) {
+            conn.commit();
+            res.json({
+                msg: 'puntos adicionados'
+            });
+        } else {
+            conn.rollback();
+            throw {
+                status: 500
+            }
+        }
+    });
+}));
 
 module.exports = pedidoRouter;

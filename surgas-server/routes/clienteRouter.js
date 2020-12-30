@@ -118,9 +118,18 @@ clienteRouter.route("/")
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     pool.getConnection(async (err, conn) => {
         const cl = req.body;
-        const result = await conn.promise().execute(
-            'INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, ?)',
-            [cl.telefono, cl.email, cl.nombre, cl.fecha_registro, cl.puntos, cl.descuento, cl.tipo, cl.username]
+        let result;
+
+        if (user.tipoCl == 'empresarial') {
+            result = await conn.promise().execute('SELECT descuento FROM static');
+            cl.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
+        } else {
+            cl.descuento = 0.0;
+        }
+        
+        result = await conn.promise().execute(
+            'INSERT INTO cliente VALUES (?, ?, ?, ?, 0, ?, ?, NULL, NULL, 0, NULL)',
+            [cl.telefono, cl.email, cl.nombre, cl.fecha_registro, cl.descuento, cl.tipo]
         );
 
         if (result[0].affectedRows == 1) {

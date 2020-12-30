@@ -64,7 +64,7 @@ pagoRouter.route("/")
     pool.getConnection(async (err, conn) => {
         const pago = req.body;
         const result = await conn.promise().execute(
-            'INSERT INTO pago VALUES (?, ?, ?, ?)',
+            'INSERT INTO pago(fechaHora, monto, empleado, usuario) VALUES (?, ?, ?, ?)',
             [pago.fechaHora, pago.monto, pago.empleado, req.user.username]
         );
 

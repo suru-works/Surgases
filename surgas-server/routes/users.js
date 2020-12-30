@@ -26,15 +26,14 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
 router.get('/current', auth.isAuthenticated, (req, res, next) => {
   const user = req.user;
   res.json({
-    nick: user.nick,
+    username: user.username,
     nombre: user.nombre,
     email: user.email,
-    administrador: user.administrador,
-    comun: user.comun
+    tipo: user.tipo
   });
 });
 
-router.post('/signup', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+router.post('/signup/client', asyncHandler(async (req, res, next) => {
   const user = req.body;
   const hash = await bcrypt.hash(user.password, 10);
 
@@ -44,20 +43,78 @@ router.post('/signup', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (r
       return;
     }
 
-    const result = await conn.promise().execute(
-      'INSERT INTO usuario VALUES (?, ?, ?, ?, ?, ?)',
-      [user.nick, user.nombre, user.administrador, user.comun, hash, user.email]
+    let result = await conn.promise().execute(
+      "INSERT INTO usuario VALUES (?, ?, ?, ?, ?, b'0')",
+      [user.username, user.email, hash, user.nombre, user.tipo]
     );
 
     if (result[0].affectedRows == 1) {
-      conn.commit();
-      res.json({
-        nick: user.nick,
-        nombre: user.nombre,
-        administrador: user.administrador,
-        comun: user.comun,
-        email: user.email
-      });
+      if (user.tipoCl == 'empresarial') {
+        result = await conn.promise().execute('SELECT descuento FROM static');
+        user.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
+      } else {
+        user.descuento = 0.0;
+      }
+
+      result = await conn.promise().execute(
+        'INSERT INTO cliente VALUES(?, ?, ?, ?, 0, ?, ?, NULL, NULL, 0, ?)',
+        [user.telefono, user.email, user.nombre, user.fecha_registro, user.descuento, user.tipoCl, user.username]
+      );
+
+      if (result[0].affectedRows == 1) {
+        conn.commit();
+
+        res.json({
+          username: user.username,
+          nombre: user.nombre,
+          tipo: user.tipo,
+          email: user.email
+        });
+      } else {
+        conn.rollback();
+        next(new Error('insertion error'));
+      }
+    } else {
+      conn.rollback();
+      next(new Error('insertion error'));
+    }
+  });
+}));
+
+router.post('/signup/employee', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+  const user = req.body;
+  const hash = await bcrypt.hash(user.password, 10);
+
+  pool.getConnection(async (err, conn) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    let result = await conn.promise().execute(
+      "INSERT INTO usuario VALUES (?, ?, ?, ?, ?, b'0')",
+      [user.username, user.email, hash, user.nombre, user.tipo]
+    );
+
+    if (result[0].affectedRows == 1) {
+      result = await conn.promise().execute(
+        'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?)',
+        [user.id, user.nombre, user.direccion, user.telefono, user.estado, user.username]
+      );
+
+      if (result[0].affectedRows == 1) {
+        conn.commit();
+
+        res.json({
+          username: user.username,
+          nombre: user.nombre,
+          tipo: user.tipo,
+          email: user.email
+        });
+      } else {
+        conn.rollback();
+        next(new Error('insertion error'));
+      }
     } else {
       conn.rollback();
       next(new Error('insertion error'));

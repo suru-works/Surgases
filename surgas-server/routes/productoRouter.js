@@ -90,8 +90,8 @@ productoRouter.route("/")
     pool.getConnection(async (err, conn) => {
         const prod = req.body;
         const result = await conn.promise().execute(
-            'INSERT INTO producto VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [prod.codigo, prod.nombre, prod.color, prod.peso, prod.tipo, prod.precio, prod.inventario, prod.disponible]
+            'INSERT INTO producto(nombre, color, peso, tipo, precio, inventario, disponible) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [prod.nombre, prod.color, prod.peso, prod.tipo, prod.precio, prod.inventario, prod.disponible]
         );
 
         if (result[0].affectedRows == 1) {
