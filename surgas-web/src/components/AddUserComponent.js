@@ -95,48 +95,47 @@ const AddUserComponent = (props) => {
     else {
         return (
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+            
+            <Modal isOpen={props.isOpen} toggle={props.toggle}>
 
                 <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
 
                 <ModalBody>
 
-                    <div className="d-flex space-around row">
-                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
-                            <Card style={{ padding: 11 }}>
+                        <Form onSubmit={handleSubmit} >
 
-                                <CardBody style={{ padding: 8 }}>
-                                    <CardTitle> Ingresa los datos del usuario </CardTitle>
+                            <CardTitle> Ingresa los datos del usuario</CardTitle>
+                            <br></br>
 
-                                    <Label htmlFor="nick">Usuario</Label>
-                                    <Input type="text" id="nick" name="nick" value={values.nick}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                    {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
+                            <FormGroup>
+                                
+                                <Label htmlFor="nick">Usuario</Label>
+                                <Input type="text" id="nick" name="nick" value={values.nick}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
 
+                            </FormGroup>
 
-                                    <Label htmlFor="nombre">Nombre</Label>
-                                    <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                    {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                            <FormGroup>
 
-                                    <div class="d-flex justify-content-center" >
-                                        <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
-                                    </div>
+                                <Label htmlFor="nombre">Nombre</Label>
+                                <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                            </FormGroup>
+                            
+                            <br></br>
 
-                                </CardBody>
-
-                            </Card>
-
+                            <div class="d-flex justify-content-center" >
+                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Actualizar</Button>
+                            </div>
 
                         </Form>
 
-                    </div>
-
                 </ModalBody>
             </Modal>
-
 
         );
     }

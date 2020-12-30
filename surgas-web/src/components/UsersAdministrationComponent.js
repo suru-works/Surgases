@@ -50,7 +50,7 @@ const SearchCriteria = () => {
             <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
                 <Card style={{ padding: 11 }}>
                     <br></br>
-                    <CardTitle> Ingresa los datos de la busqueda</CardTitle>
+                    <CardTitle> Ingresa los datos de la búsqueda</CardTitle>
                     <CardBody style={{ padding: 8 }}>
 
                         <hr />

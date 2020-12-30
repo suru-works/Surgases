@@ -154,56 +154,47 @@ const AcountManagement = (props) => {
 
                 <ModalBody>
 
-                    <div className="d-flex space-around row">
-                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
-                            <Card style={{ padding: 11 }}>
-                                <CardTitle> Ingresa los datos del usuario: {nick}</CardTitle>
-                                <CardBody style={{ padding: 8 }}>
+                    <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
 
-                                    <FormGroup>
-                                        <Label htmlFor="nombre">Nombre</Label>
-                                        <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur} />
-                                        {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                        <CardTitle> Ingresa los datos del usuario: {nick}</CardTitle>
+                        
+                        <br></br>
 
-                                    </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="nombre">Nombre</Label>
+                            <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                                onChange={handleChange}
+                                onBlur={handleBlur} />
+                            {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
-                                    <FormGroup>
-                                        <Label htmlFor="email">Correo</Label>
-                                        <Input type="email" id="correo" name="correo" value={values.email}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur} />
-                                        {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
+                        </FormGroup>
 
-                                    </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="email">Correo</Label>
+                            <Input type="email" id="correo" name="correo" value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur} />
+                            {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
 
-                                    <FormGroup>
-                                        <Label for="tipo">Tipo</Label>
-                                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}>
-                                            <option>comun</option>
-                                            <option>administrador</option>
-                                        </Input>
-                                    </FormGroup>
+                        </FormGroup>
 
-                                    <FormGroup>
-                                        <div class="d-flex justify-content-center" >
-                                            <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
-                                        </div>
-                                    </FormGroup>
+                        <FormGroup>
+                            <Label for="tipo">Tipo</Label>
+                            <Input type="select" name="tipo" id="tipo" value={values.tipo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}>
+                                <option>comun</option>
+                                <option>administrador</option>
+                            </Input>
+                        </FormGroup>
 
+                        <br></br>
 
+                        <div class="d-flex justify-content-center" >
+                            <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Actualizar</Button>
+                        </div>
 
-                                </CardBody>
-
-                            </Card>
-
-
-                        </Form>
-
-                    </div>
+                    </Form>
 
                 </ModalBody>
 

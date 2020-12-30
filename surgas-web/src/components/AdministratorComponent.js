@@ -2,7 +2,7 @@ import React , {useState}  from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Alert} from 'reactstrap';
 import { ProSidebar, SidebarHeader, SidebarFooter, SidebarContent, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import '../css/styles.css';
@@ -16,6 +16,35 @@ import SystemPrintersAdministration from './SystemPrintersAdministrationComponen
 import  SystemBackup  from './SystemBackupComponent'
 import { Loading } from './LoadingComponent'
 
+const RenderLoginComponent = (props) => {
+    
+
+    return (
+        <div>
+
+            <Modal isOpen={props.isOpen} toggle={props.toggle}>
+                    <ModalHeader toggle={props.toggle}>Modal de Soporte</ModalHeader>
+
+                <ModalBody>
+                
+
+                    <p>Modal en progreso, no envía ni recibe props aparte de los básicos</p>
+
+                    <br></br>
+
+                    <div className="d-flex justify-content-center" >
+                        <Button  style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">No hacer nada</Button>
+                        <Button  style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Realizar la nadación</Button>
+                    </div>
+                
+                </ModalBody>
+            </Modal>
+
+        </div>
+    );
+}
+
+
 const AdministratorComponent = () => {
 
     const location = useLocation();
@@ -24,14 +53,23 @@ const AdministratorComponent = () => {
     const result = useSelector(state => state.user.result);
     const loading = useSelector(state => state.user.isLoading);
 
-    const [isSystemBackupModalOPen, setIsSystemBackupModalOPen] = useState(false);
+    const [isSystemBackupModalOpen, setIsSystemBackupModalOpen] = useState(false);
+    const [isSoporteModalOpen, setIsSoporteModalOpen] = useState(false);
     const [isBlueBarOpen, setIsBlueBarOpen] = useState(false);
 
     const toggleSystemBackupModal = () => {
-        if (isSystemBackupModalOPen) {
-            setIsSystemBackupModalOPen(false);
+        if (isSystemBackupModalOpen) {
+            setIsSystemBackupModalOpen(false);
         } else {
-            setIsSystemBackupModalOPen(true);
+            setIsSystemBackupModalOpen(true);
+        }
+    }
+
+    const toggleSoporteModal = () => {
+        if (isSoporteModalOpen) {
+            setIsSoporteModalOpen(false);
+        } else {
+            setIsSoporteModalOpen(true);
         }
     }
 
@@ -95,7 +133,7 @@ const AdministratorComponent = () => {
                                             </MenuItem>
                                             <MenuItem title="Respaldos" icon={<i className="fa fa-info"></i>} onClick={()=>toggleSystemBackupModal()}>
                                                 Respaldar sistema
-                                                <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOPen}/>
+                                                <SystemBackup toggle = {toggleSystemBackupModal} isOpen={isSystemBackupModalOpen}/>
                                         </MenuItem>
                                         </SubMenu>
 
@@ -104,9 +142,9 @@ const AdministratorComponent = () => {
                                 <SidebarFooter >
 
                                     <Menu iconShape="circle">
-                                        <MenuItem icon={<i className="fa fa-wrench"></i>}>
+                                        <MenuItem icon={<i className="fa fa-wrench"></i>} onClick={()=>toggleSoporteModal()} >
                                                 Soporte
-                                            <Link to="/administrador/usuarios" />
+                                                <RenderLoginComponent toggle = {toggleSoporteModal} isOpen={isSoporteModalOpen} />
                                         </MenuItem>
                                     </Menu>
                                     
