@@ -1,18 +1,19 @@
 const db = require('../db');
+const auth = require('../auth');
 const asyncHandler = require('express-async-handler');
 
-const empleadoRouter = require('express').Router();
-empleadoRouter.use(require('body-parser').json());
+const productoRouter = require('express').Router();
+productoRouter.use(require('body-parser').json());
 const pool = db.pool;
 
-empleadoRouter.route("/")
+productoRouter.route("/")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
     //const query = db.buildQuery('producto', req.query);
-    let query = 'SELECT * FROM empleado';
+    let query = 'SELECT * FROM producto';
     const params = req.query;
     let conditions = [];
     let values = [];
@@ -20,9 +21,9 @@ empleadoRouter.route("/")
     if (Object.keys(params).length !== 0) {
         query = query + ' WHERE ';
 
-        if (params.id) {
-            conditions.push('id LIKE %?%');
-            values.push(params.id);
+        if (params.codigo) {
+            conditions.push('codigo LIKE %?%');
+            values.push(params.codigo);
         }
 
         if (params.nombre) {
@@ -30,24 +31,49 @@ empleadoRouter.route("/")
             values.push(params.nombre);
         }
 
-        if (params.direccion) {
-            conditions.push('direccion LIKE %?%');
-            values.push(params.direccion);
+        if (params.color) {
+            conditions.push('color LIKE %?%');
+            values.push(params.color);
         }
 
-        if (params.telefono) {
-            conditions.push('telefono LIKE %?%');
-            values.push(params.telefono);
+        if (params.pesoMinimo) {
+            conditions.push('peso >= ?');
+            values.push(params.pesoMinimo);
+        }
+
+        if (params.pesoMaximo) {
+            conditions.push('peso <= ?');
+            values.push(params.pesoMaximo);
         }
         
-        if (params.estado) {
-            conditions.push('estado = ?');
-            values.push(params.estado);
+        if (params.tipo) {
+            conditions.push('tipo = ?');
+            values.push(params.tipo);
         }
 
-        if (params.username) {
-            conditions.push('username LIKE %?%');
-            values.push(params.username);
+        if (params.precioMinimo) {
+            conditions.push('precio >= ?');
+            values.push(params.precioMinimo);
+        }
+
+        if (params.precioMaximo) {
+            conditions.push('precio <= ?');
+            values.push(params.precioMaximo);
+        }
+
+        if (params.inventarioMinimo) {
+            conditions.push('inventario >= ?');
+            values.push(params.inventarioMinimo);
+        }
+
+        if (params.inventarioMaximo) {
+            conditions.push('inventario <= ?');
+            values.push(params.inventarioMaximo);
+        }
+
+        if (params.disponible) {
+            conditions.push('disponible = (?)');
+            values.push(params.disponible);
         }
     }
 
@@ -60,12 +86,12 @@ empleadoRouter.route("/")
         };
     }
 }))
-.post(asyncHandler(async (req, res, next) => {
+.post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     pool.getConnection(async (err, conn) => {
-        const emp = req.body;
+        const prod = req.body;
         const result = await conn.promise().execute(
-            'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?)',
-            [emp.id, emp.nombre, emp.direccion, emp.telefono, emp.estado, emp.username]
+            'INSERT INTO producto VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [prod.codigo, prod.nombre, prod.color, prod.peso, prod.tipo, prod.precio, prod.inventario, prod.disponible]
         );
 
         if (result[0].affectedRows == 1) {
@@ -80,7 +106,7 @@ empleadoRouter.route("/")
     });
 }));
 
-empleadoRouter.route("/:id")
+productoRouter.route("/:codigo")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
@@ -92,12 +118,12 @@ empleadoRouter.route("/:id")
             next(err);
         }
 
-        const query = db.buildUpdate('empleado', { name: 'id', value: req.params.codigo }, req.body);
+        const query = db.buildUpdate('producto', { name: 'codigo', value: req.params.codigo }, req.body);
         const result = await conn.promise().execute(query.query, query.values);
         if (result[0].affectedRows == 1) {
             conn.commit();
             res.json({
-                msg: 'employee updated successfully'
+                msg: 'product updated successfully'
             });
         } else {
             conn.rollback();
@@ -112,11 +138,11 @@ empleadoRouter.route("/:id")
             next(err);
         }
 
-        const result = await conn.promise().execute('DELETE FROM empleado WHERE id = ?', [req.params.id]);
+        const result = await conn.promise().execute('DELETE FROM producto WHERE codigo = ?', [req.params.codigo]);
         if (result[0].affectedRows == 1) {
             conn.commit();
             res.json({
-                msg: 'employee deleted successfully'
+                msg: 'product deleted successfully'
             });
         } else {
             conn.rollback();
@@ -125,4 +151,4 @@ empleadoRouter.route("/:id")
     })
 }));
 
-module.exports = empleadoRouter;
+module.exports = productoRouter;

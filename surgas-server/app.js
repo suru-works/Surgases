@@ -14,6 +14,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const pedidoRouter = require('./routes/pedidoRouter');
 const empleadoRouter = require('./routes/empleadoRouter');
+const productoRouter = require('./routes/productoRouter');
+const clienteRouter = require('./routes/clienteRouter');
 const systemRouter = require('./routes/systemRouter');
 const mapsRouter = require('./routes/mapsRouter');
 
@@ -84,6 +86,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pedidos', pedidoRouter);
 app.use('/empleados', empleadoRouter);
+app.use('/productos', productoRouter);
+app.use('/clientes', clienteRouter);
 app.use('/system', systemRouter);
 app.use('/maps', mapsRouter);
 
