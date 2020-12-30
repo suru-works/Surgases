@@ -1,18 +1,18 @@
 const db = require('../db');
 const asyncHandler = require('express-async-handler');
 
-const empleadoRouter = require('express').Router();
-empleadoRouter.use(require('body-parser').json());
+const pagoRouter = require('express').Router();
+pagoRouter.use(require('body-parser').json());
 const pool = db.pool;
 
-empleadoRouter.route("/")
+pagoRouter.route("/")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
     //const query = db.buildQuery('producto', req.query);
-    let query = 'SELECT * FROM empleado';
+    let query = 'SELECT * FROM pago';
     const params = req.query;
     let conditions = [];
     let values = [];
@@ -20,34 +20,34 @@ empleadoRouter.route("/")
     if (Object.keys(params).length !== 0) {
         query = query + ' WHERE ';
 
-        if (params.id) {
-            conditions.push('id LIKE %?%');
-            values.push(params.id);
+        if (params.fechaMinima) {
+            conditions.push('fechaHora >= ?');
+            values.push(params.fechaMinima);
         }
 
-        if (params.nombre) {
-            conditions.push('nombre LIKE %?%');
-            values.push(params.nombre);
+        if (params.fechaMaxima) {
+            conditions.push('fechaHora <= ?');
+            values.push(params.fechaMaxima);
         }
 
-        if (params.direccion) {
-            conditions.push('direccion LIKE %?%');
-            values.push(params.direccion);
+        if (params.montoMinimo) {
+            conditions.push('monto >= ?');
+            values.push(params.montoMinimo);
         }
 
-        if (params.telefono) {
-            conditions.push('telefono LIKE %?%');
-            values.push(params.telefono);
-        }
-        
-        if (params.estado) {
-            conditions.push('estado = ?');
-            values.push(params.estado);
+        if (params.montoMaximo) {
+            conditions.push('monto <= ?');
+            values.push(params.montoMaximo);
         }
 
-        if (params.username) {
-            conditions.push('username LIKE %?%');
-            values.push(params.username);
+        if (params.empleado) {
+            conditions.push('empleado LIKE %?%');
+            values.push(params.empleado);
+        }
+
+        if (params.usuario) {
+            conditions.push('usuario LIKE %?%');
+            values.push(params.usuario);
         }
     }
 
@@ -62,10 +62,10 @@ empleadoRouter.route("/")
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     pool.getConnection(async (err, conn) => {
-        const emp = req.body;
+        const pago = req.body;
         const result = await conn.promise().execute(
-            'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?)',
-            [emp.id, emp.nombre, emp.direccion, emp.telefono, emp.estado, emp.username]
+            'INSERT INTO pago VALUES (?, ?, ?, ?)',
+            [pago.fechaHora, pago.monto, pago.empleado, req.user.username]
         );
 
         if (result[0].affectedRows == 1) {
@@ -80,7 +80,7 @@ empleadoRouter.route("/")
     });
 }));
 
-empleadoRouter.route("/:id")
+pagoRouter.route("/:id")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
@@ -92,7 +92,7 @@ empleadoRouter.route("/:id")
             next(err);
         }
 
-        const query = db.buildUpdate('empleado', { name: 'id', value: req.params.codigo }, req.body);
+        const query = db.buildUpdate('pago', { name: 'id', value: req.params.codigo }, req.body);
         const result = await conn.promise().execute(query.query, query.values);
         if (result[0].affectedRows == 1) {
             conn.commit();
@@ -112,7 +112,7 @@ empleadoRouter.route("/:id")
             next(err);
         }
 
-        const result = await conn.promise().execute('DELETE FROM empleado WHERE id = ?', [req.params.id]);
+        const result = await conn.promise().execute('DELETE FROM pago WHERE id = ?', [req.params.id]);
         if (result[0].affectedRows == 1) {
             conn.commit();
             res.json({
@@ -125,4 +125,4 @@ empleadoRouter.route("/:id")
     })
 }));
 
-module.exports = empleadoRouter;
+module.exports = pagoRouter;

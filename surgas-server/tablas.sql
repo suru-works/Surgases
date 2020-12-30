@@ -33,23 +33,26 @@ CREATE TABLE cliente(
 );
 
 CREATE TABLE pago(
-    fechaHora DATE PRIMARY KEY,
+    codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    fechaHora DATETIME PRIMARY KEY,
     monto INT NOT NULL,
     empleado VARCHAR(100) NOT NULL,
     usuario VARCHAR(30) NOT NULL,
+    PRIMARY KEY (codigo),
     CONSTRAINT `fk_pago_emp` FOREIGN KEY (empleado) REFERENCES empleado(id),
     CONSTRAINT `fk_pago_user` FOREIGN KEY (usuario) REFERENCES usuario(username)
 );
 
 CREATE TABLE producto(
-    codigo VARCHAR(10) PRIMARY KEY,
+    codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     color VARCHAR(15) NOT NULL,
     peso FLOAT NOT NULL,
     tipo VARCHAR(15) NOT NULL,
     precio INT NOT NULL,
     inventario INT NOT NULL,
-    disponible BIT NOT NULL
+    disponible BIT NOT NULL,
+    PRIMARY KEY (codigo)
 );
 
 CREATE TABLE pedido(
@@ -74,7 +77,7 @@ CREATE TABLE pedido(
 );
 
 CREATE TABLE pedidoxproducto(
-    producto VARCHAR(10) NOT NULL REFERENCES producto,
+    producto BIGINT UNSIGNED NOT NULL,
     fecha_pedido DATE NOT NULL,
     numero_pedido INT NOT NULL,
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
@@ -83,7 +86,7 @@ CREATE TABLE pedidoxproducto(
 );
 
 CREATE TABLE static(
-    codigo VARCHAR(8) PRIMARY KEY,
+    codigo VARCHAR(8) PRIMARY KEY
     limite_puntos INT NOT NULL,
     puntos_libra INT NOT NULL
 );

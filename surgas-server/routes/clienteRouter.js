@@ -115,7 +115,7 @@ clienteRouter.route("/")
         };
     }
 }))
-.post(asyncHandler(async (req, res, next) => {
+.post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     pool.getConnection(async (err, conn) => {
         const cl = req.body;
         const result = await conn.promise().execute(
