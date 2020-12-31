@@ -285,7 +285,113 @@ export const addUser = (userData) => async (dispatch) => {
         dispatch(usersUpdateFailed(err));
     }
 }
-/* TO DO: implementar la busqueda de usuarios */
+
+
+//Products
+
+export const productsReset = () => ({
+    type: ActionTypes.PRODUCTS_RESET
+});
+
+export const productsRequest = () => ({
+    type: ActionTypes.PRODUCTS_REQUEST
+});
+
+export const productsSuccess = (result) => ({
+    type: ActionTypes.PRODUCTS_SUCCESS,
+    payload: result
+});
+
+export const productsFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTS_FAILED,
+    payload: errmess
+});
+
+export const products = (args) => async (dispatch) => {
+    dispatch(productsRequest());
+    let urlparams = 'products';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(productsSuccess(res));
+    } catch (err) {
+        dispatch(productsFailed(err));
+    }
+}
+
+export const productsUpdateReset = () => ({
+    type: ActionTypes.PRODUCTS_UPDATE_RESET
+});
+
+export const productsUpdateRequest = () => ({
+    type: ActionTypes.PRODUCTS_UPDATE_REQUEST
+});
+
+export const productsUpdateSuccess = (result) => ({
+    type: ActionTypes.PRODUCTS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const productsUpdateFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTS_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateProduct = (productData) => async (dispatch) => {
+    dispatch(productsUpdateRequest());
+    const id = productData.productname;
+    const product = {
+        nombre: productData.nombre,
+        tipo: productData.tipo
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'products/'+ id, product, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productsUpdateFailed(err));
+    }
+}
+
+export const deleteProduct = (productData) => async (dispatch) => {
+    dispatch(productsUpdateRequest());
+    const id = productData.productname;
+    try {
+        const res = await axios.delete(baseBackUrl + 'products/'+ id, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productsUpdateFailed(err));
+    }
+}
+
+export const addProduct = (productData) => async (dispatch) => {
+    dispatch(productsUpdateRequest());
+    const product = productData;
+    try {
+        const res = await axios.post(baseBackUrl + 'products', product,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productsUpdateFailed(err));
+    }
+}
 
 
 //Restore and change password 

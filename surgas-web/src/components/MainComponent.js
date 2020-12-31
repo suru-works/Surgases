@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from './HeaderComponent'
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
-import Products from './ProductsComponent';
+import Products from './ProductComponent';
 import Contact from './ContactComponent';
 import Sales from './SalesComponent';
 import Administrator from './AdministratorComponent';

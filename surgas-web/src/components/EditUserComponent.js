@@ -130,6 +130,15 @@ const EditUserComponent = (props) => {
                                     </FormGroup>
 
                                     <FormGroup>
+                                        <Label htmlFor="codigo">Código</Label>
+                                        <Input type="text" id="codigo" name="codigo" value={values.codigo}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.codigo && errors.codigo) ? (<Alert color="danger">{errors.codigo}</Alert>) : null}
+
+                                    </FormGroup>
+
+                                    <FormGroup>
                                         <Label htmlFor="email">Correo</Label>
                                         <Input type="email" id="correo" name="correo" value={values.email}
                                             onChange={handleChange}

@@ -10,7 +10,6 @@ import { Switch, Route, Redirect, withRouter, useLocation } from 'react-router-d
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UsersAdministration from './UsersAdministrationComponent';
 import ProductsAdministration from './ProductsAdministrationComponent';
-import MunicipalitiesAdministration from './MunicipalitiesAdministrationComponent';
 import SystemParametersAdministration from './SystemParametersAdministrationComponent';
 import SystemPrintersAdministration from './SystemPrintersAdministrationComponent';
 import  SystemBackup  from './SystemBackupComponent'
@@ -118,10 +117,6 @@ const AdministratorComponent = () => {
                                     <Link to="/administrador/productos" />
                                         </MenuItem>
 
-                                        <MenuItem icon={<i className="fa fa-globe"></i>}>
-                                            Gestionar municipios
-                                    <Link to="/administrador/municipios" />
-                                        </MenuItem>
                                         <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
                                             <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
                                                 Parametros
@@ -158,7 +153,6 @@ const AdministratorComponent = () => {
                             <Switch location={location} >
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
                                 <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
-                                <Route path='/administrador/municipios' component={() => <MunicipalitiesAdministration />} />
                                 <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
                                 <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
                             </Switch>
