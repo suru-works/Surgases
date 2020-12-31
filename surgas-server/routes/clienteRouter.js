@@ -22,18 +22,18 @@ clienteRouter.route("/")
         query = query + ' WHERE ';
 
         if (params.telefono) {
-            conditions.push('telefono LIKE %?%');
-            values.push(params.telefono);
+            conditions.push('telefono LIKE ?');
+            values.push('%' + params.telefono + '%');
         }
 
         if (params.email) {
-            conditions.push('email LIKE %?%');
-            values.push(params.email);
+            conditions.push('email LIKE ?');
+            values.push('%' + params.email + '%');
         }
 
         if (params.nombre) {
-            conditions.push('nombre LIKE %?%');
-            values.push(params.nombre);
+            conditions.push('nombre LIKE ?');
+            values.push('%' + params.nombre + '%');
         }
 
         if (params.fechaRegistroMinima) {
@@ -102,8 +102,8 @@ clienteRouter.route("/")
         }
 
         if (params.username) {
-            conditions.push('username LIKE %?%');
-            values.push(params.username);
+            conditions.push('username LIKE ?');
+            values.push('%' + params.username + '%');
         }
     }
 

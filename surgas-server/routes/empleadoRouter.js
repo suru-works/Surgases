@@ -22,23 +22,23 @@ empleadoRouter.route("/")
         query = query + ' WHERE ';
 
         if (params.id) {
-            conditions.push('id LIKE %?%');
-            values.push(params.id);
+            conditions.push('id LIKE ?');
+            values.push('%' + params.id + '%');
         }
 
         if (params.nombre) {
-            conditions.push('nombre LIKE %?%');
-            values.push(params.nombre);
+            conditions.push('nombre LIKE ?');
+            values.push('%' + params.nombre + '%');
         }
 
         if (params.direccion) {
-            conditions.push('direccion LIKE %?%');
-            values.push(params.direccion);
+            conditions.push('direccion LIKE ?');
+            values.push('%' + params.direccion + '%');
         }
 
         if (params.telefono) {
-            conditions.push('telefono LIKE %?%');
-            values.push(params.telefono);
+            conditions.push('telefono LIKE ?');
+            values.push('%' + params.telefono + '%');
         }
         
         if (params.estado) {
@@ -47,8 +47,8 @@ empleadoRouter.route("/")
         }
 
         if (params.username) {
-            conditions.push('username LIKE %?%');
-            values.push(params.username);
+            conditions.push('username LIKE ?');
+            values.push('%' + params.username + '%');
         }
     }
 

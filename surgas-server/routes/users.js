@@ -12,14 +12,42 @@ const pool = db.pool;
 const expires = 54000000;
 
 router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-  const query = db.buildQuery('usuario', req.query, ['username', 'nombre', 'email', 'administrador', 'comun']);
-  const results = await pool.promise().execute(query.query, query.values);
+  const params = req.query;
+  let query = 'SELECT * FROM usuario';
+  let conditions = [];
+  let values = [];
+
+  if (Object.keys(params).length !== 0) {
+    query = query + ' WHERE ';
+
+    if (params.username) {
+      conditions.push("username LIKE ?");
+      values.push('%' + params.username + '%');
+    }
+
+    if (params.nombre) {
+      conditions.push("nombre LIKE ?");
+      values.push('%' + params.nombre + '%');
+    }
+
+    if (params.email) {
+      conditions.push("email LIKE ?");
+      values.push('%' + params.email + '%');
+    }
+
+    if (params.tipo) {
+      conditions.push('tipo = ?');
+      values.push(params.tipo);
+    }
+  }
+
+  const results = await pool.promise().execute(query + conditions.join(' AND '), values);
   if (results) {
-    res.json(JSON.parse(JSON.stringify(results[0])));
+    res.json(JSON.parse(JSON.stringify(results[0])))
   } else {
     throw {
-      status: 500
-    }
+        status: 500
+    };
   }
 }));
 
@@ -144,6 +172,39 @@ router.post('/logout', auth.isAuthenticated, (req, res, next) => {
     msg: 'logged out successfully'
   });
 });
+
+router.put('/current', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+  if (req.body.tipo && req.user.tipo != 'administrador') {
+    let error = new Error('not authorized');
+    error.status = 403;
+    throw error;
+  } else {
+    pool.getConnection(async (err, conn) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+  
+      const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
+      let result = await conn.promise().execute(query.query, query.values);
+      if (result[0].affectedRows == 1) {
+        conn.commit();
+  
+        result = await pool.promise().execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
+        const user = JSON.parse(JSON.stringify(result[0]))[0];
+        req.login(user, (err) => {
+          next(err);
+        });
+        /*res.json({
+          msg: 'user updated successfully'
+        });*/
+      } else {
+        conn.rollback();
+        next(new Error('update error'));
+      }
+    });
+  }
+}));
 
 router.put('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
   pool.getConnection(async (err, conn) => {

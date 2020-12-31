@@ -22,18 +22,18 @@ productoRouter.route("/")
         query = query + ' WHERE ';
 
         if (params.codigo) {
-            conditions.push('codigo LIKE %?%');
-            values.push(params.codigo);
+            conditions.push('codigo LIKE ?');
+            values.push('%' + params.codigo + '%');
         }
 
         if (params.nombre) {
-            conditions.push('nombre LIKE %?%');
-            values.push(params.nombre);
+            conditions.push('nombre LIKE ?');
+            values.push('%' + params.nombre + '%');
         }
 
         if (params.color) {
-            conditions.push('color LIKE %?%');
-            values.push(params.color);
+            conditions.push('color LIKE ?');
+            values.push('%' + params.color + '%');
         }
 
         if (params.pesoMinimo) {

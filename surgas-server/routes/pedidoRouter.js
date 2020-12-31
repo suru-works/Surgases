@@ -58,8 +58,8 @@ pedidoRouter.route("/")
         }
 
         if (params.direccion) {
-            conditions.push('direccion LIKE %?%');
-            values.push(params.direccion);
+            conditions.push('direccion LIKE ?');
+            values.push('%' + params.direccion + '%');
         }
 
         if (params.precioBrutoMinimo) {
@@ -88,8 +88,8 @@ pedidoRouter.route("/")
         }
 
         if (params.bodega) {
-            conditions.push('bodega LIKE %?%');
-            values.push(params.bodega);
+            conditions.push('bodega LIKE ?');
+            values.push('%' + params.bodega + '%');
         }
 
         if (params.puntosMinimos) {
@@ -108,8 +108,8 @@ pedidoRouter.route("/")
         }
 
         if (params.nota) {
-            conditions.push('nota LIKE %?%');
-            values.push(params.nota);
+            conditions.push('nota LIKE ?');
+            values.push('%' + params.nota + '%');
         }
     }
 

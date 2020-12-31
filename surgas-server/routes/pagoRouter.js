@@ -42,13 +42,13 @@ pagoRouter.route("/")
         }
 
         if (params.empleado) {
-            conditions.push('empleado LIKE %?%');
-            values.push(params.empleado);
+            conditions.push('empleado LIKE ?');
+            values.push('%' + params.empleado + '%');
         }
 
         if (params.usuario) {
-            conditions.push('usuario LIKE %?%');
-            values.push(params.usuario);
+            conditions.push('usuario LIKE ?');
+            values.push('%' + params.usuario + '%');
         }
     }
 
