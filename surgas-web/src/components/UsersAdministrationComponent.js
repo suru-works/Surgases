@@ -6,7 +6,7 @@ import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, 
 import { Loading } from './LoadingComponent';
 import User from './UserComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { users, searchUser } from '../redux/ActionCreators';
+import { users } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -33,18 +33,32 @@ const SearchCriteria = () => {
         dispatch(users());
     }, []);
 
-    const doSearch = (userData) => dispatch(searchUser(userData));
+    const doSearch = (userData) => dispatch(users(userData));
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             username: '',
             nombre: '',
-            correo: '',
+            email: '',
             tipo: 'sin especificar'
         },
         validationSchema,
         onSubmit(values) {
-            doSearch(values);
+            let userData = []
+            if(values.username != ''){
+                userData.push('username='+values.username);
+            }
+            if(values.nombre != ''){
+                userData.push('nombre='+values.nombre);
+            }
+            if(values.email != ''){
+                userData.push('email='+(values.email).replace('@','%40'));
+            }
+            if(values.tipo != 'sin especificar'){
+                userData.push('tipo='+values.tipo);
+            }
+             
+            doSearch(userData);
         }
     });
 
@@ -85,10 +99,10 @@ const SearchCriteria = () => {
 
                             <FormGroup className='col-12 col-sm-6'>
                                 <Label htmlFor="email">Correo</Label>
-                                <Input type="email" id="correo" name="correo" value={values.email}
+                                <Input type="email" id="email" name="email" value={values.email}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
+                                {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
 
                             </FormGroup>
 

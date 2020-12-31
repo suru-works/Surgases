@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import axios from 'axios';
 import { baseBackUrl } from '../shared/baseUrl';
+import ProductsAdministration from '../components/ProductsAdministrationComponent';
 
 axios.defaults.withCredentials = true;
 
@@ -199,11 +200,15 @@ export const usersFailed = (errmess) => ({
     payload: errmess
 });
 
-export const users = () => async (dispatch) => {
+export const users = (args) => async (dispatch) => {
     dispatch(usersRequest());
+    let urlparams = 'users';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
 
     try {
-        const res = await axios.get(baseBackUrl + 'users');
+        const res = await axios.get(baseBackUrl + urlparams);
         dispatch(usersSuccess(res));
     } catch (err) {
         dispatch(usersFailed(err));
@@ -234,8 +239,7 @@ export const updateUser = (userData) => async (dispatch) => {
     const id = userData.username;
     const user = {
         nombre: userData.nombre,
-        administrador: userData.administrador,
-        vendedor: userData.vendedor
+        tipo: userData.tipo
     }
     try {
         const res = await axios.put(baseBackUrl + 'users/'+ id, user, {
@@ -282,21 +286,6 @@ export const addUser = (userData) => async (dispatch) => {
     }
 }
 /* TO DO: implementar la busqueda de usuarios */
-export const searchUser = (userData) => async (dispatch) => {
-    dispatch(usersRequest());
-    const user = userData;
-    try {
-        const res = await axios.post(baseBackUrl + 'users/', user,{
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true
-        });
-        dispatch(usersSuccess(res));
-    } catch (err) {
-        dispatch(usersFailed(err));
-    }
-}
 
 
 //Restore and change password 

@@ -20,20 +20,7 @@ const EditUserComponent = (props) => {
     const [username] = useState(props.user.username);
     const [nombre] = useState(props.user.nombre);
     const [email] = useState(props.user.email);
-
-    const getInitialSelectedTypeIndex = (user) =>{
-        if(user.administrador == '1'){
-            return ("administrador");
-        }
-        else if(user.vendedor == '1'){
-            return ("vendedor");
-        }
-        else{
-            return("indefinido");
-        }
-    }
-
-    const [selectedType] = useState(()=>getInitialSelectedTypeIndex(props.user));
+    const [tipo] = useState(props.user.tipo);
 
     const error = useSelector(state => state.usersUpdate.errMess);
     const result = useSelector(state => state.usersUpdate.result);
@@ -56,8 +43,7 @@ const EditUserComponent = (props) => {
             username: props.user.username,
             nombre: values.nombre,
             email: values.email,
-            administrador: values.administrador,
-            vendedor: values.vendedor
+            tipo: values.tipo
         }
         doUpdateUser(userData);
     }
@@ -71,47 +57,18 @@ const EditUserComponent = (props) => {
         doDeleteUser(userData);
     }
 
-    const getFinalTypeData = (tipo) =>{
-        if(tipo == "vendedor"){
-            return(
-                {
-                    administrador: '0',
-                    vendedor:'1'
-                }
-            );
-        }
-        else if(tipo == "administrador"){
-            return(
-                {
-                    administrador: '1',
-                    vendedor: '0'
-                }
-            )
-        }
-        else {
-            return(
-                {
-                    administrador: '0',
-                    vendedor: '0'
-                }
-            )
-        }
-    }
-
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             nombre: nombre,
             email: email,
-            tipo: selectedType
+            tipo: tipo
         },
         validationSchema,
         onSubmit(values) {
-            const typeData = getFinalTypeData(values.tipo);
             const userData={
                 nombre: values.nombre,
                 email: values.email,
-                administrador: typeData.administrador,
-                vendedor: typeData.vendedor
+                tipo: values.tipo
             }
             uploadChanges(userData);
         }
