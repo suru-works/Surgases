@@ -12,7 +12,7 @@ const pool = db.pool;
 const expires = 54000000;
 
 router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-  const query = db.buildQuery('usuario', req.query, ['username', 'nombre', 'email', 'administrador', 'comun']);
+  const query = db.buildQuery('usuario', req.query, ['username', 'nombre', 'email', 'administrador', 'vendedor']);
   const results = await pool.promise().execute(query.query, query.values);
   if (results) {
     res.json(JSON.parse(JSON.stringify(results[0])));
@@ -134,7 +134,7 @@ router.post('/login', auth.login, (req, res, next) => {
     nombre: user.nombre,
     email: user.email,
     administrador: user.administrador,
-    comun: user.comun    
+    vendedor: user.vendedor    
   });
 });
 

@@ -17,7 +17,7 @@ const validationSchema = yup.object(
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
     });
 const EditUserComponent = (props) => {
-    const [nick] = useState(props.user.nick);
+    const [username] = useState(props.user.username);
     const [nombre] = useState(props.user.nombre);
     const [email] = useState(props.user.email);
 
@@ -25,8 +25,8 @@ const EditUserComponent = (props) => {
         if(user.administrador == '1'){
             return ("administrador");
         }
-        else if(user.comun == '1'){
-            return ("comun");
+        else if(user.vendedor == '1'){
+            return ("vendedor");
         }
         else{
             return("indefinido");
@@ -53,11 +53,11 @@ const EditUserComponent = (props) => {
 
     const uploadChanges = (values) => {
         const userData = {
-            nick: props.user.nick,
+            username: props.user.username,
             nombre: values.nombre,
             email: values.email,
             administrador: values.administrador,
-            comun: values.comun
+            vendedor: values.vendedor
         }
         doUpdateUser(userData);
     }
@@ -66,17 +66,17 @@ const EditUserComponent = (props) => {
 
     const deleteThatUser = () => {
         const userData = {
-            nick: props.user.nick
+            username: props.user.username
         }
         doDeleteUser(userData);
     }
 
     const getFinalTypeData = (tipo) =>{
-        if(tipo == "comun"){
+        if(tipo == "vendedor"){
             return(
                 {
                     administrador: '0',
-                    comun:'1'
+                    vendedor:'1'
                 }
             );
         }
@@ -84,7 +84,7 @@ const EditUserComponent = (props) => {
             return(
                 {
                     administrador: '1',
-                    comun: '0'
+                    vendedor: '0'
                 }
             )
         }
@@ -92,7 +92,7 @@ const EditUserComponent = (props) => {
             return(
                 {
                     administrador: '0',
-                    comun: '0'
+                    vendedor: '0'
                 }
             )
         }
@@ -111,7 +111,7 @@ const EditUserComponent = (props) => {
                 nombre: values.nombre,
                 email: values.email,
                 administrador: typeData.administrador,
-                comun: typeData.comun
+                vendedor: typeData.vendedor
             }
             uploadChanges(userData);
         }
@@ -160,7 +160,7 @@ const EditUserComponent = (props) => {
                     <div className="d-flex space-around row">
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
-                                <CardTitle> Ingresa los datos del usuario: {nick}</CardTitle>
+                                <CardTitle> Ingresa los datos del usuario: {username}</CardTitle>
                                 <CardBody style={{ padding: 8 }}>
 
                                     <FormGroup>
@@ -186,7 +186,7 @@ const EditUserComponent = (props) => {
                                         <Input type="select" name="tipo" id="tipo" value={values.tipo}
                                             onChange={handleChange}
                                             onBlur={handleBlur}>
-                                            <option>comun</option>
+                                            <option>vendedor</option>
                                             <option>administrador</option>
                                         </Input>
                                     </FormGroup>

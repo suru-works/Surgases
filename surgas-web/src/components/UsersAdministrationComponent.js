@@ -37,7 +37,7 @@ const SearchCriteria = () => {
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            nick: '',
+            username: '',
             nombre: '',
             correo: '',
             tipo: 'sin especificar'
@@ -61,11 +61,11 @@ const SearchCriteria = () => {
                         <div className='row'>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="nick">Usuario</Label>
-                                <Input type="text" id="nick" name="nick" value={values.nick}
+                                <Label htmlFor="username">Usuario</Label>
+                                <Input type="text" id="username" name="username" value={values.username}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
+                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
 
                             </FormGroup>
 
@@ -98,7 +98,7 @@ const SearchCriteria = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}>
                                     <option>sin especificar</option>
-                                    <option>comun</option>
+                                    <option>vendedor</option>
                                     <option>administrador</option>
                                 </Input>
                             </FormGroup>

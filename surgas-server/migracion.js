@@ -23,14 +23,14 @@ async function migrar() {
     for (i = 0; i < usuarios.length; i++) {
         if (usuarios[i].administrador === '1') {
             tipo = 'administrador';
-        } else if (usuarios[i].comun === '1') {
+        } else if (usuarios[i].vendedor === '1') {
             tipo = 'vendedor';
         } else {
             tipo = 'cliente';
         }
         [rows, fields] = await conn2.promise().execute(
             "INSERT INTO usuario VALUES(?, ?, ?, ?, ?, b'1')",
-            [usuarios[i].nick, usuarios[i].email, usuarios[i].password_hash, usuarios[i].nombre, tipo]
+            [usuarios[i].username, usuarios[i].email, usuarios[i].password_hash, usuarios[i].nombre, tipo]
         );
     }
 
@@ -59,7 +59,7 @@ async function migrar() {
         if (clientes[i].empresarial === '1') {
             tipo = 'empresarial';
         } else {
-            tipo = 'comun';
+            tipo = 'vendedor';
         }
         [rows, fields] = await conn2.promise().execute(
             "INSERT INTO cliente VALUES(?, NULL, ?, ?, ?, 0.0, ?, ?, NULL, ?, NULL)",

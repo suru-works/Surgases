@@ -36,23 +36,23 @@ const AddUserComponent = (props) => {
 
     const uploadChanges = (values) => {
         const userData = {
-            nick: values.nick,
+            username: values.username,
             nombre: values.nombre,
             password: values.pasword,
             email: values.email,
             administrador: values.administrador,
-            comun: values.comun
+            vendedor: values.vendedor
         }
         doAddUser(userData);        
     }
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            nick:'',
+            username:'',
             nombre: '', 
             password: '',
             email: '',
             administrador: '0',
-            comun: '1'
+            vendedor: '1'
         },
         validationSchema,
         onSubmit(values) {
@@ -109,11 +109,11 @@ const AddUserComponent = (props) => {
 
                             <FormGroup>
                                 
-                                <Label htmlFor="nick">Usuario</Label>
-                                <Input type="text" id="nick" name="nick" value={values.nick}
+                                <Label htmlFor="username">Usuario</Label>
+                                <Input type="text" id="username" name="username" value={values.username}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                {(touched.nick && errors.nick) ? (<Alert color="danger">{errors.nick}</Alert>) : null}
+                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
 
                             </FormGroup>
 
