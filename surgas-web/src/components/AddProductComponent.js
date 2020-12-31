@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { users, addUser, usersUpdateReset } from '../redux/ActionCreators';
+import { products, addProduct, productsUpdateReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 const validationSchema = yup.object(
 
+    {
+        codigo: yup
+            .string()
+            .min(1, "Ingrese el código")
+    },
     {
         nombre: yup
             .string()
@@ -17,33 +22,39 @@ const validationSchema = yup.object(
     }
 );
 
-const AddUserComponent = (props) => {
+const AddProductComponent = (props) => {
  //TO DO
-/*  Las inserciones de nuevos usuarios no estan funcionando... posiblemente por el json que se esta mandando en la solicitud */
-    const error = useSelector(state => state.usersUpdate.errMess);
-    const result = useSelector(state => state.usersUpdate.result);
-    const loading = useSelector(state => state.usersUpdate.isLoading);
+/*  Las inserciones de nuevos productos no estan funcionando... posiblemente por el json que se esta mandando en la solicitud */
+    const error = useSelector(state => state.productsUpdate.errMess);
+    const result = useSelector(state => state.productsUpdate.result);
+    const loading = useSelector(state => state.productsUpdate.isLoading);
 
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
-        dispatch(users());
-        dispatch(usersUpdateReset());
+        dispatch(products());
+        dispatch(productsUpdateReset());
         props.toggle();
     }
 
-    const doAddUser = (userData) => dispatch(addUser(userData));
+    const doAddProduct = (productData) => dispatch(addProduct(productData));
 
     const uploadChanges = (values) => {
-        const userData = {
-            username: values.username,
+        const productData = {
+            
+            codigo: values.codigo,
             nombre: values.nombre,
-            password: values.pasword,
-            email: values.email,
-            administrador: values.administrador,
-            vendedor: values.vendedor
+            color: values.color,
+            pesoMinimo: values.pesoMinimo,
+            pesoMaximo: values.pesoMaximo,
+            tipo: values.tipo,
+            precioMinimo: values.precioMinimo,
+            precioMaximo: values.precioMaximo,
+            inventarioMinimo: values.inventarioMinimo,
+            inventarioMaximo: values.inventarioMaximo,
+            disponible: values.disponible
         }
-        doAddUser(userData);        
+        doAddProduct(productData);        
     }
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
@@ -72,7 +83,7 @@ const AddUserComponent = (props) => {
     if (loading) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -82,7 +93,7 @@ const AddUserComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -92,9 +103,9 @@ const AddUserComponent = (props) => {
     else if (result) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
                 <ModalBody>
-                    <p>Usuario añadido correctamente.</p>
+                    <p>Producto añadido correctamente.</p>
                 </ModalBody>
                 <Button onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
@@ -103,36 +114,111 @@ const AddUserComponent = (props) => {
     else {
         return (
 
-            
-            <Modal isOpen={props.isOpen} toggle={props.toggle}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
 
                 <ModalBody>
 
                         <Form onSubmit={handleSubmit} >
 
-                            <CardTitle> Ingresa los datos del usuario</CardTitle>
+                            <CardTitle> Ingresa los datos del producto</CardTitle>
                             <br></br>
 
-                            <FormGroup>
-                                
-                                <Label htmlFor="username">Usuario</Label>
-                                <Input type="text" id="username" name="username" value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
+                            <div className='row'>
 
-                            </FormGroup>
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="nombre">Nombre</Label>
+                                    <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
-                            <FormGroup>
+                                </FormGroup>
 
-                                <Label htmlFor="nombre">Nombre</Label>
-                                <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-                            </FormGroup>
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="codigo">Código</Label>
+                                    <Input type="text" id="codigo" name="codigo" value={values.codigo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.codigo && errors.codigo) ? (<Alert color="danger">{errors.codigo}</Alert>) : null}
+
+                                </FormGroup>
+
+
+                            </div>
+
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="tipo">Tipo</Label>
+                                    <Input type="text" id="tipo" name="tipo" value={values.tipo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="color">Color</Label>
+                                    <Input type="text" id="color" name="color" value={values.color}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                            </div>
+
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="pesoMinimo">Peso mínimo</Label>
+                                    <Input type="text" id="pesoMinimo" name="pesoMinimo" value={values.pesoMinimo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="pesoMaximo">Peso máximo</Label>
+                                    <Input type="text" id="pesoMaximo" name="pesoMaximo" value={values.pesoMaximo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                            </div>
+
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="precioMinimo">Precio mínimo</Label>
+                                    <Input type="text" id="precioMinimo" name="precioMinimo" value={values.precioMinimo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="precioMaximo">Precio máximo</Label>
+                                    <Input type="text" id="precioMaximo" name="precioMaximo" value={values.precioMaximo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                            </div>
+
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="inventarioMinimo">Inventario mínimo</Label>
+                                    <Input type="text" id="inventarioMinimo" name="inventarioMinimo" value={values.inventarioMinimo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="inventarioMaximo">Inventario máximo</Label>
+                                    <Input type="text" id="inventarioMaximo" name="inventarioMaximo" value={values.inventarioMaximo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                            </div>
                             
                             <br></br>
 
@@ -149,6 +235,6 @@ const AddUserComponent = (props) => {
     }
 
 }
-AddUserComponent.propTypes = {};
+AddProductComponent.propTypes = {};
 
-export default AddUserComponent;
+export default AddProductComponent;

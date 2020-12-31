@@ -291,13 +291,15 @@ const ProductsAdministration = () => {
                     <SearchResult></SearchResult>
                 </CardBody>
             </Card>
+
             <FloatingButtonContainer >
-                <FloatingButtonLink tooltip="Añadir un producto" styles={{ backgroundColor: "#fdd835" }} >
-                    <div onClick={toggleAddProductModal}>
-                        <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    </div >
-                </FloatingButtonLink>
+                <FloatingButton tooltip="Añadir un producto" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddProductModal} >
+                    
+                    <i className="fa fa-plus fa-2x plusbutton" ></i>
+                    
+                </FloatingButton>
             </FloatingButtonContainer>
+            
             <AddProductComponent isOpen={isAddProductModalOpen} toggle={toggleAddProductModal}></AddProductComponent>
         </div>
 

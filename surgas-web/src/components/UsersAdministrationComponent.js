@@ -216,7 +216,7 @@ const UsersAdministration = () => {
         <div className='col' >
             <Card  >
                 <CardTitle >
-                    <CardText>Criterios de busqueda</CardText>
+                    <CardText>Criterios de búsqueda</CardText>
                 </CardTitle>
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
@@ -231,11 +231,11 @@ const UsersAdministration = () => {
                 </CardBody>
             </Card>
             <FloatingButtonContainer >
-                <FloatingButtonLink tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} >
-                    <div onClick={toggleAddUserModal}>
+                <FloatingButton tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddUserModal} >
+                    
                         <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    </div >
-                </FloatingButtonLink>
+                    
+                </FloatingButton>
             </FloatingButtonContainer>
             <AddUserComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddUserComponent>
         </div>
