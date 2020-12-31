@@ -114,6 +114,7 @@ const SearchCriteria = () => {
                                     <option>sin especificar</option>
                                     <option>vendedor</option>
                                     <option>administrador</option>
+                                    <option>cliente</option>
                                 </Input>
                             </FormGroup>
 
