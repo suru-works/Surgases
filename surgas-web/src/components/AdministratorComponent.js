@@ -93,7 +93,7 @@ const AdministratorComponent = () => {
 
     }
     else if (result) {
-        if (result.data.administrador == '1') {
+        if (result.data.tipo === 'administrador') {
             return (
 
                 <div class="container m-0 p-0">

@@ -162,7 +162,7 @@ router.post('/login', auth.login, (req, res, next) => {
     nombre: user.nombre,
     email: user.email,
     administrador: user.administrador,
-    comun: user.comun    
+    vendedor: user.vendedor    
   });
 });
 

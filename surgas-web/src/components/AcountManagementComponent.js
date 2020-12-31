@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { Loading } from './LoadingComponent';
-import { user, updateUser, userReset, users, usersUpdateReset } from '../redux/ActionCreators';
+import { user, updateCurrentUser, userReset, users, userUpdateReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 
 import * as yup from "yup";
@@ -20,91 +20,49 @@ const validationSchema = yup.object(
 
 const AcountManagement = (props) => {
 
-    const [nick] = useState(props.user.nick);
+    const [username] = useState(props.user.username);
     const [nombre] = useState(props.user.nombre);
     const [email] = useState(props.user.email);
+    const [tipo] = useState(props.user.tipo);
 
     
-    const getInitialSelectedTypeIndex = (user) =>{
-        if(user.administrador == '1'){
-            return ("administrador");
-        }
-        else if(user.comun == '1'){
-            return ("comun");
-        }
-        else{
-            return("indefinido");
-        }
-    }
-
-    const [selectedType] = useState(()=>getInitialSelectedTypeIndex(props.user));
-
     const dispatch = useDispatch();
 
-    const error = useSelector(state => state.usersUpdate.errMess);
-    const result = useSelector(state => state.usersUpdate.result);
-    const loading = useSelector(state => state.usersUpdate.isLoading);
+    const error = useSelector(state => state.userUpdate.errMess);
+    const result = useSelector(state => state.userUpdate.result);
+    const loading = useSelector(state => state.userUpdate.isLoading);
 
     const toogleAndReset = () => {
         dispatch(user());
         dispatch(users());
-        dispatch(usersUpdateReset());
+        dispatch(userUpdateReset());
         props.toggle();
     }
 
-    const doUpdateUser = (userData) => dispatch(updateUser(userData));
+    const doUpdateUser = (userData) => dispatch(updateCurrentUser(userData));
 
     const uploadChanges = (values) => {
         const userData = {
-            nick: props.user.nick,
+            username: props.user.username,
             nombre: values.nombre,
             email: values.email,
-            administrador: values.administrador,
-            comun: values.comun
+            tipo: values.tipo
         }
         doUpdateUser(userData);
-    }
-    const getFinalTypeData = (tipo) => {
-        if (tipo == "comun") {
-            return (
-                {
-                    administrador: '0',
-                    comun: '1'
-                }
-            );
-        }
-        else if (tipo == "administrador") {
-            return (
-                {
-                    administrador: '1',
-                    comun: '0'
-                }
-            )
-        }
-        else {
-            return (
-                {
-                    administrador: '0',
-                    comun: '0'
-                }
-            )
-        }
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             nombre: nombre,
             email: email,
-            tipo: selectedType
+            tipo: tipo
         },
         validationSchema,
         onSubmit(values) {
-            const typeData = getFinalTypeData(values.tipo);
             const userData = {
                 nombre: values.nombre,
                 email: values.email,
-                administrador: typeData.administrador,
-                comun: typeData.comun
+                tipo: values.tipo
             }
             uploadChanges(userData);
         }
@@ -156,7 +114,7 @@ const AcountManagement = (props) => {
 
                     <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
 
-                        <CardTitle> Ingresa los datos del usuario: {nick}</CardTitle>
+                        <CardTitle> Ingresa los datos del usuario: {username}</CardTitle>
                         
                         <br></br>
 
@@ -183,7 +141,7 @@ const AcountManagement = (props) => {
                             <Input type="select" name="tipo" id="tipo" value={values.tipo}
                                 onChange={handleChange}
                                 onBlur={handleBlur}>
-                                <option>comun</option>
+                                <option>vendedor</option>
                                 <option>administrador</option>
                             </Input>
                         </FormGroup>

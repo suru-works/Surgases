@@ -14,7 +14,7 @@ const fix = async function() {
         for (let i = 0; i < rows1.length; i++) {
             let user = JSON.parse(JSON.stringify(rows1[i]));
             let hash = await bcrypt.hash(user.pasword, 10);
-            [rows, fields] = await conn.promise().execute('UPDATE usuario SET password_hash = ? WHERE nick = ?', [hash, user.nick]);
+            [rows, fields] = await conn.promise().execute('UPDATE usuario SET password_hash = ? WHERE username = ?', [hash, user.username]);
         }
         conn.commit();
         console.log('DONE');

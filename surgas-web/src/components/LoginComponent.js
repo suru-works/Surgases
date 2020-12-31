@@ -17,7 +17,7 @@ const RenderLoginComponent = (props) => {
     const dispatch = useDispatch();
     const validationSchema = yup.object(
         {
-            user: yup
+            username: yup
                 .string()
                 .required("Este campo es obligatorio"),
             password: yup
@@ -32,12 +32,12 @@ const RenderLoginComponent = (props) => {
 
     const handleLogin = values => {
 
-        doLogin({ username: values.user, password: values.password, remember: values.remember });
+        doLogin({ username: values.username, password: values.password, remember: values.remember });
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            user: '',
+            username: '',
             password: '',
             remember: false
         },
@@ -54,12 +54,12 @@ const RenderLoginComponent = (props) => {
             <ModalBody>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                        <Label htmlFor="user">Usuario</Label>
-                        <Input type="user" id="user" name="user" className="form-control" values={values}
+                        <Label htmlFor="username">Usuario</Label>
+                        <Input type="username" id="username" name="username" className="form-control" values={values}
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-                        {(touched.user && errors.user) ? (<Alert color="danger">{errors.user}</Alert>) : null}
+                        {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
 
                     </FormGroup>
 
@@ -104,7 +104,7 @@ const RenderRestoreComponent = (props) => {
 
     const validationSchema = yup.object(
         {
-            user: yup
+            username: yup
                 .string()
                 .email("Ingresa un correo electronico valido.")
                 .required("Este campo es obligatorio"),

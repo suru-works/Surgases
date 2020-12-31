@@ -17,23 +17,10 @@ const validationSchema = yup.object(
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
     });
 const EditUserComponent = (props) => {
-    const [nick] = useState(props.user.nick);
+    const [username] = useState(props.user.username);
     const [nombre] = useState(props.user.nombre);
     const [email] = useState(props.user.email);
-
-    const getInitialSelectedTypeIndex = (user) =>{
-        if(user.administrador == '1'){
-            return ("administrador");
-        }
-        else if(user.comun == '1'){
-            return ("comun");
-        }
-        else{
-            return("indefinido");
-        }
-    }
-
-    const [selectedType] = useState(()=>getInitialSelectedTypeIndex(props.user));
+    const [tipo] = useState(props.user.tipo);
 
     const error = useSelector(state => state.usersUpdate.errMess);
     const result = useSelector(state => state.usersUpdate.result);
@@ -53,11 +40,10 @@ const EditUserComponent = (props) => {
 
     const uploadChanges = (values) => {
         const userData = {
-            nick: props.user.nick,
+            username: props.user.username,
             nombre: values.nombre,
             email: values.email,
-            administrador: values.administrador,
-            comun: values.comun
+            tipo: values.tipo
         }
         doUpdateUser(userData);
     }
@@ -66,52 +52,23 @@ const EditUserComponent = (props) => {
 
     const deleteThatUser = () => {
         const userData = {
-            nick: props.user.nick
+            username: props.user.username
         }
         doDeleteUser(userData);
-    }
-
-    const getFinalTypeData = (tipo) =>{
-        if(tipo == "comun"){
-            return(
-                {
-                    administrador: '0',
-                    comun:'1'
-                }
-            );
-        }
-        else if(tipo == "administrador"){
-            return(
-                {
-                    administrador: '1',
-                    comun: '0'
-                }
-            )
-        }
-        else {
-            return(
-                {
-                    administrador: '0',
-                    comun: '0'
-                }
-            )
-        }
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             nombre: nombre,
             email: email,
-            tipo: selectedType
+            tipo: tipo
         },
         validationSchema,
         onSubmit(values) {
-            const typeData = getFinalTypeData(values.tipo);
             const userData={
                 nombre: values.nombre,
                 email: values.email,
-                administrador: typeData.administrador,
-                comun: typeData.comun
+                tipo: values.tipo
             }
             uploadChanges(userData);
         }
@@ -160,7 +117,7 @@ const EditUserComponent = (props) => {
                     <div className="d-flex space-around row">
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
-                                <CardTitle> Ingresa los datos del usuario: {nick}</CardTitle>
+                                <CardTitle> Ingresa los datos del usuario: {username}</CardTitle>
                                 <CardBody style={{ padding: 8 }}>
 
                                     <FormGroup>
@@ -186,7 +143,7 @@ const EditUserComponent = (props) => {
                                         <Input type="select" name="tipo" id="tipo" value={values.tipo}
                                             onChange={handleChange}
                                             onBlur={handleBlur}>
-                                            <option>comun</option>
+                                            <option>vendedor</option>
                                             <option>administrador</option>
                                         </Input>
                                     </FormGroup>

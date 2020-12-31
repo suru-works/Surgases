@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import axios from 'axios';
 import { baseBackUrl } from '../shared/baseUrl';
+import ProductsAdministration from '../components/ProductsAdministrationComponent';
 
 axios.defaults.withCredentials = true;
 
@@ -139,6 +140,46 @@ export const user = () => async (dispatch) => {
     }
 }
 
+
+export const userUpdateReset = () => ({
+    type: ActionTypes.USER_UPDATE_RESET
+});
+
+export const userUpdateRequest = () => ({
+    type: ActionTypes.USER_UPDATE_REQUEST
+});
+
+export const userUpdateSuccess = (result) => ({
+    type: ActionTypes.USER_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const userUpdateFailed = (errmess) => ({
+    type: ActionTypes.USER_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateCurrentUser = (userData) => async (dispatch) => {
+    dispatch(userUpdateRequest());
+    const user = {
+        nombre: userData.nombre,
+        tipo: userData.tipo
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'users/current', user, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(userUpdateSuccess(res));
+    } catch (err) {
+        dispatch(userUpdateFailed(err));
+    }
+}
+
+
 //Users
 
 export const usersReset = () => ({
@@ -159,11 +200,15 @@ export const usersFailed = (errmess) => ({
     payload: errmess
 });
 
-export const users = () => async (dispatch) => {
+export const users = (args) => async (dispatch) => {
     dispatch(usersRequest());
+    let urlparams = 'users';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
 
     try {
-        const res = await axios.get(baseBackUrl + 'users');
+        const res = await axios.get(baseBackUrl + urlparams);
         dispatch(usersSuccess(res));
     } catch (err) {
         dispatch(usersFailed(err));
@@ -191,11 +236,10 @@ export const usersUpdateFailed = (errmess) => ({
 
 export const updateUser = (userData) => async (dispatch) => {
     dispatch(usersUpdateRequest());
-    const id = userData.nick;
+    const id = userData.username;
     const user = {
         nombre: userData.nombre,
-        administrador: userData.administrador,
-        comun: userData.comun
+        tipo: userData.tipo
     }
     try {
         const res = await axios.put(baseBackUrl + 'users/'+ id, user, {
@@ -212,7 +256,7 @@ export const updateUser = (userData) => async (dispatch) => {
 
 export const deleteUser = (userData) => async (dispatch) => {
     dispatch(usersUpdateRequest());
-    const id = userData.nick;
+    const id = userData.username;
     try {
         const res = await axios.delete(baseBackUrl + 'users/'+ id, {
             headers: {
@@ -242,21 +286,6 @@ export const addUser = (userData) => async (dispatch) => {
     }
 }
 /* TO DO: implementar la busqueda de usuarios */
-export const searchUser = (userData) => async (dispatch) => {
-    dispatch(usersRequest());
-    const user = userData;
-    try {
-        const res = await axios.post(baseBackUrl + 'users/', user,{
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true
-        });
-        dispatch(usersSuccess(res));
-    } catch (err) {
-        dispatch(usersFailed(err));
-    }
-}
 
 
 //Restore and change password 

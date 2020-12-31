@@ -130,7 +130,7 @@ const AuthOptions = () => {
 const UserOptionsSales = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.administrador == '1' || result.data.comun == '1') {
+        if (result.data.tipo === 'administrador' || result.data.tipo === 'vendedor') {
             return (
                 <NavItem >
                     <NavLink className='nav-link' to='/ventas'><span className='fa fa-list fa-lg'></span> Ventas</NavLink>
@@ -154,7 +154,7 @@ const UserOptionsSales = () => {
 const UserOptionsAdmin = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.administrador == '1') {
+        if (result.data.tipo === 'administrador') {
             return (
                 <NavItem >
                     <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administración</NavLink>
