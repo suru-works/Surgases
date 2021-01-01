@@ -26,7 +26,7 @@ const EditUserComponent = (props) => {
     const result = useSelector(state => state.usersUpdate.result);
     const loading = useSelector(state => state.usersUpdate.isLoading);
 
-    
+
 
     const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ const EditUserComponent = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            const userData={
+            const userData = {
                 nombre: values.nombre,
                 email: values.email,
                 tipo: values.tipo
@@ -148,12 +148,13 @@ const EditUserComponent = (props) => {
                                         </Input>
                                     </FormGroup>
 
-                                    <FormGroup>
-                                        <div class="d-flex justify-content-center" >
+                                    <div class="d-flex justify-content-center" >
+                                        <FormGroup>
+
                                             <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
                                             <Button className="secondary-button" onClick={() => deleteThatUser()}  >Eliminar Usuario</Button>
-                                        </div>
-                                    </FormGroup>
+                                        </FormGroup>
+                                    </div>
 
 
 

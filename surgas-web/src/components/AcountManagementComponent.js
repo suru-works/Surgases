@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { Loading } from './LoadingComponent';
-import { user, updateCurrentUser, userReset, users, userUpdateReset } from '../redux/ActionCreators';
+import { user, updateCurrentUser, userReset, users, userUpdateReset, restoreReset, restorePassword } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 
 import * as yup from "yup";
@@ -25,7 +25,7 @@ const AcountManagement = (props) => {
     const [email] = useState(props.user.email);
     const [tipo] = useState(props.user.tipo);
 
-    
+
     const dispatch = useDispatch();
 
     const error = useSelector(state => state.userUpdate.errMess);
@@ -49,6 +49,10 @@ const AcountManagement = (props) => {
             tipo: values.tipo
         }
         doUpdateUser(userData);
+    }
+
+    const submitPasswordChange = () => {
+        dispatch(restorePassword(username));
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
@@ -115,7 +119,7 @@ const AcountManagement = (props) => {
                     <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
 
                         <CardTitle> Ingresa los datos del usuario: {username}</CardTitle>
-                        
+
                         <br></br>
 
                         <FormGroup>
@@ -137,7 +141,7 @@ const AcountManagement = (props) => {
                         </FormGroup>
 
                         <FormGroup>
-                            <Label for="tipo">Tipo</Label>
+                            <Label htmlFor="tipo">Tipo</Label>
                             <Input type="select" name="tipo" id="tipo" value={values.tipo}
                                 onChange={handleChange}
                                 onBlur={handleBlur}>
@@ -145,11 +149,15 @@ const AcountManagement = (props) => {
                                 <option>administrador</option>
                             </Input>
                         </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="changePassword">contraseña</Label>
+                            <Button style={{ backgroundColor: '#fdd835', color: '#000000' }}  onClick={submitPasswordChange} >Cambiar contraseña</Button>
+                        </FormGroup>
 
                         <br></br>
 
                         <div class="d-flex justify-content-center" >
-                            <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Actualizar</Button>
+                            <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit"  >Actualizar</Button>
                         </div>
 
                     </Form>
