@@ -40,11 +40,10 @@ const AddProductComponent = (props) => {
     const doAddProduct = (productData) => dispatch(addProduct(productData));
 
     const uploadChanges = (values) => {
+
         const productData = {
             
             nombre: values.nombre,
-
-            disponible: values.disponible,
 
             tipo: values.tipo,
             color: values.color,
@@ -53,6 +52,13 @@ const AddProductComponent = (props) => {
             inventario: values.inventario
             
         }
+
+        if (values.disponible == "1") {
+            productData.disponible = 1;
+          } else {
+            productData.disponible = 0;
+          }
+
         doAddProduct(productData);        
     }
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
@@ -87,7 +93,7 @@ const AddProductComponent = (props) => {
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
                 <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
                 <ModalBody>
-                    <p>Hubo un error.</p>
+                    <p>Hubo un error</p>
                 </ModalBody>
             </Modal>
         );
@@ -97,9 +103,12 @@ const AddProductComponent = (props) => {
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
                 <ModalBody>
-                    <p>Producto añadido correctamente.</p>
+                    <p>Producto añadido correctamente</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <div className="d-flex justify-content-center" >
+                    <Button onClick={toogleAndReset} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} >Aceptar</Button>
+                </div>
+
             </Modal>
         );
     }

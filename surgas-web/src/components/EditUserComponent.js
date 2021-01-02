@@ -151,17 +151,18 @@ const EditUserComponent = (props) => {
                                     <div class="d-flex justify-content-center" >
                                         <FormGroup>
 
-                                            <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
-                                            <Button className="secondary-button" onClick={() => deleteThatUser()}  >Eliminar Usuario</Button>
+                                            <div className="d-flex justify-content-center" >
+
+                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={() => deleteThatUser()}  >Eliminar Usuario</Button>
+                                            </div>
                                         </FormGroup>
+
                                     </div>
-
-
 
                                 </CardBody>
 
                             </Card>
-
 
                         </Form>
 

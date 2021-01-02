@@ -345,10 +345,15 @@ export const productsUpdateFailed = (errmess) => ({
 
 export const updateProduct = (productData) => async (dispatch) => {
     dispatch(productsUpdateRequest());
-    const id = productData.productname;
+    const id = productData.codigo;
     const product = {
         nombre: productData.nombre,
-        tipo: productData.tipo
+        disponible: productData.disponible,
+        tipo: productData.tipo,
+        color: productData.color,
+        peso: productData.peso,
+        precio: productData.precio,
+        inventario: productData.inventario
     }
     try {
         const res = await axios.put(baseBackUrl + 'productos/'+ id, product, {
