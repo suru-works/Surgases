@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import { Loading } from './LoadingComponent';
-import Product from './ProductComponent';
+import Product from './ProductTableComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { products, updateProduct } from '../redux/ActionCreators';
 
@@ -41,20 +41,14 @@ const SearchCriteria = () => {
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            codigo: '',
             nombre: '',
-            color: '',
-
-            pesoMinimo: '',
-            pesoMaximo: '',
+            disponible: '',
             tipo:  '',
+            color: '',
+            peso: '',
+            precio: '',
+            inventario: ''
 
-            precioMinimo: '',
-            precioMaximo: '',
-
-            inventarioMinimo: '',
-            inventarioMaximo: '',
-            disponible: ''
         },
         validationSchema,
         onSubmit(values) {
@@ -84,11 +78,11 @@ const SearchCriteria = () => {
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="codigo">Código</Label>
-                                <Input type="text" id="codigo" name="codigo" value={values.codigo}
+                                <Label htmlFor="disponible">Disponible</Label>
+                                <Input type="text" id="disponible" name="disponible" value={values.disponible}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                {(touched.codigo && errors.codigo) ? (<Alert color="danger">{errors.codigo}</Alert>) : null}
+                                {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
                             </FormGroup>
 
@@ -116,15 +110,15 @@ const SearchCriteria = () => {
                         <div className='row'>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="pesoMinimo">Peso mínimo</Label>
-                                <Input type="text" id="pesoMinimo" name="pesoMinimo" value={values.pesoMinimo}
+                                <Label htmlFor="peso">Peso</Label>
+                                <Input type="text" id="peso" name="peso" value={values.peso}
                                     onChange={handleChange}
-                                    onBlur={handleBlur} />
+                                    onBlur={handleBlur}/>
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="pesoMaximo">Peso máximo</Label>
-                                <Input type="text" id="pesoMaximo" name="pesoMaximo" value={values.pesoMaximo}
+                                <Label htmlFor="precio">Precio</Label>
+                                <Input type="text" id="precio" name="precio" value={values.precio}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
                             </FormGroup>
@@ -134,48 +128,21 @@ const SearchCriteria = () => {
                         <div className='row'>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="precioMinimo">Precio mínimo</Label>
-                                <Input type="text" id="precioMinimo" name="precioMinimo" value={values.precioMinimo}
+                                <Label htmlFor="inventario">Inventario</Label>
+                                <Input type="text" id="inventario" name="inventario" value={values.inventario}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
                             </FormGroup>
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="precioMaximo">Precio máximo</Label>
-                                <Input type="text" id="precioMaximo" name="precioMaximo" value={values.precioMaximo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                            </FormGroup>
-
-                        </div>
-
-                        <div className='row'>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="inventarioMinimo">Inventario mínimo</Label>
-                                <Input type="text" id="inventarioMinimo" name="inventarioMinimo" value={values.inventarioMinimo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="inventarioMaximo">Inventario máximo</Label>
-                                <Input type="text" id="inventarioMaximo" name="inventarioMaximo" value={values.inventarioMaximo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
+                            <FormGroup  className='col-12 col-sm-6'>
+                                <br></br>
+                                <div class="d-flex justify-content-center"  >
+                                    <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
+                                    className="secondary-button" type="submit" value="submit">Buscar</Button>
+                                </div>
                             </FormGroup>
 
                         </div>
-
-
-                        <FormGroup>
-                            <div class="d-flex justify-content-center" >
-                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
-                                className="secondary-button" type="submit" value="submit">Buscar</Button>
-                            </div>
-                        </FormGroup>
-
-
 
                     </CardBody>
 
@@ -190,8 +157,10 @@ const SearchCriteria = () => {
 
 const RenderSearchResultTuple = (props) => {
     const productData = props.product;
+
     return (
         <Product product={productData} />
+        
     );
 
 }
@@ -220,27 +189,18 @@ const SearchResult = () => {
 
             );
         })
+
         return (
             <Table className='col' responsive={true} bordered striped   >
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Código</th>
-
+                        <th>Disponible</th>
                         <th>Tipo</th>
                         <th>Color</th>
-
-                        <th>Peso mínimo</th>
-                        <th>Peso máximo</th>
-
-                        <th>Precio mínimo</th>
-                        <th>Precio máximo</th>
-
-                        <th>Inventario mínimo</th>
-                        <th>Inventario máximo</th>
-
-                        <th>Disponible</th>
-
+                        <th>Peso</th>
+                        <th>Precio</th>
+                        <th>Inventario</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -250,8 +210,10 @@ const SearchResult = () => {
         );
     }
     if (error) {
+
         return (
             <div> hubo un error</div>
+            
         );
 
     }
@@ -299,7 +261,7 @@ const ProductsAdministration = () => {
                     
                 </FloatingButton>
             </FloatingButtonContainer>
-            
+
             <AddProductComponent isOpen={isAddProductModalOpen} toggle={toggleAddProductModal}></AddProductComponent>
         </div>
 

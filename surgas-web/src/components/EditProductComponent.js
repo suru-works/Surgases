@@ -25,17 +25,16 @@ const validationSchema = yup.object(
     );
 const EditProductComponent = (props) => {
 
-    const [codigo] = useState(props.product.codigo);
+
     const [nombre] = useState(props.product.nombre);
-    const [color] = useState(props.product.color);
-    const [pesoMinimo] = useState(props.product.pesoMinimo);
-    const [pesoMaximo] = useState(props.product.pesoMaximo);
-    const [tipo] = useState(props.product.tipo);
-    const [precioMinimo] = useState(props.product.precioMinimo);
-    const [precioMaximo] = useState(props.product.precioMaximo);
-    const [inventarioMinimo] = useState(props.product.inventarioMinimo);
-    const [inventarioMaximo] = useState(props.product.inventarioMaximo);
     const [disponible] = useState(props.product.disponible);
+    const [tipo] = useState(props.product.tipo);
+    const [color] = useState(props.product.color);
+    const [peso] = useState(props.product.peso);
+    const [precio] = useState(props.product.precio);
+    const [inventario] = useState(props.product.inventario);
+
+    
 
     const error = useSelector(state => state.productsUpdate.errMess);
     const result = useSelector(state => state.productsUpdate.result);
@@ -55,17 +54,15 @@ const EditProductComponent = (props) => {
 
     const uploadChanges = (values) => {
         const productData = {
-            codigo: props.product.codigo,
+
             nombre: values.nombre,
-            color: values.color,
-            pesoMinimo: values.pesoMinimo,
-            pesoMaximo: values.pesoMaximo,
+            disponible: values.disponible,
             tipo: values.tipo,
-            precioMinimo: values.precioMinimo,
-            precioMaximo: values.precioMaximo,
-            inventarioMinimo: values.inventarioMinimo,
-            inventarioMaximo: values.inventarioMaximo,
-            disponible: values.disponible
+            color: values.color,
+            peso: values.peso,
+            precio: values.precio,
+            inventario: values.inventario
+
         }
         doUpdateProduct(productData);
     }
@@ -74,42 +71,32 @@ const EditProductComponent = (props) => {
 
     const deleteThatProduct = () => {
         const productData = {
-            nombre: props.product.nombre
+            codigo: props.product.codigo
         }
         doDeleteProduct(productData);
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            codigo: codigo,
+            
             nombre: nombre,
+            disponible: disponible.data[0],
+            tipo: tipo,
             color: color,
-
-            pesoMinimo: pesoMinimo,
-            pesoMaximo: pesoMaximo,
-            tipo:  tipo,
-
-            precioMinimo: precioMinimo,
-            precioMaximo: precioMaximo,
-
-            inventarioMinimo: inventarioMinimo,
-            inventarioMaximo: inventarioMaximo,
-            disponible: disponible
+            peso: peso,
+            precio: precio,
+            inventario: inventario
         },
         validationSchema,
         onSubmit(values) {
             const productData={
-                codigo: values.codigo,
                 nombre: values.nombre,
-                color: values.color,
-                pesoMinimo: values.pesoMinimo,
-                pesoMaximo: values.pesoMaximo,
+                disponible: values.disponible,
                 tipo: values.tipo,
-                precioMinimo: values.precioMinimo,
-                precioMaximo: values.precioMaximo,
-                inventarioMinimo: values.inventarioMinimo,
-                inventarioMaximo: values.inventarioMaximo,
-                disponible: values.disponible
+                color: values.color,
+                peso: values.peso,
+                precio: values.precio,
+                inventario: values.inventario
             }
             uploadChanges(productData);
         }
@@ -118,7 +105,7 @@ const EditProductComponent = (props) => {
     if (loading) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -128,7 +115,7 @@ const EditProductComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -138,9 +125,9 @@ const EditProductComponent = (props) => {
     else if (result) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
                 <ModalBody>
-                    <p>Usuario Editado correctamente.</p>
+                    <p>Producto Producto correctamente.</p>
                 </ModalBody>
                 <Button onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
@@ -151,119 +138,100 @@ const EditProductComponent = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
 
                 <ModalBody>
 
                     <div className="d-flex space-around row">
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
-                                <CardTitle> Ingresa los datos del usuario: {nombre}</CardTitle>
+                                <CardTitle> Ingresa los datos del producto: {nombre}</CardTitle>
                                 <CardBody style={{ padding: 8 }}>
 
-                                    <hr />
+                                <hr />
 
-                                    <div className='row'>
+                            <div className='row'>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="nombre">Nombre</Label>
-                                            <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="nombre">Nombre</Label>
+                                    <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
-                                        </FormGroup>
+                                </FormGroup>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="codigo">Código</Label>
-                                            <Input type="text" id="codigo" name="codigo" value={values.codigo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.codigo && errors.codigo) ? (<Alert color="danger">{errors.codigo}</Alert>) : null}
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="disponible">Disponible</Label>
+                                
+                                    <Input type="select" id="disponible" name="disponible" value={values.disponible}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} >
+                                            
+                                        <option selected value={1}>Si</option>
+                                        <option          value={0}>No</option>
+                                    </Input>
+                                    {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
-                                        </FormGroup>
+                                </FormGroup>
 
+                            </div>
 
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="tipo">Tipo</Label>
+                                    <Input type="text" id="tipo" name="tipo" value={values.tipo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="color">Color</Label>
+                                    <Input type="text" id="color" name="color" value={values.color}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                            </div>
+
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="peso">Peso</Label>
+                                    <Input type="text" id="peso" name="peso" value={values.peso}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}/>
+                                </FormGroup>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="precio">Precio</Label>
+                                    <Input type="text" id="precio" name="precio" value={values.precio}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                            </div>
+
+                            <div className='row'>
+
+                                <FormGroup className='col-12 col-sm-6'>
+                                    <Label htmlFor="inventario">Inventario</Label>
+                                    <Input type="text" id="inventario" name="inventario" value={values.inventario}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </FormGroup>
+
+                                <FormGroup  className='col-12 col-sm-6'>
+                                    <br></br>
+                                    <div class="d-flex justify-content-center"  >
+                                        <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
+                                        <Button className="secondary-button" onClick={() => deleteThatProduct()}  >Eliminar Producto</Button>
                                     </div>
+                                </FormGroup>
 
-                                    <div className='row'>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="tipo">Tipo</Label>
-                                            <Input type="text" id="tipo" name="tipo" value={values.tipo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="color">Color</Label>
-                                            <Input type="text" id="color" name="color" value={values.color}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                    </div>
-
-                                    <div className='row'>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="pesoMinimo">Peso mínimo</Label>
-                                            <Input type="text" id="pesoMinimo" name="pesoMinimo" value={values.pesoMinimo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="pesoMaximo">Peso máximo</Label>
-                                            <Input type="text" id="pesoMaximo" name="pesoMaximo" value={values.pesoMaximo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                    </div>
-
-                                    <div className='row'>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="precioMinimo">Precio mínimo</Label>
-                                            <Input type="text" id="precioMinimo" name="precioMinimo" value={values.precioMinimo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="precioMaximo">Precio máximo</Label>
-                                            <Input type="text" id="precioMaximo" name="precioMaximo" value={values.precioMaximo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                    </div>
-
-                                    <div className='row'>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="inventarioMinimo">Inventario mínimo</Label>
-                                            <Input type="text" id="inventarioMinimo" name="inventarioMinimo" value={values.inventarioMinimo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="inventarioMaximo">Inventario máximo</Label>
-                                            <Input type="text" id="inventarioMaximo" name="inventarioMaximo" value={values.inventarioMaximo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                        </FormGroup>
-
-                                    </div>
-
-                                    <FormGroup>
-                                        <div class="d-flex justify-content-center" >
-                                            <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
-                                            <Button className="secondary-button" onClick={() => deleteThatProduct()}  >Eliminar Usuario</Button>
-                                        </div>
-                                    </FormGroup>
+                            </div>
+                            
 
                                 </CardBody>
 

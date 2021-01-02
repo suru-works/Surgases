@@ -289,7 +289,7 @@ export const addUser = (userData) => async (dispatch) => {
 }
 
 
-//Products
+//Productos, MUCHA ATENCIÓN ES PRODUCTOS EN ESPAÑOL, NO PRODUCTS
 
 export const productsReset = () => ({
     type: ActionTypes.PRODUCTS_RESET
@@ -311,7 +311,7 @@ export const productsFailed = (errmess) => ({
 
 export const products = (args) => async (dispatch) => {
     dispatch(productsRequest());
-    let urlparams = 'products';
+    let urlparams = 'productos';
     if(args){
         urlparams += '?'+args.join('&');
     }
@@ -351,7 +351,7 @@ export const updateProduct = (productData) => async (dispatch) => {
         tipo: productData.tipo
     }
     try {
-        const res = await axios.put(baseBackUrl + 'products/'+ id, product, {
+        const res = await axios.put(baseBackUrl + 'productos/'+ id, product, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -365,9 +365,9 @@ export const updateProduct = (productData) => async (dispatch) => {
 
 export const deleteProduct = (productData) => async (dispatch) => {
     dispatch(productsUpdateRequest());
-    const id = productData.productname;
+    const id = productData.codigo;
     try {
-        const res = await axios.delete(baseBackUrl + 'products/'+ id, {
+        const res = await axios.delete(baseBackUrl + 'productos/'+ id, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -383,7 +383,7 @@ export const addProduct = (productData) => async (dispatch) => {
     dispatch(productsUpdateRequest());
     const product = productData;
     try {
-        const res = await axios.post(baseBackUrl + 'products', product,{
+        const res = await axios.post(baseBackUrl + 'productos', product,{
             headers: {
                 'Content-Type': 'application/json'
             },

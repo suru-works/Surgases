@@ -42,36 +42,28 @@ const AddProductComponent = (props) => {
     const uploadChanges = (values) => {
         const productData = {
             
-            codigo: values.codigo,
             nombre: values.nombre,
-            color: values.color,
-            pesoMinimo: values.pesoMinimo,
-            pesoMaximo: values.pesoMaximo,
+
+            disponible: values.disponible,
+
             tipo: values.tipo,
-            precioMinimo: values.precioMinimo,
-            precioMaximo: values.precioMaximo,
-            inventarioMinimo: values.inventarioMinimo,
-            inventarioMaximo: values.inventarioMaximo,
-            disponible: values.disponible
+            color: values.color,
+            peso: values.peso,
+            precio: values.precio,
+            inventario: values.inventario
+            
         }
         doAddProduct(productData);        
     }
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            codigo: '',
             nombre: '',
-            color: '',
-
-            pesoMinimo: '',
-            pesoMaximo: '',
+            disponible: 1,
             tipo:  '',
-
-            precioMinimo: '',
-            precioMaximo: '',
-
-            inventarioMinimo: '',
-            inventarioMaximo: '',
-            disponible: ''
+            color: '',
+            peso: '',
+            precio: '',
+            inventario: ''
         },
         validationSchema,
         onSubmit(values) {
@@ -123,7 +115,8 @@ const AddProductComponent = (props) => {
                         <Form onSubmit={handleSubmit} >
 
                             <CardTitle> Ingresa los datos del producto</CardTitle>
-                            <br></br>
+
+                            <hr />
 
                             <div className='row'>
 
@@ -137,11 +130,16 @@ const AddProductComponent = (props) => {
                                 </FormGroup>
 
                                 <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="codigo">Código</Label>
-                                    <Input type="text" id="codigo" name="codigo" value={values.codigo}
+                                    <Label htmlFor="disponible">Disponible</Label>
+                                
+                                    <Input type="select" id="disponible" name="disponible" value={values.disponible}
                                         onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                    {(touched.codigo && errors.codigo) ? (<Alert color="danger">{errors.codigo}</Alert>) : null}
+                                        onBlur={handleBlur} >
+                                            
+                                        <option selected value={1}>Si</option>
+                                        <option          value={0}>No</option>
+                                    </Input>
+                                    {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
                                 </FormGroup>
 
@@ -169,15 +167,15 @@ const AddProductComponent = (props) => {
                             <div className='row'>
 
                                 <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="pesoMinimo">Peso mínimo</Label>
-                                    <Input type="text" id="pesoMinimo" name="pesoMinimo" value={values.pesoMinimo}
+                                    <Label htmlFor="peso">Peso</Label>
+                                    <Input type="text" id="peso" name="peso" value={values.peso}
                                         onChange={handleChange}
-                                        onBlur={handleBlur} />
+                                        onBlur={handleBlur}/>
                                 </FormGroup>
 
                                 <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="pesoMaximo">Peso máximo</Label>
-                                    <Input type="text" id="pesoMaximo" name="pesoMaximo" value={values.pesoMaximo}
+                                    <Label htmlFor="precio">Precio</Label>
+                                    <Input type="text" id="precio" name="precio" value={values.precio}
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
                                 </FormGroup>
@@ -187,44 +185,22 @@ const AddProductComponent = (props) => {
                             <div className='row'>
 
                                 <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="precioMinimo">Precio mínimo</Label>
-                                    <Input type="text" id="precioMinimo" name="precioMinimo" value={values.precioMinimo}
+                                    <Label htmlFor="inventario">Inventario</Label>
+                                    <Input type="text" id="inventario" name="inventario" value={values.inventario}
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
                                 </FormGroup>
 
-                                <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="precioMaximo">Precio máximo</Label>
-                                    <Input type="text" id="precioMaximo" name="precioMaximo" value={values.precioMaximo}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                </FormGroup>
-
-                            </div>
-
-                            <div className='row'>
-
-                                <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="inventarioMinimo">Inventario mínimo</Label>
-                                    <Input type="text" id="inventarioMinimo" name="inventarioMinimo" value={values.inventarioMinimo}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
-                                </FormGroup>
-
-                                <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="inventarioMaximo">Inventario máximo</Label>
-                                    <Input type="text" id="inventarioMaximo" name="inventarioMaximo" value={values.inventarioMaximo}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} />
+                                <FormGroup  className='col-12 col-sm-6'>
+                                    <br></br>
+                                    <div class="d-flex justify-content-center"  >
+                                        <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
+                                        className="secondary-button" type="submit" value="submit">Actualizar</Button>
+                                    </div>
                                 </FormGroup>
 
                             </div>
-                            
-                            <br></br>
 
-                            <div class="d-flex justify-content-center" >
-                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Actualizar</Button>
-                            </div>
 
                         </Form>
 
