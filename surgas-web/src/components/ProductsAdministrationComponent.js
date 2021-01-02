@@ -18,15 +18,39 @@ import AddProductComponent from './AddProductComponent';
 const validationSchema = yup.object(
 
     {
-        codigo: yup
-            .string()
-            .min(1, "Ingrese el código")
-    },
-    {
         nombre: yup
             .string()
-            .min(2, "El nombre debe ser de mínimo 2 caracteres")
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
+        
+        color: yup
+            
+            .string()
+            .max(15, "El color debe ser de máximo 15 caracteres"),
+        
+        peso: yup
+            
+            .number()
+            .positive("El peso no puede ser negativo")
+            .max(999999999999999, "El peso debe ser de máximo 15 caracteres"),
+        
+        tipo: yup
+            
+            .string()
+            .max(15, "El tipo debe ser de máximo 15 caracteres"),
+
+        precio: yup
+            
+            .number()
+            .positive("El precio no puede ser negativo")
+            .integer("Ingrese solo números enteros")
+            .max(999999999999999, "El precio debe ser de máximo 15 caracteres"),
+        
+        inventario: yup
+            
+            .number()
+            .positive("No pueden haber existencias negativas")
+            .integer("Ingrese solo números enteros")
+            .max(999999999999999, "El inventario debe ser de máximo 15 caracteres"),
     }
 );
 
@@ -78,14 +102,19 @@ const SearchCriteria = () => {
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="disponible">Disponible</Label>
-                                <Input type="text" id="disponible" name="disponible" value={values.disponible}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
+                                    <Label htmlFor="disponible">Disponible</Label>
+                                
+                                    <Input type="select" id="disponible" name="disponible" value={values.disponible}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} >
+                                            
+                                        <option selected value=""> Seleccione </option>
+                                        <option          value={1}>Si</option>
+                                        <option          value={0}>No</option>
+                                    </Input>
+                                    {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
-                            </FormGroup>
-
+                                </FormGroup>
 
                         </div>
 
@@ -96,6 +125,7 @@ const SearchCriteria = () => {
                                 <Input type="text" id="tipo" name="tipo" value={values.tipo}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
+                                {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
@@ -103,6 +133,7 @@ const SearchCriteria = () => {
                                 <Input type="text" id="color" name="color" value={values.color}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
+                                {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
                             </FormGroup>
 
                         </div>
@@ -114,6 +145,7 @@ const SearchCriteria = () => {
                                 <Input type="text" id="peso" name="peso" value={values.peso}
                                     onChange={handleChange}
                                     onBlur={handleBlur}/>
+                                {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
@@ -121,6 +153,7 @@ const SearchCriteria = () => {
                                 <Input type="text" id="precio" name="precio" value={values.precio}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
+                                {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
                             </FormGroup>
 
                         </div>
@@ -132,6 +165,7 @@ const SearchCriteria = () => {
                                 <Input type="text" id="inventario" name="inventario" value={values.inventario}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
+                                {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup  className='col-12 col-sm-6'>

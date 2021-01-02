@@ -12,11 +12,24 @@ const Product = (props) => {
             setIsEditProductModalOpen(true);
         }
     }
+
+    const getDisponible = () => {
+        if (props.product.disponible.data[0] == 1) {
+            return(
+                "Si"
+            );
+        } else {
+            return(
+                "No"
+            );
+        }
+    }
     
     return (
+        
             <tr  onClick={() => toggleEditModal()}>
                 <th scope="row">{props.product.nombre}</th>
-                <td>{props.product.disponible.data[0]}</td>
+                <td>{getDisponible()}</td>
                 <td>{props.product.tipo}</td>
                 <td>{props.product.color}</td>
                 <td>{props.product.peso}</td>
