@@ -76,8 +76,31 @@ const SearchCriteria = () => {
         },
         validationSchema,
         onSubmit(values) {
-            doSearch(values);
-        }
+            let productData = []
+            if(values.nombre != ''){
+                productData.push('nombre='+values.nombre);
+            }
+            if(values.disponible != ''){
+                productData.push('disponible='+(values.disponible));
+            }
+            if(values.tipo != ''){
+                productData.push('tipo='+values.tipo);
+            }
+            if(values.color != ''){
+                productData.push('color='+values.color);
+            }
+            if(values.peso != ''){
+                productData.push('peso='+values.peso);
+            }
+            if(values.precio != ''){
+                productData.push('precio='+values.precio);
+            }
+            if(values.inventario != ''){
+                productData.push('inventario='+values.inventario);
+            }
+             
+            doSearch(productData);
+        }   
     });
 
     return (
