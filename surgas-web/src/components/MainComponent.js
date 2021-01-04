@@ -7,6 +7,7 @@ import Products from './ProductComponent';
 import Contact from './ContactComponent';
 import Sales from './SalesComponent';
 import Administrator from './AdministratorComponent';
+import ChangePassword from './ChangePasswordComponent';
 import { Switch, Route, Redirect, withRouter, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
@@ -34,6 +35,7 @@ const MainComponent = () => {
                         <Route path='/contacto' component={() => <Contact />} />
                         <Route path='/ventas' component={() => <Sales />} />
                         <Route path='/administrador' component={() => <Administrator />} />
+                        <Route path="/changepassword/:token" component={() => <ChangePassword />} />
                         <Redirect to="/inicio"></Redirect>
                     </Switch>
             <Footer />

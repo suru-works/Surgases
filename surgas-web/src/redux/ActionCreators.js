@@ -424,7 +424,7 @@ export const restorePassword = (username) => async (dispatch) => {
     dispatch(restoreRequest());
 
     try {
-        const res = await axios.post(baseBackUrl + 'users/restorepassword/'+username, {
+        const res = await axios.post(baseBackUrl + 'users/restorepassword/',{username: username}, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -435,6 +435,43 @@ export const restorePassword = (username) => async (dispatch) => {
         dispatch(restoreFailed(err));
     }
 }
+
+
+//changePassword password
+export const changePasswordRequest = () => ({
+    type: ActionTypes.CHANGE_PASSWORD_REQUEST
+});
+
+export const changePasswordReset = () => ({
+    type: ActionTypes.CHANGE_PASSWORD_RESET
+});
+
+export const changePasswordSuccess = (result) => ({
+    type: ActionTypes.CHANGE_PASSWORD_SUCCESS,
+    payload: result
+});
+
+export const changePasswordFailed = (errmess) => ({
+    type: ActionTypes.CHANGE_PASSWORD_FAILED,
+    payload: errmess
+});
+
+export const changePassword = (data) => async (dispatch) => {
+    dispatch(changePasswordRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/changePassword/',data, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(changePasswordSuccess(res));
+    } catch (err) {
+        dispatch(changePasswordFailed(err));
+    }
+}
+
 
 //maps
 

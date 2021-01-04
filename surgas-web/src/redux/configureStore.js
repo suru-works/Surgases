@@ -9,6 +9,7 @@ import { Users, UsersUpdate } from './users';
 import { Products, ProductsUpdate } from './products';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
+import { ChangePassword } from './restore';
 
  export const ConfigureStore = () => {
     const store = createStore(
@@ -26,6 +27,7 @@ import { Restore } from './restore';
             systemParametersUpdate:SystemParametersUpdate,
             systemBackup: SystemBackup,
             restore: Restore,
+            changePassword: ChangePassword,
             maps: Maps,
         }),
        compose(applyMiddleware(thunk),
