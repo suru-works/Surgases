@@ -35,7 +35,7 @@ const SearchCriteria = () => {
 
     const doSearch = (userData) => dispatch(users(userData));
 
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             username: '',
             nombre: '',
@@ -126,6 +126,8 @@ const SearchCriteria = () => {
                             <div class="d-flex justify-content-center" >
                                 <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
                                 className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
+                                className="secondary-button" onClick={resetForm}>Reiniciar parametros</Button>
                             </div>
                         </FormGroup>
 

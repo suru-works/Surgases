@@ -45,7 +45,7 @@ const AddUserComponent = (props) => {
         }
         doAddUser(userData);        
     }
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+    const { handleSubmit, handleChange, handleBlur, resetForm,touched, values, errors } = useFormik({
         initialValues: {
             username:'',
             nombre: '', 
@@ -57,6 +57,7 @@ const AddUserComponent = (props) => {
         validationSchema,
         onSubmit(values) {
             uploadChanges(values);
+            resetForm();
         }
     });
 
