@@ -254,7 +254,7 @@ const SystemParametersAdministration = () => {
         return (
             <Card className='col-9 '>
                 <CardTitle>
-                    <CardText>Parametros del sistema</CardText>
+                    <CardText>Parámetros del sistema</CardText>
                 </CardTitle>
                 <CardBody>
                     <div className="d-flex space-around row">
@@ -276,7 +276,7 @@ const SystemParametersAdministration = () => {
         return (
             <Card className='col-9 '>
                 <CardTitle>
-                    <CardText>Parametros del sistema</CardText>
+                    <CardText>Parámetros del sistema</CardText>
                 </CardTitle>
                 <CardBody>
                     <div className="d-flex space-around row">

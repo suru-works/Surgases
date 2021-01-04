@@ -63,7 +63,7 @@ const SearchCriteria = () => {
 
     const doSearch = (productData) => dispatch(products(productData));
 
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             nombre: '',
             disponible: '',
@@ -193,10 +193,12 @@ const SearchCriteria = () => {
 
                             <FormGroup  className='col-12 col-sm-6'>
                                 <br></br>
+
                                 <div class="d-flex justify-content-center"  >
-                                    <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
-                                    className="secondary-button" type="submit" value="submit">Buscar</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit" >Buscar</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                                 </div>
+
                             </FormGroup>
 
                         </div>

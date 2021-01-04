@@ -277,11 +277,11 @@ const EditProductComponent = (props) => {
                                             {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
                                         </FormGroup>
 
-                                            <FormGroup  className='col-12 col-sm-6'>
-                                                <br></br>
+                                        <FormGroup  className='col-12 col-sm-6'>
+                                            <br></br>
                                             <div class="d-flex justify-content-center"  >
-                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
-                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={() => deleteThatProduct()}  >Eliminar Producto</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" onClick={() => deleteThatProduct()}  >Eliminar Producto</Button>
                                             </div>
 
                                         </FormGroup>
