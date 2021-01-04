@@ -6,6 +6,12 @@ const cors = require('./cors');
 const db = require('../db');
 const { concat } = require('mysql2/lib/constants/charset_encodings');
 
+const crypto = require("crypto");
+const CryptoJS = require('crypto-js');
+
+const mail = require('../com/mail');
+const restoreView = require('../view/restoreView');
+
 const router = express.Router();
 const pool = db.pool;
 
@@ -245,6 +251,33 @@ router.delete('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(asy
       next(new Error('deletion error'));
     }
   });
+}));
+
+router.post('/restorepassword/:id', asyncHandler(async (req, res, next) => {
+  const data = {
+    username: 'puto',
+    forgotToken: '1'
+  }
+  const restoreHTML = restoreView.restoreView(data);
+      //sending email for user verification
+      mailData = {
+        host: '69.49.115.65',
+        port: 1025,
+        secure: false,
+        //serverService: 'hotmail',
+        serverMail: process.env.AUTH_EMAIL_USER,
+        serverPassword: process.env.AUTH_EMAIL_PASSWORD,
+        sender: process.env.AUTH_EMAIL_USER,
+        receivers: 'santiqupgui@gmail.com',
+        subject: 'restablecer contraseña',
+        text: '',
+        html: restoreHTML
+      };
+      mail.mail(mailData);
+      res.status(200);
+      res.json({
+        success: true
+      });
 }));
 
 module.exports = router;
