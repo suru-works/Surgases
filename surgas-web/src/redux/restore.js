@@ -18,3 +18,22 @@ export const Restore = (state = {
             return state;
     }
 }
+
+export const ChangePassword = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.CHANGE_PASSWORD_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.CHANGE_PASSWORD_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.CHANGE_PASSWORD_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.CHANGE_PASSWORD_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
