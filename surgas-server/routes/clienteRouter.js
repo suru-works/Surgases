@@ -108,13 +108,7 @@ clienteRouter.route("/")
     }
 
     const results = await pool.promise().execute(query + conditions.join(' AND '), values);
-    if (results) {
-        res.json(JSON.parse(JSON.stringify(results[0])))
-    } else {
-        throw {
-            status: 500
-        };
-    }
+    res.json(JSON.parse(JSON.stringify(results[0])));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     pool.getConnection(async (err, conn) => {

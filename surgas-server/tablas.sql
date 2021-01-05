@@ -4,7 +4,9 @@ CREATE TABLE usuario(
     password_hash VARCHAR(100) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     tipo ENUM('cliente', 'vendedor', 'administrador') NOT NULL,
-    verificado BIT NOT NULL
+    verificado BIT NOT NULL,
+    restorePasswordToken VARCHAR(200),
+    verificationToken VARCHAR(200)
 );
 
 CREATE TABLE empleado(
@@ -92,3 +94,10 @@ CREATE TABLE static(
     limite_puntos INT NOT NULL,
     puntos_libra INT NOT NULL
 );
+
+CREATE TABLE user_sessions(
+    session_id VARCHAR(128) NOT NULL COLLATE 'utf8mb4_bin',
+    username VARCHAR(30) NOT NULL
+);
+
+DELETE FROM sessions WHERE session_id IN (SELECT session_id FROM user_sessions WHERE username = 'sebas')
