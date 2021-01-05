@@ -295,8 +295,13 @@ const SystemParametersAdministration = () => {
         );
     }
     else if (result) {
+        if(result.data.length>0){
+            return (
+                <RenderSystemParameters params ={result.data[0]}></RenderSystemParameters>
+            );
+        }
         return (
-            <RenderSystemParameters params ={result.data[0]}></RenderSystemParameters>
+            <div>No hay parametros del sistema para mostrar</div>
         );
     }
     return (
