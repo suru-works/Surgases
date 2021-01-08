@@ -74,6 +74,14 @@ const SalesComponent = () => {
 
     }
     else if (result) {
+        const productsOptionTag = () => {
+            if(result.data.tipo === 'administrador'){
+                return("Gestionar productos");
+            }
+            else{
+                return("Consultar productos");
+            }
+        }
         if (result.data.tipo === 'vendedor' || result.data.tipo === 'administrador') {
             return (
 

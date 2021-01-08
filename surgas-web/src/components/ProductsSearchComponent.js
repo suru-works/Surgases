@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import ProductsAdministration from './ProductsAdministrationComponent';
 const ProductsSearch = () => {
     return (
-        <div>
-            Puto el que lo lea productos
-        </div>
+        <ProductsAdministration ventas={true}></ProductsAdministration>
     );
 }
 
