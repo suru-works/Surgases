@@ -26,7 +26,7 @@ const EditUserComponent = (props) => {
     const result = useSelector(state => state.usersUpdate.result);
     const loading = useSelector(state => state.usersUpdate.isLoading);
 
-    
+
 
     const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ const EditUserComponent = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            const userData={
+            const userData = {
                 nombre: values.nombre,
                 email: values.email,
                 tipo: values.tipo
@@ -148,19 +148,21 @@ const EditUserComponent = (props) => {
                                         </Input>
                                     </FormGroup>
 
-                                    <FormGroup>
-                                        <div class="d-flex justify-content-center" >
-                                            <Button className="secondary-button" type="submit" value="submit"  >Actualizar</Button>
-                                            <Button className="secondary-button" onClick={() => deleteThatUser()}  >Eliminar Usuario</Button>
-                                        </div>
-                                    </FormGroup>
+                                    <div class="d-flex justify-content-center" >
+                                        <FormGroup>
 
+                                            <div className="d-flex justify-content-center" >
 
+                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" onClick={() => deleteThatUser()}  >Eliminar Usuario</Button>
+                                            </div>
+                                        </FormGroup>
+
+                                    </div>
 
                                 </CardBody>
 
                             </Card>
-
 
                         </Form>
 

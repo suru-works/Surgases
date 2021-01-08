@@ -2,7 +2,7 @@ import React , {useState}  from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Alert} from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { ProSidebar, SidebarHeader, SidebarFooter, SidebarContent, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import '../css/styles.css';
@@ -10,7 +10,6 @@ import { Switch, Route, Redirect, withRouter, useLocation } from 'react-router-d
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UsersAdministration from './UsersAdministrationComponent';
 import ProductsAdministration from './ProductsAdministrationComponent';
-import MunicipalitiesAdministration from './MunicipalitiesAdministrationComponent';
 import SystemParametersAdministration from './SystemParametersAdministrationComponent';
 import SystemPrintersAdministration from './SystemPrintersAdministrationComponent';
 import  SystemBackup  from './SystemBackupComponent'
@@ -18,31 +17,29 @@ import { Loading } from './LoadingComponent'
 
 const RenderLoginComponent = (props) => {
     
-
-    return (
-        <div>
-
-            <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                    <ModalHeader toggle={props.toggle}>Modal de Soporte</ModalHeader>
-
-                <ModalBody>
-                
-
-                    <p>Modal en progreso, no envía ni recibe props aparte de los básicos</p>
-
-                    <br></br>
-
-                    <div className="d-flex justify-content-center" >
-                        <Button  style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">No hacer nada</Button>
-                        <Button  style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Realizar la nadación</Button>
-                    </div>
-                
-                </ModalBody>
-            </Modal>
-
-        </div>
-    );
-}
+    //TO DO: Por ahora esto es una constante mal pegada en la clase, cuando lo vaya a implementar recuerde sacar el modal en su propio component
+        return (
+            <div>
+    
+                <Modal isOpen={props.isOpen} toggle={props.toggle}>
+                        <ModalHeader toggle={props.toggle}>Implementando modal de Soporte</ModalHeader>
+    
+                    <ModalBody>
+                    
+    
+                        <p>Modal en progreso, próximamente</p>  
+                        <br></br>
+    
+                        <div className="d-flex justify-content-center" >
+                            <Button  style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">ok</Button>
+                        </div>
+                    
+                    </ModalBody>
+                </Modal>
+    
+            </div>
+        );
+    }
 
 
 const AdministratorComponent = () => {
@@ -118,10 +115,6 @@ const AdministratorComponent = () => {
                                     <Link to="/administrador/productos" />
                                         </MenuItem>
 
-                                        <MenuItem icon={<i className="fa fa-globe"></i>}>
-                                            Gestionar municipios
-                                    <Link to="/administrador/municipios" />
-                                        </MenuItem>
                                         <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
                                             <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
                                                 Parametros
@@ -158,7 +151,6 @@ const AdministratorComponent = () => {
                             <Switch location={location} >
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
                                 <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
-                                <Route path='/administrador/municipios' component={() => <MunicipalitiesAdministration />} />
                                 <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
                                 <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
                             </Switch>

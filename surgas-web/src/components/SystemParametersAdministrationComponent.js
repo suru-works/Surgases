@@ -166,7 +166,7 @@ const RenderSystemParameters = (props) => {
                                     <div className='row'>
 
                                         <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="puntosxkilo">Puntos dados por kilo</Label>
+                                            <Label htmlFor="puntosxkilo">Puntos dados por libra</Label>
                                             <Input type="text" id="puntosxkilo" name="puntosxkilo" value={values.puntosxkilo}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur} />
@@ -254,7 +254,7 @@ const SystemParametersAdministration = () => {
         return (
             <Card className='col-9 '>
                 <CardTitle>
-                    <CardText>Parametros del sistema</CardText>
+                    <CardText>Parámetros del sistema</CardText>
                 </CardTitle>
                 <CardBody>
                     <div className="d-flex space-around row">
@@ -276,7 +276,7 @@ const SystemParametersAdministration = () => {
         return (
             <Card className='col-9 '>
                 <CardTitle>
-                    <CardText>Parametros del sistema</CardText>
+                    <CardText>Parámetros del sistema</CardText>
                 </CardTitle>
                 <CardBody>
                     <div className="d-flex space-around row">
@@ -295,8 +295,13 @@ const SystemParametersAdministration = () => {
         );
     }
     else if (result) {
+        if(result.data.length>0){
+            return (
+                <RenderSystemParameters params ={result.data[0]}></RenderSystemParameters>
+            );
+        }
         return (
-            <RenderSystemParameters params ={result.data[0]}></RenderSystemParameters>
+            <div>No hay parametros del sistema para mostrar</div>
         );
     }
     return (

@@ -180,6 +180,8 @@ export const updateCurrentUser = (userData) => async (dispatch) => {
 }
 
 
+
+
 //Users
 
 export const usersReset = () => ({
@@ -285,10 +287,121 @@ export const addUser = (userData) => async (dispatch) => {
         dispatch(usersUpdateFailed(err));
     }
 }
-/* TO DO: implementar la busqueda de usuarios */
 
 
-//Restore and change password 
+//Productos, MUCHA ATENCIÓN ES PRODUCTOS EN ESPAÑOL, NO PRODUCTS
+
+export const productsReset = () => ({
+    type: ActionTypes.PRODUCTS_RESET
+});
+
+export const productsRequest = () => ({
+    type: ActionTypes.PRODUCTS_REQUEST
+});
+
+export const productsSuccess = (result) => ({
+    type: ActionTypes.PRODUCTS_SUCCESS,
+    payload: result
+});
+
+export const productsFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTS_FAILED,
+    payload: errmess
+});
+
+export const products = (args) => async (dispatch) => {
+    dispatch(productsRequest());
+    let urlparams = 'productos';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(productsSuccess(res));
+    } catch (err) {
+        dispatch(productsFailed(err));
+    }
+}
+
+export const productsUpdateReset = () => ({
+    type: ActionTypes.PRODUCTS_UPDATE_RESET
+});
+
+export const productsUpdateRequest = () => ({
+    type: ActionTypes.PRODUCTS_UPDATE_REQUEST
+});
+
+export const productsUpdateSuccess = (result) => ({
+    type: ActionTypes.PRODUCTS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const productsUpdateFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTS_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateProduct = (productData) => async (dispatch) => {
+    dispatch(productsUpdateRequest());
+    const id = productData.codigo;
+    const product = {
+        nombre: productData.nombre,
+        disponible: productData.disponible,
+        tipo: productData.tipo,
+        color: productData.color,
+        peso: productData.peso,
+        precio: productData.precio,
+        inventario: productData.inventario
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'productos/'+ id, product, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productsUpdateFailed(err));
+    }
+}
+
+export const deleteProduct = (productData) => async (dispatch) => {
+    dispatch(productsUpdateRequest());
+    const id = productData.codigo;
+    try {
+        const res = await axios.delete(baseBackUrl + 'productos/'+ id, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productsUpdateFailed(err));
+    }
+}
+
+export const addProduct = (productData) => async (dispatch) => {
+    dispatch(productsUpdateRequest());
+    const product = productData;
+    try {
+        const res = await axios.post(baseBackUrl + 'productos', product,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productsUpdateFailed(err));
+    }
+}
+
+
+//Restore password
 export const restoreRequest = () => ({
     type: ActionTypes.RESTORE_REQUEST
 });
@@ -307,31 +420,58 @@ export const restoreFailed = (errmess) => ({
     payload: errmess
 });
 
-export const restorePassword = (user) => (dispatch) => {
-    // TO DO
+export const restorePassword = (username) => async (dispatch) => {
+    dispatch(restoreRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/restorepassword/',{username: username}, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(restoreSuccess(res));
+    } catch (err) {
+        dispatch(restoreFailed(err));
+    }
 }
 
+
+//changePassword password
 export const changePasswordRequest = () => ({
-    type: ActionTypes.CHANGEPASSWORD_REQUEST
+    type: ActionTypes.CHANGE_PASSWORD_REQUEST
 });
 
 export const changePasswordReset = () => ({
-    type: ActionTypes.CHANGEPASSWORD_RESET
+    type: ActionTypes.CHANGE_PASSWORD_RESET
 });
 
 export const changePasswordSuccess = (result) => ({
-    type: ActionTypes.CHANGEPASSWORD_SUCCESS,
+    type: ActionTypes.CHANGE_PASSWORD_SUCCESS,
     payload: result
 });
 
 export const changePasswordFailed = (errmess) => ({
-    type: ActionTypes.CHANGEPASSWORD_FAILED,
+    type: ActionTypes.CHANGE_PASSWORD_FAILED,
     payload: errmess
 });
 
-export const changePassword = (data) => (dispatch) => {
-    // TO DO implementar
+export const changePassword = (data) => async (dispatch) => {
+    dispatch(changePasswordRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/changePassword/',data, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(changePasswordSuccess(res));
+    } catch (err) {
+        dispatch(changePasswordFailed(err));
+    }
 }
+
 
 //maps
 

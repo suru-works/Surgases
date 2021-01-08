@@ -10,10 +10,17 @@ import * as yup from "yup";
 const validationSchema = yup.object(
 
     {
+        username: yup
+            .string()
+            .required("Ingrese su usuario")
+            .min(2, "El usuario debe ser de mínimo 2 caracteres")
+            .max(30, "El usuario debe ser de máximo 30 caracteres"),
+
         nombre: yup
             .string()
+            .required("Ingrese su nombre")
             .min(2, "El nombre debe ser de mínimo 2 caracteres")
-            .max(25, "El nombre debe ser de máximo 25 caracteres"),
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
     }
 );
 
@@ -45,7 +52,7 @@ const AddUserComponent = (props) => {
         }
         doAddUser(userData);        
     }
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             username:'',
             nombre: '', 
@@ -57,6 +64,7 @@ const AddUserComponent = (props) => {
         validationSchema,
         onSubmit(values) {
             uploadChanges(values);
+            resetForm();
         }
     });
 
@@ -129,7 +137,7 @@ const AddUserComponent = (props) => {
                             <br></br>
 
                             <div class="d-flex justify-content-center" >
-                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Actualizar</Button>
+                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Añadir</Button>
                             </div>
 
                         </Form>

@@ -20,10 +20,18 @@ import AddUserComponent from './AddUserComponent';
 const validationSchema = yup.object(
 
     {
+        username: yup
+            .string()
+            .max(30, "El usuario debe ser de máximo 30 caracteres"),
+
         nombre: yup
             .string()
-            .min(2, "El nombre debe ser de mínimo 2 caracteres")
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
+
+        email: yup
+            .string()
+            .email("Ingrese un correo válido (correo@serv.dom)")
+            .max(100, "El correo debe ser de máximo 100 caracteres")
     }
 );
 /* TO DO: implementar la busqueda de usuarios */
@@ -35,7 +43,7 @@ const SearchCriteria = () => {
 
     const doSearch = (userData) => dispatch(users(userData));
 
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             username: '',
             nombre: '',
@@ -120,15 +128,13 @@ const SearchCriteria = () => {
 
                         </div>
 
-
                         <FormGroup>
+                            <br></br>
                             <div class="d-flex justify-content-center" >
-                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} 
-                                className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                             </div>
                         </FormGroup>
-
-
 
                     </CardBody>
 
@@ -216,7 +222,7 @@ const UsersAdministration = () => {
         <div className='col' >
             <Card  >
                 <CardTitle >
-                    <CardText>Criterios de busqueda</CardText>
+                    <CardText>Criterios de búsqueda</CardText>
                 </CardTitle>
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
@@ -231,11 +237,11 @@ const UsersAdministration = () => {
                 </CardBody>
             </Card>
             <FloatingButtonContainer >
-                <FloatingButtonLink tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} >
-                    <div onClick={toggleAddUserModal}>
+                <FloatingButton tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddUserModal} >
+                    
                         <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    </div >
-                </FloatingButtonLink>
+                    
+                </FloatingButton>
             </FloatingButtonContainer>
             <AddUserComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddUserComponent>
         </div>
