@@ -14,6 +14,25 @@
   80% {
     transform: rotate(-5deg); } }
 
+.card-container{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  align-content: center;
+}
+
+@media only screen and (max-width: 870px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .card-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 .plusbutton {
   color: 	#000000;
 }
