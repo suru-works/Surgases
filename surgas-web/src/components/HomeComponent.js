@@ -149,7 +149,7 @@ const Promos = () => {
                     
                     <div className="ml-auto">
                         <img className="float-right d-none d-md-block" height="200" 
-                        src={baseFrontUrl + "public/home/demo1Puntos.png"} alt="puntos"></img>
+                        src={baseFrontUrl + "public/home/demo1Puntos.jpg"} alt="puntos"></img>
                     </div>
 
                 </div>
