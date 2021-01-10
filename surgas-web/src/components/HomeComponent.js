@@ -40,27 +40,37 @@ const Jambo = () => {
         return(
 
             
-            <div className="container home-container p-5">
-                <div className="row row-header">
-                    <div className="col-12 col-sm-6">
-                        <img className="float-right d-none d-md-block" height="150" 
-                        src={baseFrontUrl + "public/logo/S-14-cropped.png"} alt="company-logo"></img>
+            <div className="container home-container ">
+                <div className="row row-header m-3">
+                    <div >
 
-                        <br></br>
-                        <br></br>
+                        <div className="mr-auto row m-3">
+
+                            <img className="float-right d-none d-md-block" height="150" 
+                            src={baseFrontUrl + "public/logo/S-14-cropped-border-alfa.png"} alt="company-logo"></img>
+
+                        </div>
+                    
+                        
+
+                        
+
                         <h3>Calidad de servicios y productos garantizada</h3>
                         
                         <h3>Nos enorgullecemos de tener el mejor servicio postventa</h3>
 
-                        <div className="col-12">
+                        <div className="col-12" >
+
+                            
+
 
                             <Link to='/contacto'>
-                                <Button style={{ backgroundColor: '#f9683a', color: '#ffffff' }} variant="contained">
+                                <Button style={{ margin: 20, backgroundColor: '#fdd835', color: '#000000' }} variant="contained">
                                     Contáctanos
                                 </Button>
                             </Link>
 
-                            <Button className="jumbo-button-1" onClick={switchAbierto} >
+                            <Button style={{ margin: 20, backgroundColor: '#fdd835', color: '#000000' }} className="jumbo-button-1" onClick={switchAbierto} >
                                 <i className="fa fa-angle-double-up fa-2x" ></i>
                             </Button>
                         </div>
@@ -86,7 +96,7 @@ const Jambo = () => {
                     </div>
 
                     <div className="col-6 col-sm-3 button-container">
-                        <Button className="jumbo-button-2" onClick={switchAbierto} >
+                        <Button className="jumbo-button-2" onClick={switchAbierto} style={{ margin: 20, backgroundColor: '#fdd835', color: '#000000' }}>
                             <i className="fa fa-angle-double-down fa-2x" ></i>
                         </Button>
                     </div>

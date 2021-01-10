@@ -22,7 +22,10 @@
 .home-container{
   background-color: #ffffff;
   border-radius: 50px 20px;
-}
+  padding-top: 60px  !important;
+  padding-left: 65px  !important;
+  padding-bottom: 20px  !important;
+} 
 
 .card-container{
   display: grid;
@@ -35,11 +38,19 @@
   .card-container {
     grid-template-columns: repeat(5, 1fr);
   }
+  .home-container{
+    padding-top: 60px  !important;
+    padding-left: 40px  !important;
+  }
 }
 
 @media only screen and (max-width: 991px) {
   .card-container {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .home-container{
+    padding-top: 2px  !important;
+    padding-left: 2px  !important;
   }
 }
 
@@ -47,17 +58,25 @@
   .card-container {
     grid-template-columns: repeat(3, 1fr);
   }
+
 }
 
 @media only screen and (max-width: 700px) {
   .card-container {
     grid-template-columns: repeat(2, 1fr);
   }
+  
 }
 
 @media only screen and (max-width: 500px) {
   .card-container {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .home-container{
+    padding-top: 0%  !important;
+    padding-left: 0%  !important;
+    padding-right: 0%  !important;
+    padding-bottom: 0%  !important;
   }
 }
 
