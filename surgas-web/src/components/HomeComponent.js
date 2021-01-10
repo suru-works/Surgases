@@ -7,25 +7,14 @@ import PropTypes from 'prop-types';
 
 const HomeComponent = () => {
     return (
-        <div>
-            <br></br>
+        <div className="blueBackgroung">
             <br></br>
             <Jambo />
             <br></br>
             <br></br>
-            <hr />
-            <br></br>
-            <br></br>
             <Vitrina />
             <br></br>
-            <br></br>
-            <hr />
-            <br></br>
-            <br></br>
             <Promos />
-            <br></br>
-            <br></br>
-            <hr />
             <br></br>
             <br></br>
 
@@ -51,7 +40,7 @@ const Jambo = () => {
         return(
 
             
-            <div className="container">
+            <div className="container home-container p-5">
                 <div className="row row-header">
                     <div className="col-12 col-sm-6">
                         <img className="float-right d-none d-md-block" height="150" 
@@ -90,7 +79,7 @@ const Jambo = () => {
     }
     else{
         return(
-            <div className="minijumbotron" >
+            <div className="minijumbotron home-container p-5" >
                 <div className="row row-header">
                     <div className="col-6 col-sm-9">
                         <h1>Surgas de Antioquia</h1> 
@@ -115,7 +104,7 @@ const Vitrina = () => {
     return (
 
 
-        <div className="container">
+        <div className="container home-container p-5">
             <div className="row">
                 <div className="col-12 col-sm-6">
                     
@@ -143,8 +132,8 @@ const Promos = () => {
 
     return (
 
-        <div>
-            <div className="container">
+        <div className="container home-container p-5">
+            <div className="container ">
                 <div className="row">
                     
                     <div className="ml-auto">

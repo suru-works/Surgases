@@ -32,7 +32,7 @@ const FooterLinksAdmin = () => {
 
 const FooterComponent = () => {
     return (
-        <div className='footer'>
+        <div className='footer pt-5'>
             <div className="footer">
             <div className="container">
                 <div className="row">
