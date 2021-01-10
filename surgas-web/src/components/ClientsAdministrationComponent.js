@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import * as yup from "yup";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { useSelector, useDispatch } from 'react-redux';
+import { useFormik } from "formik";
+import { clients } from '../redux/ActionCreators';
 
-/*const validationSchema = yup.object(
+const validationSchema = yup.object(
 
     {
         telefono: yup
@@ -128,9 +130,14 @@ const SearchCriteria = () => {
 
                             <FormGroup className='col-12 col-sm-6'>
                                 <Label htmlFor="email">Correo</Label>
-                                <Input type="email" id="email" name="email" value={values.email}
+                                <Input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={values.email}
                                     onChange={handleChange}
-                                    onBlur={handleBlur} />
+                                    onBlur={handleBlur}
+                                />
                                 {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
 
                             </FormGroup>
@@ -140,24 +147,45 @@ const SearchCriteria = () => {
                         <div className='row'>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="nombre">Correo</Label>
-                                <Input type="nombre" id="nombre" name="nombre" value={values.nombre}
+                                <Label htmlFor="nombre">Nombre</Label>
+                                <Input
+                                    type="nombre"
+                                    id="nombre"
+                                    name="nombre"
+                                    value={values.nombre}
                                     onChange={handleChange}
-                                    onBlur={handleBlur} />
+                                    onBlur={handleBlur}
+                                />
                                 {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="fechaRegistroMinima">Correo</Label>
-                                <DatePicker 
-                                <Input type="fechaRegistroMinima" id="fechaRegistroMinima" name="fechaRegistroMinima" value={values.fechaRegistroMinima}
+                                <Label htmlFor="fechaRegistroMinima">Fecha de Registro M&iacute;nima</Label>
+                                <Input
+                                    type="date"
+                                    id="fechaRegistroMinima"
+                                    name="fechaRegistroMinima"
+                                    value={values.fechaRegistroMinima}
                                     onChange={handleChange}
-                                    onBlur={handleBlur} />
+                                    onBlur={handleBlur}
+                                />
                                 {(touched.fechaRegistroMinima && errors.fechaRegistroMinima) ? (<Alert color="danger">{errors.fechaRegistroMinima}</Alert>) : null}
 
                             </FormGroup>
 
+                        </div>
+
+                        <div className="row">
+                            <FormGroup className='col-12 col-sm-6'>
+                                <br></br>
+
+                                <div class="d-flex justify-content-center"  >
+                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                                </div>
+
+                            </FormGroup>
                         </div>
 
                     </CardBody>
@@ -169,12 +197,12 @@ const SearchCriteria = () => {
 
         </div>
     );
-}*/
+}
 
 const ClientsAdministration = () => {
     return (
         <div>
-            Puto el que lo lea clientes
+            <SearchCriteria />
         </div>
     );
 }
