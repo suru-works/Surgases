@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const HomeComponent = () => {
     return (
-        <div className="blueBackgroung">
+        <div className="homeBackgroung">
             <br></br>
             <Jambo />
             <br></br>
@@ -40,7 +40,7 @@ const Jambo = () => {
         return(
 
             
-            <div className="container home-container ">
+            <div className="jumbotron">
                 <div className="row row-header m-3">
                     <div >
 

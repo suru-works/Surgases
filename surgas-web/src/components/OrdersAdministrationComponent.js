@@ -112,7 +112,7 @@ const SearchResult = () => {
         })
 
         return (
-            <Table className='col' responsive bordered striped>
+            <Table className='col' responsive={true} bordered striped>
                 <thead>
                     <tr>
                         <th>Fecha</th>
