@@ -713,3 +713,38 @@ export const systemBackup = () => async (dispatch) => {
         dispatch(systemBackupFailed(err));
     }
 }
+
+// clients
+
+export const clientsReset = () => ({
+    type: ActionTypes.CLIENTS_RESET
+});
+
+export const clientsRequest = () => ({
+    type: ActionTypes.CLIENTS_REQUEST
+});
+
+export const clientsSuccess = (result) => ({
+    type: ActionTypes.CLIENTS_SUCCESS,
+    payload: result
+});
+
+export const clientsFailed = (errmess) => ({
+    type: ActionTypes.CLIENTS_FAILED,
+    payload: errmess
+});
+
+export const clients = (args) => async (dispatch) => {
+    dispatch(clientsRequest());
+    let urlparams = 'clientes';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(clientsSuccess(res));
+    } catch (err) {
+        dispatch(clientsFailed(err));
+    }
+}
