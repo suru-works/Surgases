@@ -7,6 +7,7 @@ import { User, UserUpdate } from './user';
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
 import { Products, ProductsUpdate } from './products';
+import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
 import { ChangePassword } from './restore';
@@ -23,6 +24,8 @@ import { ChangePassword } from './restore';
             usersUpdate:UsersUpdate,
             products: Products,
             productsUpdate: ProductsUpdate,
+            orders: Orders,
+            ordersUpdate: OrdersUpdate,
             systemParameters: SystemParameters,
             systemParametersUpdate:SystemParametersUpdate,
             systemBackup: SystemBackup,

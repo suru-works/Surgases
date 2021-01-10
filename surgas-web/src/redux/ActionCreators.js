@@ -400,6 +400,117 @@ export const addProduct = (productData) => async (dispatch) => {
     }
 }
 
+//Orders
+
+export const ordersReset = () => ({
+    type: ActionTypes.ORDERS_RESET
+});
+
+export const ordersRequest = () => ({
+    type: ActionTypes.ORDERS_REQUEST
+});
+
+export const ordersSuccess = (result) => ({
+    type: ActionTypes.ORDERS_SUCCESS,
+    payload: result
+});
+
+export const ordersFailed = (errmess) => ({
+    type: ActionTypes.ORDERS_FAILED,
+    payload: errmess
+});
+
+export const orders = (args) => async (dispatch) => {
+    dispatch(ordersRequest());
+    let urlparams = 'productos';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(ordersSuccess(res));
+    } catch (err) {
+        dispatch(ordersFailed(err));
+    }
+}
+
+export const ordersUpdateReset = () => ({
+    type: ActionTypes.ORDERS_UPDATE_RESET
+});
+
+export const ordersUpdateRequest = () => ({
+    type: ActionTypes.ORDERS_UPDATE_REQUEST
+});
+
+export const ordersUpdateSuccess = (result) => ({
+    type: ActionTypes.ORDERS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const ordersUpdateFailed = (errmess) => ({
+    type: ActionTypes.ORDERS_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateOrder = (orderData) => async (dispatch) => {
+    dispatch(ordersUpdateRequest());
+    const id = orderData.codigo;
+    const order = {
+        nombre: orderData.nombre,
+        disponible: orderData.disponible,
+        tipo: orderData.tipo,
+        color: orderData.color,
+        peso: orderData.peso,
+        precio: orderData.precio,
+        inventario: orderData.inventario
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'pedidos/'+ id, order, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(ordersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(ordersUpdateFailed(err));
+    }
+}
+
+export const deleteOrder = (order) => async (dispatch) => {
+    dispatch(ordersUpdateRequest());
+    const id = order.codigo;
+    try {
+        const res = await axios.delete(baseBackUrl + 'pedidos/'+ id, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(ordersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(ordersUpdateFailed(err));
+    }
+}
+
+export const addOrder= (orderData) => async (dispatch) => {
+    dispatch(ordersUpdateRequest());
+    const order = orderData;
+    try {
+        const res = await axios.post(baseBackUrl + 'pedidos', order,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(ordersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(ordersUpdateFailed(err));
+    }
+}
+
 
 //Restore password
 export const restoreRequest = () => ({
