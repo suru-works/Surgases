@@ -422,7 +422,7 @@ export const ordersFailed = (errmess) => ({
 
 export const orders = (args) => async (dispatch) => {
     dispatch(ordersRequest());
-    let urlparams = 'productos';
+    let urlparams = 'pedidos';
     if(args){
         urlparams += '?'+args.join('&');
     }
