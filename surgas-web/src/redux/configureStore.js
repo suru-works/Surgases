@@ -11,6 +11,7 @@ import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
 import { ChangePassword } from './restore';
+import { Clients, ClientsUpdate } from './clients';
 
  export const ConfigureStore = () => {
     const store = createStore(
@@ -32,6 +33,8 @@ import { ChangePassword } from './restore';
             restore: Restore,
             changePassword: ChangePassword,
             maps: Maps,
+            clients: Clients,
+            clientsUpdate: ClientsUpdate
         }),
        compose(applyMiddleware(thunk),
        typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f 
