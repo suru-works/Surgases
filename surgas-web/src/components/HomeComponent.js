@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 const HomeComponent = () => {
     return (
         <div className="homeBackgroung">
-            <br></br>
+            
             <Jambo />
             <br></br>
             <br></br>
@@ -40,28 +40,22 @@ const Jambo = () => {
         return(
 
             
-            <div className="jumbotron">
-                <div className="row row-header m-3">
+            <div className="jumbotron pt-5">
+                <div className="row row-header">
                     <div >
 
-                        <div className="mr-auto row m-3">
+                        <div className="mr-auto row m-3 " >
 
                             <img className="float-right d-none d-md-block" height="150" 
-                            src={baseFrontUrl + "public/logo/S-14-cropped-border-alfa.png"} alt="company-logo"></img>
+                            src={baseFrontUrl + "public/logo/S-14-cropped.png"} alt="company-logo"></img>
 
                         </div>
-                    
-                        
-
-                        
 
                         <h3>Calidad de servicios y productos garantizada</h3>
                         
                         <h3>Nos enorgullecemos de tener el mejor servicio postventa</h3>
 
                         <div className="col-12" >
-
-                            
 
 
                             <Link to='/contacto'>
@@ -77,7 +71,7 @@ const Jambo = () => {
 
                     </div>
                     <div className="ml-auto">
-                        <img className="float-right d-none d-md-block" height="300" 
+                        <img className="float-right d-none d-lg-block" height="300" 
                         src={baseFrontUrl + "public/home/DSC_0052.jpg"} alt="pipetas_azules"></img>
                     </div>
                 </div>
@@ -89,7 +83,7 @@ const Jambo = () => {
     }
     else{
         return(
-            <div className="minijumbotron home-container p-5" >
+            <div className="minijumbotron " >
                 <div className="row row-header">
                     <div className="col-6 col-sm-9">
                         <h1>Surgas de Antioquia</h1> 

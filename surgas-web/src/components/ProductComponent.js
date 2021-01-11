@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, CardImg, CardTitle, CardText, CardDeck, CardSubtitle, CardBody } from 'reactstrap';
+import { Card, Button, CardImg, CardTitle, CardText, Media, CardSubtitle, CardBody } from 'reactstrap';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 const ProductsComponent = () => {
@@ -12,100 +12,177 @@ const ProductsComponent = () => {
 
             <div className="container">
                 <div className='card-container'>
+
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/propano.jpg"} alt="propano" />
-                        <CardBody>
-                            <CardTitle tag="h5">Gas propano</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Huele delicioso y cocina, el gas perfecto</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media  className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/propano.jpg"} alt="propano" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Propano</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/acetileno.jpg"} alt="acetileno" />
-                        <CardBody>
-                            <CardTitle tag="h5">Acetileno</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Hace bumbum, tal vez; probablemente tóxico</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/acetileno.jpg"} alt="acetileno" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Acetileno</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
-                        <CardBody>
-                            <CardTitle tag="h5">Argón</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">El argón es la hostia</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="50%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/oxigeno.jpg"} alt="oxigeno" />
-                        <CardBody>
-                            <CardTitle tag="h5">Oxígeno</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">LO NECESITAS PARA RESPIRAR, CÓMPRALO YA!!</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media  className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/oxigeno.jpg"} alt="oxigeno" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Propano</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/Co2.jpg"} alt="Co2" />
-                        <CardBody>
-                            <CardTitle tag="h5">Co2</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Tú lo produces, y eres bastante bueno haciéndolo</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/extintores.jpg"} alt="extintores" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Acetileno</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/extintores.jpg"} alt="extintores" />
-                        <CardBody>
-                            <CardTitle tag="h5">Extintores</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Muy útil para apagar fuegos indeseados</CardSubtitle>
-                        </CardBody>
-                    </Card>
-                    <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/propano.jpg"} alt="propano" />
-                        <CardBody>
-                            <CardTitle tag="h5">Gas propano</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Huele delicioso y cocina, el gas perfecto</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="50%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/acetileno.jpg"} alt="acetileno" />
-                        <CardBody>
-                            <CardTitle tag="h5">Acetileno</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Hace bumbum, tal vez; probablemente tóxico</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media  className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/propano.jpg"} alt="propano" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Propano</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
-                        <CardBody>
-                            <CardTitle tag="h5">Argón</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">El argón es la hostia</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/Co2.jpg"} alt="Co2" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Acetileno</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/oxigeno.jpg"} alt="oxigeno" />
-                        <CardBody>
-                            <CardTitle tag="h5">Oxígeno</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">LO NECESITAS PARA RESPIRAR, CÓMPRALO YA!!</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="50%" src={baseFrontUrl + "public/productos/oxigeno.jpg"} alt="oxigeno"/>
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/Co2.jpg"} alt="Co2" />
-                        <CardBody>
-                            <CardTitle tag="h5">Co2</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Tú lo produces, y eres bastante bueno haciéndolo</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media  className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/propano.jpg"} alt="propano" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Propano</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
 
                     <Card>
-                        <CardImg top width="100%" src={baseFrontUrl + "public/productos/extintores.jpg"} alt="extintores" />
-                        <CardBody>
-                            <CardTitle tag="h5">Extintores</CardTitle>
-                            <CardSubtitle tag="h6" className="mb-2 text-muted">Muy útil para apagar fuegos indeseados</CardSubtitle>
-                        </CardBody>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/acetileno.jpg"} alt="acetileno" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Acetileno</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
                     </Card>
+
+                    <Card>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="50%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
+                    </Card>
+
+                    <Card>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="100%" src={baseFrontUrl + "public/productos/acetileno.jpg"} alt="acetileno" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Acetileno</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
+                    </Card>
+
+                    <Card>
+                        <Media>
+                            <Media className="align-self-center">
+                                <CardImg top width="50%" src={baseFrontUrl + "public/productos/extintores.jpg"} alt="extintores" />
+                            </Media>
+                            <div className="align-self-center m-3">
+                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                            </div>
+                        </Media>
+                    </Card>
+
+                    
+
                 </div>
 
 
