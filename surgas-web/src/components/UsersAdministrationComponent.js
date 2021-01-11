@@ -34,7 +34,6 @@ const validationSchema = yup.object(
             .max(100, "El correo debe ser de máximo 100 caracteres")
     }
 );
-/* TO DO: implementar la busqueda de usuarios */
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {

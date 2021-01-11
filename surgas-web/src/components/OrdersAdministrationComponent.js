@@ -22,9 +22,9 @@ const validationSchema = yup.object(
 
 const SearchCriteria = () => {
     const dispatch = useDispatch();
-    useEffect(() => {
+    /* useEffect(() => {
         dispatch(orders());
-    }, []);
+    }, []); */
 
     const doSearch = (orderData) => dispatch(orders(orderData));
 
@@ -42,8 +42,8 @@ const SearchCriteria = () => {
             precioBrutoMaximo: '',
             precioFinalMinimo: '',
             precioFinalMaximo: '',
-            estado: '',
-            bodega: '',
+            estado: 'sin especificar',
+            bodega: 'sin especificar',
             puntosMinimos: '',
             puntosMaximos: '',
             tipoCliente: 'sin especificar',
@@ -67,10 +67,170 @@ const SearchCriteria = () => {
 
                     <div className='row'>
                         <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="nombre">Fecha minima</Label>
-                            
+                            <Label htmlFor="fechaMinima">Fecha minima</Label>
+                            <Input type="date" id="fechaMinima" name="fechaMinima"
+                                value={values.fechaMinima}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.fechaMinima && errors.fechaMinima) ? (<Alert color="danger">{errors.fechaMinima}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="fechaMaxima">Fecha maxima</Label>
+                            <Input type="date" id="fechaMaxima" name="fechaMaxima"
+                                value={values.fechaMaxima}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.fechaMaxima && errors.fechaMaxima) ? (<Alert color="danger">{errors.fechaMaxima}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="numeroMinimo">Numero minimo</Label>
+                            <Input type="number" id="numeroMinimo" name="numeroMinimo"
+                                value={values.numeroMinimo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.numeroMinimo && errors.numeroMinimo) ? (<Alert color="danger">{errors.fechaMinima}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="numeroMaximo">Numero maximo</Label>
+                            <Input type="number" id="numeroMaximo" name="numeroMaximo"
+                                value={values.numeroMaximo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.numeroMaximo && errors.numeroMaximo) ? (<Alert color="danger">{errors.fechaMaxima}</Alert>) : null}
                         </FormGroup>
                     </div>
+                    <div className="row">
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="precioBrutoMinimo">Precio bruto minimo</Label>
+                            <Input type="number" id="precioBrutoMinimo" name="precioBrutoMinimo"
+                                value={values.precioBrutoMinimo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.precioBrutoMinimo && errors.precioBrutoMinimo) ? (<Alert color="danger">{errors.precioBrutoMinimo}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="precioBrutoMaximo">Precio bruto maximo</Label>
+                            <Input type="number" id="precioBrutoMaximo" name="precioBrutoMaximo"
+                                value={values.precioBrutoMaximo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.precioBrutoMaximo && errors.precioBrutoMaximo) ? (<Alert color="danger">{errors.precioBrutoMaximo}</Alert>) : null}
+                        </FormGroup>
+                    </div>
+                    <div className="row">
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="horaMinima">Hora minima</Label>
+                            <Input type="time" id="horaMinima" name="horaMinima"
+                                value={values.horaMinima}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.horaMinima && errors.horaMinima) ? (<Alert color="danger">{errors.horaMinima}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="horaMaxima">Hora maxima</Label>
+                            <Input type="time" id="horaMaxima" name="horaMaxima"
+                                value={values.horaMaxima}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.horaMaxima && errors.horaMaxima) ? (<Alert color="danger">{errors.horaMaxima}</Alert>) : null}
+                        </FormGroup>
+                    </div>
+                    <div className="row">
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="puntosMinimos">Puntos minimos</Label>
+                            <Input type="number" id="puntosMinimos" name="puntosMinimos"
+                                value={values.puntosMinimos}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.puntosMinimos && errors.puntosMinimos) ? (<Alert color="danger">{errors.puntosMinimos}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="puntosMaximos">Puntos maximos</Label>
+                            <Input type="number" id="puntosMaximos" name="puntosMaximos"
+                                value={values.puntosMaximos}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.puntosMaximos && errors.puntosMaximos) ? (<Alert color="danger">{errors.puntosMaximos}</Alert>) : null}
+                        </FormGroup>
+                    </div>
+                    <div className="row">
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="direccion">Direccion</Label>
+                            <Input type="number" id="direccion" name="direccion"
+                                value={values.direccion}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.direccion && errors.direccion) ? (<Alert color="danger">{errors.direccion}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="estado">Estado</Label>
+                            <Input type="select" id="estado" name="estado"
+                                value={values.estado}
+                                onChange={handleChange}
+                                onBlur={handleBlur}>
+                                <option>sin especificar</option>
+                                <option>en verificación</option>
+                                <option>en cola</option>
+                                <option>en proceso</option>
+                                <option>fiado</option>
+                                <option>pago</option>
+                            </Input>
+                            {(touched.estado && errors.estado) ? (<Alert color="danger">{errors.estado}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="bodega">Bodega</Label>
+                            <Input type="select" id="bodega" name="bodega"
+                                value={values.bodega}
+                                onChange={handleChange}
+                                onBlur={handleBlur}>
+                                <option>sin especificar</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </Input>
+                            {(touched.bodega && errors.bodega) ? (<Alert color="danger">{errors.bodega}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="tipoCliente">Tipo de cliente</Label>
+                            <Input type="select" id="tipoCliente" name="tipoCliente"
+                                value={values.tipoCliente}
+                                onChange={handleChange}
+                                onBlur={handleBlur}>
+                                <option>sin especificar</option>
+                                <option>vendedor</option>
+                                <option>administrador</option>
+                                <option>cliente</option>
+                            </Input>
+                            {(touched.tipoCliente && errors.tipoCliente) ? (<Alert color="danger">{errors.tipoCliente}</Alert>) : null}
+                        </FormGroup>
+                        <FormGroup className='col-12 col-sm-6'>
+                            <Label htmlFor="nota">Nota</Label>
+                            <Input type="text" id="nota" name="nota"
+                                value={values.nota}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.nota && errors.nota) ? (<Alert color="danger">{errors.nota}</Alert>) : null}
+                        </FormGroup>
+                    </div>
+                    <FormGroup>
+                        <br></br>
+                        <div class="d-flex justify-content-center" >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                        </div>
+                    </FormGroup>
                 </CardBody>
             </Form>
         </div>
