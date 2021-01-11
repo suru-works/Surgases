@@ -115,7 +115,7 @@ clienteRouter.route("/")
         const cl = req.body;
         let result;
 
-        if (user.tipoCl == 'empresarial') {
+        if (cl.tipo == 'empresarial') {
             result = await conn.promise().execute('SELECT descuento FROM static');
             cl.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
         } else {
@@ -151,7 +151,7 @@ clienteRouter.route("/:telefono")
             next(err);
         }
 
-        const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.codigo }, req.body);
+        const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.telefono }, req.body);
         const result = await conn.promise().execute(query.query, query.values);
         if (result[0].affectedRows == 1) {
             conn.commit();
