@@ -116,8 +116,11 @@ const Contact = () => {
         <div className="container">
 
             <div className="col-12">
-                <h3>Contáctanos</h3>
-                <hr />
+
+                <br></br>
+                <h1 >Contáctanos</h1>
+                <hr />  
+
             </div>
 
             <div className="row row-content">

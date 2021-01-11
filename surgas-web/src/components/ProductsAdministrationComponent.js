@@ -106,106 +106,103 @@ const SearchCriteria = () => {
     return (
         <div className="d-flex space-around row">
             <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-                <Card style={{ padding: 11 }}>
-                    <br></br>
-                    <CardTitle> Ingresa los datos de la búsqueda</CardTitle>
-                    <CardBody style={{ padding: 8 }}>
+                
+                <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
+                <hr />
 
-                        <hr />
+                <div className='row'>
 
-                        <div className='row'>
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="nombre">Nombre</Label>
+                        <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="nombre">Nombre</Label>
-                                <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                    </FormGroup>
 
-                            </FormGroup>
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="disponible">Disponible</Label>
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="disponible">Disponible</Label>
+                        <Input type="select" id="disponible" name="disponible" value={values.disponible}
+                            onChange={handleChange}
+                            onBlur={handleBlur} >
 
-                                <Input type="select" id="disponible" name="disponible" value={values.disponible}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} >
+                            <option selected value=""> Seleccione </option>
+                            <option value={1}>Si</option>
+                            <option value={0}>No</option>
+                        </Input>
+                        {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
-                                    <option selected value=""> Seleccione </option>
-                                    <option value={1}>Si</option>
-                                    <option value={0}>No</option>
-                                </Input>
-                                {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
+                    </FormGroup>
 
-                            </FormGroup>
+                </div>
 
+                <div className='row'>
+
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="tipo">Tipo</Label>
+                        <Input type="text" id="tipo" name="tipo" value={values.tipo}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="color">Color</Label>
+                        <Input type="text" id="color" name="color" value={values.color}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
+                    </FormGroup>
+
+                </div>
+
+                <div className='row'>
+
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="peso">Peso</Label>
+                        <Input type="text" id="peso" name="peso" value={values.peso}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="precio">Precio</Label>
+                        <Input type="text" id="precio" name="precio" value={values.precio}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
+                    </FormGroup>
+
+                </div>
+
+                <div className='row'>
+
+                    <FormGroup className='col-12 col-sm-6'>
+                        <Label htmlFor="inventario">Inventario</Label>
+                        <Input type="text" id="inventario" name="inventario" value={values.inventario}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-12 col-sm-6'>
+                        <br></br>
+
+                        <div class="d-flex justify-content-center"  >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
 
-                        <div className='row'>
+                    </FormGroup>
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="tipo">Tipo</Label>
-                                <Input type="text" id="tipo" name="tipo" value={values.tipo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
-                            </FormGroup>
+                </div>
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="color">Color</Label>
-                                <Input type="text" id="color" name="color" value={values.color}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
-                            </FormGroup>
+                
 
-                        </div>
-
-                        <div className='row'>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="peso">Peso</Label>
-                                <Input type="text" id="peso" name="peso" value={values.peso}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="precio">Precio</Label>
-                                <Input type="text" id="precio" name="precio" value={values.precio}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className='row'>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="inventario">Inventario</Label>
-                                <Input type="text" id="inventario" name="inventario" value={values.inventario}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <br></br>
-
-                                <div class="d-flex justify-content-center"  >
-                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
-                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
-                                </div>
-
-                            </FormGroup>
-
-                        </div>
-
-                    </CardBody>
-
-                </Card>
+                
 
 
             </Form>
@@ -297,8 +294,8 @@ const ProductsAdministration = () => {
     if (userResult.data.tipo=== "administrador") {
         return (
             <div className='col' >
-                <Card  >
-                    <CardBody>
+                <Card style={{ margin: "10px", padding: "7px" }} >
+                    <CardBody >
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
                 </Card>
@@ -327,8 +324,8 @@ const ProductsAdministration = () => {
     else {
         return (
             <div className='col' >
-                <Card  >
-                    <CardBody>
+                <Card >
+                    <CardBody  color="secondary"     >
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
                 </Card>
