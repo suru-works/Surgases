@@ -12,7 +12,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
-import AddUserComponent from './AddUserComponent';
+import AddOrderComponent from './AddOrderComponent';
 
 const validationSchema = yup.object(
 
@@ -208,15 +208,14 @@ const SearchCriteria = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}>
                                 <option>sin especificar</option>
-                                <option>vendedor</option>
-                                <option>administrador</option>
-                                <option>cliente</option>
+                                <option>empresarial</option>
+                                <option>comun</option>
                             </Input>
                             {(touched.tipoCliente && errors.tipoCliente) ? (<Alert color="danger">{errors.tipoCliente}</Alert>) : null}
                         </FormGroup>
                         <FormGroup className='col-12 col-sm-6'>
                             <Label htmlFor="nota">Nota</Label>
-                            <Input type="text" id="nota" name="nota"
+                            <Input type="textarea" id="nota" name="nota"
                                 value={values.nota}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -344,7 +343,7 @@ const OrdersAdministration = () => {
 
                 </FloatingButton>
             </FloatingButtonContainer>
-            <AddUserComponent isOpen={isAddOrderModalOPen} toggle={toggleAddOrderModal}></AddUserComponent>
+            <AddOrderComponent isOpen={isAddOrderModalOPen} toggle={toggleAddOrderModal}></AddOrderComponent>
         </div>
     );
 }

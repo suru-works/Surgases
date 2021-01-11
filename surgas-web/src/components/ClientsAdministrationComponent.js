@@ -80,9 +80,9 @@ const validationSchema = yup.object(
 
 const SearchCriteria = () => {
     const dispatch = useDispatch();
-    useEffect(() => {
+    /* useEffect(() => {
         dispatch(clients());
-    }, []);
+    }, []); */
 
     const doSearch = (clientData) => dispatch(clients(clientData));
 

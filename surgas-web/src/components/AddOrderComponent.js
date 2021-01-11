@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { users, addUser, usersUpdateReset } from '../redux/ActionCreators';
+import { orders, addOrder, ordersUpdateReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -24,23 +24,23 @@ const validationSchema = yup.object(
     }
 );
 
-const AddUserComponent = (props) => {
-    const error = useSelector(state => state.usersUpdate.errMess);
-    const result = useSelector(state => state.usersUpdate.result);
-    const loading = useSelector(state => state.usersUpdate.isLoading);
+const AddOrderComponent = (props) => {
+    const error = useSelector(state => state.ordersUpdate.errMess);
+    const result = useSelector(state => state.ordersUpdate.result);
+    const loading = useSelector(state => state.ordersUpdate.isLoading);
 
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
-        dispatch(users());
-        dispatch(usersUpdateReset());
+        dispatch(orders());
+        dispatch(ordersUpdateReset());
         props.toggle();
     }
 
-    const doAddUser = (userData) => dispatch(addUser(userData));
+    const doAddOrder = (orderData) => dispatch(addOrder(orderData));
 
     const uploadChanges = (values) => {
-        const userData = {
+        const orderData = {
             username: values.username,
             nombre: values.nombre,
             password: values.pasword,
@@ -48,7 +48,7 @@ const AddUserComponent = (props) => {
             administrador: values.administrador,
             vendedor: values.vendedor
         }
-        doAddUser(userData);        
+        doAddOrder(orderData);        
     }
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -70,7 +70,7 @@ const AddUserComponent = (props) => {
     if (loading) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -80,7 +80,7 @@ const AddUserComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -90,9 +90,9 @@ const AddUserComponent = (props) => {
     else if (result) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
                 <ModalBody>
-                    <p>Usuario añadido correctamente.</p>
+                    <p>Pedido añadido correctamente.</p>
                 </ModalBody>
                 <Button onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
@@ -104,33 +104,15 @@ const AddUserComponent = (props) => {
             
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
 
                 <ModalBody>
 
                         <Form onSubmit={handleSubmit} >
 
-                            <CardTitle> Ingresa los datos del usuario</CardTitle>
+                            <CardTitle> Ingresa los datos del Pedido</CardTitle>
                             <br></br>
 
-                            <FormGroup>
-                                
-                                <Label htmlFor="username">Usuario</Label>
-                                <Input type="text" id="username" name="username" value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
-
-                            </FormGroup>
-
-                            <FormGroup>
-
-                                <Label htmlFor="nombre">Nombre</Label>
-                                <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-                            </FormGroup>
                             
                             <br></br>
 
@@ -147,6 +129,6 @@ const AddUserComponent = (props) => {
     }
 
 }
-AddUserComponent.propTypes = {};
+AddOrderComponent.propTypes = {};
 
-export default AddUserComponent;
+export default AddOrderComponent;
