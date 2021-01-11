@@ -126,18 +126,12 @@ const ChangePassword = () => {
                                 onBlur={handleBlur}
                             />
                             { (touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
-                            {/* <Tooltip placement="right" isOpen={ (touched.password && errors.password) ? true : false} target="password">
-                                {errors.confirm_password}
-                            </Tooltip> */}
                             <Label htmlFor="password">Repite la contraseña</Label>
                             <Input type="password" id="confirm_password" className="form-control" name="confirm_password" value={values.confirm_password}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                              />
-                             { (touched.confirm_password && errors.confirm_password) ? (<Alert color="danger">{errors.confirm_password}</Alert>) : null }
-                            {/* <Tooltip placement="right" isOpen={ (touched.confirm_password && errors.confirm_password) ? true : false} target="confirm_password">
-                                {errors.confirm_password}
-                            </Tooltip> */}
+                             { (touched.confirm_password && errors.confirm_password) ? (<Alert color="danger">{errors.confirm_password}</Alert>) : null }   
                             
                         </FormGroup>
 

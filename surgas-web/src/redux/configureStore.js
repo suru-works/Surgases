@@ -7,9 +7,11 @@ import { User, UserUpdate } from './user';
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
 import { Products, ProductsUpdate } from './products';
+import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
 import { ChangePassword } from './restore';
+import { Clients } from './clients';
 
  export const ConfigureStore = () => {
     const store = createStore(
@@ -23,12 +25,15 @@ import { ChangePassword } from './restore';
             usersUpdate:UsersUpdate,
             products: Products,
             productsUpdate: ProductsUpdate,
+            orders: Orders,
+            ordersUpdate: OrdersUpdate,
             systemParameters: SystemParameters,
             systemParametersUpdate:SystemParametersUpdate,
             systemBackup: SystemBackup,
             restore: Restore,
             changePassword: ChangePassword,
             maps: Maps,
+            clients: Clients
         }),
        compose(applyMiddleware(thunk),
        typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f 

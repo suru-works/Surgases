@@ -13,154 +13,20 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 
-const RenderLoginComponent = (props) => {
-    const dispatch = useDispatch();
-    const validationSchema = yup.object(
-        {
-            username: yup
-                .string()
-                .required("Este campo es obligatorio"),
-            password: yup
-                .string()
-                /*.min(8, "la contraseña debe ser de minimo 8 caracteres")*/
-                .max(40, "la contraseña debe ser de maximo 40 caracteres")
-                .required("Este campo es obligatorio"),
-        });
 
-
-    const doLogin = credentials => dispatch(login(credentials));
-
-    const handleLogin = values => {
-
-        doLogin({ username: values.username, password: values.password, remember: values.remember });
-    }
-
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
-        initialValues: {
-            username: '',
-            password: '',
-            remember: false
-        },
-        validationSchema,
-        onSubmit(values) {
-            handleLogin(values);
-        }
+const validationSchema = yup.object(
+    {
+        username: yup
+            .string()
+            .required("Este campo es obligatorio"),
+        password: yup
+            .string()
+            /*.min(8, "la contraseña debe ser de minimo 8 caracteres")*/
+            .max(40, "la contraseña debe ser de maximo 40 caracteres")
+            .required("Este campo es obligatorio"),
     });
 
-    return (
-        <div>
-            <ModalHeader toggle={props.toogleAndReset}>Ingresar</ModalHeader>
 
-            <ModalBody>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label htmlFor="username">Usuario</Label>
-                        <Input type="username" id="username" name="username" className="form-control" values={values}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
-
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Label htmlFor="password">Contraseña</Label>
-                        <Input type="password" id="password" className="form-control" name="password" values={values}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
-
-                    </FormGroup>
-
-                    <FormGroup>
-
-                        <div className="l-flex ml-auto " class="col-12" >
-                            <div class="col-12 col-sm-8">
-                                <Label check  >
-                                    <Input  type = "checkbox" id = "remember" name = "remember" className="form-control" values={values}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />{' '}
-                                    Recuérdame
-                                </Label>
-                            </div>
-                        </div>
-                    </FormGroup>
-
-                    <br></br>
-
-                    <div className="d-flex justify-content-center" >
-                        <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Ingresar</Button>
-                        <Button onClick={props.switchRestore} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
-                    </div>
-                </Form>
-            </ModalBody>
-        </div>
-    );
-}
-
-const RenderRestoreComponent = (props) => {
-
-    const validationSchema = yup.object(
-        {
-            username: yup
-                .string()
-                .email("Ingresa un correo electronico valido.")
-                .required("Este campo es obligatorio"),
-        }
-    );
-
-    const dispatch = useDispatch();
-
-    const doRestorePassword = user => dispatch(restorePassword(user));
-
-
-
-
-    const handleRestore = values => {
-        //console.log(values);
-
-
-        doRestorePassword({ username: values.user });
-    }
-
-
-
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
-        initialValues: {
-            user: ''
-        },
-        validationSchema,
-        onSubmit(values) {
-            //console.log(values);
-            handleRestore(values);
-        }
-    });
-
-    return (
-        <div>
-            <ModalHeader toggle={props.toogleAndReset}>Restablecer contraseña</ModalHeader>
-
-            <ModalBody>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label htmlFor="user">Correo electrónico</Label>
-                        <Input type="user" id="user" name="user" className="form-control" values={values}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {(touched.user && errors.user) ? (<Alert color="danger">{errors.user}</Alert>) : null}
-                    </FormGroup>
-                    <div className="d-flex justify-content-center">
-                        <Button className="secondary-button" onClick={props.switchRestore}>Cancelar</Button>
-                        <Button type="submit" value="submit" className="primary-button">Restablecer</Button>
-                    </div>
-                </Form>
-            </ModalBody>
-        </div>
-    );
-}
 
 const LoginComponent = (props) => {
 
@@ -187,6 +53,7 @@ const LoginComponent = (props) => {
     }
 
     const switchRestore = () => {
+        console.log(restore);
         if (restore) {
             setRestore(false);
         }
@@ -195,109 +62,163 @@ const LoginComponent = (props) => {
         }
     }
 
-    const options = () => {
+    const doLogin = credentials => dispatch(login(credentials));
+
+    const handleLogin = values => {
+
+        doLogin({ username: values.username, password: values.password, remember: values.remember });
+    }
+
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            remember: false
+        },
+        validationSchema,
+        onSubmit(values) {
+            handleLogin(values);
+        }
+    });
+
+    const submitPasswordChange = (username) => {
+        if (username) {
+            switchRestore();
+            dispatch(restorePassword(username));
+        }
+
+    }
+
+    if (restore) {
+        if (restoreError) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error Restableciendo contraseña</p>
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        else if (restoreLoading) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                    <ModalBody>
+                        <Loading />
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        else if (restoreResult) {
+                return (
+                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                        <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                        <ModalBody>
+                            <p>Si tu usuario es correcto y esta registrado con un correo valido, en breve recibiras las instrucciones para restablecer tu contraseña</p>
+                        </ModalBody>
+                    </Modal>
+                );
+
+
+        }
+
+    }
+    else {
+
         if (error) {
             return (
-                <div>
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error ingresando</p>
                     </ModalBody>
-                </div>
+                </Modal>
             );
         }
         if (loading) {
             return (
-                <div>
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
                     <ModalBody>
                         <Loading />
                     </ModalBody>
-                </div>
+                </Modal>
             );
         }
         if (result) {
-                
-                return (
-                    <div>
-                        
-                            <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
-                            <ModalBody>
-                                <p>Ingreso exitoso</p>
-                            </ModalBody>
 
-                    </div >
-                );
-            
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+
+                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                    <ModalBody>
+                        <p>Ingreso exitoso</p>
+                    </ModalBody>
+
+                </Modal>
+            );
+
 
 
         }
         else {
-            if (restore) {
-                if (restoreError) {
-                    return (
-                        <div>
-                            <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
-                            <ModalBody>
-                                <p>Hubo un error Restableciendo contraseña</p>
-                            </ModalBody>
-                        </div>
-                    );
-                }
-                else if (restoreLoading) {
-                    return (
-                        <div>
-                            <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
-                            <ModalBody>
-                                <Loading />
-                            </ModalBody>
-                        </div>
-                    );
-                }
-                else if (restoreResult) {
-                    if (restoreResult.success) {
-                        return (
-                            <div>
-                                <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
-                                <ModalBody>
-                                    <p>Si tu correo es correcto y esta registrado recibiras un correo con instrucciones para restablecer tu contraseña</p>
-                                </ModalBody>
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+
+                    <ModalBody>
+                        <Form onSubmit={handleSubmit}>
+                            <FormGroup>
+                                <Label htmlFor="username">Usuario</Label>
+                                <Input type="username" id="username" name="username" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
+
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="password">Contraseña</Label>
+                                <Input type="password" id="password" className="form-control" name="password" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
+
+                            </FormGroup>
+
+                            <FormGroup>
+
+                                <div className="l-flex ml-auto " class="col-12" >
+                                    <div class="col-12 col-sm-8">
+                                        <Label check  >
+                                            <Input type="checkbox" id="remember" name="remember" className="form-control" values={values}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />{' '}
+                                    Recuérdame
+                                </Label>
+                                    </div>
+                                </div>
+                            </FormGroup>
+
+                            <br></br>
+
+                            <div className="d-flex justify-content-center" >
+                                <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Ingresar</Button>
+                                <Button onClick={()=>submitPasswordChange(values.username)} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
                             </div>
-                        );
-                    }
-
-
-                }
-                else {
-                    return (
-                        //<RenderRestoreComponent toogleAndReset={toogleAndReset} switchRestore={switchRestore} />
-                        <div></div>
-                    );
-                }
-
-            }
-            else {
-                return (
-                    <RenderLoginComponent toogleAndReset={toogleAndReset} switchRestore={switchRestore} />
-                );
-            }
-
-
+                        </Form>
+                    </ModalBody>
+                </Modal>
+            );
         }
-        return (
-            <RenderLoginComponent toogleAndReset={toogleAndReset} switchRestore={switchRestore} />
-        );
+
+
     }
-
-    return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-            {options()}
-        </Modal>
-    );
-
-
-
-};
+}
 
 LoginComponent.propTypes = {};
 

@@ -220,10 +220,7 @@ const UsersAdministration = () => {
 
     return (
         <div className='col' >
-            <Card  >
-                <CardTitle >
-                    <CardText>Criterios de búsqueda</CardText>
-                </CardTitle>
+            <Card  >    
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
                 </CardBody>

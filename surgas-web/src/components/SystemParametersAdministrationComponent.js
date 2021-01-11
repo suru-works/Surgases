@@ -166,7 +166,7 @@ const RenderSystemParameters = (props) => {
                                     <div className='row'>
 
                                         <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="puntosxkilo">Puntos dados por kilo</Label>
+                                            <Label htmlFor="puntosxkilo">Puntos dados por libra</Label>
                                             <Input type="text" id="puntosxkilo" name="puntosxkilo" value={values.puntosxkilo}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur} />

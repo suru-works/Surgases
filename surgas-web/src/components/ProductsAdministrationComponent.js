@@ -21,32 +21,32 @@ const validationSchema = yup.object(
         nombre: yup
             .string()
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
-        
+
         color: yup
-            
+
             .string()
             .max(15, "El color debe ser de máximo 15 caracteres"),
-        
+
         peso: yup
-            
+
             .number()
             .positive("El peso no puede ser negativo")
             .max(999999999999999, "El peso debe ser de máximo 15 caracteres"),
-        
+
         tipo: yup
-            
+
             .string()
             .max(15, "El tipo debe ser de máximo 15 caracteres"),
 
         precio: yup
-            
+
             .number()
             .positive("El precio no puede ser negativo")
             .integer("Ingrese solo números enteros")
             .max(999999999999999, "El precio debe ser de máximo 15 caracteres"),
-        
+
         inventario: yup
-            
+
             .number()
             .positive("No pueden haber existencias negativas")
             .integer("Ingrese solo números enteros")
@@ -67,7 +67,7 @@ const SearchCriteria = () => {
         initialValues: {
             nombre: '',
             disponible: '',
-            tipo:  '',
+            tipo: '',
             color: '',
             peso: '',
             precio: '',
@@ -77,30 +77,30 @@ const SearchCriteria = () => {
         validationSchema,
         onSubmit(values) {
             let productData = []
-            if(values.nombre != ''){
-                productData.push('nombre='+values.nombre);
+            if (values.nombre != '') {
+                productData.push('nombre=' + values.nombre);
             }
-            if(values.disponible != ''){
-                productData.push('disponible='+(values.disponible));
+            if (values.disponible != '') {
+                productData.push('disponible=' + (values.disponible));
             }
-            if(values.tipo != ''){
-                productData.push('tipo='+values.tipo);
+            if (values.tipo != '') {
+                productData.push('tipo=' + values.tipo);
             }
-            if(values.color != ''){
-                productData.push('color='+values.color);
+            if (values.color != '') {
+                productData.push('color=' + values.color);
             }
-            if(values.peso != ''){
-                productData.push('peso='+values.peso);
+            if (values.peso != '') {
+                productData.push('peso=' + values.peso);
             }
-            if(values.precio != ''){
-                productData.push('precio='+values.precio);
+            if (values.precio != '') {
+                productData.push('precio=' + values.precio);
             }
-            if(values.inventario != ''){
-                productData.push('inventario='+values.inventario);
+            if (values.inventario != '') {
+                productData.push('inventario=' + values.inventario);
             }
-             
+
             doSearch(productData);
-        }   
+        }
     });
 
     return (
@@ -125,19 +125,19 @@ const SearchCriteria = () => {
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="disponible">Disponible</Label>
-                                
-                                    <Input type="select" id="disponible" name="disponible" value={values.disponible}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur} >
-                                            
-                                        <option selected value=""> Seleccione </option>
-                                        <option          value={1}>Si</option>
-                                        <option          value={0}>No</option>
-                                    </Input>
-                                    {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
+                                <Label htmlFor="disponible">Disponible</Label>
 
-                                </FormGroup>
+                                <Input type="select" id="disponible" name="disponible" value={values.disponible}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} >
+
+                                    <option selected value=""> Seleccione </option>
+                                    <option value={1}>Si</option>
+                                    <option value={0}>No</option>
+                                </Input>
+                                {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
+
+                            </FormGroup>
 
                         </div>
 
@@ -167,7 +167,7 @@ const SearchCriteria = () => {
                                 <Label htmlFor="peso">Peso</Label>
                                 <Input type="text" id="peso" name="peso" value={values.peso}
                                     onChange={handleChange}
-                                    onBlur={handleBlur}/>
+                                    onBlur={handleBlur} />
                                 {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
                             </FormGroup>
 
@@ -191,12 +191,12 @@ const SearchCriteria = () => {
                                 {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
                             </FormGroup>
 
-                            <FormGroup  className='col-12 col-sm-6'>
+                            <FormGroup className='col-12 col-sm-6'>
                                 <br></br>
 
                                 <div class="d-flex justify-content-center"  >
-                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit" >Buscar</Button>
-                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                                 </div>
 
                             </FormGroup>
@@ -219,7 +219,7 @@ const RenderSearchResultTuple = (props) => {
 
     return (
         <Product product={productData} />
-        
+
     );
 
 }
@@ -241,8 +241,6 @@ const SearchResult = () => {
     if (result) {
         const ResultTuples = result.data.map((product) => {
             return (
-
-                //TO DO: El que sepa arreglar este pedazo que lo arrele tenkiu, yo supongo que es por ese .codigo que algo diferente va ahi o no c
 
                 <RenderSearchResultTuple product={product} key={product.codigo}></RenderSearchResultTuple>
 
@@ -272,7 +270,7 @@ const SearchResult = () => {
 
         return (
             <div> hubo un error</div>
-            
+
         );
 
     }
@@ -284,7 +282,9 @@ const SearchResult = () => {
 
 const ProductsAdministration = () => {
 
+
     const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+    const userResult = useSelector(state => state.user.result);
 
     const toggleAddProductModal = () => {
         if (isAddProductModalOpen) {
@@ -294,37 +294,58 @@ const ProductsAdministration = () => {
         }
     }
 
-    return (
-        <div className='col' >
-            <Card  >
-                <CardTitle >
-                    <CardText>Criterios de búsqueda</CardText>
-                </CardTitle>
-                <CardBody>
-                    <SearchCriteria></SearchCriteria>
-                </CardBody>
-            </Card>
-            <Card>
-                <CardTitle>
-                    <CardText>Productos</CardText>
-                </CardTitle>
-                <CardBody>
-                    <SearchResult></SearchResult>
-                </CardBody>
-            </Card>
+    if (userResult.data.tipo=== "administrador") {
+        return (
+            <div className='col' >
+                <Card  >
+                    <CardBody>
+                        <SearchCriteria></SearchCriteria>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardTitle>
+                        <CardText>Productos</CardText>
+                    </CardTitle>
+                    <CardBody>
+                        <SearchResult></SearchResult>
+                    </CardBody>
+                </Card>
 
-            <FloatingButtonContainer >
-                <FloatingButton tooltip="Añadir un producto" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddProductModal} >
-                    
-                    <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    
-                </FloatingButton>
-            </FloatingButtonContainer>
+                <FloatingButtonContainer >
+                    <FloatingButton tooltip="Añadir un producto" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddProductModal} >
 
-            <AddProductComponent isOpen={isAddProductModalOpen} toggle={toggleAddProductModal}></AddProductComponent>
-        </div>
+                        <i className="fa fa-plus fa-2x plusbutton" ></i>
 
-    );
+                    </FloatingButton>
+                </FloatingButtonContainer>
+
+                <AddProductComponent isOpen={isAddProductModalOpen} toggle={toggleAddProductModal}></AddProductComponent>
+            </div>
+        );
+
+    }
+    else {
+        return (
+            <div className='col' >
+                <Card  >
+                    <CardBody>
+                        <SearchCriteria></SearchCriteria>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardTitle>
+                        <CardText>Productos</CardText>
+                    </CardTitle>
+                    <CardBody>
+                        <SearchResult></SearchResult>
+                    </CardBody>
+                </Card>
+            </div>
+
+        );
+    }
+
+
 }
 
 ProductsAdministration.propTypes = {};

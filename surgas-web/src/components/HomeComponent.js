@@ -7,25 +7,14 @@ import PropTypes from 'prop-types';
 
 const HomeComponent = () => {
     return (
-        <div>
-            <br></br>
+        <div className="homeBackgroung">
             <br></br>
             <Jambo />
             <br></br>
             <br></br>
-            <hr />
-            <br></br>
-            <br></br>
             <Vitrina />
             <br></br>
-            <br></br>
-            <hr />
-            <br></br>
-            <br></br>
             <Promos />
-            <br></br>
-            <br></br>
-            <hr />
             <br></br>
             <br></br>
 
@@ -51,27 +40,37 @@ const Jambo = () => {
         return(
 
             
-            <div className="container">
-                <div className="row row-header">
-                    <div className="col-12 col-sm-6">
-                        <img className="float-right d-none d-md-block" height="150" 
-                        src={baseFrontUrl + "public/logo/S-14-cropped.png"} alt="company-logo"></img>
+            <div className="jumbotron">
+                <div className="row row-header m-3">
+                    <div >
 
-                        <br></br>
-                        <br></br>
+                        <div className="mr-auto row m-3">
+
+                            <img className="float-right d-none d-md-block" height="150" 
+                            src={baseFrontUrl + "public/logo/S-14-cropped-border-alfa.png"} alt="company-logo"></img>
+
+                        </div>
+                    
+                        
+
+                        
+
                         <h3>Calidad de servicios y productos garantizada</h3>
                         
                         <h3>Nos enorgullecemos de tener el mejor servicio postventa</h3>
 
-                        <div className="col-12">
+                        <div className="col-12" >
+
+                            
+
 
                             <Link to='/contacto'>
-                                <Button style={{ backgroundColor: '#f9683a', color: '#ffffff' }} variant="contained">
+                                <Button style={{ margin: 20, backgroundColor: '#fdd835', color: '#000000' }} variant="contained">
                                     Contáctanos
                                 </Button>
                             </Link>
 
-                            <Button className="jumbo-button-1" onClick={switchAbierto} >
+                            <Button style={{ margin: 20, backgroundColor: '#fdd835', color: '#000000' }} className="jumbo-button-1" onClick={switchAbierto} >
                                 <i className="fa fa-angle-double-up fa-2x" ></i>
                             </Button>
                         </div>
@@ -90,14 +89,14 @@ const Jambo = () => {
     }
     else{
         return(
-            <div className="minijumbotron" >
+            <div className="minijumbotron home-container p-5" >
                 <div className="row row-header">
                     <div className="col-6 col-sm-9">
                         <h1>Surgas de Antioquia</h1> 
                     </div>
 
                     <div className="col-6 col-sm-3 button-container">
-                        <Button className="jumbo-button-2" onClick={switchAbierto} >
+                        <Button className="jumbo-button-2" onClick={switchAbierto} style={{ margin: 20, backgroundColor: '#fdd835', color: '#000000' }}>
                             <i className="fa fa-angle-double-down fa-2x" ></i>
                         </Button>
                     </div>
@@ -115,7 +114,7 @@ const Vitrina = () => {
     return (
 
 
-        <div className="container">
+        <div className="container home-container p-5">
             <div className="row">
                 <div className="col-12 col-sm-6">
                     
@@ -143,13 +142,13 @@ const Promos = () => {
 
     return (
 
-        <div>
-            <div className="container">
+        <div className="container home-container p-5">
+            <div className="container ">
                 <div className="row">
                     
                     <div className="ml-auto">
                         <img className="float-right d-none d-md-block" height="200" 
-                        src={baseFrontUrl + "public/home/demo1Puntos.png"} alt="puntos"></img>
+                        src={baseFrontUrl + "public/home/demo1Puntos.jpg"} alt="puntos"></img>
                     </div>
 
                 </div>

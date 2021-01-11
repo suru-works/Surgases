@@ -109,12 +109,6 @@ const AdministratorComponent = () => {
                                             Gestionar usuarios
                                     <Link to="/administrador/usuarios" />
                                         </MenuItem>
-
-                                        <MenuItem icon={<i className="fa fa-shopping-cart"></i>}>
-                                            Gestionar productos
-                                    <Link to="/administrador/productos" />
-                                        </MenuItem>
-
                                         <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
                                             <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
                                                 Parametros
