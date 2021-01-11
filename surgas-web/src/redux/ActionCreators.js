@@ -748,3 +748,77 @@ export const clients = (args) => async (dispatch) => {
         dispatch(clientsFailed(err));
     }
 }
+
+export const clientsUpdateReset = () => ({
+    type: ActionTypes.CLIENTS_UPDATE_RESET
+});
+
+export const clientsUpdateRequest = () => ({
+    type: ActionTypes.CLIENTS_UPDATE_REQUEST
+});
+
+export const clientsUpdateSuccess = (result) => ({
+    type: ActionTypes.CLIENTS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const clientsUpdateFailed = (errmess) => ({
+    type: ActionTypes.CLIENTS_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateClient = (clientData) => async (dispatch) => {
+    dispatch(clientsUpdateRequest());
+    const id = clientData.telefono;
+    const client = {
+        email: clientData.email,
+        nombre: clientData.nombre,
+        puntos: clientData.puntos,
+        descuento: clientData.descuento,
+        tipo: clientData.tipo
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'clientes/'+ id, client, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(clientsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(clientsUpdateFailed(err));
+    }
+}
+
+export const deleteClient = (clientData) => async (dispatch) => {
+    dispatch(clientsUpdateRequest());
+    const id = clientData.telefono;
+    try {
+        const res = await axios.delete(baseBackUrl + 'clientes/'+ id, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(clientsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(clientsUpdateFailed(err));
+    }
+}
+
+export const addClient = (clientData) => async (dispatch) => {
+    dispatch(clientsUpdateRequest());
+    const cliente = clientData;
+    try {
+        const res = await axios.post(baseBackUrl + 'clientes', cliente,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(clientsUpdateSuccess(res));
+    } catch (err) {
+        dispatch(clientsUpdateFailed(err));
+    }
+}

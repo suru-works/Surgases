@@ -44,7 +44,10 @@ const validationSchema = yup.object(
         
         descuentoMinimo: yup
             .number()
-            .positive("No pueden haber descuentos negativos")
+            .max(100, "El descuento debe ser de máximo el 100%"),
+
+        descuentoMaximo: yup
+            .number()
             .max(100, "El descuento debe ser de máximo el 100%"),
         
         fechaPedidoMinima: yup
@@ -414,7 +417,7 @@ const SearchCriteria = () => {
 
                                 <div class="d-flex justify-content-center">
                                     <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
-                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => console.log(values)}>Reiniciar parámetros</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                                 </div>
 
                             </FormGroup>
@@ -527,7 +530,7 @@ const ClientsAdministration = () => {
                 </Card>
 
                 <FloatingButtonContainer >
-                    <FloatingButton tooltip="Añadir un producto" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddClientModal} >
+                    <FloatingButton tooltip="Añadir un cliente" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddClientModal} >
 
                         <i className="fa fa-plus fa-2x plusbutton" ></i>
 

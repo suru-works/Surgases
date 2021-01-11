@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import EditClientComponent from './EditClientComponent';
 
 const Client = (props) => {
     const [isEditClientModalOpen, setIsEditClientModalOpen] = useState(false);
@@ -25,6 +26,8 @@ const Client = (props) => {
                 <td>{props.client.fecha_ultimo_pedido}</td>
                 <td>{props.client.numero_ultimo_pedido}</td>
                 <td>{props.client.numero_pedidos}</td>
+
+                <EditClientComponent client={props.client} isOpen={isEditClientModalOpen} toggle={toggleEditModal} />
             </tr>
     );
 
