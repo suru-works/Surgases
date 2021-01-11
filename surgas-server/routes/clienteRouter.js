@@ -151,7 +151,7 @@ clienteRouter.route("/:telefono")
             next(err);
         }
 
-        const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.codigo }, req.body);
+        const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.telefono }, req.body);
         const result = await conn.promise().execute(query.query, query.values);
         if (result[0].affectedRows == 1) {
             conn.commit();
