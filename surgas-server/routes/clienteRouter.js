@@ -115,7 +115,7 @@ clienteRouter.route("/")
         const cl = req.body;
         let result;
 
-        if (user.tipoCl == 'empresarial') {
+        if (cl.tipo == 'empresarial') {
             result = await conn.promise().execute('SELECT descuento FROM static');
             cl.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
         } else {
