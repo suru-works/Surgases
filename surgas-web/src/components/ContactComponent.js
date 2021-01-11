@@ -45,7 +45,7 @@ const RenderMap = () => {
 
 
     const error = useSelector(state => state.maps.errMess);
-    const result = useSelector(state => state.maps.maps);
+    const result = useSelector(state => state.maps.result);
     const loading = useSelector(state => state.maps.isLoading);
 
     if (error) {
@@ -61,8 +61,8 @@ const RenderMap = () => {
 
     }
     if (result) {
-        return (
 
+        return (
 
             <Map zoom={15} center={{ lat: 6.182236, lng: -75.5735974 }}
                 withMarker={true}
@@ -88,7 +88,7 @@ const Contact = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        console.log("Todos son guerrilleros menos yo")
+
     }, []);
 
     const doSearch = (productData) => dispatch();
@@ -105,7 +105,7 @@ const Contact = () => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log("Todos son guerrilleros menos yo")
+
         }
     });
 
