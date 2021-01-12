@@ -110,9 +110,9 @@ const SearchCriteria = () => {
                 <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
                 <hr />
 
-                <div className='row'>
+                <div className='row d-flex justify-content-center'>
 
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-4'>
                         <Label htmlFor="nombre">Nombre</Label>
                         <Input type="text" id="nombre" name="nombre" value={values.nombre}
                             onChange={handleChange}
@@ -121,7 +121,7 @@ const SearchCriteria = () => {
 
                     </FormGroup>
 
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
                         <Label htmlFor="disponible">Disponible</Label>
 
                         <Input type="select" id="disponible" name="disponible" value={values.disponible}
@@ -136,11 +136,7 @@ const SearchCriteria = () => {
 
                     </FormGroup>
 
-                </div>
-
-                <div className='row'>
-
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
                         <Label htmlFor="tipo">Tipo</Label>
                         <Input type="text" id="tipo" name="tipo" value={values.tipo}
                             onChange={handleChange}
@@ -148,7 +144,7 @@ const SearchCriteria = () => {
                         {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
                     </FormGroup>
 
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-3'>
                         <Label htmlFor="color">Color</Label>
                         <Input type="text" id="color" name="color" value={values.color}
                             onChange={handleChange}
@@ -156,11 +152,7 @@ const SearchCriteria = () => {
                         {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
                     </FormGroup>
 
-                </div>
-
-                <div className='row'>
-
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
                         <Label htmlFor="peso">Peso</Label>
                         <Input type="text" id="peso" name="peso" value={values.peso}
                             onChange={handleChange}
@@ -168,7 +160,7 @@ const SearchCriteria = () => {
                         {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
                     </FormGroup>
 
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
                         <Label htmlFor="precio">Precio</Label>
                         <Input type="text" id="precio" name="precio" value={values.precio}
                             onChange={handleChange}
@@ -176,11 +168,8 @@ const SearchCriteria = () => {
                         {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
                     </FormGroup>
 
-                </div>
 
-                <div className='row'>
-
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
                         <Label htmlFor="inventario">Inventario</Label>
                         <Input type="text" id="inventario" name="inventario" value={values.inventario}
                             onChange={handleChange}
@@ -188,7 +177,7 @@ const SearchCriteria = () => {
                         {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
                     </FormGroup>
 
-                    <FormGroup className='col-12 col-sm-6'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-5  col-lg-5'>
                         <br></br>
 
                         <div class="d-flex justify-content-center"  >
@@ -324,8 +313,8 @@ const ProductsAdministration = () => {
     else {
         return (
             <div className='col' >
-                <Card >
-                    <CardBody  color="secondary"     >
+                <Card style={{ margin: "10px", padding: "7px" }}>
+                    <CardBody>
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
                 </Card>

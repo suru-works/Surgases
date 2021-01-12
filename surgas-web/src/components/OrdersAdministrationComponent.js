@@ -60,14 +60,13 @@ const SearchCriteria = () => {
     return (
         <div className="d-flex space-around row">
             <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-                <br></br>
-                <CardTitle> Ingresa los datos de la búsqueda</CardTitle>
-                <CardBody style={{ padding: 8 }}>
-                    <hr />
 
-                    <div className='row'>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="fechaMinima">Fecha minima</Label>
+                <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
+                <hr />
+
+                    <div className='row d-flex justify-content-center '>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="fechaMinima">Fecha mínima</Label>
                             <Input type="date" id="fechaMinima" name="fechaMinima"
                                 value={values.fechaMinima}
                                 onChange={handleChange}
@@ -75,8 +74,8 @@ const SearchCriteria = () => {
                             />
                             {(touched.fechaMinima && errors.fechaMinima) ? (<Alert color="danger">{errors.fechaMinima}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="fechaMaxima">Fecha maxima</Label>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="fechaMaxima">Fecha máxima</Label>
                             <Input type="date" id="fechaMaxima" name="fechaMaxima"
                                 value={values.fechaMaxima}
                                 onChange={handleChange}
@@ -84,8 +83,8 @@ const SearchCriteria = () => {
                             />
                             {(touched.fechaMaxima && errors.fechaMaxima) ? (<Alert color="danger">{errors.fechaMaxima}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="numeroMinimo">Numero minimo</Label>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="numeroMinimo">Número mínimo</Label>
                             <Input type="number" id="numeroMinimo" name="numeroMinimo"
                                 value={values.numeroMinimo}
                                 onChange={handleChange}
@@ -93,8 +92,8 @@ const SearchCriteria = () => {
                             />
                             {(touched.numeroMinimo && errors.numeroMinimo) ? (<Alert color="danger">{errors.fechaMinima}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="numeroMaximo">Numero maximo</Label>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="numeroMaximo">Número máximo</Label>
                             <Input type="number" id="numeroMaximo" name="numeroMaximo"
                                 value={values.numeroMaximo}
                                 onChange={handleChange}
@@ -102,10 +101,9 @@ const SearchCriteria = () => {
                             />
                             {(touched.numeroMaximo && errors.numeroMaximo) ? (<Alert color="danger">{errors.fechaMaxima}</Alert>) : null}
                         </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="precioBrutoMinimo">Precio bruto minimo</Label>
+                    
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="precioBrutoMinimo">Precio bruto mínimo</Label>
                             <Input type="number" id="precioBrutoMinimo" name="precioBrutoMinimo"
                                 value={values.precioBrutoMinimo}
                                 onChange={handleChange}
@@ -113,8 +111,8 @@ const SearchCriteria = () => {
                             />
                             {(touched.precioBrutoMinimo && errors.precioBrutoMinimo) ? (<Alert color="danger">{errors.precioBrutoMinimo}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="precioBrutoMaximo">Precio bruto maximo</Label>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="precioBrutoMaximo">Precio bruto máximo</Label>
                             <Input type="number" id="precioBrutoMaximo" name="precioBrutoMaximo"
                                 value={values.precioBrutoMaximo}
                                 onChange={handleChange}
@@ -122,10 +120,9 @@ const SearchCriteria = () => {
                             />
                             {(touched.precioBrutoMaximo && errors.precioBrutoMaximo) ? (<Alert color="danger">{errors.precioBrutoMaximo}</Alert>) : null}
                         </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="horaMinima">Hora minima</Label>
+                    
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="horaMinima">Hora mínima</Label>
                             <Input type="time" id="horaMinima" name="horaMinima"
                                 value={values.horaMinima}
                                 onChange={handleChange}
@@ -133,8 +130,8 @@ const SearchCriteria = () => {
                             />
                             {(touched.horaMinima && errors.horaMinima) ? (<Alert color="danger">{errors.horaMinima}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="horaMaxima">Hora maxima</Label>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="horaMaxima">Hora máxima</Label>
                             <Input type="time" id="horaMaxima" name="horaMaxima"
                                 value={values.horaMaxima}
                                 onChange={handleChange}
@@ -142,10 +139,9 @@ const SearchCriteria = () => {
                             />
                             {(touched.horaMaxima && errors.horaMaxima) ? (<Alert color="danger">{errors.horaMaxima}</Alert>) : null}
                         </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="puntosMinimos">Puntos minimos</Label>
+                    
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="puntosMinimos">Puntos mínimos</Label>
                             <Input type="number" id="puntosMinimos" name="puntosMinimos"
                                 value={values.puntosMinimos}
                                 onChange={handleChange}
@@ -153,8 +149,8 @@ const SearchCriteria = () => {
                             />
                             {(touched.puntosMinimos && errors.puntosMinimos) ? (<Alert color="danger">{errors.puntosMinimos}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="puntosMaximos">Puntos maximos</Label>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                            <Label htmlFor="puntosMaximos">Puntos máximos</Label>
                             <Input type="number" id="puntosMaximos" name="puntosMaximos"
                                 value={values.puntosMaximos}
                                 onChange={handleChange}
@@ -162,10 +158,9 @@ const SearchCriteria = () => {
                             />
                             {(touched.puntosMaximos && errors.puntosMaximos) ? (<Alert color="danger">{errors.puntosMaximos}</Alert>) : null}
                         </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className='col-12 col-sm-6'>
-                            <Label htmlFor="direccion">Direccion</Label>
+                    
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
+                            <Label htmlFor="direccion">Dirección</Label>
                             <Input type="number" id="direccion" name="direccion"
                                 value={values.direccion}
                                 onChange={handleChange}
@@ -173,7 +168,7 @@ const SearchCriteria = () => {
                             />
                             {(touched.direccion && errors.direccion) ? (<Alert color="danger">{errors.direccion}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
                             <Label htmlFor="estado">Estado</Label>
                             <Input type="select" id="estado" name="estado"
                                 value={values.estado}
@@ -188,7 +183,7 @@ const SearchCriteria = () => {
                             </Input>
                             {(touched.estado && errors.estado) ? (<Alert color="danger">{errors.estado}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
                             <Label htmlFor="bodega">Bodega</Label>
                             <Input type="select" id="bodega" name="bodega"
                                 value={values.bodega}
@@ -201,7 +196,7 @@ const SearchCriteria = () => {
                             </Input>
                             {(touched.bodega && errors.bodega) ? (<Alert color="danger">{errors.bodega}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
                             <Label htmlFor="tipoCliente">Tipo de cliente</Label>
                             <Input type="select" id="tipoCliente" name="tipoCliente"
                                 value={values.tipoCliente}
@@ -213,7 +208,7 @@ const SearchCriteria = () => {
                             </Input>
                             {(touched.tipoCliente && errors.tipoCliente) ? (<Alert color="danger">{errors.tipoCliente}</Alert>) : null}
                         </FormGroup>
-                        <FormGroup className='col-12 col-sm-6'>
+                        <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
                             <Label htmlFor="nota">Nota</Label>
                             <Input type="textarea" id="nota" name="nota"
                                 value={values.nota}
@@ -222,15 +217,16 @@ const SearchCriteria = () => {
                             />
                             {(touched.nota && errors.nota) ? (<Alert color="danger">{errors.nota}</Alert>) : null}
                         </FormGroup>
-                    </div>
-                    <FormGroup>
+                    
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
                         <br></br>
                         <div class="d-flex justify-content-center" >
                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
                             <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
                     </FormGroup>
-                </CardBody>
+                    
+                    </div>
             </Form>
         </div>
     );
@@ -323,7 +319,7 @@ const OrdersAdministration = () => {
 
     return (
         <div className='col' >
-            <Card  >
+            <Card  style={{ margin: "10px", padding: "7px" }}>
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
                 </CardBody>

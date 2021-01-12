@@ -93,10 +93,10 @@ const AdministratorComponent = () => {
         if (result.data.tipo === 'administrador') {
             return (
 
-                <div class="container m-0 p-0">
-                    <div  class="row row-content p-0 m-0" >
+                <div class="container-fluid">
+                    <div  className="d-flex space-around row" >
 
-                        <div class="col-2 col-sm-1 col-lg-3 p-0">
+                        <div class="col-2 col-sm-1 col-md-1 col-lg-2 col-xl-3  p-0">
                             <ProSidebar  collapsed={isBlueBarOpen} >
                                 <SidebarHeader style={{ textAlign: 'right' }}>
                                     <Button className="jumbo-button-1" style={{ backgroundColor: '#fdd835', color: '#000000' }}  onClick={toggleBlueBar} >
@@ -140,7 +140,7 @@ const AdministratorComponent = () => {
                             </ProSidebar>
                         </div>
 
-                        <div class="col-10 col-sm-11 col-lg p-0">
+                        <div class="col-10 col-sm-11 col-md-11 col-lg-10 col-xl-9 p-0">
 
                             <Switch location={location} >
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />

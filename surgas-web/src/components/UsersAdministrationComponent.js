@@ -34,6 +34,7 @@ const validationSchema = yup.object(
             .max(100, "El correo debe ser de máximo 100 caracteres")
     }
 );
+
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -72,73 +73,60 @@ const SearchCriteria = () => {
     return (
         <div className="d-flex space-around row">
             <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-                <Card style={{ padding: 11 }}>
-                    <br></br>
-                    <CardTitle> Ingresa los datos de la búsqueda</CardTitle>
-                    <CardBody style={{ padding: 8 }}>
-
-                        <hr />
-
-                        <div className='row'>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="username">Usuario</Label>
-                                <Input type="text" id="username" name="username" value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
-
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="nombre">Nombre</Label>
-                                <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-
-                            </FormGroup>
 
 
+                <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
+                <hr />
+
+                <div className='row d-flex justify-content-center '>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label htmlFor="username">Usuario</Label>
+                        <Input type="text" id="username" name="username" value={values.username}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
+
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label htmlFor="nombre">Nombre</Label>
+                        <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label htmlFor="email">Correo</Label>
+                        <Input type="email" id="email" name="email" value={values.email}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label for="tipo">Tipo</Label>
+                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}>
+                            <option>sin especificar</option>
+                            <option>vendedor</option>
+                            <option>administrador</option>
+                            <option>cliente</option>
+                        </Input>
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 align-self-end'>
+                        <div class="d-flex justify-content-center" >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
+                    </FormGroup>
 
-                        <div className='row'>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="email">Correo</Label>
-                                <Input type="email" id="email" name="email" value={values.email}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur} />
-                                {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
-
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label for="tipo">Tipo</Label>
-                                <Input type="select" name="tipo" id="tipo" value={values.tipo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}>
-                                    <option>sin especificar</option>
-                                    <option>vendedor</option>
-                                    <option>administrador</option>
-                                    <option>cliente</option>
-                                </Input>
-                            </FormGroup>
-
-                        </div>
-
-                        <FormGroup>
-                            <br></br>
-                            <div class="d-flex justify-content-center" >
-                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
-                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
-                            </div>
-                        </FormGroup>
-
-                    </CardBody>
-
-                </Card>
-
+                </div>
 
             </Form>
 
@@ -219,7 +207,7 @@ const UsersAdministration = () => {
 
     return (
         <div className='col' >
-            <Card  >    
+            <Card  style={{ margin: "10px", padding: "7px" }}>    
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
                 </CardBody>

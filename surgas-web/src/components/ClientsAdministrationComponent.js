@@ -164,268 +164,232 @@ const SearchCriteria = () => {
     return (
         <div className="d-flex space-around row">
             <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-                <Card style={{ padding: 11 }}>
-                    <br></br>
-                    <CardTitle> Ingresa los datos de la búsqueda</CardTitle>
-                    <CardBody style={{ padding: 8 }}>
+                
+                <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
+                <hr />
 
-                        <hr />
+                <div className='row d-flex justify-content-center '>
 
-                        <div className='row'>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="telefono">Tel&eacute;fono</Label>
+                        <Input
+                            type="text"
+                            id="telefono"
+                            name="telefono"
+                            value={values.telefono}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
+                    </FormGroup>
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="telefono">Tel&eacute;fono</Label>
-                                <Input
-                                    type="text"
-                                    id="telefono"
-                                    name="telefono"
-                                    value={values.telefono}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
-                            </FormGroup>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
+                        <Label htmlFor="email">Correo</Label>
+                        <Input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+                    </FormGroup>
 
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="email">Correo</Label>
-                                <Input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
-                            </FormGroup>
+                
 
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
+                        <Label htmlFor="nombre">Nombre</Label>
+                        <Input
+                            type="nombre"
+                            id="nombre"
+                            name="nombre"
+                            value={values.nombre}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="tipo">Tipo</Label>
+                        <Input
+                            type="tipo"
+                            id="tipo"
+                            name="tipo"
+                            value={values.tipo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="fechaRegistroMinima">Fecha de Registro M&iacute;nima</Label>
+                        <Input
+                            type="date"
+                            id="fechaRegistroMinima"
+                            name="fechaRegistroMinima"
+                            value={values.fechaRegistroMinima}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.fechaRegistroMinima && errors.fechaRegistroMinima) ? (<Alert color="danger">{errors.fechaRegistroMinima}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="fechaRegistroMaxima">Fecha de Registro M&aacute;xima</Label>
+                        <Input
+                            type="date"
+                            id="fechaRegistroMaxima"
+                            name="fechaRegistroMaxima"
+                            value={values.fechaRegistroMaxima}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.fechaRegistroMaxima && errors.fechaRegistroMaxima) ? (<Alert color="danger">{errors.fechaRegistroMaxima}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="puntosMinimos">Puntos M&iacute;nimos</Label>
+                        <Input
+                            type="number"
+                            id="puntosMinimos"
+                            name="puntosMinimos"
+                            value={values.puntosMinimos}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.puntosMinimos && errors.puntosMinimos) ? (<Alert color="danger">{errors.puntosMinimos}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="puntosMaximos">Puntos M&aacute;ximos</Label>
+                        <Input
+                            type="number"
+                            id="puntosMaximos"
+                            name="puntosMaximos"
+                            value={values.puntosMaximos}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.puntosMaximos && errors.puntosMaximos) ? (<Alert color="danger">{errors.puntosMaximos}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="descuentoMinimo">Descuento M&iacute;nimo (%)</Label>
+                        <Input
+                            type="number"
+                            id="descuentoMinimo"
+                            name="descuentoMinimo"
+                            value={values.descuentoMinimo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.descuentoMinimo && errors.descuentoMinimo) ? (<Alert color="danger">{errors.descuentoMinimo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="descuentoMaximo">Descuento M&aacute;ximo (%)</Label>
+                        <Input
+                            type="number"
+                            id="descuentoMaximo"
+                            name="descuentoMaximo"
+                            value={values.descuentoMaximo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.descuentoMaximo && errors.descuentoMaximo) ? (<Alert color="danger">{errors.descuentoMaximo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="fechaPedidoMinima">Fecha de Pedido M&iacute;nima</Label>
+                        <Input
+                            type="date"
+                            id="fechaPedidoMinima"
+                            name="fechaPedidoMinima"
+                            value={values.fechaPedidoMinima}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.fechaPedidoMinima && errors.fechaPedidoMinima) ? (<Alert color="danger">{errors.fechaPedidoMinima}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="fechaPedidoMaxima">Fecha de Pedido M&aacute;xima</Label>
+                        <Input
+                            type="date"
+                            id="fechaPedidoMaxima"
+                            name="fechaPedidoMaxima"
+                            value={values.fechaPedidoMaxima}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.fechaPedidoMaxima && errors.fechaPedidoMaxima) ? (<Alert color="danger">{errors.fechaPedidoMaxima}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="numeroUltimoPedidoMinimo">N&uacute;mero del &Uacute;ltimo Pedido M&iacute;nimo</Label>
+                        <Input
+                            type="number"
+                            id="numeroUltimoPedidoMinimo"
+                            name="numeroUltimoPedidoMinimo"
+                            value={values.numeroUltimoPedidoMinimo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.numeroUltimoPedidoMinimo && errors.numeroUltimoPedidoMinimo) ? (<Alert color="danger">{errors.numeroUltimoPedidoMinimo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="numeroUltimoPedidoMaximo">N&uacute;mero del &Uacute;ltimo Pedido M&aacute;ximo</Label>
+                        <Input
+                            type="number"
+                            id="numeroUltimoPedidoMaximo"
+                            name="numeroUltimoPedidoMaximo"
+                            value={values.numeroUltimoPedidoMaximo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.numeroUltimoPedidoMaximo && errors.numeroUltimoPedidoMaximo) ? (<Alert color="danger">{errors.numeroUltimoPedidoMaximo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="numeroPedidosMinimo">N&uacute;mero Total de Pedidos M&iacute;nimo</Label>
+                        <Input
+                            type="number"
+                            id="numeroPedidosMinimo"
+                            name="numeroPedidosMinimo"
+                            value={values.numeroPedidosMinimo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.numeroPedidosMinimo && errors.numeroPedidosMinimo) ? (<Alert color="danger">{errors.numeroPedidosMinimo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
+                        <Label htmlFor="numeroPedidosMaximo">N&uacute;mero Total de Pedidos M&aacute;ximo</Label>
+                        <Input
+                            type="number"
+                            id="numeroPedidosMaximo"
+                            name="numeroPedidosMaximo"
+                            value={values.numeroPedidosMaximo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.numeroPedidosMaximo && errors.numeroPedidosMaximo) ? (<Alert color="danger">{errors.numeroPedidosMaximo}</Alert>) : null}
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-6 align-self-end'>
+                        <br></br>
+
+                        <div class="d-flex justify-content-center "  >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
 
-                        <div className='row'>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="nombre">Nombre</Label>
-                                <Input
-                                    type="nombre"
-                                    id="nombre"
-                                    name="nombre"
-                                    value={values.nombre}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="tipo">Tipo</Label>
-                                <Input
-                                    type="tipo"
-                                    id="tipo"
-                                    name="tipo"
-                                    value={values.tipo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className="row">
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="fechaRegistroMinima">Fecha de Registro M&iacute;nima</Label>
-                                <Input
-                                    type="date"
-                                    id="fechaRegistroMinima"
-                                    name="fechaRegistroMinima"
-                                    value={values.fechaRegistroMinima}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.fechaRegistroMinima && errors.fechaRegistroMinima) ? (<Alert color="danger">{errors.fechaRegistroMinima}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="fechaRegistroMaxima">Fecha de Registro M&aacute;xima</Label>
-                                <Input
-                                    type="date"
-                                    id="fechaRegistroMaxima"
-                                    name="fechaRegistroMaxima"
-                                    value={values.fechaRegistroMaxima}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.fechaRegistroMaxima && errors.fechaRegistroMaxima) ? (<Alert color="danger">{errors.fechaRegistroMaxima}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className="row">
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="puntosMinimos">Puntos M&iacute;nimos</Label>
-                                <Input
-                                    type="number"
-                                    id="puntosMinimos"
-                                    name="puntosMinimos"
-                                    value={values.puntosMinimos}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.puntosMinimos && errors.puntosMinimos) ? (<Alert color="danger">{errors.puntosMinimos}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="puntosMaximos">Puntos M&aacute;ximos</Label>
-                                <Input
-                                    type="number"
-                                    id="puntosMaximos"
-                                    name="puntosMaximos"
-                                    value={values.puntosMaximos}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.puntosMaximos && errors.puntosMaximos) ? (<Alert color="danger">{errors.puntosMaximos}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className="row">
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="descuentoMinimo">Descuento M&iacute;nimo (%)</Label>
-                                <Input
-                                    type="number"
-                                    id="descuentoMinimo"
-                                    name="descuentoMinimo"
-                                    value={values.descuentoMinimo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.descuentoMinimo && errors.descuentoMinimo) ? (<Alert color="danger">{errors.descuentoMinimo}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="descuentoMaximo">Descuento M&aacute;ximo (%)</Label>
-                                <Input
-                                    type="number"
-                                    id="descuentoMaximo"
-                                    name="descuentoMaximo"
-                                    value={values.descuentoMaximo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.descuentoMaximo && errors.descuentoMaximo) ? (<Alert color="danger">{errors.descuentoMaximo}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className="row">
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="fechaPedidoMinima">Fecha de Pedido M&iacute;nima</Label>
-                                <Input
-                                    type="date"
-                                    id="fechaPedidoMinima"
-                                    name="fechaPedidoMinima"
-                                    value={values.fechaPedidoMinima}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.fechaPedidoMinima && errors.fechaPedidoMinima) ? (<Alert color="danger">{errors.fechaPedidoMinima}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="fechaPedidoMaxima">Fecha de Pedido M&aacute;xima</Label>
-                                <Input
-                                    type="date"
-                                    id="fechaPedidoMaxima"
-                                    name="fechaPedidoMaxima"
-                                    value={values.fechaPedidoMaxima}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.fechaPedidoMaxima && errors.fechaPedidoMaxima) ? (<Alert color="danger">{errors.fechaPedidoMaxima}</Alert>) : null}
-                            </FormGroup>
-                            
-                        </div>
-
-                        <div className="row">
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="numeroUltimoPedidoMinimo">N&uacute;mero del &Uacute;ltimo Pedido M&iacute;nimo</Label>
-                                <Input
-                                    type="number"
-                                    id="numeroUltimoPedidoMinimo"
-                                    name="numeroUltimoPedidoMinimo"
-                                    value={values.numeroUltimoPedidoMinimo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.numeroUltimoPedidoMinimo && errors.numeroUltimoPedidoMinimo) ? (<Alert color="danger">{errors.numeroUltimoPedidoMinimo}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="numeroUltimoPedidoMaximo">N&uacute;mero del &Uacute;ltimo Pedido M&aacute;ximo</Label>
-                                <Input
-                                    type="number"
-                                    id="numeroUltimoPedidoMaximo"
-                                    name="numeroUltimoPedidoMaximo"
-                                    value={values.numeroUltimoPedidoMaximo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.numeroUltimoPedidoMaximo && errors.numeroUltimoPedidoMaximo) ? (<Alert color="danger">{errors.numeroUltimoPedidoMaximo}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className="row">
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="numeroPedidosMinimo">N&uacute;mero Total de Pedidos M&iacute;nimo</Label>
-                                <Input
-                                    type="number"
-                                    id="numeroPedidosMinimo"
-                                    name="numeroPedidosMinimo"
-                                    value={values.numeroPedidosMinimo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.numeroPedidosMinimo && errors.numeroPedidosMinimo) ? (<Alert color="danger">{errors.numeroPedidosMinimo}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="numeroPedidosMaximo">N&uacute;mero Total de Pedidos M&aacute;ximo</Label>
-                                <Input
-                                    type="number"
-                                    id="numeroPedidosMaximo"
-                                    name="numeroPedidosMaximo"
-                                    value={values.numeroPedidosMaximo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {(touched.numeroPedidosMaximo && errors.numeroPedidosMaximo) ? (<Alert color="danger">{errors.numeroPedidosMaximo}</Alert>) : null}
-                            </FormGroup>
-
-                        </div>
-
-                        <div className="row">
-                            <FormGroup className='col-12 col-sm-6'>
-                                <br></br>
-
-                                <div class="d-flex justify-content-center">
-                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
-                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
-                                </div>
-
-                            </FormGroup>
-                        </div>
-
-                    </CardBody>
-
-                </Card>
+                    </FormGroup>
+                </div>
 
 
             </Form>
@@ -515,7 +479,7 @@ const ClientsAdministration = () => {
     if (userResult.data.tipo=== "administrador") {
         return (
             <div className='col' >
-                <Card  >
+                <Card   style={{ margin: "10px", padding: "7px" }}>
                     <CardBody>
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
@@ -545,7 +509,7 @@ const ClientsAdministration = () => {
     else {
         return (
             <div className='col' >
-                <Card  >
+                <Card   style={{ margin: "10px", padding: "7px" }}>
                     <CardBody>
                         <SearchCriteria></SearchCriteria>
                     </CardBody>

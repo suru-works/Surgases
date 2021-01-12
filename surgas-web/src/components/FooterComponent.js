@@ -73,7 +73,7 @@ const FooterComponent = () => {
                 </div>
 
                 <div className="row">
-                    <div className="col-12  ext-center">
+                    <div className="col-12 text-center">
                         <p>© 2020 Surgas de Antioquia. todos los derechos reservados.</p>
                         <p>desarrollado por suruworks.</p>
                     </div>
