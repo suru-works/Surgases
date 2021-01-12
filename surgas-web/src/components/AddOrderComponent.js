@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
@@ -24,109 +24,94 @@ const validationSchema = yup.object(
     }
 );
 
+
+const SetClient = () => {
+    return (
+        <div>
+            puto el cliente que lo lea
+        </div>
+    );
+}
+
+const UpdateClientData = () => {
+    return (
+        <div>
+            puto el cliente que lo lea
+        </div>
+    );
+}
+
+const Trolly = () => {
+    return (
+        <div>
+            puto el cliente que lo lea
+        </div>
+    );
+}
+
+const Print = () => {
+    return (
+        <div>
+            puto el cliente que lo lea
+        </div>
+    );
+}
+
 const AddOrderComponent = (props) => {
-    const error = useSelector(state => state.ordersUpdate.errMess);
-    const result = useSelector(state => state.ordersUpdate.result);
-    const loading = useSelector(state => state.ordersUpdate.isLoading);
+    const [setClientModal, setSetClientModal] = useState(true);
+    const [updateClientDataModal, setUpdateClientDataModal] = useState(false);
+    const [trollyModal, setTrollyDataModal] = useState(false);
+    const [printModal, setPrintDataModal] = useState(false);
 
-    const dispatch = useDispatch();
+    const userResult = useSelector(state => state.user.result);
 
-    const toogleAndReset = () => {
-        dispatch(orders());
-        dispatch(ordersUpdateReset());
+    useEffect(() => {
+        if (userResult) {
+            if (userResult.data.tipo === 'cliente') {
+                setClientModal(false);
+                setUpdateClientDataModal(true);
+            }
+        }
+    }, []);
+
+    const toggleAndReset = () => {
         props.toggle();
     }
 
-    const doAddOrder = (orderData) => dispatch(addOrder(orderData));
-
-    const uploadChanges = (values) => {
-        const orderData = {
-            username: values.username,
-            nombre: values.nombre,
-            password: values.pasword,
-            email: values.email,
-            administrador: values.administrador,
-            vendedor: values.vendedor
+    const options = () => {
+        if (setClientModal) {
+            return (
+                <SetClient></SetClient>
+            );
         }
-        doAddOrder(orderData);        
-    }
-    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
-        initialValues: {
-            username:'',
-            nombre: '', 
-            password: '',
-            email: '',
-            administrador: '0',
-            vendedor: '1'
-        },
-        validationSchema,
-        onSubmit(values) {
-            uploadChanges(values);
-            resetForm();
+        if (updateClientDataModal) {
+            return (
+                <UpdateClientData></UpdateClientData>
+            );
         }
-    });
-
-
-    if (loading) {
-        return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
-                <ModalBody>
-                    <Loading />
-                </ModalBody>
-            </Modal>
-        );
+        if (trollyModal) {
+            return (
+                <Trolly></Trolly>
+            );
+        }
+        if (printModal) {
+            return (
+                <Print></Print>
+            );
+        }
     }
-    else if (error) {
-        return (
-            <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
-                <ModalBody>
-                    <p>Hubo un error.</p>
-                </ModalBody>
-            </Modal>
-        );
-    }
-    else if (result) {
-        return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
-                <ModalBody>
-                    <p>Pedido añadido correctamente.</p>
-                </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
-            </Modal>
-        );
-    }
-    else {
-        return (
+    return (
+        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-            
-            <Modal isOpen={props.isOpen} toggle={props.toggle}>
+            <ModalHeader toggle={toggleAndReset}>Añadir un pedido</ModalHeader>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un Pedido</ModalHeader>
+            <ModalBody>
 
-                <ModalBody>
+                {options()}
 
-                        <Form onSubmit={handleSubmit} >
-
-                            <CardTitle> Ingresa los datos del Pedido</CardTitle>
-                            <br></br>
-
-                            
-                            <br></br>
-
-                            <div class="d-flex justify-content-center" >
-                                <Button style={{ backgroundColor: '#fdd835', color: '#000000'}} type="submit" value="submit"  >Añadir</Button>
-                            </div>
-
-                        </Form>
-
-                </ModalBody>
-            </Modal>
-
-        );
-    }
+            </ModalBody>
+        </Modal>
+    );
 
 }
 AddOrderComponent.propTypes = {};

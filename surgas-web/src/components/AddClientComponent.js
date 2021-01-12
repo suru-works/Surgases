@@ -30,8 +30,6 @@ const validationSchema = yup.object(
 );
 
 const AddClientComponent = (props) => {
-    //TO DO
-    /*  Las inserciones de nuevos productos no estan funcionando... posiblemente por el json que se esta mandando en la solicitud */
     const error = useSelector(state => state.clientsUpdate.errMess);
     const result = useSelector(state => state.clientsUpdate.result);
     const loading = useSelector(state => state.clientsUpdate.isLoading);
