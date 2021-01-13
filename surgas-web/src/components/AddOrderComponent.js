@@ -7,25 +7,17 @@ import { orders, addOrder, ordersUpdateReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const validationSchema = yup.object(
-
-    {
-        username: yup
-            .string()
-            .required("Ingrese su usuario")
-            .min(2, "El usuario debe ser de mínimo 2 caracteres")
-            .max(30, "El usuario debe ser de máximo 30 caracteres"),
-
-        nombre: yup
-            .string()
-            .required("Ingrese su nombre")
-            .min(2, "El nombre debe ser de mínimo 2 caracteres")
-            .max(25, "El nombre debe ser de máximo 25 caracteres")
-    }
-);
-
-
 const SetClient = (props) => {
+
+    const validationSchema = yup.object(
+
+        {
+            telefono: yup
+            .string()
+            .required("Ingresa un telefono")
+        }
+    );
+
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             telefono: ''
@@ -68,6 +60,11 @@ const SetClient = (props) => {
 }
 
 const UpdateClientData = (props) => {
+    const validationSchema = yup.object(
+
+        {
+        }
+    );
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
         },
@@ -91,6 +88,11 @@ const UpdateClientData = (props) => {
 }
 
 const Trolly = (props) => {
+    const validationSchema = yup.object(
+
+        {
+        }
+    );
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
         },
@@ -114,6 +116,11 @@ const Trolly = (props) => {
 }
 
 const Print = (props) => {
+    const validationSchema = yup.object(
+
+        {
+        }
+    );
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
         },
