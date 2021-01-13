@@ -822,3 +822,34 @@ export const addClient = (clientData) => async (dispatch) => {
         dispatch(clientsUpdateFailed(err));
     }
 }
+
+// Statistics
+
+export const orderStatsReset = () => ({
+    type: ActionTypes.ORDER_STATS_RESET
+});
+
+export const orderStatsRequest = () => ({
+    type: ActionTypes.ORDER_STATS_REQUEST
+});
+
+export const orderStatsSuccess = (result) => ({
+    type: ActionTypes.ORDER_STATS_SUCCESS,
+    payload: result
+});
+
+export const orderStatsFailed = (errmess) => ({
+    type: ActionTypes.ORDER_STATS_FAILED,
+    payload: errmess
+});
+
+export const orderStats = () => async (dispatch) => {
+    dispatch(orderStatsRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'pedidos/stats');
+        dispatch(orderStatsSuccess(res));
+    } catch (err) {
+        dispatch(orderStatsFailed(err));
+    }
+}

@@ -13,7 +13,8 @@ import ProductsAdministration from './ProductsAdministrationComponent';
 import SystemParametersAdministration from './SystemParametersAdministrationComponent';
 import SystemPrintersAdministration from './SystemPrintersAdministrationComponent';
 import  SystemBackup  from './SystemBackupComponent'
-import { Loading } from './LoadingComponent'
+import { Loading } from './LoadingComponent';
+import AdminStatistics from './AdminStatisticsComponent';
 
 const RenderLoginComponent = (props) => {
     
@@ -105,9 +106,13 @@ const AdministratorComponent = () => {
                                 </SidebarHeader>
                                 <SidebarContent>
                                     <Menu iconShape="circle">
+                                        <MenuItem icon={<i className="fa fa-home"></i>}>
+                                            Inicio
+                                            <Link to="/administrador/inicio" />
+                                        </MenuItem>
                                         <MenuItem icon={<i className="fa fa-user"></i>}>
                                             Gestionar usuarios
-                                    <Link to="/administrador/usuarios" />
+                                            <Link to="/administrador/usuarios" />
                                         </MenuItem>
                                         <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
                                             <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
@@ -143,10 +148,12 @@ const AdministratorComponent = () => {
                         <div class="col-10 col-sm-11 col-md-11 col-lg-10 col-xl-9 p-0">
 
                             <Switch location={location} >
+                                <Route path='/administrador/inicio' component={() => <AdminStatistics />} />
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
                                 <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
                                 <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
                                 <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
+                                <Redirect to="/administrador/inicio" />
                             </Switch>
                         </div>
 
