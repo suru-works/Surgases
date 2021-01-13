@@ -116,8 +116,12 @@ clienteRouter.route("/")
         let result;
 
         if (cl.tipo == 'empresarial') {
-            result = await conn.promise().execute('SELECT descuento FROM static');
-            cl.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
+            try {
+                result = await conn.promise().execute('SELECT descuento FROM static');
+                cl.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
+            } catch(err) {
+                cl.descuento = 0.0;
+            }
         } else {
             cl.descuento = 0.0;
         }
