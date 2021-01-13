@@ -306,4 +306,9 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
     });
 }));
 
+pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
+    const results = await pool.promise().execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
+    res.json(JSON.parse(JSON.stringify(results[0])));
+}));
+
 module.exports = pedidoRouter;
