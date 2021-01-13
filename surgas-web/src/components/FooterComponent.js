@@ -5,12 +5,21 @@ import { useSelector } from 'react-redux';
 const FooterLinksAdmin = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.administrador == '1') {
+        if (result.data.tipo === 'administrador') {
             return (
 
                 <ul className="list-unstyled">
                     <li><Link to="/ventas"  style={{color: '#FFFFFF' }} className="link"> Ventas </Link></li>
                     <li><Link to="/administrador"  style={{color: '#FFFFFF' }} className="link"> Administración </Link></li>
+                </ul>
+
+            );
+        }
+        else if (result.data.tipo === 'vendedor') {
+            return (
+
+                <ul className="list-unstyled">
+                    <li><Link to="/ventas"  style={{color: '#FFFFFF' }} className="link"> Ventas </Link></li>
                 </ul>
 
             );

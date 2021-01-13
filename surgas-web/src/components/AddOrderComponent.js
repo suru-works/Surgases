@@ -25,35 +25,114 @@ const validationSchema = yup.object(
 );
 
 
-const SetClient = () => {
+const SetClient = (props) => {
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
+        initialValues: {
+            telefono: ''
+        },
+        validationSchema,
+        onSubmit(values) {
+            console.log(values);
+            props.submit();
+        }
+    });
     return (
-        <div>
-            puto el cliente que lo lea
-        </div>
+        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+
+            <div className='row d-flex justify-content-center '>
+                <FormGroup >
+                    <Label htmlFor="telefono">telefono</Label>
+                    <Input type="text" id="telefono" name="telefono"
+                        value={values.telefono}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
+                </FormGroup>
+                <FormGroup>
+                    cliente
+                <br></br>
+
+
+
+                    <div class="d-flex justify-content-center" >
+                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Siguiente</Button>
+                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cancelar</Button>
+
+                    </div>
+                </FormGroup>
+            </div>
+
+        </Form>
     );
 }
 
-const UpdateClientData = () => {
+const UpdateClientData = (props) => {
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
+        initialValues: {
+        },
+        validationSchema,
+        onSubmit(values) {
+            props.submit();
+        }
+    });
     return (
-        <div>
-            puto el cliente que lo lea
-        </div>
+        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+            <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+                datos del cliente
+                <br></br>
+                <div class="d-flex justify-content-center" >
+                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>Atras</Button>
+                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Actualizar datos y continuar</Button>
+                </div>
+            </FormGroup>
+        </Form>
     );
 }
 
-const Trolly = () => {
+const Trolly = (props) => {
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
+        initialValues: {
+        },
+        validationSchema,
+        onSubmit(values) {
+            props.submit();
+        }
+    });
     return (
-        <div>
-            puto el cliente que lo lea
-        </div>
+        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+            <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+                carrito
+                <br></br>
+                <div class="d-flex justify-content-center" >
+                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>Atras</Button>
+                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Registrar pedido</Button>
+                </div>
+            </FormGroup>
+        </Form>
     );
 }
 
-const Print = () => {
+const Print = (props) => {
+    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
+        initialValues: {
+        },
+        validationSchema,
+        onSubmit(values) {
+            props.submit();
+        }
+    });
     return (
-        <div>
-            puto el cliente que lo lea
-        </div>
+        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+            <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+                imprimir
+                <br></br>
+                <div class="d-flex justify-content-center" >
+                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>No</Button>
+                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Imprimir</Button>
+                </div>
+            </FormGroup>
+        </Form>
     );
 }
 
@@ -65,14 +144,43 @@ const AddOrderComponent = (props) => {
 
     const userResult = useSelector(state => state.user.result);
 
-    useEffect(() => {
+
+
+    const goTosetClient = () => {
+        setSetClientModal(true);
+        setUpdateClientDataModal(false);
+        setTrollyDataModal(false);
+        setPrintDataModal(false);
+    }
+
+    const goToUpdateClientData = () => {
+        setSetClientModal(false);
+        setUpdateClientDataModal(true);
+        setTrollyDataModal(false);
+        setPrintDataModal(false);
+    }
+
+    const goToTrollyData = () => {
+        setSetClientModal(false);
+        setUpdateClientDataModal(false);
+        setTrollyDataModal(true);
+        setPrintDataModal(false);
+    }
+
+    const goToPrintData = () => {
+        setSetClientModal(false);
+        setUpdateClientDataModal(false);
+        setTrollyDataModal(false);
+        setPrintDataModal(true);
+    }
+
+    /* useEffect(() => {
         if (userResult) {
             if (userResult.data.tipo === 'cliente') {
-                setClientModal(false);
-                setUpdateClientDataModal(true);
+                goTosetClient();
             }
         }
-    }, []);
+    }, []); */
 
     const toggleAndReset = () => {
         props.toggle();
@@ -81,22 +189,22 @@ const AddOrderComponent = (props) => {
     const options = () => {
         if (setClientModal) {
             return (
-                <SetClient></SetClient>
+                <SetClient goBack={toggleAndReset} submit={goToUpdateClientData}></SetClient>
             );
         }
         if (updateClientDataModal) {
             return (
-                <UpdateClientData></UpdateClientData>
+                <UpdateClientData goBack={goTosetClient} submit={goToTrollyData}></UpdateClientData>
             );
         }
         if (trollyModal) {
             return (
-                <Trolly></Trolly>
+                <Trolly goBack={goToUpdateClientData} submit={goToPrintData}></Trolly>
             );
         }
         if (printModal) {
             return (
-                <Print></Print>
+                <Print goBack={toggleAndReset} submit={goToUpdateClientData}></Print>
             );
         }
     }
