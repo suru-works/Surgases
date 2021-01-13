@@ -4,9 +4,9 @@ import { Card, CardTitle, CardBody, CardText } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderStats } from '../redux/ActionCreators';
 import { Loading } from './LoadingComponent';
-import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'recharts';
+import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line, ResponsiveContainer } from 'recharts';
 
-const OrderStats = (props) => {
+const OrderStats = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(orderStats());
@@ -28,18 +28,18 @@ const OrderStats = (props) => {
     }
     if (result) {
         return (
-            <LineChart
-                width={props.width}
-                height={props.width / 2}
-                margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                data={[{ x: '2020-01-01', y: 0 }, { x: '2020-01-02', y: 1 }, { x: '2020-01-03', y: 2 }, { x: '2020-01-04', y: 3 }]}
-            >
-                <XAxis dataKey='x' />
-                <YAxis />
-                <Tooltip />
-                <CartesianGrid stroke="#f5f5f5" />
-                <Line type="monotone" dataKey="y" stroke="#0000ff" yAxisId={0} />
-            </LineChart>
+            <ResponsiveContainer width='100%' height={400}>
+                <LineChart
+                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                    data={[{ x: '2020-01-01', y: 0 }, { x: '2020-01-02', y: 1 }, { x: '2020-01-03', y: 2 }, { x: '2020-01-04', y: 3 }]}
+                >
+                    <XAxis dataKey='x' />
+                    <YAxis />
+                    <Tooltip />
+                    <CartesianGrid stroke="#f5f5f5" />
+                    <Line type="monotone" dataKey="y" stroke="#0000ff" yAxisId={0} />
+                </LineChart>
+            </ResponsiveContainer>
         );
     }
     return (
@@ -48,19 +48,12 @@ const OrderStats = (props) => {
 }
 
 const AdminStatistics = () => {
-    const cardRef = useRef();
-    const [width, setWidth] = useState(0);
-
-    useEffect(() => {
-        setWidth(cardRef.current.offsetWidth * 0.9);
-    }, [cardRef]);
-
     return (
-        <div className='col' ref={cardRef}>
+        <div className='col'>
             <Card style={{ margin: "10px", padding: "7px" }}>
                 <CardTitle tag='h3'>Estad&iacute;sticas</CardTitle>
                 <CardBody>
-                    <OrderStats width={width} />
+                    <OrderStats />
                 </CardBody>
             </Card>
         </div>
