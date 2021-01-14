@@ -20,6 +20,9 @@ const SetClient = (props) => {
         }
     );
     const dispatch = useDispatch();
+
+    const [newTelefono, setNewTelefono] = useState('');
+
     const error = useSelector(state => state.orderClient.errMess);
     const result = useSelector(state => state.orderClient.result);
     const loading = useSelector(state => state.orderClient.isLoading);
@@ -33,6 +36,7 @@ const SetClient = (props) => {
             let clientData = []
             if (values.telefono != '') {
                 clientData.push('telefono=' + values.telefono);
+                setNewTelefono(values.telefono);
                 getClientInfo(clientData);
             }
         }
@@ -59,6 +63,7 @@ const SetClient = (props) => {
             props.goToUpdateClientData();
         }
         else {
+            props.setOrderUserTel(newTelefono);
             props.goToCreateClientData();
         }
         return (
@@ -144,7 +149,7 @@ const CreateClientData = (props) => {
     }
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
-            telefono: '',
+            telefono: props.telefono,
             email: '',
             nombre: '',
             tipo: ''
@@ -196,6 +201,7 @@ const CreateClientData = (props) => {
                         value={values.telefono}
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                     {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
                 </FormGroup>
@@ -353,6 +359,8 @@ const AddOrderComponent = (props) => {
     const [trollyModal, setTrollyDataModal] = useState(false);
     const [printModal, setPrintDataModal] = useState(false);
 
+    const [orderUserTel, setOrderUserTel] = useState('');
+
     const userResult = useSelector(state => state.user.result);
 
     const dispatch = useDispatch();
@@ -407,6 +415,7 @@ const AddOrderComponent = (props) => {
     }, []);
 
     const toggleAndReset = () => {
+        setOrderUserTel('');
         dispatch(clientsUpdateReset());
         dispatch(oderClientReset());
         goToSetClient();
@@ -416,12 +425,12 @@ const AddOrderComponent = (props) => {
     const options = () => {
         if (setClientModal) {
             return (
-                <SetClient goBack={toggleAndReset} goToUpdateClientData={goToUpdateClientData} goToCreateClientData={goToCreateClientData}></SetClient>
+                <SetClient goBack={toggleAndReset} goToUpdateClientData={goToUpdateClientData} goToCreateClientData={goToCreateClientData} setOrderUserTel={setOrderUserTel}></SetClient>
             );
         }
         if (createClientDataModal) {
             return (
-                <CreateClientData goBack={goToSetClient} submit={goToTrollyData}></CreateClientData>
+                <CreateClientData goBack={goToSetClient} submit={goToTrollyData} telefono={orderUserTel}></CreateClientData>
             );
         }
         if (updateClientDataModal) {
