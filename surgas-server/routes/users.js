@@ -161,6 +161,37 @@ router.post('/signup/employee', auth.isAuthenticated, auth.isAdmin, asyncHandler
   });
 }));
 
+router.post('/signup', asyncHandler(async (req, res, next) => {
+  const user = req.body;
+  const hash = await bcrypt.hash(user.password, 10);
+
+  pool.getConnection(async (err, conn) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    let result = await conn.promise().execute(
+      "INSERT INTO usuario(username, email, password_hash, nombre, tipo, verificado) VALUES (?, ?, ?, ?, ?, b'0')",
+      [user.username, user.email, hash, user.nombre, user.tipo]
+    );
+
+    if (result[0].affectedRows == 1) {
+      conn.commit();
+
+      res.json({
+        username: user.username,
+        nombre: user.nombre,
+        tipo: user.tipo,
+        email: user.email
+      });
+    } else {
+      conn.rollback();
+      next(new Error('insertion error'));
+    }
+  });
+}));
+
 router.post('/login', auth.login, (req, res, next) => {
   if (req.body.remember) {
     // PERSISTENCIA
@@ -178,13 +209,35 @@ router.post('/login', auth.login, (req, res, next) => {
     const result = await conn.promise().execute('INSERT INTO user_sessions VALUES(?, ?)', [req.sessionID, user.username]);
     if (result[0].affectedRows == 1) {
       conn.commit();
-      res.json({
+      
+      let resp = {
         username: user.username,
         nombre: user.nombre,
         email: user.email,
-        administrador: user.administrador,
-        vendedor: user.vendedor
-      });
+        tipo: user.tipo
+      }
+      const tipos = user.tipo.split(',');
+      if (tipos.indexOf('cliente') != -1) {
+        result = await pool.execute('SELECT * FROM cliente WHERE username = ?', [user.username]);
+        if (JSON.parse(JSON.stringify(result[0]))[0]) {
+          resp.existeCliente = true;
+        } else {
+          resp.existeCliente = false;
+        }
+      } else {
+        resp.existeCliente = true;
+      }
+      if (tipos.indexOf('vendedor') != -1 || tipos.indexOf('administrador') != -1 || tipos.indexOf('repartidor') != -1) {
+        result = await pool.execute('SELECT * FROM empleado WHERE username = ?', [user.username]);
+        if (JSON.parse(JSON.stringify(result[0]))[0]) {
+          resp.existeEmpleado = true;
+        } else {
+          resp.existeEmpleado = false;
+        }
+      } else {
+        resp.existeEmpleado = true;
+      }
+      res.json(resp);
     } else {
       conn.rollback();
       next(new Error('update error'));
