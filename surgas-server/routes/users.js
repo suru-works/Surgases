@@ -200,7 +200,7 @@ router.post('/logout', auth.isAuthenticated, (req, res, next) => {
 });
 
 router.put('/current', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-  if (req.body.tipo && req.user.tipo != 'administrador') {
+  if (req.body.tipo && req.user.tipo.split(',').indexOf('administrador') == -1) {
     let error = new Error('not authorized');
     error.status = 403;
     throw error;

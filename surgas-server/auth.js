@@ -55,7 +55,7 @@ module.exports.isAuthenticated = (req, res, next) => {
 }
 
 module.exports.isAdmin = (req, res, next) => {
-    if (req.user.tipo == 'administrador') {
+    if (req.user.tipo.split(',').indexOf('administrador') != -1) {
         next();
     } else {
         let err = new Error('not authorized');
