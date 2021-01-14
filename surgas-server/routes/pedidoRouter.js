@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const db = require('../db');
 const auth = require('../auth');
 const asyncHandler = require('express-async-handler');
@@ -252,7 +254,7 @@ pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (re
 
     const results = pool.promise().execute(
         'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
-        [req.query.fecha, req.query.numero]
+        [req.params.fecha, req.params.numero]
     );
 
     if (results) {
@@ -309,6 +311,54 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
 pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
     const results = await pool.promise().execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
     res.json(JSON.parse(JSON.stringify(results[0])));
+}));
+
+pedidoRouter.post('/print/:fecha/:numero', asyncHandler(async (req, res, next) => {
+    const result = await pool.promise().execute(
+        'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra pe.empleado_despachador AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.unidades AS unidades FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+        [req.params.fecha, req.params.numero]
+    );
+    const results = JSON.parse(JSON.stringify(result[0]));
+    const ped = results[0];
+
+    let cabecera = ""+
+        "FECHA: "+req.params.fecha+"\n"+
+        "NUMERO DE PEDIDO: "+req.params.numero+"\n"+
+        "MENSAJERO: "+ped.empd+"\n"+
+        "===================================\n";
+    
+    let productos = "| Nombre\t| Color\t| Peso\t| Precio\t| Unidades\t|\n";
+    for (let i = 0; i < results.length; i++) {
+        let prod = results[i];
+        productos += "| " + prod.nombre + "\t| " + prod.peso + "\t| " + prod.precio + "\t| " + prod.unidades + "\t|\n";
+    }
+    productos += "===================================\n";
+
+    let datos = ""+
+        "TELEFONO: "+ped.telefono+"\n"+
+        "DIRECCION:"+ped.direccion+"\n"+
+        "NOTA: "+ped.nota+"\n"+
+        "===================================\n";
+    
+    let final = ""+
+        "TOTAL A PAGAR: "+ped.precio_final+"\n"+
+        "PUNTOS DESPUES DE COMPRA: "+ped.puntos_compra+"\n"+
+        "\n \n";
+    
+    fs.writeFile(
+        'G:\\Unidades compartidas\\suru-works\\surgas\\carpetadondeesten' + req.params.fecha + '_' + req.params.numero + '.txt',
+        cabecera + datos + productos + final,
+        (err, file) => {
+            if (err) {
+                let error = new Error('error en el recibo');
+                error.status = 500;
+                next(error);
+            }
+            res.json({
+                msg: 'recibo creado correctamente'
+            });
+        }
+    );
 }));
 
 module.exports = pedidoRouter;
