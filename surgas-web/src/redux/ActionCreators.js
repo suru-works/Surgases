@@ -824,7 +824,7 @@ export const addClient = (clientData) => async (dispatch) => {
 }
 
 
-export const oderClientReset = () => ({
+export const orderClientReset = () => ({
     type: ActionTypes.ORDER_CLIENT_RESET
 });
 

@@ -110,8 +110,6 @@ const AddUserComponent = (props) => {
         );
     }
     else if (result) {
-        console.log('puta2');
-        console.log(password);
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
