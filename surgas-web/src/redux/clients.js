@@ -37,3 +37,22 @@ export const ClientsUpdate = (state = {
             return state;
     }
 }
+
+export const OrderClient = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.ORDER_CLIENT_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.ORDER_CLIENT_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.ORDER_CLIENT_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.ORDER_CLIENT_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}

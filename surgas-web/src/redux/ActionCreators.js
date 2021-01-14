@@ -823,6 +823,40 @@ export const addClient = (clientData) => async (dispatch) => {
     }
 }
 
+
+export const oderClientReset = () => ({
+    type: ActionTypes.ORDER_CLIENT_RESET
+});
+
+export const orderClientRequest = () => ({
+    type: ActionTypes.ORDER_CLIENT_REQUEST
+});
+
+export const orderClientSuccess = (result) => ({
+    type: ActionTypes.ORDER_CLIENT_SUCCESS,
+    payload: result
+});
+
+export const orderClientFailed = (errmess) => ({
+    type: ActionTypes.ORDER_CLIENT_FAILED,
+    payload: errmess
+});
+
+export const orderClient = (args) => async (dispatch) => {
+    dispatch(orderClientRequest());
+    let urlparams = 'clientes';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(orderClientSuccess(res));
+    } catch (err) {
+        dispatch(orderClientFailed(err));
+    }
+}
+
 // Statistics
 
 export const orderStatsReset = () => ({

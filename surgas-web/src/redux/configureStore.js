@@ -11,7 +11,7 @@ import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
 import { ChangePassword } from './restore';
-import { Clients, ClientsUpdate } from './clients';
+import { Clients, ClientsUpdate, OrderClient} from './clients';
 import { OrderStats } from './orderStats';
 
  export const ConfigureStore = () => {
@@ -36,6 +36,7 @@ import { OrderStats } from './orderStats';
             maps: Maps,
             clients: Clients,
             clientsUpdate: ClientsUpdate,
+            orderClient: OrderClient,
             orderStats: OrderStats
         }),
        compose(applyMiddleware(thunk),
