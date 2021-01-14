@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { orders, addOrder, ordersUpdateReset,clients, updateClient, clientsUpdateReset, addClient, orderClient,oderClientReset,clientsUpdateRese } from '../redux/ActionCreators';
+import { orders, addOrder, ordersUpdateReset, clients, updateClient, clientsUpdateReset, addClient, orderClient, oderClientReset, clientsUpdateRese } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -111,12 +111,10 @@ const CreateClientData = (props) => {
 
             email: yup
                 .string()
-                .email()
-                .required("El cliente debe tener correo"),
+                .email(),
 
             nombre: yup
-                .string()
-                .required("El cliente debe tener nombre"),
+                .string(),
 
             tipo: yup
                 .string()
@@ -152,7 +150,7 @@ const CreateClientData = (props) => {
             telefono: props.telefono,
             email: '',
             nombre: '',
-            tipo: ''
+            tipo: 'comun'
         },
         validationSchema,
         onSubmit(values) {
@@ -239,13 +237,16 @@ const CreateClientData = (props) => {
                 <FormGroup className='col-12 col-sm-6'>
                     <Label htmlFor="tipo">Tipo</Label>
                     <Input
-                        type="tipo"
+                        type="select"
                         id="tipo"
                         name="tipo"
                         value={values.tipo}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                    />
+                    >
+                        <option>comun</option>
+                        <option>empresarial</option>
+                    </Input>
                     {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
                 </FormGroup>
 

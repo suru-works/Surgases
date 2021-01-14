@@ -60,9 +60,8 @@ const RegisterComponent = (props) => {
             email: values.email,
             username: values.username,
             password: values.password,
-            admin: false,
-            name: values.name,
-            phoneNumber: values.phoneNumber
+            tipo: 'cliente,',
+            nombre: values.name
         });
     }
 
@@ -101,7 +100,6 @@ const RegisterComponent = (props) => {
         );
     }
     if (result) {
-        if (result.success) {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
@@ -110,7 +108,6 @@ const RegisterComponent = (props) => {
                     </ModalBody>
                 </Modal>
             );
-        }
     }
     else {
         return (

@@ -111,14 +111,14 @@ const LoginComponent = (props) => {
             );
         }
         else if (restoreResult) {
-                return (
-                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                        <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
-                        <ModalBody>
-                            <p>Si tu usuario es correcto y esta registrado con un correo valido, en breve recibiras las instrucciones para restablecer tu contraseña</p>
-                        </ModalBody>
-                    </Modal>
-                );
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                    <ModalBody>
+                        <p>Si tu usuario es correcto y esta registrado con un correo valido, en breve recibiras las instrucciones para restablecer tu contraseña</p>
+                    </ModalBody>
+                </Modal>
+            );
 
 
         }
@@ -208,7 +208,7 @@ const LoginComponent = (props) => {
 
                             <div className="d-flex justify-content-center" >
                                 <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Ingresar</Button>
-                                <Button onClick={()=>submitPasswordChange(values.username)} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
+                                <Button onClick={() => submitPasswordChange(values.username)} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
                             </div>
                         </Form>
                     </ModalBody>

@@ -7,6 +7,8 @@ import { users, addUser, usersUpdateReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+const crypto = require("crypto");
+
 const validationSchema = yup.object(
 
     {
@@ -18,16 +20,19 @@ const validationSchema = yup.object(
 
         nombre: yup
             .string()
-            .required("Ingrese su nombre")
             .min(2, "El nombre debe ser de mínimo 2 caracteres")
             .max(25, "El nombre debe ser de máximo 25 caracteres")
     }
 );
 
 const AddUserComponent = (props) => {
+    const [password, setPassword] = useState('');
+
     const error = useSelector(state => state.usersUpdate.errMess);
     const result = useSelector(state => state.usersUpdate.result);
     const loading = useSelector(state => state.usersUpdate.isLoading);
+
+    
 
     const dispatch = useDispatch();
 
@@ -37,27 +42,44 @@ const AddUserComponent = (props) => {
         props.toggle();
     }
 
-    const doAddUser = (userData) => dispatch(addUser(userData));
+    const doAddUser = (userData) => {
+        console.log(userData);
+        dispatch(addUser(userData));
+    }
 
-    const uploadChanges = (values) => {
+    const uploadChanges =  (values) => {
+        let tipo = '';
+        if(values.administrador){
+            tipo += 'administrador,';
+        }
+        if(values.vendedor){
+            tipo += 'vendedor,';
+        }
+        if(values.repartidor){
+            tipo += 'repartidor,';
+        }
+        if(values.cliente){
+            tipo += 'cliente,';
+        }
         const userData = {
             username: values.username,
             nombre: values.nombre,
-            password: values.pasword,
             email: values.email,
-            administrador: values.administrador,
-            vendedor: values.vendedor
+            tipo: tipo
         }
+        userData.password= crypto.randomBytes(5).toString('hex');
+        setPassword(userData.password);
         doAddUser(userData);        
     }
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             username:'',
-            nombre: '', 
-            password: '',
+            nombre: '',
             email: '',
-            administrador: '0',
-            vendedor: '1'
+            administrador: false,
+            vendedor: false,
+            repartidor: false,
+            cliente: false
         },
         validationSchema,
         onSubmit(values) {
@@ -88,6 +110,8 @@ const AddUserComponent = (props) => {
         );
     }
     else if (result) {
+        console.log('puta2');
+        console.log(password);
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
@@ -130,6 +154,64 @@ const AddUserComponent = (props) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
                                 {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                            </FormGroup>
+
+                            <FormGroup>
+
+                                <Label htmlFor="email">Correo</Label>
+                                <Input type="email" id="email" name="email" value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+                            </FormGroup>
+
+                            <FormGroup>
+
+                                <Label htmlFor="nombre">Tipo</Label>
+                                <div className="l-flex ml-auto " class="col-12" >
+                                    <div class="col-12 col-sm-8">
+                                        <Label check  >
+                                            <Input type="checkbox" id="administrador" name="administrador" className="form-control" values={values.administrador}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />{' '}
+                                    Administrador
+                                </Label>
+                                    </div>
+                                </div>
+                                <div className="l-flex ml-auto " class="col-12" >
+                                    <div class="col-12 col-sm-8">
+                                        <Label check  >
+                                            <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" values={values.vendedor}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />{' '}
+                                    Vendedor
+                                </Label>
+                                    </div>
+                                </div>
+                                <div className="l-flex ml-auto " class="col-12" >
+                                    <div class="col-12 col-sm-8">
+                                        <Label check  >
+                                            <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" values={values.repartidor}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />{' '}
+                                    Repartidor
+                                </Label>
+                                    </div>
+                                </div>
+                                <div className="l-flex ml-auto " class="col-12" >
+                                    <div class="col-12 col-sm-8">
+                                        <Label check  >
+                                            <Input type="checkbox" id="cliente" name="cliente" className="form-control" values={values.cliente}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />{' '}
+                                    Cliente
+                                </Label>
+                                    </div>
+                                </div>
                             </FormGroup>
                             
                             <br></br>
