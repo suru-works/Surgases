@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 const FooterLinksAdmin = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.tipo.includes('administrador')) {
+        if (result.data.tipo.includes('administrador,')) {
             return (
 
                 <ul className="list-unstyled">
@@ -15,7 +15,7 @@ const FooterLinksAdmin = () => {
 
             );
         }
-        else if (result.data.tipo.includes('administrador')) {
+        else if (result.data.tipo.includes('administrador,')) {
             return (
 
                 <ul className="list-unstyled">
