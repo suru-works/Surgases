@@ -233,8 +233,8 @@ const SearchResult = () => {
             );
         })
 
-        return ( 
-            <Table className='col contieneTablas' responsive={false} bordered striped   >
+        return (
+            <Table className='col' responsive={true} bordered striped   >
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -284,7 +284,7 @@ const ProductsAdministration = () => {
         return (
             <div className='col' >
                 <Card style={{ margin: "10px", padding: "7px" }} >
-                    <CardBody>
+                    <CardBody >
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
                 </Card>
@@ -297,8 +297,14 @@ const ProductsAdministration = () => {
                     <CardTitle>
                         <CardText>Productos</CardText>
                     </CardTitle>
+<<<<<<< HEAD
 >>>>>>> parent of 26582ca... Products centrado y perrón
                     <SearchResult></SearchResult>
+=======
+                    <CardBody>
+                        <SearchResult></SearchResult>
+                    </CardBody>
+>>>>>>> parent of d39954f... Arreglando la tabla de productos
                 </Card>
 
                 <FloatingButtonContainer >
