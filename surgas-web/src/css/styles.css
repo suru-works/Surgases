@@ -17,34 +17,35 @@
 .contieneTablas{
   display:contents;
   overflow: hidden;
-
 }
+
 
 tbody{
   overflow-y: scroll;
-}
+  height: 400px  !important;
 
+}
 thead{
   overflow-y: scroll;
+
 }
 
-.tbodyPCheight{
-  overflow-y: scroll;
-  height: 700px  !important;
-}
-
-.tr1100px tr{
+thead, tbody tr {
   display:table;
-  width:1100px;
+  width:800px;
   table-layout:fixed;/* even columns width , fix width of table too*/
 }
 
+<<<<<<< HEAD
 .tr1600px tr{
   display:table;
   width:1600px;
   table-layout:fixed;/* even columns width , fix width of table too*/
 }
  
+=======
+    
+>>>>>>> parent of 26582ca... Products centrado y perrón
 .homeBackgroung{
   background:#f5f5f5;
 }

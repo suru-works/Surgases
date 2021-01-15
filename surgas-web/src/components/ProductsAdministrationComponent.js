@@ -234,10 +234,8 @@ const SearchResult = () => {
         })
 
         return ( 
-            <Table className='col contieneTablas'  responsive={false} bordered striped   >
-                
-                <thead  className='tr1100px'>
-                    
+            <Table className='col contieneTablas' responsive={false} bordered striped   >
+                <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Disponible</th>
@@ -247,12 +245,10 @@ const SearchResult = () => {
                         <th>Precio</th>
                         <th>Inventario</th>
                     </tr>
-                    
                 </thead>
-                <tbody className='tbodyPCheight tr1100px'>
+                <tbody>
                     {ResultTuples}
                 </tbody>
-
             </Table>
         );
     }
@@ -293,9 +289,15 @@ const ProductsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
+<<<<<<< HEAD
                     <br />
                     <CardTitle tag="h3">Productos</CardTitle>
 
+=======
+                    <CardTitle>
+                        <CardText>Productos</CardText>
+                    </CardTitle>
+>>>>>>> parent of 26582ca... Products centrado y perrón
                     <SearchResult></SearchResult>
                 </Card>
 
@@ -321,8 +323,9 @@ const ProductsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <br />
-                    <CardTitle tag="h3"> Productos</CardTitle>
+                    <CardTitle>
+                        <CardText>Productos</CardText>
+                    </CardTitle>
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>
