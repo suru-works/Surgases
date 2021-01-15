@@ -234,8 +234,10 @@ const SearchResult = () => {
         })
 
         return ( 
-            <Table className='col contieneTablas' responsive={false} bordered striped   >
-                <thead>
+            <Table className='col contieneTablas'  responsive={false} bordered striped   >
+                
+                <thead  className='tr1100px'>
+                    
                     <tr>
                         <th>Nombre</th>
                         <th>Disponible</th>
@@ -245,10 +247,12 @@ const SearchResult = () => {
                         <th>Precio</th>
                         <th>Inventario</th>
                     </tr>
+                    
                 </thead>
-                <tbody>
+                <tbody className='tbodyPCheight tr1100px'>
                     {ResultTuples}
                 </tbody>
+
             </Table>
         );
     }
@@ -289,9 +293,9 @@ const ProductsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Productos</CardText>
-                    </CardTitle>
+                    <br />
+                    <CardTitle tag="h3"> Productos</CardTitle>
+
                     <SearchResult></SearchResult>
                 </Card>
 
@@ -317,9 +321,8 @@ const ProductsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Productos</CardText>
-                    </CardTitle>
+                    <br />
+                    <CardTitle tag="h3"> Productos</CardTitle>
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>

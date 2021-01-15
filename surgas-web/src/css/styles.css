@@ -17,26 +17,28 @@
 .contieneTablas{
   display:contents;
   overflow: hidden;
-}
 
+}
 
 tbody{
   overflow-y: scroll;
-  height: 400px  !important;
-
 }
+
 thead{
   overflow-y: scroll;
-
 }
 
-thead, tbody tr {
+.tbodyPCheight{
+  overflow-y: scroll;
+  height: 700px  !important;
+}
+
+.tr1100px tr{
   display:table;
-  width:800px;
+  width:1100px;
   table-layout:fixed;/* even columns width , fix width of table too*/
 }
-
-    
+ 
 .homeBackgroung{
   background:#f5f5f5;
 }
