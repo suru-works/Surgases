@@ -91,7 +91,7 @@ const AdministratorComponent = () => {
 
     }
     else if (result) {
-        if (result.data.tipo === 'administrador') {
+        if (result.data.tipo.includes('administrador')) {
             return (
 
                 <div class="container-fluid">
