@@ -429,8 +429,8 @@ const SearchResult = () => {
         })
 
         return (
-            <Table className='col' responsive={true} bordered striped   >
-                <thead>
+            <Table className='col contieneTablas'  responsive={false} bordered striped   >
+                <thead className='tr1100px'>
                     <tr>
                         <th>Nombre</th>
                         <th>Tel&eacute;fono</th>
@@ -444,7 +444,7 @@ const SearchResult = () => {
                         <th>N&uacute;mero Total de Pedidos</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='tbodyPCheight tr1100px'>
                     {ResultTuples}
                 </tbody>
             </Table>
@@ -485,12 +485,10 @@ const ClientsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Clientes</CardText>
-                    </CardTitle>
-                    <CardBody>
-                        <SearchResult></SearchResult>
-                    </CardBody>
+                    <br />
+                    <CardTitle tag="h3">Clientes</CardTitle>
+                    
+                    <SearchResult />
                 </Card>
 
                 <FloatingButtonContainer >
@@ -515,12 +513,11 @@ const ClientsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Clientes</CardText>
-                    </CardTitle>
-                    <CardBody>
-                        <SearchResult />
-                    </CardBody>
+                    <br />
+                    <CardTitle tag="h3">Clientes</CardTitle>
+                    
+                    <SearchResult />
+                    
                 </Card>
             </div>
 

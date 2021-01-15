@@ -267,8 +267,8 @@ const SearchResult = () => {
         })
 
         return (
-            <Table className='col' responsive={true} bordered striped>
-                <thead>
+            <Table className='col contieneTablas'  responsive={false} bordered striped>
+                <thead  className='tr1600px'>
                     <tr>
                         <th>Fecha</th>
                         <th>Numero</th>
@@ -286,7 +286,7 @@ const SearchResult = () => {
                         <th>Empleado encargado</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='tbodyPCheight tr1600px'>
                     {ResultTuples}
                 </tbody>
             </Table>
@@ -325,12 +325,10 @@ const OrdersAdministration = () => {
                 </CardBody>
             </Card>
             <Card>
-                <CardTitle>
-                    <CardText>Pedidos</CardText>
-                </CardTitle>
-                <CardBody>
-                    <SearchResult></SearchResult>
-                </CardBody>
+                <br />
+                <CardTitle tag="h3"> Pedidos</CardTitle>
+                <SearchResult></SearchResult>
+                
             </Card>
             <FloatingButtonContainer >
                 <FloatingButton tooltip="Añadir un pedido" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddOrderModal} >

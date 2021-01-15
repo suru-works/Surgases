@@ -38,6 +38,12 @@ thead{
   width:1100px;
   table-layout:fixed;/* even columns width , fix width of table too*/
 }
+
+.tr1600px tr{
+  display:table;
+  width:1600px;
+  table-layout:fixed;/* even columns width , fix width of table too*/
+}
  
 .homeBackgroung{
   background:#f5f5f5;

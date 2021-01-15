@@ -294,7 +294,7 @@ const ProductsAdministration = () => {
                 </Card>
                 <Card>
                     <br />
-                    <CardTitle tag="h3"> Productos</CardTitle>
+                    <CardTitle tag="h3">Productos</CardTitle>
 
                     <SearchResult></SearchResult>
                 </Card>
