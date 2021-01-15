@@ -96,7 +96,7 @@ const UpdateClientData = (props) => {
     return (
         <Form onSubmit={handleSubmit} >
 
-            <CardTitle> Verifica los datos del cliente</CardTitle>
+            <CardTitle tag="h5"> Verifica los datos del cliente</CardTitle>
 
             <hr />
 
@@ -225,14 +225,6 @@ const UpdateClientData = (props) => {
                     </Input>
                     {(touched.numero_pedidos && errors.numero_pedidos) ? (<Alert color="danger">{errors.numero_pedidos}</Alert>) : null}
                 </FormGroup>
-
-            </div>
-
-            <div className="row">
-
-                
-
-                
 
             </div>
 

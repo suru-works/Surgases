@@ -151,7 +151,7 @@ const AddOrderComponent = (props) => {
         }
     }
     return (
-        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
+        <Modal className="modal-xl" isOpen={props.isOpen} toggle={toggleAndReset}>
 
             <ModalHeader toggle={toggleAndReset}>Añadir un pedido</ModalHeader>
 

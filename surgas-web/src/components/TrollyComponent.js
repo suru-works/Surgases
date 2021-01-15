@@ -55,16 +55,38 @@ const Trolly = (props) => {
     }
     if (orderClientResult) {
         return (
-            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
-                    carrito
-                <br></br>
-                    <div class="d-flex justify-content-center" >
-                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>Atras</Button>
-                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Registrar pedido</Button>
+            <div className="container"> 
+
+                <div className="row"> 
+
+                    <div className="col-6"> 
+
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+                            <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+                                carrito1
+                            <br></br>
+                                <div class="d-flex justify-content-center" >
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>Atras</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Registrar pedido</Button>
+                                </div>
+                            </FormGroup>
+                        </Form>
+
                     </div>
-                </FormGroup>
-            </Form>
+
+                    <div className="col-6"> 
+
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+                            
+                            <a>ALGUIEN MATEME POR FAVOR</a>
+                                
+                        </Form>
+
+                    </div>
+
+                </div>
+            </div>
+
         );
     }
 }
