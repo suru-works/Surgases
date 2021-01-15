@@ -15,6 +15,19 @@ const Trolly = (props) => {
         {
         }
     );
+
+    const orderClientError = useSelector(state => state.orderClient.errMess);
+    const orderClientResult = useSelector(state => state.orderClient.result);
+    const orderClientLoading = useSelector(state => state.orderClient.isLoading);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        let clientData = [];
+        clientData.push('telefono=' + props.telefono);
+        dispatch(orderClient(clientData));
+    }, []);
+
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
         },
@@ -23,18 +36,37 @@ const Trolly = (props) => {
             props.submit();
         }
     });
-    return (
-        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
-            <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
-                carrito
+    if (orderClientLoading) {
+        return (
+            <Loading />
+        );
+
+    }
+    if (orderClientError) {
+
+        return (
+            <div class="d-flex justify-content-center" >
+                hubo un error
+                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cerrar</Button>
+
+            </div>
+        );
+
+    }
+    if (orderClientResult) {
+        return (
+            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+                    carrito
                 <br></br>
-                <div class="d-flex justify-content-center" >
-                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>Atras</Button>
-                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Registrar pedido</Button>
-                </div>
-            </FormGroup>
-        </Form>
-    );
+                    <div class="d-flex justify-content-center" >
+                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={props.goBack}>Atras</Button>
+                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Registrar pedido</Button>
+                    </div>
+                </FormGroup>
+            </Form>
+        );
+    }
 }
 
 Trolly.propTypes = {};

@@ -18,7 +18,8 @@ const UpdateClientData = (props) => {
 
             email: yup
                 .string()
-                .email(),
+                .email()
+                .nullable(),
 
             nombre: yup
                 .string(),
@@ -36,24 +37,20 @@ const UpdateClientData = (props) => {
     const loading = useSelector(state => state.clientsUpdate.isLoading);
 
     const dispatch = useDispatch();
-    const doAddClient = (clientData) => dispatch(addClient(clientData));
+    const doUpdateClient = (clientData) => dispatch(updateClient(clientData));
 
     const uploadChanges = (values) => {
-
-        const hoy = new Date();
-        const mes = hoy.getMonth() + 1;
 
         const clientData = {
 
             telefono: values.telefono,
             email: values.email,
             nombre: values.nombre,
-            fecha_registro: hoy.getFullYear() + '-' + ((mes > 9 ? '' : '0') + mes) + '-' + hoy.getDate(),
             tipo: values.tipo
 
         }
 
-        doAddClient(clientData);
+        doUpdateClient(clientData);
     }
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -64,8 +61,6 @@ const UpdateClientData = (props) => {
             fecha_registro: orderUserResult.data[0].fecha_registro,
             puntos: orderUserResult.data[0].puntos,
             descuento: orderUserResult.data[0].descuento,
-            fecha_ultimo_pedido: orderUserResult.data[0].fecha_ultimo_pedido,
-            numero_ultimo_pedido: orderUserResult.data[0].numero_ultimo_pedido,
             numero_pedidos: orderUserResult.data[0].numero_pedidos,
             username: orderUserResult.data[0].username
         },
@@ -93,7 +88,7 @@ const UpdateClientData = (props) => {
 
     }
     if (result) {
-        props.submit();
+        props.submit(orderUserResult.data[0].telefono);
         return (
             <div></div>
         );
@@ -101,7 +96,7 @@ const UpdateClientData = (props) => {
     return (
         <Form onSubmit={handleSubmit} >
 
-            <CardTitle> Ingresa los datos del cliente</CardTitle>
+            <CardTitle> Verifica los datos del cliente</CardTitle>
 
             <hr />
 
@@ -165,6 +160,96 @@ const UpdateClientData = (props) => {
                         <option>empresarial</option>
                     </Input>
                     {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
+                </FormGroup>
+
+            </div>
+            <div className="row">
+
+                <FormGroup className='col-12 col-sm-6'>
+                    <Label htmlFor="fecha_registro">Fecha de registro</Label>
+                    <Input
+                        type="text"
+                        id="fecha_registro"
+                        name="fecha_registro"
+                        value={values.fecha_registro}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        disabled    
+                    />
+                    {(touched.fecha_registro && errors.fecha_registro) ? (<Alert color="danger">{errors.fecha_registro}</Alert>) : null}
+                </FormGroup>
+
+                <FormGroup className='col-12 col-sm-6'>
+                    <Label htmlFor="puntos">Puntos</Label>
+                    <Input
+                        type="number"
+                        id="puntos"
+                        name="puntos"
+                        value={values.puntos}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        disabled>
+                    </Input>
+                    {(touched.puntos && errors.puntos) ? (<Alert color="danger">{errors.puntos}</Alert>) : null}
+                </FormGroup>
+
+            </div>
+
+            <div className="row">
+
+                <FormGroup className='col-12 col-sm-6'>
+                    <Label htmlFor="descuento">Porcentaje de descuento</Label>
+                    <Input
+                        type="number"
+                        id="descuento"
+                        name="descuento"
+                        value={values.descuento}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        disabled    
+                    />
+                    {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
+                </FormGroup>
+
+                <FormGroup className='col-12 col-sm-6'>
+                    <Label htmlFor="numero_pedidos">Numero de pedidos</Label>
+                    <Input
+                        type="number"
+                        id="numero_pedidos"
+                        name="numero_pedidos"
+                        value={values.numero_pedidos}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        disabled
+                    >
+                    </Input>
+                    {(touched.numero_pedidos && errors.numero_pedidos) ? (<Alert color="danger">{errors.numero_pedidos}</Alert>) : null}
+                </FormGroup>
+
+            </div>
+
+            <div className="row">
+
+                
+
+                
+
+            </div>
+
+            <div className="row">
+                <FormGroup className='col-12 col-sm-6'>
+                    <Label htmlFor="username">Usuario</Label>
+                    <Input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={values.username}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        disabled
+                    >
+                    </Input>
+                    {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
                 </FormGroup>
 
             </div>

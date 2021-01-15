@@ -82,7 +82,7 @@ const CreateClientData = (props) => {
 
     }
     if (result) {
-        props.submit();
+        props.submit(props.telefono);
         return (
             <div></div>
         );

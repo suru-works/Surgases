@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { orders, addOrder, ordersUpdateReset, clients, updateClient, clientsUpdateReset, addClient, orderClient, orderClientReset, clientsUpdateRese } from '../redux/ActionCreators';
+import { orders, addOrder, ordersUpdateReset, clients, clientsUpdateReset, addClient, orderClient, orderClientReset, clientsUpdateRese } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import SetClient from './OrderSetClientComponent';
@@ -93,8 +93,9 @@ const AddOrderComponent = (props) => {
         dispatch(orderClientReset());
         goToSetClient();
     }
-    const CreateClientDataSubmit = () => {
-
+    const CreateClientDataSubmit = (telefono) => {
+        setOrderUserTel(telefono);
+        goToTrollyData();
     }
 
     const UpdateClientDataGoBack = () => {
@@ -102,8 +103,10 @@ const AddOrderComponent = (props) => {
         dispatch(orderClientReset());
         goToSetClient();
     }
-    const UpdateClientDataSubmit = () => {
-
+    const UpdateClientDataSubmit = (telefono) => {
+        setOrderUserTel(telefono);
+        dispatch(clientsUpdateReset());
+        goToTrollyData();
     }
 
     const TrollyGoBack = () => {
@@ -128,17 +131,17 @@ const AddOrderComponent = (props) => {
         }
         if (createClientDataModal) {
             return (
-                <CreateClientData goBack={CreateClientDataGoBack} submit={goToTrollyData} telefono={orderUserTel}></CreateClientData>
+                <CreateClientData goBack={CreateClientDataGoBack} submit={CreateClientDataSubmit} telefono={orderUserTel}></CreateClientData>
             );
         }
         if (updateClientDataModal) {
             return (
-                <UpdateClientData goBack={UpdateClientDataGoBack} submit={goToTrollyData}></UpdateClientData>
+                <UpdateClientData goBack={UpdateClientDataGoBack} submit={UpdateClientDataSubmit}></UpdateClientData>
             );
         }
         if (trollyModal) {
             return (
-                <Trolly goBack={TrollyGoBack} submit={goToPrintData}></Trolly>
+                <Trolly goBack={TrollyGoBack} submit={goToPrintData} telefono={orderUserTel}></Trolly>
             );
         }
         if (printModal) {
