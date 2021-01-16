@@ -68,7 +68,8 @@ export const login = (user) => async (dispatch) => {
             withCredentials: true
         });
         dispatch(loginSuccess(res));
-    } catch (err) {
+    } catch (err) { 
+        console.log(err);
         dispatch(loginFailed(err));
     }
 }

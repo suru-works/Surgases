@@ -53,7 +53,6 @@ const LoginComponent = (props) => {
     }
 
     const switchRestore = () => {
-        console.log(restore);
         if (restore) {
             setRestore(false);
         }
@@ -127,6 +126,16 @@ const LoginComponent = (props) => {
     else {
 
         if (error) {
+            if(error.message === 'Request failed with status code 403'){
+                return (
+                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                        <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                        <ModalBody>
+                            <p>Tu correo aun no ha sido verificado, revisa tu bandeja de entrada y sigue las instrucciones.</p>
+                        </ModalBody>
+                    </Modal>
+                );
+            }
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
