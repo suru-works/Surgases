@@ -192,7 +192,7 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
   });
 }));
 
-router.post('/login', auth.login, (req, res, next) => {
+router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
   if (req.body.remember) {
     // PERSISTENCIA
     req.session.cookie.expires = new Date(Date.now() + expires);
@@ -206,10 +206,10 @@ router.post('/login', auth.login, (req, res, next) => {
       next(err);
     }
 
-    const result = await conn.promise().execute('INSERT INTO user_sessions VALUES(?, ?)', [req.sessionID, user.username]);
+    let result = await conn.promise().execute('INSERT INTO user_sessions VALUES(?, ?)', [req.sessionID, user.username]);
     if (result[0].affectedRows == 1) {
       conn.commit();
-      
+
       let resp = {
         username: user.username,
         nombre: user.nombre,
@@ -217,9 +217,10 @@ router.post('/login', auth.login, (req, res, next) => {
         tipo: user.tipo
       }
       const tipos = user.tipo.split(',');
+      let rows, fields;
       if (tipos.indexOf('cliente') != -1) {
-        result = await pool.execute('SELECT * FROM cliente WHERE username = ?', [user.username]);
-        if (JSON.parse(JSON.stringify(result[0]))[0]) {
+        [rows, fields] = await pool.promise().execute('SELECT * FROM cliente WHERE username = ?', [user.username]);
+        if (rows.length > 0) {
           resp.existeCliente = true;
         } else {
           resp.existeCliente = false;
@@ -228,8 +229,8 @@ router.post('/login', auth.login, (req, res, next) => {
         resp.existeCliente = true;
       }
       if (tipos.indexOf('vendedor') != -1 || tipos.indexOf('administrador') != -1 || tipos.indexOf('repartidor') != -1) {
-        result = await pool.execute('SELECT * FROM empleado WHERE username = ?', [user.username]);
-        if (JSON.parse(JSON.stringify(result[0]))[0]) {
+        [rows, fields] = await pool.promise().execute('SELECT * FROM empleado WHERE username = ?', [user.username]);
+        if (rows.length > 0) {
           resp.existeEmpleado = true;
         } else {
           resp.existeEmpleado = false;
@@ -444,6 +445,54 @@ router.post('/changePassword', async function (req, res, next) {
           throw err;
         }
       }
+
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  });
+
+});
+
+router.post('/verify', async function (req, res, next) {
+  pool.getConnection(async (err, conn) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    try {
+      const data = req.body;
+      const token = data.token;
+      console.log(token);
+      const tokenTokens = token.split(',');
+
+      const now = new Date();
+      const exp = Date.parse(tokenTokens[0]);
+
+      if (now > exp) {
+        var err = new Error("The token has expired");
+        err.statusCode = 401;
+        throw err;
+      }
+      else {
+        //actualizando la estado de verificacion del usuario
+        let result = await pool.promise().execute('SELECT username FROM usuario WHERE verificationToken = ?', [token]);
+        if (result[0].length == 1) {
+          const username = JSON.parse(JSON.stringify(result[0]))[0].username;
+          await conn.promise().execute('UPDATE usuario SET verificado = 1 WHERE username = ?', [username]);
+          conn.commit();
+          res.json({
+            msg: 'user verified successfully'
+          });
+        }
+        else {
+          var err = new Error("The token is not valid");
+          err.statusCode = 401;
+          throw err;
+        }
+
+      }
+
 
     } catch (error) {
       console.log(error);
