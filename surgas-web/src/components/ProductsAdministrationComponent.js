@@ -189,11 +189,6 @@ const SearchCriteria = () => {
 
                 </div>
 
-                
-
-                
-
-
             </Form>
 
         </div>
@@ -236,7 +231,7 @@ const SearchResult = () => {
         return ( 
             <Table className='col' responsive={true} bordered striped   >
                 
-                <thead className='theadPremium'>
+                <thead className='theadProductsWidth'>
                     
                     <tr>
                         <th>Nombre</th>
@@ -249,7 +244,7 @@ const SearchResult = () => {
                     </tr>
                     
                 </thead>
-                <tbody className='tbodyAlto500px tbodyAncho800px'>
+                <tbody className='tbodyAlto600px tbodyProductsWidth'>
                     {ResultTuples}
                 </tbody>
 
@@ -295,8 +290,9 @@ const ProductsAdministration = () => {
                 <Card>
                     <br />
                     <CardTitle tag="h3">Productos</CardTitle>
-
-                    <SearchResult></SearchResult>
+                    <CardBody>
+                        <SearchResult></SearchResult>
+                    </CardBody>
                 </Card>
 
                 <FloatingButtonContainer >
