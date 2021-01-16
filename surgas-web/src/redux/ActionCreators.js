@@ -548,6 +548,41 @@ export const restorePassword = (username) => async (dispatch) => {
     }
 }
 
+//verify account
+
+export const verifyRequest = () => ({
+    type: ActionTypes.VERIFY_REQUEST
+});
+
+export const verifyReset = () => ({
+    type: ActionTypes.VERIFY_RESET
+});
+
+export const verifySuccess = (result) => ({
+    type: ActionTypes.VERIFY_SUCCESS,
+    payload: result
+});
+
+export const verifyFailed = (errmess) => ({
+    type: ActionTypes.VERIFY_FAILED,
+    payload: errmess
+});
+
+export const verify = (data) => async (dispatch) => {
+    dispatch(verifyRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/verify/',data, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(verifySuccess(res));
+    } catch (err) {
+        dispatch(verifyFailed(err));
+    }
+}
 
 //changePassword password
 export const changePasswordRequest = () => ({

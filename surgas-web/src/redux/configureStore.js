@@ -10,6 +10,7 @@ import { Products, ProductsUpdate } from './products';
 import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
+import { Verify } from './verify';
 import { ChangePassword } from './restore';
 import { Clients, ClientsUpdate, OrderClient} from './clients';
 import { OrderStats } from './orderStats';
@@ -33,6 +34,7 @@ import { OrderStats } from './orderStats';
             systemBackup: SystemBackup,
             restore: Restore,
             changePassword: ChangePassword,
+            verify: Verify,
             maps: Maps,
             clients: Clients,
             clientsUpdate: ClientsUpdate,
