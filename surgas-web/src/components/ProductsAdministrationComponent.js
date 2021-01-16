@@ -234,9 +234,9 @@ const SearchResult = () => {
         })
 
         return ( 
-            <Table className='col contieneTablas'  responsive={false} bordered striped   >
+            <Table className='col' responsive={true} bordered striped   >
                 
-                <thead  className='tr1100px'>
+                <thead className='theadPremium'>
                     
                     <tr>
                         <th>Nombre</th>
@@ -249,7 +249,7 @@ const SearchResult = () => {
                     </tr>
                     
                 </thead>
-                <tbody className='tbodyPCheight tr1100px'>
+                <tbody className='tbodyAlto500px tbodyAncho800px'>
                     {ResultTuples}
                 </tbody>
 
