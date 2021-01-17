@@ -142,7 +142,7 @@ pedidoRouter.route("/")
         if (results[0].affectedRows == 1) {
             let precio_bruto = 0;
             pedido.productos.forEach((val, idx, arr) => {
-                results = conn.promise().execute(
+                results = await conn.promise().execute(
                     'INSERT INTO productoxpedido VALUES(?, ?, ?, ?, ?)',
                     [val.codigo, pedido.fecha, pedido.numero, val.precio, val.cantidad]
                 );
@@ -157,23 +157,23 @@ pedidoRouter.route("/")
                 }
             });
 
-            results = pool.promise().execute('SELECT descuento FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
+            results = await pool.promise().execute('SELECT descuento FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
             const descuento = JSON.parse(JSON.stringify(results[0]))[0].descuento;
             const precio_final = precio_bruto * (1 - descuento);
-            results = conn.promise().execute(
+            results = await conn.promise().execute(
                 'UPDATE pedido SET precio_bruto = ?, precio_final = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?',
                 [precio_bruto, precio_final, pedido.empleado, pedido.fecha, pedido.numero]
             );
 
             if (results[0].affectedRows == 1) {
-                results = conn.promise().execute(
+                results = await conn.promise().execute(
                     'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ? WHERE telefono = ?'
                     [pedido.fecha, pedido.numero, pedido.cliente_pedidor]
                 );
 
                 if (results[0].affectedRows == 1) {
                     conn.commit();
-                    results = pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, pedido.numero]);
+                    results = await pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, pedido.numero]);
                     res.json(JSON.parse(JSON.stringify(results[0])));
                 } else {
                     conn.rollback();
@@ -264,7 +264,7 @@ pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (re
         next(err);
     }
 
-    const results = pool.promise().execute(
+    const results = await pool.promise().execute(
         'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [req.params.fecha, req.params.numero]
     );
@@ -287,12 +287,12 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
 
     const pedido = req.body;
 
-    let results = pool.promise().execute(
+    let results = await pool.promise().execute(
         'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [pedido.fecha, pedido.numero]
     );
     const peso_total = JSON.parse(JSON.stringify(results[0])).peso_total;
-    results = pool.promise().execute('SELECT puntos_libra FROM static');
+    results = await pool.promise().execute('SELECT puntos_libra FROM static');
     const puntos_libra = JSON.parse(JSON.stringify(results[0])).puntos_libra;
     const puntos_compra = peso_total * puntos_libra;
     pool.getConnection(async (err, conn) => {
@@ -301,7 +301,7 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
             return;
         }
 
-        results = conn.promise().execute(
+        results = await conn.promise().execute(
             'UPDATE pedido SET puntos_compra = ? AND bodega = ? WHERE fecha = ? AND numero = ?',
             [puntos_compra, pedido.bodega, pedido.fecha, pedido.numero]
         );
