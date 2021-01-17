@@ -224,7 +224,7 @@ const SearchCriteria = () => {
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
             nombre: '',
-            disponible: '',
+            disponible: 1,
             tipo: '',
             color: '',
             peso: '',
@@ -238,9 +238,8 @@ const SearchCriteria = () => {
             if (values.nombre != '') {
                 productData.push('nombre=' + values.nombre);
             }
-            if (values.disponible != '') {
-                productData.push('disponible=' + (values.disponible));
-            }
+            productData.push('disponible=' + (values.disponible));
+
             if (values.tipo != '') {
                 productData.push('tipo=' + values.tipo);
             }
@@ -286,9 +285,8 @@ const SearchCriteria = () => {
                             onChange={handleChange}
                             onBlur={handleBlur} >
 
-                            <option selected value=""> Seleccione </option>
-                            <option value={1}>Si</option>
-                            <option value={0}>No</option>
+                            <option selected value={1}>Si</option>
+                            
                         </Input>
                         {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
@@ -386,7 +384,7 @@ const SearchResult = () => {
 
         return ( 
             <div>
-                <Table className='col' responsive={true} bordered striped   >
+                <Table className='col' responsive={true} size="sm" bordered striped   >
                     
                     <thead className='theadTrolleyWidth'>
                         

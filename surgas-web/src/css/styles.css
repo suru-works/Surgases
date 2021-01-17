@@ -72,7 +72,7 @@
 }
 .theadTrolleyWidth, .tbodyTrolleyWidth tr {
   display:table;
-  width:1600px;
+  width:800px;
   table-layout:fixed;/* even columns width , fix width of table too*/
 }
 
