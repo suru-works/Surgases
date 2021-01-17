@@ -6,10 +6,11 @@ import { Logout } from './logout';
 import { User, UserUpdate } from './user';
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
-import { Products, ProductsUpdate } from './products';
+import { Products, ProductsUpdate, TrolleyProducts } from './products';
 import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
+import { Verify } from './verify';
 import { ChangePassword } from './restore';
 import { Clients, ClientsUpdate, OrderClient} from './clients';
 import { OrderStats } from './orderStats';
@@ -26,6 +27,7 @@ import { OrderStats } from './orderStats';
             usersUpdate:UsersUpdate,
             products: Products,
             productsUpdate: ProductsUpdate,
+            trolleyProducts: TrolleyProducts,
             orders: Orders,
             ordersUpdate: OrdersUpdate,
             systemParameters: SystemParameters,
@@ -33,6 +35,7 @@ import { OrderStats } from './orderStats';
             systemBackup: SystemBackup,
             restore: Restore,
             changePassword: ChangePassword,
+            verify: Verify,
             maps: Maps,
             clients: Clients,
             clientsUpdate: ClientsUpdate,

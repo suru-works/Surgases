@@ -185,7 +185,7 @@ const EditProductComponent = (props) => {
         );
     }
     else {
-        if (userResult.data.tipo === 'administrador') {
+        if (userResult.data.tipo.includes('administrador,')) {
             return (
 
                 <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>

@@ -14,7 +14,75 @@
   80% {
     transform: rotate(-5deg); } }
 
-    
+
+.tbodyAlto600px {
+  display:block;
+  height:600px;
+  overflow:scroll;
+}
+.tbodyAlto300px {
+  display:block;
+  height:300px;
+  overflow:scroll;
+}
+
+
+
+/* Tabla de Productos */
+.theadProductsWidth {
+  display:block;
+  overflow:scroll;
+  
+}
+.theadProductsWidth, .tbodyProductsWidth tr {
+  display:table;
+  width:1000px;
+  table-layout:fixed;/* even columns width , fix width of table too*/
+  word-wrap:break-word; 
+}
+
+/* Tabla de Pedidos */
+.theadOrdersWidth {
+  display:block;
+  overflow:scroll;
+  
+}
+.theadOrdersWidth, .tbodyOrdersWidth tr {
+  display:table;
+  width:1300px;
+  table-layout:fixed;/* even columns width , fix width of table too*/
+  word-wrap:break-word; 
+}
+
+/* Tabla de Clientes */
+.theadClientsWidth {
+  display:block;
+  overflow:scroll;
+  
+}
+.theadClientsWidth, .tbodyClientsWidth tr {
+  display:table;
+  width:1600px;
+  table-layout:fixed;/* even columns width , fix width of table too*/
+  word-wrap:break-word; 
+}
+
+/* Tabla de Trolley */
+.theadTrolleyWidth {
+  display:block;
+  overflow:scroll;
+  
+}
+.theadTrolleyWidth, .tbodyTrolleyWidth tr {
+  display:table;
+  width:800px;
+  table-layout:fixed;/* even columns width , fix width of table too*/
+  word-wrap:break-word; 
+}
+
+
+
+
 .homeBackgroung{
   background:#f5f5f5;
 }

@@ -17,6 +17,7 @@ import AddOrderComponent from './AddOrderComponent';
 const validationSchema = yup.object(
 
     {
+        //TO DO: no veo nada aqui, A TRABAJAR EL DEL FRONT EN- ah, que soy yo...   :v
     }
 );
 
@@ -161,7 +162,7 @@ const SearchCriteria = () => {
                     
                         <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
                             <Label htmlFor="direccion">Dirección</Label>
-                            <Input type="number" id="direccion" name="direccion"
+                            <Input type="text" id="direccion" name="direccion"
                                 value={values.direccion}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -267,8 +268,8 @@ const SearchResult = () => {
         })
 
         return (
-            <Table className='col' responsive={true} bordered striped>
-                <thead>
+            <Table className='col'  responsive={true} bordered striped>
+                <thead  className='theadOrdersWidth'>
                     <tr>
                         <th>Fecha</th>
                         <th>Numero</th>
@@ -286,7 +287,7 @@ const SearchResult = () => {
                         <th>Empleado encargado</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='tbodyAlto600px tbodyOrdersWidth'>
                     {ResultTuples}
                 </tbody>
             </Table>
@@ -325,12 +326,12 @@ const OrdersAdministration = () => {
                 </CardBody>
             </Card>
             <Card>
-                <CardTitle>
-                    <CardText>Pedidos</CardText>
-                </CardTitle>
+                <br />
+                <CardTitle tag="h3"> Pedidos</CardTitle>
                 <CardBody>
                     <SearchResult></SearchResult>
                 </CardBody>
+                
             </Card>
             <FloatingButtonContainer >
                 <FloatingButton tooltip="Añadir un pedido" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddOrderModal} >

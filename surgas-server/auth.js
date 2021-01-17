@@ -1,5 +1,6 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const mail = require('./com/mail');
 
 const pool = require('./db').pool.promise();
 const LocalStrategy = require('passport-local').Strategy;
@@ -50,6 +51,22 @@ module.exports.isAuthenticated = (req, res, next) => {
     } else {
         let err = new Error('not authenticated');
         err.status = 401;
+        next(err);
+    }
+}
+
+module.exports.isVerified = async (req, res, next) => {
+    try {
+        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE username = ? AND verificado = 1', [req.body.username]);
+        if (rows.length == 0) {
+            mail.sendVerifyMail(req.body.username);
+            let err = new Error('user is not verified');
+            err.status = 403;
+            next(err);
+        }
+        next();
+    } catch (err) {
+        console.log(err);
         next(err);
     }
 }

@@ -429,8 +429,8 @@ const SearchResult = () => {
         })
 
         return (
-            <Table className='col' responsive={true} bordered striped   >
-                <thead>
+            <Table className='col'  responsive={true} bordered striped   >
+                <thead className='theadClientsWidth'>
                     <tr>
                         <th>Nombre</th>
                         <th>Tel&eacute;fono</th>
@@ -444,7 +444,7 @@ const SearchResult = () => {
                         <th>N&uacute;mero Total de Pedidos</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='tbodyAlto600px tbodyClientsWidth'>
                     {ResultTuples}
                 </tbody>
             </Table>
@@ -485,9 +485,9 @@ const ClientsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Clientes</CardText>
-                    </CardTitle>
+                    <br />
+                    <CardTitle tag="h3">Clientes</CardTitle>
+                    
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>
@@ -509,18 +509,19 @@ const ClientsAdministration = () => {
     else {
         return (
             <div className='col' >
-                <Card   style={{ margin: "10px", padding: "7px" }}>
+                <Card style={{ margin: "10px", padding: "7px" }}>
                     <CardBody>
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Clientes</CardText>
-                    </CardTitle>
+                    <br />
+                    <CardTitle tag="h3">Clientes</CardTitle>
+                    
                     <CardBody>
-                        <SearchResult />
+                        <SearchResult></SearchResult>
                     </CardBody>
+                    
                 </Card>
             </div>
 

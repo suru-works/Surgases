@@ -8,6 +8,7 @@ import Contact from './ContactComponent';
 import Sales from './SalesComponent';
 import Administrator from './AdministratorComponent';
 import ChangePassword from './ChangePasswordComponent';
+import Verify from './VerifyComponent';
 import { Switch, Route, Redirect, withRouter, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,6 +37,7 @@ const MainComponent = () => {
                         <Route path='/ventas' component={() => <Sales />} />
                         <Route path='/administrador' component={() => <Administrator />} />
                         <Route path="/changepassword/:token" component={() => <ChangePassword />} />
+                        <Route path="/verify/:token" component={() => <Verify />} />
                         <Redirect to="/inicio"></Redirect>
                     </Switch>
             <Footer />

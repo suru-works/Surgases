@@ -68,7 +68,8 @@ export const login = (user) => async (dispatch) => {
             withCredentials: true
         });
         dispatch(loginSuccess(res));
-    } catch (err) {
+    } catch (err) { 
+        console.log(err);
         dispatch(loginFailed(err));
     }
 }
@@ -512,6 +513,42 @@ export const addOrder= (orderData) => async (dispatch) => {
 }
 
 
+//trolleyProducts
+
+export const trolleyProductsReset = () => ({
+    type: ActionTypes.TROLLEY_PRODUCTS_RESET
+});
+
+export const trolleyProductsRequest = () => ({
+    type: ActionTypes.TROLLEY_PRODUCTS_REQUEST
+});
+
+export const trolleyProductsSuccess = (result) => ({
+    type: ActionTypes.TROLLEY_PRODUCTS_SUCCESS,
+    payload: result
+});
+
+export const trolleyProductsFailed = (errmess) => ({
+    type: ActionTypes.TROLLEY_PRODUCTS_FAILED,
+    payload: errmess
+});
+
+export const trolleyProducts = (args) => async (dispatch) => {
+    dispatch(trolleyProductsRequest());
+    let urlparams = 'productos';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(trolleyProductsSuccess(res));
+    } catch (err) {
+        dispatch(trolleyProductsFailed(err));
+    }
+}
+
+
 //Restore password
 export const restoreRequest = () => ({
     type: ActionTypes.RESTORE_REQUEST
@@ -547,6 +584,41 @@ export const restorePassword = (username) => async (dispatch) => {
     }
 }
 
+//verify account
+
+export const verifyRequest = () => ({
+    type: ActionTypes.VERIFY_REQUEST
+});
+
+export const verifyReset = () => ({
+    type: ActionTypes.VERIFY_RESET
+});
+
+export const verifySuccess = (result) => ({
+    type: ActionTypes.VERIFY_SUCCESS,
+    payload: result
+});
+
+export const verifyFailed = (errmess) => ({
+    type: ActionTypes.VERIFY_FAILED,
+    payload: errmess
+});
+
+export const verify = (data) => async (dispatch) => {
+    dispatch(verifyRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/verify/',data, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(verifySuccess(res));
+    } catch (err) {
+        dispatch(verifyFailed(err));
+    }
+}
 
 //changePassword password
 export const changePasswordRequest = () => ({

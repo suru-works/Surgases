@@ -189,11 +189,6 @@ const SearchCriteria = () => {
 
                 </div>
 
-                
-
-                
-
-
             </Form>
 
         </div>
@@ -233,9 +228,11 @@ const SearchResult = () => {
             );
         })
 
-        return (
+        return ( 
             <Table className='col' responsive={true} bordered striped   >
-                <thead>
+                
+                <thead className='theadProductsWidth'>
+                    
                     <tr>
                         <th>Nombre</th>
                         <th>Disponible</th>
@@ -245,10 +242,12 @@ const SearchResult = () => {
                         <th>Precio</th>
                         <th>Inventario</th>
                     </tr>
+                    
                 </thead>
-                <tbody>
+                <tbody className='tbodyAlto600px tbodyProductsWidth'>
                     {ResultTuples}
                 </tbody>
+
             </Table>
         );
     }
@@ -284,14 +283,13 @@ const ProductsAdministration = () => {
         return (
             <div className='col' >
                 <Card style={{ margin: "10px", padding: "7px" }} >
-                    <CardBody >
+                    <CardBody>
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Productos</CardText>
-                    </CardTitle>
+                    <br />
+                    <CardTitle tag="h3">Productos</CardTitle>
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>
@@ -319,9 +317,8 @@ const ProductsAdministration = () => {
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardTitle>
-                        <CardText>Productos</CardText>
-                    </CardTitle>
+                    <br />
+                    <CardTitle tag="h3"> Productos</CardTitle>
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>

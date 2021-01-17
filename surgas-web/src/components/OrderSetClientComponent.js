@@ -33,7 +33,7 @@ const SetClient = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            let clientData = []
+            let clientData = [];
             if (values.telefono != '') {
                 clientData.push('telefono=' + values.telefono);
                 setNewTelefono(values.telefono);
