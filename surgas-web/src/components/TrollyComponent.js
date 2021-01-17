@@ -5,7 +5,7 @@ import { Loading } from './LoadingComponent';
 import { orders, addOrder, ordersUpdateReset, clients, updateClient, clientsUpdateReset, addClient, orderClient, orderClientReset, clientsUpdateRese } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { products, updateProduct } from '../redux/ActionCreators';
+import { products, updateProduct, trolleyProducts } from '../redux/ActionCreators';
 import Product from './ProductTableComponent';
 
 import SetClient from './OrderSetClientComponent';
@@ -198,8 +198,8 @@ const NewOrder = () => {
                             {(touched.nota && errors.nota) ? (<Alert color="danger">{errors.nota}</Alert>) : null}
                         </FormGroup>
                     
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
-                        <br></br>
+                    <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+                        
                         <div class="d-flex justify-content-center" >
                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
                             <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
@@ -215,11 +215,14 @@ const NewOrder = () => {
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(products()
+        let productData = [];
+        productData.push('disponible=' + ('1'));
+
+        dispatch(trolleyProducts(productData)
         );
     }, []);
 
-    const doSearch = (productData) => dispatch(products(productData));
+    const doSearch = (productData) => dispatch(trolleyProducts(productData));
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -275,7 +278,6 @@ const SearchCriteria = () => {
                             onChange={handleChange}
                             onBlur={handleBlur} />
                         {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
@@ -283,9 +285,11 @@ const SearchCriteria = () => {
 
                         <Input type="select" id="disponible" name="disponible" value={values.disponible}
                             onChange={handleChange}
-                            onBlur={handleBlur} >
+                            onBlur={handleBlur} disabled>
 
-                            <option selected value={1}>Si</option>
+                            <option value=""> Seleccione </option>
+                            <option value={1}>Si</option>
+                            <option value={0}>No</option>
                             
                         </Input>
                         {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
@@ -334,7 +338,6 @@ const SearchCriteria = () => {
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-5  col-lg-5'>
-                        <br></br>
 
                         <div class="d-flex justify-content-center"  >
                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
@@ -363,9 +366,9 @@ const RenderSearchResultTuple = (props) => {
 
 const SearchResult = () => {
 
-    const error = useSelector(state => state.products.errMess);
-    const result = useSelector(state => state.products.result);
-    const loading = useSelector(state => state.products.isLoading);
+    const error = useSelector(state => state.trolleyProducts.errMess);
+    const result = useSelector(state => state.trolleyProducts.result);
+    const loading = useSelector(state => state.trolleyProducts.isLoading);
 
     if (loading) {
         return (
@@ -390,7 +393,7 @@ const SearchResult = () => {
                         
                         <tr>
                             <th>Nombre</th>
-                            <th>Disponible</th>
+                            
                             <th>Tipo</th>
                             <th>Color</th>
                             <th>Peso</th>

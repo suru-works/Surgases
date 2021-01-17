@@ -6,7 +6,7 @@ import { Logout } from './logout';
 import { User, UserUpdate } from './user';
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
-import { Products, ProductsUpdate } from './products';
+import { Products, ProductsUpdate, TrolleyProducts } from './products';
 import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
@@ -27,6 +27,7 @@ import { OrderStats } from './orderStats';
             usersUpdate:UsersUpdate,
             products: Products,
             productsUpdate: ProductsUpdate,
+            trolleyProducts: TrolleyProducts,
             orders: Orders,
             ordersUpdate: OrdersUpdate,
             systemParameters: SystemParameters,

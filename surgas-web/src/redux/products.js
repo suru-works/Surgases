@@ -36,3 +36,22 @@ export const ProductsUpdate = (state = {
             return state;
     }
 }
+
+export const TrolleyProducts = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.TROLLEY_PRODUCTS_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.TROLLEY_PRODUCTS_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.TROLLEY_PRODUCTS_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.TROLLEY_PRODUCTS_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
