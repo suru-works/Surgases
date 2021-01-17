@@ -188,4 +188,14 @@ clienteRouter.route("/:telefono")
     })
 }));
 
+clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    let results = pool.promise().execute('SELECT fecha_ultimo_pedido, numero_ultimo_pedido FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    const fk = JSON.parse(JSON.stringify(results[0]))[0];
+    results = pool.promise().execute(
+        'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN productoxpedido pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND numero_pedido = ?',
+        [fk.fecha_ultimo_pedido, fk.numero_ultimo_pedido]
+    );
+    res.json(JSON.parse(JSON.stringify(results[0])));
+}));
+
 module.exports = clienteRouter;

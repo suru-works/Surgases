@@ -166,9 +166,21 @@ pedidoRouter.route("/")
             );
 
             if (results[0].affectedRows == 1) {
-                conn.commit();
-                results = pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, pedido.numero]);
-                res.json(JSON.parse(JSON.stringify(results[0])));
+                results = conn.promise().execute(
+                    'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ? WHERE telefono = ?'
+                    [pedido.fecha, pedido.numero, pedido.cliente_pedidor]
+                );
+
+                if (results[0].affectedRows == 1) {
+                    conn.commit();
+                    results = pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, pedido.numero]);
+                    res.json(JSON.parse(JSON.stringify(results[0])));
+                } else {
+                    conn.rollback();
+                    throw {
+                        status: 500
+                    }
+                }
             } else {
                 conn.rollback();
                 throw {
