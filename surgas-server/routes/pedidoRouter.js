@@ -141,7 +141,7 @@ pedidoRouter.route("/")
 
         if (results[0].affectedRows == 1) {
             let precio_bruto = 0;
-            pedido.productos.forEach((val, idx, arr) => {
+            pedido.productos.forEach(async (val, idx, arr) => {
                 results = await conn.promise().execute(
                     'INSERT INTO productoxpedido VALUES(?, ?, ?, ?, ?)',
                     [val.codigo, pedido.fecha, pedido.numero, val.precio, val.cantidad]
