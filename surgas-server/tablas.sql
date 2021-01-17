@@ -55,7 +55,7 @@ CREATE TABLE producto(
     inventario INT NOT NULL,
     disponible BIT NOT NULL,
     PRIMARY KEY (codigo),
-    UNIQUE (nombre, color, peso, tipo, precio, inventario, disponible)
+    UNIQUE (nombre, color, peso, tipo)
 );
 
 CREATE TABLE pedido(
