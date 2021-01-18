@@ -46,7 +46,9 @@ const UpdateClientData = (props) => {
             telefono: values.telefono,
             email: values.email,
             nombre: values.nombre,
-            tipo: values.tipo
+            tipo: values.tipo,
+            puntos: values.puntos,
+            descuento: values.descuento
 
         }
 
