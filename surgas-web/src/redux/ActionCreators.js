@@ -719,6 +719,76 @@ export const systemParameters = () => async (dispatch) => {
     }
 }
 
+// Employees
+
+export const employeesReset = () => ({
+    type: ActionTypes.EMPLOYEES_RESET
+});
+
+export const employeesRequest = () => ({
+    type: ActionTypes.EMPLOYEES_REQUEST
+});
+
+export const employeesSuccess = (result) => ({
+    type: ActionTypes.EMPLOYEES_SUCCESS,
+    payload: result
+});
+
+export const employeesFailed = (errmess) => ({
+    type: ActionTypes.EMPLOYEES_FAILED,
+    payload: errmess
+});
+
+export const employees = (args) => async (dispatch) => {
+    dispatch(employeesRequest());
+    let urlparams = 'empleados';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(employeesSuccess(res));
+    } catch (err) {
+        dispatch(employeesFailed(err));
+    }
+}
+
+// New order employees
+
+export const newOrderEmployeesReset = () => ({
+    type: ActionTypes.NEWORDER_EMPLOYEES_RESET
+});
+
+export const newOrderEmployeesRequest = () => ({
+    type: ActionTypes.NEWORDER_EMPLOYEES_REQUEST
+});
+
+export const newOrderEmployeesSuccess = (result) => ({
+    type: ActionTypes.NEWORDER_EMPLOYEES_SUCCESS,
+    payload: result
+});
+
+export const newOrderEmployeesFailed = (errmess) => ({
+    type: ActionTypes.NEWORDER_EMPLOYEES_FAILED,
+    payload: errmess
+});
+
+export const newOrderEmployees = (args) => async (dispatch) => {
+    dispatch(newOrderEmployeesRequest());
+    let urlparams = 'empleados';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(newOrderEmployeesSuccess(res));
+    } catch (err) {
+        dispatch(newOrderEmployeesFailed(err));
+    }
+}
+
 export const systemParametersUpdateReset = () => ({
     type: ActionTypes.SYSTEM_PARAMETERS_UPDATE_RESET
 });
@@ -926,6 +996,36 @@ export const orderClient = (args) => async (dispatch) => {
         dispatch(orderClientSuccess(res));
     } catch (err) {
         dispatch(orderClientFailed(err));
+    }
+}
+
+//lastOrder
+
+export const lastOrderReset = () => ({
+    type: ActionTypes.LAST_ORDER_RESET
+});
+
+export const lastOrderRequest = () => ({
+    type: ActionTypes.LAST_ORDER_REQUEST
+});
+
+export const lastOrderSuccess = (result) => ({
+    type: ActionTypes.LAST_ORDER_SUCCESS,
+    payload: result
+});
+
+export const lastOrderFailed = (errmess) => ({
+    type: ActionTypes.LAST_ORDER_FAILED,
+    payload: errmess
+});
+
+export const lastOrder = (telefono) => async (dispatch) => {
+    dispatch(lastOrderRequest());
+    try {
+        const res = await axios.get(baseBackUrl + 'clientes/'+telefono+'/last_order');
+        dispatch(lastOrderSuccess(res));
+    } catch (err) {
+        dispatch(lastOrderFailed(err));
     }
 }
 

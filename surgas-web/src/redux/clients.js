@@ -56,3 +56,22 @@ export const OrderClient = (state = {
             return state;
     }
 }
+
+export const LastOrder = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.LAST_ORDER_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.LAST_ORDER_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.LAST_ORDER_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.LAST_ORDER_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}

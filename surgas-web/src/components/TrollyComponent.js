@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Table, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { orders, addOrder, ordersUpdateReset, clients, updateClient, clientsUpdateReset, addClient, orderClient, orderClientReset, clientsUpdateRese } from '../redux/ActionCreators';
+import { orders, addOrder, ordersUpdateReset, clients, updateClient, clientsUpdateReset, addClient, orderClient, orderClientReset, lastOrder, newOrderEmployees } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { products, updateProduct, trolleyProducts } from '../redux/ActionCreators';
 import Product from './ProductTableComponent';
+import AddNewOrderProductComponent from './AddNewOrderProductComponent';
+import EditNewOrderProductComponent from './EditNewOrderProductComponent';
 
 import SetClient from './OrderSetClientComponent';
 import CreateClientData from './OrderCreateClientDataComponent';
@@ -51,175 +53,13 @@ const validationSchema = yup.object(
     }
 );
 
-const NewOrder = () => {
-    
-    const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
-        initialValues: {
-            fecha: '',
-            
-            numero: '',
-            
-            hora: '',
-           
-            direccion: '',
-          
-            precioBruto: '',
-           
-            precioFinal: '',
-            estado: 'sin especificar',
-            bodega: 'sin especificar',
-         
-            puntos: '',
-            tipoCliente: 'sin especificar',
-            nota: ''
-        },
-        validationSchema,
-        /*onSubmit(values) {
-            let orderData = []
-
-            doSearch(orderData);
-        }*/
-    });
-
-    return (
-        <div>
-            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-
-                <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
-                <hr />
-
-                    <div className='row d-flex justify-content-center '>
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                            <Label htmlFor="fecha">Fecha</Label>
-                            <Input type="date" id="fecha" name="fecha"
-                                value={values.fecha}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.fecha && errors.fecha) ? (<Alert color="danger">{errors.fecha}</Alert>) : null}
-                        </FormGroup>
-                        
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                            <Label htmlFor="numero">Número</Label>
-                            <Input type="number" id="numero" name="numero"
-                                value={values.numero}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.numero && errors.numero) ? (<Alert color="danger">{errors.fecha}</Alert>) : null}
-                        </FormGroup>
-                    
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                            <Label htmlFor="precioBruto">Precio bruto</Label>
-                            <Input type="number" id="precioBruto" name="precioBruto"
-                                value={values.precioBruto}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.precioBruto && errors.precioBruto) ? (<Alert color="danger">{errors.precioBruto}</Alert>) : null}
-                        </FormGroup>
-                    
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                            <Label htmlFor="hora">Hora</Label>
-                            <Input type="time" id="hora" name="hora"
-                                value={values.hora}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.hora && errors.hora) ? (<Alert color="danger">{errors.hora}</Alert>) : null}
-                        </FormGroup>
-                    
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
-                            <Label htmlFor="puntos">Puntos</Label>
-                            <Input type="number" id="puntos" name="puntos"
-                                value={values.puntos}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.puntos && errors.puntos) ? (<Alert color="danger">{errors.puntos}</Alert>) : null}
-                        </FormGroup>
-                    
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
-                            <Label htmlFor="direccion">Dirección</Label>
-                            <Input type="text" id="direccion" name="direccion"
-                                value={values.direccion}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.direccion && errors.direccion) ? (<Alert color="danger">{errors.direccion}</Alert>) : null}
-                        </FormGroup>
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4'>
-                            <Label htmlFor="estado">Estado</Label>
-                            <Input type="select" id="estado" name="estado"
-                                value={values.estado}
-                                onChange={handleChange}
-                                onBlur={handleBlur}>
-                                <option>sin especificar</option>
-                                <option>en verificación</option>
-                                <option>en cola</option>
-                                <option>en proceso</option>
-                                <option>fiado</option>
-                                <option>pago</option>
-                            </Input>
-                            {(touched.estado && errors.estado) ? (<Alert color="danger">{errors.estado}</Alert>) : null}
-                        </FormGroup>
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
-                            <Label htmlFor="bodega">Bodega</Label>
-                            <Input type="select" id="bodega" name="bodega"
-                                value={values.bodega}
-                                onChange={handleChange}
-                                onBlur={handleBlur}>
-                                <option>sin especificar</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Input>
-                            {(touched.bodega && errors.bodega) ? (<Alert color="danger">{errors.bodega}</Alert>) : null}
-                        </FormGroup>
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
-                            <Label htmlFor="tipoCliente">Tipo de cliente</Label>
-                            <Input type="select" id="tipoCliente" name="tipoCliente"
-                                value={values.tipoCliente}
-                                onChange={handleChange}
-                                onBlur={handleBlur}>
-                                <option>sin especificar</option>
-                                <option>empresarial</option>
-                                <option>comun</option>
-                            </Input>
-                            {(touched.tipoCliente && errors.tipoCliente) ? (<Alert color="danger">{errors.tipoCliente}</Alert>) : null}
-                        </FormGroup>
-                        <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
-                            <Label htmlFor="nota">Nota</Label>
-                            <Input type="textarea" id="nota" name="nota"
-                                value={values.nota}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.nota && errors.nota) ? (<Alert color="danger">{errors.nota}</Alert>) : null}
-                        </FormGroup>
-                    
-                    <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
-                        
-                        <div class="d-flex justify-content-center" >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
-                        </div>
-                    </FormGroup>
-                    
-                    </div>
-            </Form>
-        </div>
-    );
-}
-
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         let productData = [];
         productData.push('disponible=' + ('1'));
 
-        dispatch(trolleyProducts(productData)
-        );
+        dispatch(trolleyProducts(productData));
     }, []);
 
     const doSearch = (productData) => dispatch(trolleyProducts(productData));
@@ -264,107 +104,123 @@ const SearchCriteria = () => {
     });
 
     return (
-        <div>
-            <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-                
-                <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
-                <hr />
+        <div className="col" style={{ padding: 1 }}>
 
-                <div className='row d-flex justify-content-center'>
+            <CardTitle tag="h3"> Busqueda de productos</CardTitle>
+            <hr />
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-4'>
-                        <Label htmlFor="nombre">Nombre</Label>
-                        <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                            onChange={handleChange}
-                            onBlur={handleBlur} />
-                        {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-                    </FormGroup>
+            <div className='row d-flex justify-content-center'>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
-                        <Label htmlFor="disponible">Disponible</Label>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-4'>
+                    <Label htmlFor="nombre">Nombre</Label>
+                    <Input type="text" id="nombre" name="nombre" value={values.nombre}
+                        onChange={handleChange}
+                        onBlur={handleBlur} />
+                    {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
+                </FormGroup>
 
-                        <Input type="select" id="disponible" name="disponible" value={values.disponible}
-                            onChange={handleChange}
-                            onBlur={handleBlur} disabled>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
+                    <Label htmlFor="disponible">Disponible</Label>
 
-                            <option value=""> Seleccione </option>
-                            <option value={1}>Si</option>
-                            <option value={0}>No</option>
-                            
-                        </Input>
-                        {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
+                    <Input type="select" id="disponible" name="disponible" value={values.disponible}
+                        onChange={handleChange}
+                        onBlur={handleBlur} disabled>
 
-                    </FormGroup>
+                        <option value=""> Seleccione </option>
+                        <option value={1}>Si</option>
+                        <option value={0}>No</option>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
-                        <Label htmlFor="tipo">Tipo</Label>
-                        <Input type="text" id="tipo" name="tipo" value={values.tipo}
-                            onChange={handleChange}
-                            onBlur={handleBlur} />
-                        {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
-                    </FormGroup>
+                    </Input>
+                    {(touched.disponible && errors.disponible) ? (<Alert color="danger">{errors.disponible}</Alert>) : null}
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-3'>
-                        <Label htmlFor="color">Color</Label>
-                        <Input type="text" id="color" name="color" value={values.color}
-                            onChange={handleChange}
-                            onBlur={handleBlur} />
-                        {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
-                    </FormGroup>
+                </FormGroup>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
-                        <Label htmlFor="peso">Peso</Label>
-                        <Input type="text" id="peso" name="peso" value={values.peso}
-                            onChange={handleChange}
-                            onBlur={handleBlur} />
-                        {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
-                    </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                    <Label htmlFor="tipo">Tipo</Label>
+                    <Input type="text" id="tipo" name="tipo" value={values.tipo}
+                        onChange={handleChange}
+                        onBlur={handleBlur} />
+                    {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
+                </FormGroup>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
-                        <Label htmlFor="precio">Precio</Label>
-                        <Input type="text" id="precio" name="precio" value={values.precio}
-                            onChange={handleChange}
-                            onBlur={handleBlur} />
-                        {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
-                    </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-3'>
+                    <Label htmlFor="color">Color</Label>
+                    <Input type="text" id="color" name="color" value={values.color}
+                        onChange={handleChange}
+                        onBlur={handleBlur} />
+                    {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
+                </FormGroup>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                    <Label htmlFor="peso">Peso</Label>
+                    <Input type="text" id="peso" name="peso" value={values.peso}
+                        onChange={handleChange}
+                        onBlur={handleBlur} />
+                    {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
+                </FormGroup>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                    <Label htmlFor="precio">Precio</Label>
+                    <Input type="text" id="precio" name="precio" value={values.precio}
+                        onChange={handleChange}
+                        onBlur={handleBlur} />
+                    {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
+                </FormGroup>
 
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
-                        <Label htmlFor="inventario">Inventario</Label>
-                        <Input type="text" id="inventario" name="inventario" value={values.inventario}
-                            onChange={handleChange}
-                            onBlur={handleBlur} />
-                        {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
-                    </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                    <Label htmlFor="inventario">Inventario</Label>
+                    <Input type="text" id="inventario" name="inventario" value={values.inventario}
+                        onChange={handleChange}
+                        onBlur={handleBlur} />
+                    {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
+                </FormGroup>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-5  col-lg-5'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-5  col-lg-5'>
 
-                        <div class="d-flex justify-content-center"  >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
-                        </div>
+                    <div class="d-flex justify-content-center"  >
+                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
+                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                    </div>
 
-                    </FormGroup>
+                </FormGroup>
 
-                </div>
-
-            </Form>
+            </div>
 
         </div>
     );
 }
 
 const RenderSearchResultTuple = (props) => {
-    const productData = props.product;
+    const product = props.product;
+
+    const [isAddNewOrderModalOpen, setIsAddNewOrderModalOpen] = useState(false);
+
+    const toggleAddNewOrderProductModal = () => {
+        if (isAddNewOrderModalOpen) {
+            setIsAddNewOrderModalOpen(false);
+        } else {
+            setIsAddNewOrderModalOpen(true);
+        }
+    }
 
     return (
-        <Product product={productData} />
 
+        <tr onClick={() => toggleAddNewOrderProductModal()}>
+            <th scope="row">{product.nombre}</th>
+            <td>{product.tipo}</td>
+            <td>{product.color}</td>
+            <td>{product.peso}</td>
+            <td>{product.precio}</td>
+            <td>{product.inventario}</td>
+
+            <AddNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} product={product} isOpen={isAddNewOrderModalOpen} toggle={toggleAddNewOrderProductModal}></AddNewOrderProductComponent>
+        </tr>
     );
 
 }
 
-const SearchResult = () => {
+const SearchResult = (props) => {
 
     const error = useSelector(state => state.trolleyProducts.errMess);
     const result = useSelector(state => state.trolleyProducts.result);
@@ -380,42 +236,33 @@ const SearchResult = () => {
         const ResultTuples = result.data.map((product) => {
             return (
 
-                <RenderSearchResultTuple product={product} key={product.codigo}></RenderSearchResultTuple>
+                <RenderSearchResultTuple addNewOrderProduct={props.addNewOrderProduct} product={product} key={product.codigo}></RenderSearchResultTuple>
 
             );
         })
 
-        return ( 
+        return (
             <div>
                 <Table className='col' responsive={true} size="sm" bordered striped   >
-                    
+
                     <thead className='theadTrolleyWidth'>
-                        
+
                         <tr>
                             <th>Nombre</th>
-                            
+
                             <th>Tipo</th>
                             <th>Color</th>
                             <th>Peso</th>
                             <th>Precio</th>
                             <th>Inventario</th>
                         </tr>
-                        
+
                     </thead>
                     <tbody className='tbodyAlto300px tbodyTrolleyWidth'>
                         {ResultTuples}
                     </tbody>
 
                 </Table>
-
-
-                <div class="d-flex justify-content-center"  >
-                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Registrar pedido</Button>
-                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cancelar</Button>
-                </div>
-
-
-
             </div>
         );
     }
@@ -433,16 +280,230 @@ const SearchResult = () => {
 
 }
 
-const Trolly = (props) => {
-    const validationSchema = yup.object(
+const RenderNewOrderProductTuple = (props) => {
+    const product = props.product;
 
-        {
+    const [isEditNewOrderProductModalOpen, setIsEditNewOrderProductModalOpen] = useState(false);
+
+    const toggleEditNewOrderProductProductModal = () => {
+        if (isEditNewOrderProductModalOpen) {
+            setIsEditNewOrderProductModalOpen(false);
+        } else {
+            setIsEditNewOrderProductModalOpen(true);
         }
-    );
+    }
 
+    return (
+
+        <tr onClick={() => toggleEditNewOrderProductProductModal()}>
+            <th scope="row">{product.nombre}</th>
+            <td>{product.tipo}</td>
+            <td>{product.color}</td>
+            <td>{product.peso}</td>
+            <td>{product.precio}</td>
+            <td>{product.inventario}</td>
+
+            <EditNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} isOpen={isEditNewOrderProductModalOpen} toggle={toggleEditNewOrderProductProductModal}></EditNewOrderProductComponent>
+        </tr>
+    );
+}
+
+const NewOrderProductsTable = (props) => {
+    const NewOrderProductsTuples = props.newOrderProducts.map((product) => {
+        return (
+
+            <RenderNewOrderProductTuple addNewOrderProduct={props.addNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} key={product.codigo}></RenderNewOrderProductTuple>
+
+        );
+    })
+
+    return (
+        <div>
+            <Table className='col' responsive={true} size="sm" bordered striped   >
+
+                <thead className='theadTrolleyWidth'>
+
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Color</th>
+                        <th>Peso</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+
+                </thead>
+                <tbody className='tbodyAlto300px tbodyTrolleyWidth'>
+                    {NewOrderProductsTuples}
+                </tbody>
+
+            </Table>
+        </div>
+    );
+}
+
+
+const NewOrder = (props) => {
+    const orderClientResult = useSelector(state => state.orderClient.result);
+    const lastOrderResult = useSelector(state => state.lastOrder.result);
+    useEffect(() => {
+        if (lastOrderResult.pedido) {
+            props.setNewOrderDireccion(lastOrderResult.pedido.direccion);
+            props.setNewOrderBodega(lastOrderResult.pedido.bodega);
+            props.setNewOrderNota(lastOrderResult.pedido.nota);
+        }
+    }, []);
+    return (
+        <div className="col-6">
+
+            <CardTitle tag="h3"> Nuevo pedido</CardTitle>
+            <hr />
+
+            <div className='row d-flex justify-content-center '>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                    <Label htmlFor="fecha">Fecha</Label>
+                    <Input type="date" id="fecha" name="fecha"
+                        value={props.newOrderFecha}
+                        onChange={(event) => { props.setNewOrderFecha(event.target.value) }}
+                    />
+                </FormGroup>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
+                    <Label htmlFor="direccion">Dirección</Label>
+                    <Input type="text" id="direccion" name="direccion"
+                        value={props.newOrderDireccion}
+                        onChange={(event) => { props.setNewOrderDireccion(event.target.value) }}
+                    />
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                    <Label htmlFor="bodega">Bodega</Label>
+                    <Input type="select" id="bodega" name="bodega"
+                        value={props.newOrderBodega}
+                        onChange={(event) => { props.setNewOrderBodega(event.target.value) }}>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </Input>
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                    <Label htmlFor="tipoCliente">Tipo de cliente</Label>
+                    <Input type="select" id="tipoCliente" name="tipoCliente"
+                        value={props.newOrderTipoCliente}>
+                        <option>empresarial</option>
+                        <option>comun</option>
+                    </Input>
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+                    <Label htmlFor="nota">Nota</Label>
+                    <Input type="textarea" id="nota" name="nota"
+                        value={props.newOrderNota}
+                        onChange={(event) => { props.setNewOrderNota(event.target.value) }}
+                    />
+                </FormGroup>
+
+                <CardTitle tag="h5">Productos</CardTitle>
+                <CardBody>
+                    <NewOrderProductsTable newOrderProducts={props.newOrderProducts} addNewOrderProduct={props.addNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
+                </CardBody>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                    <Label htmlFor="precioBruto">Precio bruto</Label>
+                    <Input type="number" id="precioBruto" name="precioBruto"
+                        value={props.newOrderPrecioBruto}
+                        onChange={(event) => { props.setNewOrderPrecioBruto(event.target.value) }}
+                        disabled
+                    />
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
+                    <Label htmlFor="puntos">Puntos</Label>
+                    <Input type="number" id="puntos" name="puntos"
+                        value={props.newOrderPuntos}
+                        onChange={(event) => { props.setNewOrderPuntos(event.target.value) }}
+                        disabled
+                    />
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4'>
+                    <Label htmlFor="estado">Estado</Label>
+                    <Input type="select" id="estado" name="estado"
+                        value={props.newOrderEstado}
+                        onChange={(event) => { props.setNewOrderEstado(event.target.value) }}
+                        disabled>
+                        <option>en cola</option>
+                        <option>en proceso</option>
+                        <option>fiado</option>
+                        <option>pago</option>
+                    </Input>
+                </FormGroup>
+
+            </div>
+
+        </div>
+    );
+}
+
+const Trolly = (props) => {
     const orderClientError = useSelector(state => state.orderClient.errMess);
     const orderClientResult = useSelector(state => state.orderClient.result);
     const orderClientLoading = useSelector(state => state.orderClient.isLoading);
+
+    const newOrderEmployeesError = useSelector(state => state.newOrderEmployees.errMess);
+    const newOrderEmployeesResult = useSelector(state => state.newOrderEmployees.result);
+    const newOrderEmployeesLoading = useSelector(state => state.newOrderEmployees.isLoading);
+
+    const lastOrderError = useSelector(state => state.lastOrder.errMess);
+    const lastOrderResult = useSelector(state => state.lastOrder.result);
+    const lastOrderLoading = useSelector(state => state.lastOrder.isLoading);
+
+    const addOrderError = useSelector(state => state.ordersUpdate.errMess);
+    const addOrderResult = useSelector(state => state.ordersUpdate.result);
+    const addOrderLoading = useSelector(state => state.ordersUpdate.isLoading);
+
+    const date = new Date();
+    const agno = date.getFullYear();
+    let mes = date.getMonth() + 1;
+    if (mes <= 9) {
+        mes = '0' + mes;
+    }
+    let dia = date.getDate();
+    if (dia <= 9) {
+        dia = '0' + dia;
+    }
+
+    const [newOrderProducts, setNewOrderProducts] = useState([]);
+    const [newOrderPrecioBruto, setNewOrderPrecioBruto] = useState(0);
+    const [newOrderPuntos, setNewOrderPuntos] = useState(0);
+    const [newOrderFecha, setNewOrderFecha] = useState(agno + '-' + mes + '-' + dia);
+    const [newOrderDireccion, setNewOrderDireccion] = useState('');
+    const [newOrderBodega, setNewOrderBodega] = useState('1');
+    const [newOrderTipoCliente, setNewOrderTipoCliente] = useState('comun');
+    const [newOrderNota, setNewOrderNota] = useState('');
+    const [newOrderEstado, setNewOrderEstado] = useState('en cola');
+
+
+    function findByKey(key, value) {
+        return (item, i) => item[key] === value
+    }
+
+    const addNewOrderProduct = (producto) => {
+        let findParams = findByKey('codigo', producto.codigo);
+        let index = newOrderProducts.findIndex(findParams);
+        if (index < 0) {
+            let producticos = newOrderProducts.slice();
+            producticos.push(producto);
+            setNewOrderProducts(producticos);
+            return (false);
+        }
+        return (true);
+
+    }
+
+    const updateNewOrderProduct = () => {
+        return (false);
+    }
+
+    const deleteNewOrderProduct = () => {
+        return (false);
+    }
 
     const dispatch = useDispatch();
 
@@ -450,54 +511,113 @@ const Trolly = (props) => {
         let clientData = [];
         clientData.push('telefono=' + props.telefono);
         dispatch(orderClient(clientData));
+        dispatch(lastOrder(props.telefono));
+        let employeesData = [];
+        employeesData.push('tipo=' + 'repartidor');
+        employeesData.push('estado=' + 'activo');
+        dispatch(newOrderEmployees(employeesData));
     }, []);
 
+    const handleSubmit = () => {
 
-    if (orderClientLoading) {
-        return (
-            <Loading />
-        );
+        let newOrderProductsSimplified = [];
 
+        newOrderProducts.map((product) => {
+            newOrderProductsSimplified.push({
+                codigo:product.codigo,
+                precio:product.precio,
+                cantidad:product.cantidad
+            });
+        })
+
+        let newOrderData = {
+            cliente_pedidor: orderClientResult.data[0].telefono,
+            fecha: newOrderFecha,
+            direccion: newOrderDireccion,
+            nota: newOrderNota,
+            empleado: newOrderEmployeesResult.data[0].id,
+            productos: newOrderProductsSimplified
+        }
+        dispatch(addOrder(newOrderData));
     }
-    if (orderClientError) {
 
-        return (
-            <div class="d-flex justify-content-center" >
-                hubo un error
-                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cerrar</Button>
 
-            </div>
-        );
 
-    }
-    if (orderClientResult) {
-        return (
-            <div className="container"> 
+if (orderClientLoading || lastOrderLoading || newOrderEmployeesLoading || addOrderLoading) {
+    return (
+        <Loading />
+    );
 
-                <div className="row"> 
+}
+if (orderClientError || lastOrderError || newOrderEmployeesError || addOrderError) {
 
-                    <div className="col-6"> 
+    return (
+        <div class="d-flex justify-content-center" >
+            hubo un error
+            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cerrar</Button>
 
-                        <NewOrder/>
-                        <CardTitle tag="h5">Nuevo Pedido</CardTitle>
+        </div>
+    );
 
-                    </div>
+}
+if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
+    return (
+        <div className="container">
+            <Form onSubmit={handleSubmit}>
+                <div className="row">
 
-                    <div className="col-6"> 
+                    <NewOrder
+                        deleteNewOrderProduct={deleteNewOrderProduct}
+                        updateNewOrderProduct={updateNewOrderProduct}
+                        newOrderProducts={newOrderProducts}
+                        setNewOrderProducts={setNewOrderProducts}
+                        newOrderPrecioBruto={newOrderPrecioBruto}
+                        setNewOrderPrecioBruto={setNewOrderPrecioBruto}
+                        newOrderPuntos={newOrderPuntos}
+                        setNewOrderPuntos={setNewOrderPuntos}
+                        newOrderFecha={newOrderFecha}
+                        setNewOrderFecha={setNewOrderFecha}
+                        newOrderDireccion={newOrderDireccion}
+                        setNewOrderDireccion={setNewOrderDireccion}
+                        newOrderBodega={newOrderBodega}
+                        setNewOrderBodega={setNewOrderBodega}
+                        newOrderTipoCliente={newOrderTipoCliente}
+                        setNewOrderTipoCliente={setNewOrderTipoCliente}
+                        newOrderNota={newOrderNota}
+                        setNewOrderNota={setNewOrderNota}
+                        newOrderEstado={newOrderEstado}
+                        setNewOrderEstado={setNewOrderEstado}
+                    />
 
-                        <SearchCriteria/>
+                    <div className="col-6">
+
+                        <SearchCriteria />
                         <CardTitle tag="h5">Productos</CardTitle>
                         <CardBody>
-                            <SearchResult></SearchResult>
+                            <SearchResult addNewOrderProduct={addNewOrderProduct}></SearchResult>
                         </CardBody>
 
                     </div>
 
                 </div>
-            </div>
+                <div className="row">
+                    <div class="d-flex justify-content-center"  >
+                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Registrar pedido</Button>
+                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cancelar</Button>
+                    </div>
+                </div>
+            </Form>
+        </div>
 
-        );
-    }
+    );
+}
+if(addOrderResult){
+    props.submit();
+    return(
+        <div></div>
+    );
+}
+return (<div></div>);
 }
 
 Trolly.propTypes = {};
