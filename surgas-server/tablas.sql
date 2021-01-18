@@ -3,7 +3,7 @@ CREATE TABLE usuario(
     email VARCHAR(100) NOT NULL,
     password_hash VARCHAR(100) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
-    tipo ENUM('cliente', 'vendedor', 'administrador') NOT NULL,
+    tipo VARCHAR(120) NOT NULL,
     verificado BIT NOT NULL,
     restorePasswordToken VARCHAR(200),
     verificationToken VARCHAR(200)
@@ -15,6 +15,7 @@ CREATE TABLE empleado(
     direccion VARCHAR(100) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
     estado ENUM('activo', 'inactivo', 'despedido') NOT NULL,
+    tipo VARCHAR(120) NOT NULL,
     username VARCHAR(30),
     CONSTRAINT `fk_emp_usuario` FOREIGN KEY (username) REFERENCES usuario(username)
 );
@@ -93,12 +94,11 @@ CREATE TABLE pedidoxproducto(
 CREATE TABLE static(
     codigo VARCHAR(8) PRIMARY KEY,
     limite_puntos INT NOT NULL,
-    puntos_libra INT NOT NULL
+    puntos_libra INT NOT NULL,
+    descuento FLOAT NOT NULL
 );
 
 CREATE TABLE user_sessions(
     session_id VARCHAR(128) NOT NULL COLLATE 'utf8mb4_bin',
     username VARCHAR(30) NOT NULL
 );
-
-DELETE FROM sessions WHERE session_id IN (SELECT session_id FROM user_sessions WHERE username = 'sebas')

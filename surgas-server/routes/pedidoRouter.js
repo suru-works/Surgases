@@ -126,8 +126,24 @@ pedidoRouter.route("/")
 }))
 .post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     const pedido = req.body;
+
+    if (pedido.productos.length == 0) {
+        let error = new Error('no hay productos');
+        error.status = 400;
+        next(error);
+    }
+    
     let results = await pool.promise().execute('SELECT tipo FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
     const tipoCliente = JSON.parse(JSON.stringify(results[0]))[0].tipo;
+    results = await pool.promise().execute('SELECT MAX(numero) AS num FROM pedido WHERE fecha = ?', [pedido.fecha]);
+    let numero = JSON.parse(JSON.stringify(results[0]))[0].num;
+    if (numero) {
+        numero += 1;
+    } else {
+        numero = 1;
+    }
+    const date = new Date();
+    const hora_registro = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     pool.getConnection(async (err, conn) => {
         if (err) {
             console.log(err);
@@ -135,19 +151,20 @@ pedidoRouter.route("/")
         }
 
         results = await conn.promise().execute(
-            "INSERT INTO pedido VALUES(?, ?, ?, ?, NULL, NULL, 'verificacion', NULL, NULL, ?, ?, NULL)",
-            [pedido.fecha, pedido.numero, pedido.hora_registro, pedido.direccion, tipoCliente, pedido.nota, req.user.username, pedido.cliente_pedidor]
+            "INSERT INTO pedido(fecha, numero, hora_registro, direccion, estado, tipo_cliente, nota, usuario_registrador, cliente_pedidor) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [pedido.fecha, numero, hora_registro, pedido.direccion, 'verificacion', tipoCliente, pedido.nota, req.user.username, pedido.cliente_pedidor]
         );
 
+        let productos = pedido.productos;
         if (results[0].affectedRows == 1) {
             let precio_bruto = 0;
-            pedido.productos.forEach(async (val, idx, arr) => {
+            for (let i = 0; i < productos.length; i++) {
                 results = await conn.promise().execute(
-                    'INSERT INTO productoxpedido VALUES(?, ?, ?, ?, ?)',
-                    [val.codigo, pedido.fecha, pedido.numero, val.precio, val.cantidad]
+                    'INSERT INTO pedidoxproducto VALUES(?, ?, ?, ?, ?)',
+                    [productos[i].codigo, pedido.fecha, numero, productos[i].precio, productos[i].cantidad]
                 );
 
-                precio_bruto += val.precio * val.cantidad;
+                precio_bruto += productos[i].precio * productos[i].cantidad;
 
                 if (results[0].affectedRows != 1) {
                     conn.rollback();
@@ -155,25 +172,23 @@ pedidoRouter.route("/")
                         status: 500
                     }
                 }
-            });
+            }
 
-            results = await pool.promise().execute('SELECT descuento FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
-            const descuento = JSON.parse(JSON.stringify(results[0]))[0].descuento;
-            const precio_final = precio_bruto * (1 - descuento);
+            const precio_final = precio_bruto * (1 - (pedido.descuento / 100));
             results = await conn.promise().execute(
                 'UPDATE pedido SET precio_bruto = ?, precio_final = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?',
-                [precio_bruto, precio_final, pedido.empleado, pedido.fecha, pedido.numero]
+                [precio_bruto, precio_final, pedido.empleado, pedido.fecha, numero]
             );
 
             if (results[0].affectedRows == 1) {
                 results = await conn.promise().execute(
-                    'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ? WHERE telefono = ?'
-                    [pedido.fecha, pedido.numero, pedido.cliente_pedidor]
+                    'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ?, numero_pedidos = numero_pedidos + 1 WHERE telefono = ?',
+                    [pedido.fecha, numero, pedido.cliente_pedidor]
                 );
 
                 if (results[0].affectedRows == 1) {
                     conn.commit();
-                    results = await pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, pedido.numero]);
+                    results = await pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, numero]);
                     res.json(JSON.parse(JSON.stringify(results[0])));
                 } else {
                     conn.rollback();
@@ -227,10 +242,31 @@ pedidoRouter.route("/")
             changes.push('bodega = ?');
             values.push(params.bodega);
         }
-
+        
         if (params.estado) {
+            const estado = params.estado;
             changes.push('estado = ? ');
-            values.push(params.estado);
+            values.push(estado);
+            if (estado == 'proceso' || estado == 'fiado' || estado == 'pago') {
+                let re = await pool.promise().execute(
+                    'SELECT estado FROM pedido WHERE fecha = ? AND numero = ?',
+                    [params.fecha, params.numero]
+                );
+                const original = JSON.parse(JSON.stringify(re[0]))[0].estado;
+                if (original == 'verificacion' || original == 'cola') {
+                    re = await pool.promise().execute(
+                        'SELECT producto FROM pedidoxproducto WHERE fecha_pedido = ? AND numero_pedido = ?',
+                        [params.fecha, params.numero]
+                    );
+                    const productos = JSON.parse(JSON.stringify(re[0]));
+                    productos.forEach(async (val, idx, arr) => {
+                        re = await conn.promise().execute(
+                            'UPDATE producto SET inventario = inventario - (SELECT unidades FROM pedidoxproducto WHERE producto = ? AND fecha_pedido = ? AND numero_pedido = ?) WHERE codigo = ?',
+                            [val.producto, params.fecha, params.numero, val.producto]
+                        );
+                    });
+                }
+            }
         }
 
         if (params.empleado) {
@@ -302,7 +338,7 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
         }
 
         results = await conn.promise().execute(
-            'UPDATE pedido SET puntos_compra = ? AND bodega = ? WHERE fecha = ? AND numero = ?',
+            "UPDATE pedido SET estado = 'cola', puntos_compra = ?, bodega = ? WHERE fecha = ? AND numero = ?",
             [puntos_compra, pedido.bodega, pedido.fecha, pedido.numero]
         );
 

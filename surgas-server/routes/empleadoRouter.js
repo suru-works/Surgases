@@ -46,6 +46,11 @@ empleadoRouter.route("/")
             values.push(params.estado);
         }
 
+        if (params.tipo) {
+            conditions.push('tipo = ?');
+            values.push(params.tipo);
+        }
+
         if (params.username) {
             conditions.push('username LIKE ?');
             values.push('%' + params.username + '%');
