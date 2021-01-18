@@ -351,6 +351,7 @@ const NewOrder = (props) => {
             props.setNewOrderDireccion(lastOrderResult.pedido.direccion);
             props.setNewOrderBodega(lastOrderResult.pedido.bodega);
             props.setNewOrderNota(lastOrderResult.pedido.nota);
+            props.setNewOrderDescuento(orderClientResult.data[0].descuento);
         }
     }, []);
     return (
@@ -422,6 +423,13 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
+                    <Label htmlFor="descuento">Descuento</Label>
+                    <Input type="number" id="descuento" name="descuento"
+                        value={props.newOrderDescuento}
+                        onChange={(event) => { props.setNewOrderDescuento(event.target.value) }}
+                    />
+                </FormGroup>
                 <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4'>
                     <Label htmlFor="estado">Estado</Label>
                     <Input type="select" id="estado" name="estado"
@@ -478,6 +486,7 @@ const Trolly = (props) => {
     const [newOrderTipoCliente, setNewOrderTipoCliente] = useState('comun');
     const [newOrderNota, setNewOrderNota] = useState('');
     const [newOrderEstado, setNewOrderEstado] = useState('en cola');
+    const [newOrderDescuento, setNewOrderDescuento] = useState(0.0);
 
 
     function findByKey(key, value) {
@@ -536,7 +545,8 @@ const Trolly = (props) => {
             direccion: newOrderDireccion,
             nota: newOrderNota,
             empleado: newOrderEmployeesResult.data[0].id,
-            productos: newOrderProductsSimplified
+            productos: newOrderProductsSimplified,
+            descuento: newOrderDescuento
         }
         dispatch(addOrder(newOrderData));
     }
@@ -559,6 +569,12 @@ if (orderClientError || lastOrderError || newOrderEmployeesError || addOrderErro
         </div>
     );
 
+}
+if(addOrderResult){
+    props.submit();
+    return(
+        <div></div>
+    );
 }
 if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
     return (
@@ -587,6 +603,8 @@ if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
                         setNewOrderNota={setNewOrderNota}
                         newOrderEstado={newOrderEstado}
                         setNewOrderEstado={setNewOrderEstado}
+                        newOrderDescuento={newOrderDescuento}
+                        setNewOrderDescuento={setNewOrderDescuento}
                     />
 
                     <div className="col-6">
@@ -611,12 +629,7 @@ if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
 
     );
 }
-if(addOrderResult){
-    props.submit();
-    return(
-        <div></div>
-    );
-}
+
 return (<div></div>);
 }
 
