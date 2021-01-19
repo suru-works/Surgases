@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { orders, addOrder, ordersUpdateReset, clients, clientsUpdateReset, addClient, orderClient, orderClientReset, clientsUpdateRese } from '../redux/ActionCreators';
+import { orders, addOrder, ordersUpdateReset, clients, clientsUpdateReset, lastOrderReset, orderClientReset, newOrderEmployeesReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import SetClient from './OrderSetClientComponent';
@@ -77,6 +77,9 @@ const AddOrderComponent = (props) => {
         setOrderUserTel('');
         dispatch(clientsUpdateReset());
         dispatch(orderClientReset());
+        dispatch(lastOrderReset());
+        dispatch(newOrderEmployeesReset());
+        dispatch(ordersUpdateReset());
         goToSetClient();
         props.toggle();
     }
@@ -110,13 +113,21 @@ const AddOrderComponent = (props) => {
     }
 
     const TrollyGoBack = () => {
+        dispatch(newOrderEmployeesReset());
+        dispatch(lastOrderReset());
         goToUpdateClientData();
     }
     const TrollySubmit = () => {
-
+        goToPrintData();
     }
 
     const PrintGoBack = () => {
+        setOrderUserTel('');
+        dispatch(clientsUpdateReset());
+        dispatch(orderClientReset());
+        dispatch(lastOrderReset());
+        dispatch(newOrderEmployeesReset());
+        dispatch(ordersUpdateReset());
         goToSetClient();
     }
     const PrintSubmit = () => {
@@ -141,7 +152,7 @@ const AddOrderComponent = (props) => {
         }
         if (trollyModal) {
             return (
-                <Trolly goBack={TrollyGoBack} submit={goToPrintData} telefono={orderUserTel}></Trolly>
+                <Trolly goBack={TrollyGoBack} submit={TrollySubmit} telefono={orderUserTel}></Trolly>
             );
         }
         if (printModal) {

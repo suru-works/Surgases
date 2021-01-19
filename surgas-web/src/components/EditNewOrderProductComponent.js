@@ -58,7 +58,7 @@ const EditNewOrderComponent = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            const productData = {
+            const product = {
                 codigo: props.product.codigo,
                 nombre: nombre,
                 tipo: tipo,
@@ -67,7 +67,16 @@ const EditNewOrderComponent = (props) => {
                 precio: values.precio,
                 cantidad: values.cantidad
             }
-            let aux = props.UpdateNewOrderProduct(productData);
+            const oldProduct = {
+                codigo: props.product.codigo,
+                nombre: nombre,
+                tipo: tipo,
+                color: color,
+                peso: peso,
+                precio: props.product.precio,
+                cantidad: props.product.cantidad
+            }
+            let aux = props.UpdateNewOrderProduct({product, oldProduct});
             setError(aux);
             if(!aux){
                 toogleAndReset();
@@ -80,6 +89,14 @@ const EditNewOrderComponent = (props) => {
         props.toggle();
     }
 
+    const deleteProduct = () => {
+        const productData = {
+            codigo: props.product.codigo,
+            precio: props.product.precio,
+            cantidad: props.product.cantidad
+        }
+        props.deleteNewOrderProduct(productData);
+    }
     if (error) {
         return (
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
@@ -171,6 +188,7 @@ const EditNewOrderComponent = (props) => {
                                         <br></br>
                                         <div class="d-flex justify-content-center"  >
                                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Añadir</Button>
+                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={deleteProduct}>Eliminar producto</Button>
                                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toogleAndReset}>Cerrar</Button>
                                         </div>
 

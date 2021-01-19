@@ -301,9 +301,9 @@ const RenderNewOrderProductTuple = (props) => {
             <td>{product.color}</td>
             <td>{product.peso}</td>
             <td>{product.precio}</td>
-            <td>{product.inventario}</td>
+            <td>{product.cantidad}</td>
 
-            <EditNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} isOpen={isEditNewOrderProductModalOpen} toggle={toggleEditNewOrderProductProductModal}></EditNewOrderProductComponent>
+            <EditNewOrderProductComponent updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} isOpen={isEditNewOrderProductModalOpen} toggle={toggleEditNewOrderProductProductModal}></EditNewOrderProductComponent>
         </tr>
     );
 }
@@ -312,7 +312,7 @@ const NewOrderProductsTable = (props) => {
     const NewOrderProductsTuples = props.newOrderProducts.map((product) => {
         return (
 
-            <RenderNewOrderProductTuple addNewOrderProduct={props.addNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} key={product.codigo}></RenderNewOrderProductTuple>
+            <RenderNewOrderProductTuple updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} key={product.codigo}></RenderNewOrderProductTuple>
 
         );
     })
@@ -389,9 +389,17 @@ const NewOrder = (props) => {
                 <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
                     <Label htmlFor="tipoCliente">Tipo de cliente</Label>
                     <Input type="select" id="tipoCliente" name="tipoCliente"
-                        value={props.newOrderTipoCliente}>
+                        value={props.newOrderTipoCliente}
+                        disabled>
                         <option>empresarial</option>
                         <option>comun</option>
+                    </Input>
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                    <Label htmlFor="tipoCliente">Repartidor</Label>
+                    <Input type="Text" id="tipoCliente" name="tipoCliente"
+                        value={props.newOrderEmpleado.nombre + '(' + props.newOrderEmpleado.id + ')'}
+                        disabled>
                     </Input>
                 </FormGroup>
                 <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
@@ -401,10 +409,8 @@ const NewOrder = (props) => {
                         onChange={(event) => { props.setNewOrderNota(event.target.value) }}
                     />
                 </FormGroup>
-
-                <CardTitle tag="h5">Productos</CardTitle>
                 <CardBody>
-                    <NewOrderProductsTable newOrderProducts={props.newOrderProducts} addNewOrderProduct={props.addNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
+                    <NewOrderProductsTable newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
                 </CardBody>
 
                 <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
@@ -412,6 +418,14 @@ const NewOrder = (props) => {
                     <Input type="number" id="precioBruto" name="precioBruto"
                         value={props.newOrderPrecioBruto}
                         onChange={(event) => { props.setNewOrderPrecioBruto(event.target.value) }}
+                        disabled
+                    />
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                    <Label htmlFor="precioFinal">Precio Final</Label>
+                    <Input type="number" id="precioFinal" name="precioFinal"
+                        value={props.newOrderPrecioFinal}
+                        onChange={(event) => { props.setNewOrderPrecioFinal(event.target.value) }}
                         disabled
                     />
                 </FormGroup>
@@ -479,6 +493,7 @@ const Trolly = (props) => {
 
     const [newOrderProducts, setNewOrderProducts] = useState([]);
     const [newOrderPrecioBruto, setNewOrderPrecioBruto] = useState(0);
+    const [newOrderPrecioFinal, setNewOrderPrecioFinal] = useState(0);
     const [newOrderPuntos, setNewOrderPuntos] = useState(0);
     const [newOrderFecha, setNewOrderFecha] = useState(agno + '-' + mes + '-' + dia);
     const [newOrderDireccion, setNewOrderDireccion] = useState('');
@@ -487,6 +502,7 @@ const Trolly = (props) => {
     const [newOrderNota, setNewOrderNota] = useState('');
     const [newOrderEstado, setNewOrderEstado] = useState('en cola');
     const [newOrderDescuento, setNewOrderDescuento] = useState(0.0);
+    const [newOrderEmpleado, setNewOrderEmpleado] = useState('');
 
 
     function findByKey(key, value) {
@@ -499,6 +515,10 @@ const Trolly = (props) => {
         if (index < 0) {
             let producticos = newOrderProducts.slice();
             producticos.push(producto);
+            //calculando precios y puntos
+            let nuevoPrecio = newOrderPrecioBruto + (producto.precio) * producto.cantidad;
+            setNewOrderPrecioBruto(nuevoPrecio);
+            setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
             setNewOrderProducts(producticos);
             return (false);
         }
@@ -506,11 +526,34 @@ const Trolly = (props) => {
 
     }
 
-    const updateNewOrderProduct = () => {
+    const updateNewOrderProduct = ({ product, oldProduct }) => {
+        let findParams = findByKey('codigo', product.codigo);
+        let index = newOrderProducts.findIndex(findParams);
+        if (index < -1) {
+            return (true);
+        }
+        let producticos = newOrderProducts.slice();
+        producticos[index] = product;
+        setNewOrderProducts(producticos);
+        let nuevoPrecio =newOrderPrecioBruto - (oldProduct.precio) * oldProduct.cantidad
+        setNewOrderPrecioBruto(nuevoPrecio);
+        setNewOrderPrecioBruto(nuevoPrecio + (product.precio) * product.cantidad);
+        setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
         return (false);
     }
 
-    const deleteNewOrderProduct = () => {
+    const deleteNewOrderProduct = (product) => {
+        let findParams = findByKey('codigo', product.codigo);
+        let index = newOrderProducts.findIndex(findParams);
+        if (index < -1) {
+            return (true);
+        }
+        let producticos = newOrderProducts.slice();
+        producticos.splice(index, 1);
+        setNewOrderProducts(producticos);
+        let nuevoPrecio =newOrderPrecioBruto - (product.precio) * product.cantidad
+        setNewOrderPrecioBruto(nuevoPrecio);
+        setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
         return (false);
     }
 
@@ -533,9 +576,9 @@ const Trolly = (props) => {
 
         newOrderProducts.map((product) => {
             newOrderProductsSimplified.push({
-                codigo:product.codigo,
-                precio:product.precio,
-                cantidad:product.cantidad
+                codigo: product.codigo,
+                precio: product.precio,
+                cantidad: product.cantidad
             });
         })
 
@@ -553,84 +596,87 @@ const Trolly = (props) => {
 
 
 
-if (orderClientLoading || lastOrderLoading || newOrderEmployeesLoading || addOrderLoading) {
-    return (
-        <Loading />
-    );
+    if (orderClientLoading || lastOrderLoading || newOrderEmployeesLoading || addOrderLoading) {
+        return (
+            <Loading />
+        );
 
-}
-if (orderClientError || lastOrderError || newOrderEmployeesError || addOrderError) {
+    }
+    if (orderClientError || lastOrderError || newOrderEmployeesError || addOrderError) {
 
-    return (
-        <div class="d-flex justify-content-center" >
-            hubo un error
-            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cerrar</Button>
+        return (
+            <div class="d-flex justify-content-center" >
+                hubo un error
+                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cerrar</Button>
 
-        </div>
-    );
+            </div>
+        );
 
-}
-if(addOrderResult){
-    props.submit();
-    return(
-        <div></div>
-    );
-}
-if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
-    return (
-        <div className="container">
-            <Form onSubmit={handleSubmit}>
-                <div className="row">
+    }
+    if (addOrderResult) {
+        props.submit();
+        return (
+            <div></div>
+        );
+    }
+    if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
+        return (
+            <div className="container">
+                <Form onSubmit={handleSubmit}>
+                    <div className="row">
 
-                    <NewOrder
-                        deleteNewOrderProduct={deleteNewOrderProduct}
-                        updateNewOrderProduct={updateNewOrderProduct}
-                        newOrderProducts={newOrderProducts}
-                        setNewOrderProducts={setNewOrderProducts}
-                        newOrderPrecioBruto={newOrderPrecioBruto}
-                        setNewOrderPrecioBruto={setNewOrderPrecioBruto}
-                        newOrderPuntos={newOrderPuntos}
-                        setNewOrderPuntos={setNewOrderPuntos}
-                        newOrderFecha={newOrderFecha}
-                        setNewOrderFecha={setNewOrderFecha}
-                        newOrderDireccion={newOrderDireccion}
-                        setNewOrderDireccion={setNewOrderDireccion}
-                        newOrderBodega={newOrderBodega}
-                        setNewOrderBodega={setNewOrderBodega}
-                        newOrderTipoCliente={newOrderTipoCliente}
-                        setNewOrderTipoCliente={setNewOrderTipoCliente}
-                        newOrderNota={newOrderNota}
-                        setNewOrderNota={setNewOrderNota}
-                        newOrderEstado={newOrderEstado}
-                        setNewOrderEstado={setNewOrderEstado}
-                        newOrderDescuento={newOrderDescuento}
-                        setNewOrderDescuento={setNewOrderDescuento}
-                    />
+                        <NewOrder
+                            deleteNewOrderProduct={deleteNewOrderProduct}
+                            updateNewOrderProduct={updateNewOrderProduct}
+                            newOrderProducts={newOrderProducts}
+                            setNewOrderProducts={setNewOrderProducts}
+                            newOrderPrecioBruto={newOrderPrecioBruto}
+                            newOrderPrecioFinal={newOrderPrecioFinal}
+                            setNewOrderPrecioBruto={setNewOrderPrecioBruto}
+                            newOrderPuntos={newOrderPuntos}
+                            setNewOrderPuntos={setNewOrderPuntos}
+                            newOrderFecha={newOrderFecha}
+                            setNewOrderFecha={setNewOrderFecha}
+                            newOrderDireccion={newOrderDireccion}
+                            setNewOrderDireccion={setNewOrderDireccion}
+                            newOrderBodega={newOrderBodega}
+                            setNewOrderBodega={setNewOrderBodega}
+                            newOrderTipoCliente={newOrderTipoCliente}
+                            setNewOrderTipoCliente={setNewOrderTipoCliente}
+                            newOrderNota={newOrderNota}
+                            setNewOrderNota={setNewOrderNota}
+                            newOrderEstado={newOrderEstado}
+                            setNewOrderEstado={setNewOrderEstado}
+                            newOrderDescuento={newOrderDescuento}
+                            setNewOrderDescuento={setNewOrderDescuento}
+                            newOrderEmpleado={newOrderEmployeesResult.data[0]}
+                            setNewOrderEmpleado={setNewOrderEmpleado}
+                        />
 
-                    <div className="col-6">
+                        <div className="col-6">
 
-                        <SearchCriteria />
-                        <CardTitle tag="h5">Productos</CardTitle>
-                        <CardBody>
-                            <SearchResult addNewOrderProduct={addNewOrderProduct}></SearchResult>
-                        </CardBody>
+                            <SearchCriteria />
+                            <CardTitle tag="h5">Productos</CardTitle>
+                            <CardBody>
+                                <SearchResult addNewOrderProduct={addNewOrderProduct}></SearchResult>
+                            </CardBody>
+
+                        </div>
 
                     </div>
-
-                </div>
-                <div className="row">
-                    <div class="d-flex justify-content-center"  >
-                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Registrar pedido</Button>
-                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cancelar</Button>
+                    <div className="row">
+                        <div class="d-flex justify-content-center"  >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Registrar pedido</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cancelar</Button>
+                        </div>
                     </div>
-                </div>
-            </Form>
-        </div>
+                </Form>
+            </div>
 
-    );
-}
+        );
+    }
 
-return (<div></div>);
+    return (<div></div>);
 }
 
 Trolly.propTypes = {};
