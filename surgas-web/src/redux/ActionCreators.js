@@ -930,6 +930,44 @@ export const systemBackup = () => async (dispatch) => {
         dispatch(systemBackupFailed(err));
     }
 }
+//printers
+export const printReset = () => ({
+    type: ActionTypes.PRINT_RESET
+});
+
+export const printRequest = () => ({
+    type: ActionTypes.PRINT_REQUEST
+});
+
+export const printSuccess = (result) => ({
+    type: ActionTypes.PRINT_SUCCESS,
+    payload: result
+});
+
+export const printFailed = (errmess) => ({
+    type: ActionTypes.PRINT_FAILED,
+    payload: errmess
+});
+
+export const print = () => async (dispatch) => {
+    dispatch(printRequest());
+    const orderData = {
+
+    }
+
+    try {
+        const res = await axios.post(baseBackUrl + 'pedidos/print', orderData, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(printSuccess(res));
+    } catch (err) {
+        dispatch(printFailed(err));
+    }
+}
+
 
 // clients
 

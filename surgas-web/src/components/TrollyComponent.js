@@ -476,8 +476,8 @@ const NewOrder = (props) => {
                         value={props.newOrderEstado}
                         onChange={(event) => { props.setNewOrderEstado(event.target.value) }}
                         disabled>
-                        <option>en cola</option>
-                        <option>en proceso</option>
+                        <option>cola</option>
+                        <option>proceso</option>
                         <option>fiado</option>
                         <option>pago</option>
                     </Input>
@@ -526,7 +526,7 @@ const Trolly = (props) => {
     const [newOrderBodega, setNewOrderBodega] = useState('1');
     const [newOrderTipoCliente, setNewOrderTipoCliente] = useState('comun');
     const [newOrderNota, setNewOrderNota] = useState('');
-    const [newOrderEstado, setNewOrderEstado] = useState('en cola');
+    const [newOrderEstado, setNewOrderEstado] = useState('cola');
     const [newOrderDescuento, setNewOrderDescuento] = useState(0.0);
     const [newOrderEmpleado, setNewOrderEmpleado] = useState('');
 

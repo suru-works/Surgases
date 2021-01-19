@@ -14,7 +14,7 @@ import { Verify } from './verify';
 import { ChangePassword } from './restore';
 import { Clients, ClientsUpdate, OrderClient, LastOrder} from './clients';
 import { Employees, EmployeesUpdate, NewOrderEmployees} from './employees';
-import { Printers, PrintersUpdate} from './printers';
+import { Printers, PrintersUpdate, Print} from './printers';
 import { OrderStats } from './orderStats';
 
  export const ConfigureStore = () => {
@@ -48,6 +48,7 @@ import { OrderStats } from './orderStats';
             employeesUpdate: EmployeesUpdate,
             printers: Printers,
             printersUpdate: PrintersUpdate,
+            print: Print,
             newOrderEmployees: NewOrderEmployees
         }),
        compose(applyMiddleware(thunk),
