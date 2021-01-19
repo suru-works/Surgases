@@ -754,6 +754,81 @@ export const employees = (args) => async (dispatch) => {
     }
 }
 
+export const employeesUpdateReset = () => ({
+    type: ActionTypes.EMPLOYEES_UPDATE_RESET
+});
+
+export const employeesUpdateRequest = () => ({
+    type: ActionTypes.EMPLOYEES_UPDATE_REQUEST
+});
+
+export const employeesUpdateSuccess = (result) => ({
+    type: ActionTypes.EMPLOYEES_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const employeesUpdateFailed = (errmess) => ({
+    type: ActionTypes.EMPLOYEES_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updateEmployee = (employeeData) => async (dispatch) => {
+    dispatch(employeesUpdateRequest());
+    const id = employeeData.id;
+    const employee = {
+        nombre: employeeData.nombre,
+        direccion: employeeData.direccion,
+        telefono: employeeData.telefono,
+        estado: employeeData.estado,
+        tipo: employeeData.tipo,
+        username: employeeData.username
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'empleados/'+ id, employee, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(employeesUpdateSuccess(res));
+    } catch (err) {
+        dispatch(employeesUpdateFailed(err));
+    }
+}
+
+export const deleteEmployee = (employeeData) => async (dispatch) => {
+    dispatch(employeesUpdateRequest());
+    const id = employeeData.id;
+    try {
+        const res = await axios.delete(baseBackUrl + 'empleados/'+ id, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(employeesUpdateSuccess(res));
+    } catch (err) {
+        dispatch(employeesUpdateFailed(err));
+    }
+}
+
+export const addEmployee = (employeeData) => async (dispatch) => {
+    dispatch(employeesUpdateRequest());
+    const employee = employeeData;
+    try {
+        const res = await axios.post(baseBackUrl + 'empleados/signup', employee,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(employeesUpdateSuccess(res));
+    } catch (err) {
+        dispatch(employeesUpdateFailed(err));
+    }
+}
+
 // New order employees
 
 export const newOrderEmployeesReset = () => ({

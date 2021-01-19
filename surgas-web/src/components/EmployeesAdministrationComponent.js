@@ -13,6 +13,7 @@ import * as yup from "yup";
 
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import AddUserComponent from './AddUserComponent';
+import Employee from './EmployeeComponent';
 
 
 
@@ -160,7 +161,7 @@ const SearchCriteria = () => {
 const RenderSearchResultTuple = (props) => {
     const employeeData = props.employee;
     return (
-        <User user={employeeData} />
+        <Employee user={employeeData} />
     );
 
 }
@@ -198,7 +199,7 @@ const SearchResult = () => {
                         <th>telefono</th>
                         <th>estado</th>
                         <th>tipo</th>
-                        <th>username</th>
+                        <th>usuario</th>
                     </tr>
                 </thead>
                 <tbody>

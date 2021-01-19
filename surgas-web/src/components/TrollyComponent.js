@@ -603,7 +603,9 @@ const Trolly = (props) => {
             nota: newOrderNota,
             empleado: newOrderEmployeesResult.data[0].id,
             productos: newOrderProductsSimplified,
-            descuento: newOrderDescuento
+            descuento: newOrderDescuento,
+            estado: newOrderEstado,
+            bodega: newOrderBodega
         }
         dispatch(addOrder(newOrderData));
     }
