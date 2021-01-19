@@ -106,7 +106,7 @@ const SearchCriteria = () => {
     return (
         <div className="col" style={{ padding: 1 }}>
 
-            <CardTitle tag="h3"> Busqueda de productos</CardTitle>
+            <CardTitle tag="h3"> Búsqueda de productos</CardTitle>
             <hr />
 
             <div className='row d-flex justify-content-center'>
@@ -338,6 +338,7 @@ const NewOrderProductsTable = (props) => {
                 </tbody>
 
             </Table>
+
         </div>
     );
 }
@@ -355,13 +356,13 @@ const NewOrder = (props) => {
         }
     }, []);
     return (
-        <div className="col-6">
+        <div className='col'>
 
             <CardTitle tag="h3"> Nuevo pedido</CardTitle>
             <hr />
 
             <div className='row d-flex justify-content-center '>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
                     <Label htmlFor="fecha">Fecha</Label>
                     <Input type="date" id="fecha" name="fecha"
                         value={props.newOrderFecha}
@@ -369,14 +370,14 @@ const NewOrder = (props) => {
                     />
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
                     <Label htmlFor="direccion">Dirección</Label>
                     <Input type="text" id="direccion" name="direccion"
                         value={props.newOrderDireccion}
                         onChange={(event) => { props.setNewOrderDireccion(event.target.value) }}
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-2'>
                     <Label htmlFor="bodega">Bodega</Label>
                     <Input type="select" id="bodega" name="bodega"
                         value={props.newOrderBodega}
@@ -386,7 +387,8 @@ const NewOrder = (props) => {
                         <option>3</option>
                     </Input>
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-3  align-self-end'>
                     <Label htmlFor="tipoCliente">Tipo de cliente</Label>
                     <Input type="select" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderTipoCliente}
@@ -395,23 +397,33 @@ const NewOrder = (props) => {
                         <option>comun</option>
                     </Input>
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6  align-self-end'>
                     <Label htmlFor="tipoCliente">Repartidor</Label>
                     <Input type="Text" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderEmpleado.nombre + '(' + props.newOrderEmpleado.id + ')'}
                         disabled>
                     </Input>
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-3  align-self-end'>
+                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} type="button" ><i className="fa fa-plus fa-2x plusbutton" ></i></Button>
+                </FormGroup>
+
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-12 '>
                     <Label htmlFor="nota">Nota</Label>
                     <Input type="textarea" id="nota" name="nota"
                         value={props.newOrderNota}
                         onChange={(event) => { props.setNewOrderNota(event.target.value) }}
                     />
                 </FormGroup>
-                <CardBody>
+
+            </div>
+
+                <CardBody className='p-0'>
                     <NewOrderProductsTable newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
                 </CardBody>
+
+            <div className='row d-flex justify-content-center '>
 
                 <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
                     <Label htmlFor="precioBruto">Precio bruto</Label>
@@ -625,39 +637,43 @@ const Trolly = (props) => {
                 <Form onSubmit={handleSubmit}>
                     <div className="row">
 
-                        <NewOrder
-                            deleteNewOrderProduct={deleteNewOrderProduct}
-                            updateNewOrderProduct={updateNewOrderProduct}
-                            newOrderProducts={newOrderProducts}
-                            setNewOrderProducts={setNewOrderProducts}
-                            newOrderPrecioBruto={newOrderPrecioBruto}
-                            newOrderPrecioFinal={newOrderPrecioFinal}
-                            setNewOrderPrecioBruto={setNewOrderPrecioBruto}
-                            newOrderPuntos={newOrderPuntos}
-                            setNewOrderPuntos={setNewOrderPuntos}
-                            newOrderFecha={newOrderFecha}
-                            setNewOrderFecha={setNewOrderFecha}
-                            newOrderDireccion={newOrderDireccion}
-                            setNewOrderDireccion={setNewOrderDireccion}
-                            newOrderBodega={newOrderBodega}
-                            setNewOrderBodega={setNewOrderBodega}
-                            newOrderTipoCliente={newOrderTipoCliente}
-                            setNewOrderTipoCliente={setNewOrderTipoCliente}
-                            newOrderNota={newOrderNota}
-                            setNewOrderNota={setNewOrderNota}
-                            newOrderEstado={newOrderEstado}
-                            setNewOrderEstado={setNewOrderEstado}
-                            newOrderDescuento={newOrderDescuento}
-                            setNewOrderDescuento={setNewOrderDescuento}
-                            newOrderEmpleado={newOrderEmployeesResult.data[0]}
-                            setNewOrderEmpleado={setNewOrderEmpleado}
-                        />
+                    
+                        <div className="col-6">
+
+                            <NewOrder
+                                deleteNewOrderProduct={deleteNewOrderProduct}
+                                updateNewOrderProduct={updateNewOrderProduct}
+                                newOrderProducts={newOrderProducts}
+                                setNewOrderProducts={setNewOrderProducts}
+                                newOrderPrecioBruto={newOrderPrecioBruto}
+                                newOrderPrecioFinal={newOrderPrecioFinal}
+                                setNewOrderPrecioBruto={setNewOrderPrecioBruto}
+                                newOrderPuntos={newOrderPuntos}
+                                setNewOrderPuntos={setNewOrderPuntos}
+                                newOrderFecha={newOrderFecha}
+                                setNewOrderFecha={setNewOrderFecha}
+                                newOrderDireccion={newOrderDireccion}
+                                setNewOrderDireccion={setNewOrderDireccion}
+                                newOrderBodega={newOrderBodega}
+                                setNewOrderBodega={setNewOrderBodega}
+                                newOrderTipoCliente={newOrderTipoCliente}
+                                setNewOrderTipoCliente={setNewOrderTipoCliente}
+                                newOrderNota={newOrderNota}
+                                setNewOrderNota={setNewOrderNota}
+                                newOrderEstado={newOrderEstado}
+                                setNewOrderEstado={setNewOrderEstado}
+                                newOrderDescuento={newOrderDescuento}
+                                setNewOrderDescuento={setNewOrderDescuento}
+                                newOrderEmpleado={newOrderEmployeesResult.data[0]}
+                                setNewOrderEmpleado={setNewOrderEmpleado}
+                            />
+                        </div>
 
                         <div className="col-6">
 
                             <SearchCriteria />
                             <CardTitle tag="h5">Productos</CardTitle>
-                            <CardBody>
+                            <CardBody className='p-0'>
                                 <SearchResult addNewOrderProduct={addNewOrderProduct}></SearchResult>
                             </CardBody>
 
