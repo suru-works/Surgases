@@ -15,6 +15,7 @@ import SystemPrintersAdministration from './SystemPrintersAdministrationComponen
 import  SystemBackup  from './SystemBackupComponent'
 import { Loading } from './LoadingComponent';
 import AdminStatistics from './AdminStatisticsComponent';
+import EmployeesAdministration from './EmployeesAdministrationComponent';
 
 const RenderLoginComponent = (props) => {
     
@@ -114,6 +115,10 @@ const AdministratorComponent = () => {
                                             Gestionar usuarios
                                             <Link to="/administrador/usuarios" />
                                         </MenuItem>
+                                        <MenuItem icon={<i className="fa fa-user"></i>}>
+                                            Gestionar empleados
+                                            <Link to="/administrador/empleados" />
+                                        </MenuItem>
                                         <SubMenu title="Sistema" icon={<i className="fa fa-cogs"></i>}>
                                             <MenuItem title="Parametros" icon={<i className="fa fa-info"></i>}>
                                                 Parametros
@@ -150,6 +155,7 @@ const AdministratorComponent = () => {
                             <Switch location={location} >
                                 <Route path='/administrador/inicio' component={() => <AdminStatistics />} />
                                 <Route path='/administrador/usuarios' component={() => <UsersAdministration />} />
+                                <Route path='/administrador/empleados' component={() => <EmployeesAdministration />} />
                                 <Route path='/administrador/productos' component={() => <ProductsAdministration />} />
                                 <Route path='/administrador/parametros' component={() => <SystemParametersAdministration />} />
                                 <Route path='/administrador/impresoras' component={() => <SystemPrintersAdministration />} />
