@@ -15,10 +15,13 @@ const Employee = (props) => {
     
     return (
             <tr  onClick={() => toggleEditModal()}>
-                <th scope="row">{props.employee.employeename}</th>
+                <th scope="row">{props.employee.id}</th>
                 <td>{props.employee.nombre}</td>
-                <td>{props.employee.email}</td>
+                <td>{props.employee.direccion}</td>
+                <td>{props.employee.telefono}</td>
+                <td>{props.employee.estado}</td>
                 <td>{props.employee.tipo}</td>
+                <td>{props.employee.username}</td>
                 <EditEmployeeComponent employee={props.employee} isOpen={isEditEmployeeModalOPen} toggle={toggleEditModal}></EditEmployeeComponent>
             </tr>
     );
