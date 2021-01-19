@@ -152,7 +152,7 @@ pedidoRouter.route("/")
 
         results = await conn.promise().execute(
             "INSERT INTO pedido(fecha, numero, hora_registro, direccion, estado, tipo_cliente, nota, usuario_registrador, cliente_pedidor) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [pedido.fecha, numero, hora_registro, pedido.direccion, 'verificacion', tipoCliente, pedido.nota, req.user.username, pedido.cliente_pedidor]
+            [pedido.fecha, numero, hora_registro, pedido.direccion, pedido.estado, tipoCliente, pedido.nota, req.user.username, pedido.cliente_pedidor]
         );
 
         let productos = pedido.productos;
@@ -173,19 +173,38 @@ pedidoRouter.route("/")
                     }
                 }
             }
-
             const precio_final = precio_bruto * (1 - (pedido.descuento / 100));
-            results = await conn.promise().execute(
-                'UPDATE pedido SET precio_bruto = ?, precio_final = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?',
-                [precio_bruto, precio_final, pedido.empleado, pedido.fecha, numero]
-            );
+            
+            let query, par, puntos_compra;
+            if (pedido.estado == 'verificacion') {
+                query = 'UPDATE pedido SET precio_bruto = ?, precio_final = ? WHERE fecha = ? AND numero = ?';
+                par = [precio_bruto, precio_final, pedido.fecha, numero];
+            } else {
+                results = await pool.promise().execute(
+                    'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+                    [pedido.fecha, pedido.numero]
+                );
+                const peso_total = JSON.parse(JSON.stringify(results[0])).peso_total;
+                results = await pool.promise().execute('SELECT puntos_libra FROM static');
+                const puntos_libra = JSON.parse(JSON.stringify(results[0])).puntos_libra;
+                puntos_compra = peso_total * puntos_libra;
+
+                query = 'UPDATE pedido SET precio_bruto = ?, precio_final = ?, puntos_compra = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?';
+                par = [precio_bruto, precio_final, puntos_compra, pedido.empleado, pedido.fecha, numero];
+            }
+
+            results = await conn.promise().execute(query, par);
 
             if (results[0].affectedRows == 1) {
-                results = await conn.promise().execute(
-                    'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ?, numero_pedidos = numero_pedidos + 1 WHERE telefono = ?',
-                    [pedido.fecha, numero, pedido.cliente_pedidor]
-                );
+                if (pedido.estado = 'verificacion') {
+                    query = 'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ?, numero_pedidos = numero_pedidos + 1, puntos = puntos + ? WHERE telefono = ?';
+                    par = [pedido.fecha, numero, puntos_compra, pedido.cliente_pedidor]
+                } else {
+                    query = 'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ?, numero_pedidos = numero_pedidos + 1 WHERE telefono = ?';
+                    [pedido.fecha, numero, pedido.cliente_pedidor];
+                }
 
+                results = await conn.promise().execute(query, par);
                 if (results[0].affectedRows == 1) {
                     conn.commit();
                     results = await pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, numero]);
@@ -343,10 +362,22 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
         );
 
         if (results[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'puntos adicionados'
-            });
+            results = await conn.promise().execute(
+                "UPDATE cliente SET puntos = puntos + (SELECT puntos_compra FROM pedido WHERE fecha = ? AND numero = ?) WHERE telefono = (SELECT cliente_pedidor FROM pedido WHERE fecha = ? AND numero = ?)",
+                [pedido.fecha, pedido.numero, pedido.fecha, pedido.numero]
+            );
+
+            if (results[0].affectedRows == 1) {
+                conn.commit();
+                res.json({
+                    msg: 'puntos adicionados'
+                });
+            } else {
+                conn.rollback();
+                throw {
+                    status: 500
+                }
+            }
         } else {
             conn.rollback();
             throw {
