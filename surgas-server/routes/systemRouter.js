@@ -9,8 +9,7 @@ const systemRouter = require('express').Router();
 systemRouter.use(require('body-parser').json());
 
 systemRouter.get('/parameters/:codigo', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    const query = db.buildQuery('static', { codigo: req.params.codigo }, ['*']);
-    const results = await db.pool.promise().execute(query.query, query.values);
+    const results = await pool.promise().execute('SELECT * FROM static WHERE codigo = ?', [req.params.codigo]);
     if (results) {
         res.json(JSON.parse(JSON.stringify(results[0])));
     } else {

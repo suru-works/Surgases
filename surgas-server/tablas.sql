@@ -94,7 +94,10 @@ CREATE TABLE pedidoxproducto(
 CREATE TABLE static(
     codigo VARCHAR(8) PRIMARY KEY,
     limite_puntos INT NOT NULL,
-    puntos_libra INT NOT NULL,
+    limite_puntos_acumulables INT NOT NULL,
+    puntosxlibra INT NOT NULL,
+    tiempo_de_gracia INT NOT NULL,
+	 tiempo_de_redencion INT NOT NULL, 
     descuento FLOAT NOT NULL
 );
 
@@ -105,6 +108,6 @@ CREATE TABLE user_sessions(
 
 CREATE TABLE impresora(
     codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    descripcion VARCHAR(200),
+    descripcion VARCHAR(200) UNIQUE,
     PRIMARY KEY (codigo)
 );
