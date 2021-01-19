@@ -21,9 +21,9 @@ const EditEmployeeComponent = (props) => {
     const [tipo] = useState(props.employee.tipo);
     const [username] = useState(props.employee.username);
 
-    const error = useSelector(state => state.employeeUpdate.errMess);
-    const result = useSelector(state => state.employeeUpdate.result);
-    const loading = useSelector(state => state.employeeUpdate.isLoading);
+    const error = useSelector(state => state.employeesUpdate.errMess);
+    const result = useSelector(state => state.employeesUpdate.result);
+    const loading = useSelector(state => state.employeesUpdate.isLoading);
 
 
 
@@ -53,7 +53,7 @@ const EditEmployeeComponent = (props) => {
 
     const deleteThatEmployee = () => {
         const employeeData = {
-            id: props.Employee.id
+            id: props.employee.id
         }
         doDeleteEmployee(employeeData);
     }

@@ -817,7 +817,7 @@ export const addEmployee = (employeeData) => async (dispatch) => {
     dispatch(employeesUpdateRequest());
     const employee = employeeData;
     try {
-        const res = await axios.post(baseBackUrl + 'empleados/signup', employee,{
+        const res = await axios.post(baseBackUrl + 'empleados', employee,{
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -1132,5 +1132,110 @@ export const orderStats = () => async (dispatch) => {
         dispatch(orderStatsSuccess(res));
     } catch (err) {
         dispatch(orderStatsFailed(err));
+    }
+}
+
+// Printers
+
+export const printersReset = () => ({
+    type: ActionTypes.PRINTERS_RESET
+});
+
+export const printersRequest = () => ({
+    type: ActionTypes.PRINTERS_REQUEST
+});
+
+export const printersSuccess = (result) => ({
+    type: ActionTypes.PRINTERS_SUCCESS,
+    payload: result
+});
+
+export const printersFailed = (errmess) => ({
+    type: ActionTypes.PRINTERS_FAILED,
+    payload: errmess
+});
+
+export const printers = (args) => async (dispatch) => {
+    dispatch(printersRequest());
+    let urlparams = 'impresoras';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(printersSuccess(res));
+    } catch (err) {
+        dispatch(printersFailed(err));
+    }
+}
+
+export const printersUpdateReset = () => ({
+    type: ActionTypes.PRINTERS_UPDATE_RESET
+});
+
+export const printersUpdateRequest = () => ({
+    type: ActionTypes.PRINTERS_UPDATE_REQUEST
+});
+
+export const printersUpdateSuccess = (result) => ({
+    type: ActionTypes.PRINTERS_UPDATE_SUCCESS,
+    payload: result
+});
+
+export const printersUpdateFailed = (errmess) => ({
+    type: ActionTypes.PRINTERS_UPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const updatePrinter= (printerData) => async (dispatch) => {
+    dispatch(printersUpdateRequest());
+    const codigo = printerData.codigo;
+    const printer = {
+        descripcion: printerData.descripcion
+    }
+    try {
+        const res = await axios.put(baseBackUrl + 'impresoras/'+ codigo, printer, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(printersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(printersUpdateFailed(err));
+    }
+}
+
+export const deletePrinter = (printerData) => async (dispatch) => {
+    dispatch(printersUpdateRequest());
+    const codigo = printerData.codigo;
+    try {
+        const res = await axios.delete(baseBackUrl + 'impresoras/'+ codigo, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(printersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(printersUpdateFailed(err));
+    }
+}
+
+export const addPrinter = (printerData) => async (dispatch) => {
+    dispatch(printersUpdateRequest());
+    const printer = printerData;
+    try {
+        const res = await axios.post(baseBackUrl + 'impresoras', printer,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(printersUpdateSuccess(res));
+    } catch (err) {
+        dispatch(printersUpdateFailed(err));
     }
 }

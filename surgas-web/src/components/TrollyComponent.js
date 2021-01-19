@@ -9,6 +9,7 @@ import { products, updateProduct, trolleyProducts } from '../redux/ActionCreator
 import Product from './ProductTableComponent';
 import AddNewOrderProductComponent from './AddNewOrderProductComponent';
 import EditNewOrderProductComponent from './EditNewOrderProductComponent';
+import SearchNewOrderEmployee from './SearchNewOrderEmployeeComponent';
 
 import SetClient from './OrderSetClientComponent';
 import CreateClientData from './OrderCreateClientDataComponent';
@@ -343,10 +344,11 @@ const NewOrderProductsTable = (props) => {
     );
 }
 
-
 const NewOrder = (props) => {
     const orderClientResult = useSelector(state => state.orderClient.result);
     const lastOrderResult = useSelector(state => state.lastOrder.result);
+
+    const [isSearchNewOrderEmployeeModalOpen, setIsSearchNewOrderEmployeeModalOpen] = useState(false);
     useEffect(() => {
         if (lastOrderResult.pedido) {
             props.setNewOrderDireccion(lastOrderResult.pedido.direccion);
@@ -355,6 +357,15 @@ const NewOrder = (props) => {
             props.setNewOrderDescuento(orderClientResult.data[0].descuento);
         }
     }, []);
+
+    const toogleSearchNewOrderEmployee = () => {
+        if (isSearchNewOrderEmployeeModalOpen) {
+            setIsSearchNewOrderEmployeeModalOpen(false);
+        }
+        else {
+            setIsSearchNewOrderEmployeeModalOpen(true);
+        }
+    }
     return (
         <div className='col'>
 
@@ -406,7 +417,8 @@ const NewOrder = (props) => {
                 </FormGroup>
 
                 <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-2'>
-                    <button  type="button" className="justify-self-center" class="btn"><i className="fa fa-search fa-2x botonCircular" ></i></button>
+                    <button type="button" className="justify-self-center" class="btn" onClick={toogleSearchNewOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
+                    <SearchNewOrderEmployee toggle={toogleSearchNewOrderEmployee} isOpen={isSearchNewOrderEmployeeModalOpen} setNewOrderEmpleado={props.setNewOrderEmpleado} />
                 </FormGroup>
 
                 <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-12 '>
@@ -419,11 +431,11 @@ const NewOrder = (props) => {
 
             </div>
 
-                <CardBody className='p-0'>
-                    <NewOrderProductsTable newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
-                </CardBody>
+            <CardBody className='p-0'>
+                <NewOrderProductsTable newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
+            </CardBody>
 
-                <br/>
+            <br />
 
             <div className='row d-flex justify-content-center '>
 
@@ -549,7 +561,7 @@ const Trolly = (props) => {
         let producticos = newOrderProducts.slice();
         producticos[index] = product;
         setNewOrderProducts(producticos);
-        let nuevoPrecio =newOrderPrecioBruto - (oldProduct.precio) * oldProduct.cantidad
+        let nuevoPrecio = newOrderPrecioBruto - (oldProduct.precio) * oldProduct.cantidad
         setNewOrderPrecioBruto(nuevoPrecio);
         setNewOrderPrecioBruto(nuevoPrecio + (product.precio) * product.cantidad);
         setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
@@ -565,7 +577,7 @@ const Trolly = (props) => {
         let producticos = newOrderProducts.slice();
         producticos.splice(index, 1);
         setNewOrderProducts(producticos);
-        let nuevoPrecio =newOrderPrecioBruto - (product.precio) * product.cantidad
+        let nuevoPrecio = newOrderPrecioBruto - (product.precio) * product.cantidad
         setNewOrderPrecioBruto(nuevoPrecio);
         setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
         return (false);
@@ -578,10 +590,6 @@ const Trolly = (props) => {
         clientData.push('telefono=' + props.telefono);
         dispatch(orderClient(clientData));
         dispatch(lastOrder(props.telefono));
-        let employeesData = [];
-        employeesData.push('tipo=' + 'repartidor');
-        employeesData.push('estado=' + 'activo');
-        dispatch(newOrderEmployees(employeesData));
     }, []);
 
     const handleSubmit = () => {
@@ -601,7 +609,7 @@ const Trolly = (props) => {
             fecha: newOrderFecha,
             direccion: newOrderDireccion,
             nota: newOrderNota,
-            empleado: newOrderEmployeesResult.data[0].id,
+            empleado: newOrderEmpleado.id,
             productos: newOrderProductsSimplified,
             descuento: newOrderDescuento,
             estado: newOrderEstado,
@@ -612,13 +620,13 @@ const Trolly = (props) => {
 
 
 
-    if (orderClientLoading || lastOrderLoading || newOrderEmployeesLoading || addOrderLoading) {
+    if (orderClientLoading || lastOrderLoading || addOrderLoading) {
         return (
             <Loading />
         );
 
     }
-    if (orderClientError || lastOrderError || newOrderEmployeesError || addOrderError) {
+    if (orderClientError || lastOrderError || addOrderError) {
 
         return (
             <div class="d-flex justify-content-center" >
@@ -635,13 +643,13 @@ const Trolly = (props) => {
             <div></div>
         );
     }
-    if (orderClientResult && lastOrderResult && newOrderEmployeesResult) {
+    if (orderClientResult && lastOrderResult ) {
         return (
             <div className="container">
                 <Form onSubmit={handleSubmit}>
                     <div className="row">
 
-                    
+
                         <div className="col-6">
 
                             <NewOrder
@@ -668,7 +676,7 @@ const Trolly = (props) => {
                                 setNewOrderEstado={setNewOrderEstado}
                                 newOrderDescuento={newOrderDescuento}
                                 setNewOrderDescuento={setNewOrderDescuento}
-                                newOrderEmpleado={newOrderEmployeesResult.data[0]}
+                                newOrderEmpleado={newOrderEmpleado}
                                 setNewOrderEmpleado={setNewOrderEmpleado}
                             />
                         </div>
