@@ -388,7 +388,7 @@ const NewOrder = (props) => {
                     </Input>
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-3  align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4  align-self-end'>
                     <Label htmlFor="tipoCliente">Tipo de cliente</Label>
                     <Input type="select" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderTipoCliente}
@@ -405,8 +405,8 @@ const NewOrder = (props) => {
                     </Input>
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-3  align-self-end'>
-                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} type="button" ><i className="fa fa-plus fa-2x plusbutton" ></i></Button>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-2'>
+                    <button  type="button" className="justify-self-center" class="btn"><i className="fa fa-search fa-2x botonCircular" ></i></button>
                 </FormGroup>
 
                 <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-12 '>
@@ -423,9 +423,11 @@ const NewOrder = (props) => {
                     <NewOrderProductsTable newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
                 </CardBody>
 
+                <br/>
+
             <div className='row d-flex justify-content-center '>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
                     <Label htmlFor="precioBruto">Precio bruto</Label>
                     <Input type="number" id="precioBruto" name="precioBruto"
                         value={props.newOrderPrecioBruto}
@@ -433,7 +435,7 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
                     <Label htmlFor="precioFinal">Precio Final</Label>
                     <Input type="number" id="precioFinal" name="precioFinal"
                         value={props.newOrderPrecioFinal}
@@ -441,7 +443,7 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
                     <Label htmlFor="puntos">Puntos</Label>
                     <Input type="number" id="puntos" name="puntos"
                         value={props.newOrderPuntos}
@@ -449,14 +451,14 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
                     <Label htmlFor="descuento">Descuento</Label>
                     <Input type="number" id="descuento" name="descuento"
                         value={props.newOrderDescuento}
                         onChange={(event) => { props.setNewOrderDescuento(event.target.value) }}
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4'>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
                     <Label htmlFor="estado">Estado</Label>
                     <Input type="select" id="estado" name="estado"
                         value={props.newOrderEstado}
@@ -681,9 +683,14 @@ const Trolly = (props) => {
 
                     </div>
                     <div className="row">
-                        <div class="d-flex justify-content-center"  >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Registrar pedido</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cancelar</Button>
+
+                        <div className="col "  >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Ver pedido anterior</Button>
+                        </div>
+
+                        <div className="col contieneBotones"  >
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="justify-self-end secondary-button" >Cancelar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="justify-self-end secondary-button" >Registrar pedido</Button>
                         </div>
                     </div>
                 </Form>

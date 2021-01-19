@@ -74,27 +74,39 @@ const SetClient = (props) => {
         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
 
             <div className='row d-flex justify-content-center '>
-                <FormGroup >
-                    <Label htmlFor="telefono">telefono</Label>
-                    <Input type="phone" id="telefono" name="telefono"
-                        value={values.telefono}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
-                </FormGroup>
-                <FormGroup>
-                    cliente
-                <br></br>
 
+                <div className='col-lg-4 d-none d-lg-block d-xl-none'>
+                    
+                </div>
 
+                <div className='col-xs-12 col-sm-6 col-md-6 col-lg-4 '>
 
-                    <div class="d-flex justify-content-center" >
-                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Siguiente</Button>
-                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cancelar</Button>
+                    <FormGroup >
+                        <Label htmlFor="telefono">Teléfono</Label>
+                        <Input type="phone" id="telefono" name="telefono"
+                            value={values.telefono}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
+                    </FormGroup>
 
-                    </div>
-                </FormGroup>
+                </div>
+
+                <div className='col-xs-12 col-sm-6 col-md-6 col-lg-4 '>
+
+                    <FormGroup>
+                        <br></br>
+
+                        <div class="d-flex justify-content-center" >
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Siguiente</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cancelar</Button>
+
+                        </div>
+                    </FormGroup>
+
+                </div>
+
             </div>
 
         </Form>

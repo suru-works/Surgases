@@ -15,6 +15,26 @@
     transform: rotate(-5deg); } }
 
 
+.botonCircular {
+  background-color: #fdd835;
+  border:none;
+  color: black;
+  padding: 13px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+
+  border-radius: 50%;
+}
+
+.contieneBotones {
+  
+  display: flex;
+  justify-content: flex-end;
+}
+
+
 .tbodyAlto600px {
   display:block;
   height:600px;
