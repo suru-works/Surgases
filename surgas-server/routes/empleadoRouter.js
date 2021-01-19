@@ -70,8 +70,8 @@ empleadoRouter.route("/")
     pool.getConnection(async (err, conn) => {
         const emp = req.body;
         const result = await conn.promise().execute(
-            'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, NULL)',
-            [emp.id, emp.nombre, emp.direccion, emp.telefono, emp.estado]
+            'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?, NULL)',
+            [emp.id, emp.nombre, emp.direccion, emp.telefono, emp.estado, emp.tipo]
         );
 
         if (result[0].affectedRows == 1) {

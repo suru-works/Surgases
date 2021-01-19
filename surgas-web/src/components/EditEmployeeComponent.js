@@ -3,7 +3,7 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { users, updateUser, deleteUser, usersUpdateReset } from '../redux/ActionCreators';
+import { updateEmployee, deleteEmployee, employeesUpdateReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -15,65 +15,76 @@ const validationSchema = yup.object(
 const EditEmployeeComponent = (props) => {
     const [id] = useState(props.employee.id);
     const [nombre] = useState(props.employee.nombre);
-    const [email] = useState(props.employee.email);
+    const [direccion] = useState(props.employee.direccion);
+    const [telefono] = useState(props.employee.telefono);
+    const [estado] = useState(props.employee.estado);
     const [tipo] = useState(props.employee.tipo);
+    const [username] = useState(props.employee.username);
 
-    const error = useSelector(state => state.usersUpdate.errMess);
-    const result = useSelector(state => state.usersUpdate.result);
-    const loading = useSelector(state => state.usersUpdate.isLoading);
+    const error = useSelector(state => state.employeeUpdate.errMess);
+    const result = useSelector(state => state.employeeUpdate.result);
+    const loading = useSelector(state => state.employeeUpdate.isLoading);
 
 
 
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
-        dispatch(users());
-        dispatch(usersUpdateReset());
+        dispatch(employeesUpdateReset());
         props.toggle();
     }
 
-    const doUpdateUser = (userData) => dispatch(updateUser(userData));
+    const doUpdateEmployee = (employeeData) => dispatch(updateEmployee(employeeData));
 
     const uploadChanges = (values) => {
-        const userData = {
-            id: props.user.id,
+        const employeeData = {
+            id: props.employee.id,
             nombre: values.nombre,
-            email: values.email,
-            tipo: values.tipo
+            direccion: values.direccion,
+            telefono: values.telefono,
+            estado: values.estado,
+            tipo: values.tipo,
+            username: values.username
         }
-        doUpdateUser(userData);
+        doUpdateEmployee(employeeData);
     }
 
-    const doDeleteUser = (userData) => dispatch(deleteUser(userData));
+    const doDeleteEmployee = (employeeData) => dispatch(deleteEmployee(employeeData));
 
-    const deleteThatUser = () => {
-        const userData = {
-            id: props.user.id
+    const deleteThatEmployee = () => {
+        const employeeData = {
+            id: props.Employee.id
         }
-        doDeleteUser(userData);
+        doDeleteEmployee(employeeData);
     }
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             nombre: nombre,
-            email: email,
-            tipo: tipo
+            direccion: direccion,
+            telefono: telefono,
+            estado: estado,
+            tipo: tipo,
+            username: username
         },
         validationSchema,
         onSubmit(values) {
-            const userData = {
+            const employeeData = {
                 nombre: values.nombre,
-                email: values.email,
-                tipo: values.tipo
+                direccion: values.direccion,
+                telefono: values.telefono,
+                estado: values.estado,
+                tipo: values.tipo,
+                username: values.username
             }
-            uploadChanges(userData);
+            uploadChanges(employeeData);
         }
     });
 
     if (loading) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -83,7 +94,7 @@ const EditEmployeeComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -93,9 +104,9 @@ const EditEmployeeComponent = (props) => {
     else if (result) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
-                    <p>Usuario Editado correctamente.</p>
+                    <p>Empleado editado correctamente.</p>
                 </ModalBody>
                 <Button onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
@@ -106,7 +117,7 @@ const EditEmployeeComponent = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
 
                 <ModalBody>
 
@@ -141,6 +152,7 @@ const EditEmployeeComponent = (props) => {
                                             onBlur={handleBlur}>
                                             <option>vendedor</option>
                                             <option>administrador</option>
+                                            <option>repartidor</option>
                                         </Input>
                                     </FormGroup>
 
@@ -150,7 +162,7 @@ const EditEmployeeComponent = (props) => {
                                             <div className="d-flex justify-content-center" >
 
                                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
-                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" onClick={() => deleteThatUser()}  >Eliminar Usuario</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" onClick={() => deleteThatEmployee()}  >Eliminar Empleado</Button>
                                             </div>
                                         </FormGroup>
 
