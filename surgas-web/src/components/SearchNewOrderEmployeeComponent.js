@@ -5,17 +5,13 @@ import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, 
 
 import { Loading } from './LoadingComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { employees } from '../redux/ActionCreators';
+import { newOrderEmployees } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
-import AddUserComponent from './AddUserComponent';
 import Employee from './EmployeeComponent';
-
-
-
 
 const validationSchema = yup.object(
 
@@ -26,10 +22,13 @@ const validationSchema = yup.object(
 const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(employees());
+        let employeeData = [];
+        employeeData.push('tipo=' + 'repartidor');
+        employeeData.push('estado=' + 'activo');
+        dispatch(newOrderEmployees(employeeData));
     }, []);
 
-    const doSearch = (employeeData) => dispatch(employees(employeeData));
+    const doSearch = (employeeData) => dispatch(newOrderEmployees(employeeData));
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -39,35 +38,29 @@ const SearchCriteria = () => {
             telefono: '',
             estado: 'sin especificar',
             tipo: 'sin especificar',
-            username:''
+            username: ''
 
         },
         validationSchema,
         onSubmit(values) {
             let employeeData = []
-            if(values.id != ''){
-                employeeData.push('id='+values.id);
+            if (values.id != '') {
+                employeeData.push('id=' + values.id);
             }
-            if(values.nombre != ''){
-                employeeData.push('nombre='+values.nombre);
+            if (values.nombre != '') {
+                employeeData.push('nombre=' + values.nombre);
             }
-            if(values.direccion != ''){
-                employeeData.push('direccion='+(values.direccion));
+            if (values.direccion != '') {
+                employeeData.push('direccion=' + (values.direccion));
             }
-            if(values.telefono != ''){
-                employeeData.push('telefono='+(values.telefono));
+            if (values.telefono != '') {
+                employeeData.push('telefono=' + (values.telefono));
             }
-            if(values.tipo != 'sin especificar'){
-                employeeData.push('tipo='+values.tipo);
+            employeeData.push('tipo=' + 'repartidor');
+            employeeData.push('estado=' + 'activo');
+            if (values.username != '') {
+                employeeData.push('username=' + values.username);
             }
-            if(values.estado != 'sin especificar'){
-                employeeData.push('estado='+values.estado);
-            }
-            if(values.username != ''){
-                employeeData.push('username='+values.username);
-            }
-
-             
             doSearch(employeeData);
         }
     });
@@ -118,34 +111,10 @@ const SearchCriteria = () => {
 
                     </FormGroup>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label for="tipo">Tipo</Label>
-                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
-                            onChange={handleChange}
-                            onBlur={handleBlur}>
-                            <option>sin especificar</option>
-                            <option>vendedor</option>
-                            <option>administrador</option>
-                            <option>repartidor</option>
-                        </Input>
-                    </FormGroup>
-
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label for="estado">Estado</Label>
-                        <Input type="select" name="estado" id="estado" value={values.estado}
-                            onChange={handleChange}
-                            onBlur={handleBlur}>
-                            <option>sin especificar</option>
-                            <option>activo</option>
-                            <option>inactivo</option>
-                            <option>despedido</option>
-                        </Input>
-                    </FormGroup>
-
                     <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 align-self-end'>
                         <div class="d-flex justify-content-center" >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
                     </FormGroup>
 
@@ -157,21 +126,36 @@ const SearchCriteria = () => {
     );
 }
 
+const EmployeeRow = (props) => {
+    const toggleAndSendEmployee = () => {
+        props.setNewOrderEmpleado(props.employee);
+        props.toogleAndReset();
+    }
+    return (
+        <tr onClick={() => toggleAndSendEmployee()}>
+            <th scope="row">{props.employee.id}</th>
+            <td>{props.employee.nombre}</td>
+            <td>{props.employee.direccion}</td>
+            <td>{props.employee.telefono}</td>
+            <td>{props.employee.estado}</td>
+            <td>{props.employee.tipo}</td>
+            <td>{props.employee.username}</td>
+        </tr>
+    );
+}
+
 const RenderSearchResultTuple = (props) => {
     const employeeData = props.employee;
     return (
-        <Employee employee={employeeData} />
+        <EmployeeRow employee={employeeData} setNewOrderEmpleado={props.setNewOrderEmpleado} toogleAndReset={props.toogleAndReset} />
     );
 
 }
+const SearchResult = (props) => {
 
-
-
-const SearchResult = () => {
-
-    const error = useSelector(state => state.employees.errMess);
-    const result = useSelector(state => state.employees.result);
-    const loading = useSelector(state => state.employees.isLoading);
+    const error = useSelector(state => state.newOrderEmployees.errMess);
+    const result = useSelector(state => state.newOrderEmployees.result);
+    const loading = useSelector(state => state.newOrderEmployees.isLoading);
 
 
 
@@ -184,7 +168,7 @@ const SearchResult = () => {
     if (result) {
         const ResultTuples = result.data.map((employee) => {
             return (
-                <RenderSearchResultTuple employee={employee} key={employee.id}></RenderSearchResultTuple>
+                <RenderSearchResultTuple employee={employee} key={employee.id} setNewOrderEmpleado={props.setNewOrderEmpleado} toogleAndReset={props.toogleAndReset}></RenderSearchResultTuple>
 
             );
         })
@@ -219,47 +203,32 @@ const SearchResult = () => {
 
 }
 
-const EmployeesAdministration = () => {
-
-    const [isAddClientModalOPen, setIsAddClientModalOPen] = useState(false);
-
-    const toggleAddUserModal = () => {
-        if (isAddClientModalOPen) {
-            setIsAddClientModalOPen(false);
-        } else {
-            setIsAddClientModalOPen(true);
-        }
+const SearchNewOrderEmployee = (props) => {
+    const toogleAndReset = () => {
+        props.toggle();
     }
-
     return (
-        <div className='col' >
-            <Card  style={{ margin: "10px", padding: "7px" }}>    
-                <CardBody>
-                    <SearchCriteria></SearchCriteria>
-                </CardBody>
-            </Card>
-            <Card>
-                <CardTitle>
-                    <CardText>Empleados</CardText>
-                </CardTitle>
-                <CardBody>
-                    <SearchResult></SearchResult>
-                </CardBody>
-            </Card>
-            <FloatingButtonContainer >
-                <FloatingButton tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddUserModal} >
-                    
-                        <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    
-                </FloatingButton>
-            </FloatingButtonContainer>
-            <AddUserComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddUserComponent>
-        </div>
-
+        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+            <ModalHeader toggle={toogleAndReset}>Buscar repartidor para el pedido</ModalHeader>
+            <ModalBody>
+                <Card style={{ margin: "10px", padding: "7px" }}>
+                    <CardBody>
+                        <SearchCriteria></SearchCriteria>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardTitle>
+                        <CardText>Empleados</CardText>
+                    </CardTitle>
+                    <CardBody>
+                        <SearchResult setNewOrderEmpleado={props.setNewOrderEmpleado} toogleAndReset={toogleAndReset}></SearchResult>
+                    </CardBody>
+                </Card>
+            </ModalBody>
+        </Modal>
     );
 }
 
+SearchNewOrderEmployee.propTypes = {};
 
-EmployeesAdministration.propTypes = {};
-
-export default EmployeesAdministration;
+export default SearchNewOrderEmployee;

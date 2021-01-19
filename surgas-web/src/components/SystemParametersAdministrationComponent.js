@@ -93,7 +93,7 @@ const validationSchema = yup.object(
 );
 
 const RenderSystemParameters = (props) => {
-    
+
     const dispatch = useDispatch();
 
     const [isSystemParametersUpdateModalOPen, setIsSystemParametersUpdateModalOPen] = useState(false);
@@ -115,13 +115,12 @@ const RenderSystemParameters = (props) => {
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            limPuntos: props.params.limPuntos,
-            limPuntosAcomulables: props.params.limPuntosAcomulables,
-            puntosxkilo: props.params.puntosxkilo,
-            obsequio: props.params.obsequio,
-            puntos_descontados_por_obsequio: props.params.puntos_descontados_por_obsequio,
+            limite_puntos: props.params.limite_puntos,
+            limite_puntos_acumulables: props.params.limite_puntos_acumulables,
+            puntosxlibra: props.params.puntosxlibra,
             tiempo_de_gracia: props.params.tiempo_de_gracia,
-            tiempo_de_redencion: props.params.tiempo_de_redencion
+            tiempo_de_redencion: props.params.tiempo_de_redencion,
+            descuento: props.params.descuento
         },
         validationSchema,
         onSubmit(values) {
@@ -130,112 +129,112 @@ const RenderSystemParameters = (props) => {
     });
 
 
-        return (
-            <Card >
-                <CardTitle>
-                    <CardText>Parámetros del sistema</CardText>
-                </CardTitle>
-                <CardBody>
-                    <div className="d-flex space-around row">
-                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
-                            <Card style={{ padding: 11 }}>
-                                <CardBody style={{ padding: 8 }}>
+    return (
+        <Card >
+            <CardTitle>
+                <CardText>Parámetros del sistema</CardText>
+            </CardTitle>
+            <CardBody>
+                <div className="d-flex space-around row">
+                    <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
+                        <Card style={{ padding: 11 }}>
+                            <CardBody style={{ padding: 8 }}>
 
 
-                                    <br></br>
-                                    <div className='row'>
+                                <br></br>
+                                <div className='row'>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="limPuntos">Límite de puntos</Label>
-                                            <Input type="text" id="limPuntos" name="limPuntos" value={values.limPuntos}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.limPuntos && errors.limPuntos) ? (<Alert color="danger">{errors.limPuntos}</Alert>) : null}
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="limite_puntos">Límite de puntos</Label>
+                                        <Input type="text" id="limite_puntos" name="limite_puntos" value={values.limite_puntos}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.limite_puntos && errors.limite_puntos) ? (<Alert color="danger">{errors.limite_puntos}</Alert>) : null}
 
-                                        </FormGroup>
+                                    </FormGroup>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="limPuntosAcomulables">Límite de puntos acomulables</Label>
-                                            <Input type="text" id="limPuntosAcomulables" name="limPuntosAcomulables" value={values.limPuntosAcomulables}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.limPuntosAcomulables && errors.limPuntosAcomulables) ? (<Alert color="danger">{errors.limPuntosAcomulables}</Alert>) : null}
-                                        </FormGroup>
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="limite_puntos_acumulables">Límite de puntos acomulables</Label>
+                                        <Input type="text" id="limite_puntos_acumulables" name="limite_puntos_acumulables" value={values.limite_puntos_acumulables}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.limite_puntos_acumulables && errors.limite_puntos_acumulables) ? (<Alert color="danger">{errors.limite_puntos_acumulables}</Alert>) : null}
+                                    </FormGroup>
 
-                                    </div>
-                                    <div className='row'>
+                                </div>
+                                <div className='row'>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="puntosxkilo">Puntos dados por libra</Label>
-                                            <Input type="text" id="puntosxkilo" name="puntosxkilo" value={values.puntosxkilo}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.puntosxkilo && errors.puntosxkilo) ? (<Alert color="danger">{errors.puntosxkilo}</Alert>) : null}
-                                        </FormGroup>
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="puntosxlibra">Puntos dados por libra</Label>
+                                        <Input type="text" id="puntosxlibra" name="puntosxlibra" value={values.puntosxlibra}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.puntosxlibra && errors.puntosxlibra) ? (<Alert color="danger">{errors.puntosxlibra}</Alert>) : null}
+                                    </FormGroup>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="obsequio">Obsequio</Label>
-                                            <Input type="text" id="obsequio" name="obsequio" value={values.obsequio}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.obsequio && errors.obsequio) ? (<Alert color="danger">{errors.obsequio}</Alert>) : null}
-                                        </FormGroup>
+                                </div>
+                                <div className='row'>
 
-                                    </div>
-                                    <div className='row'>
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="tiempo_de_gracia">Tiempo de gracia</Label>
+                                        <Input type="text" id="tiempo_de_gracia" name="tiempo_de_gracia" value={values.tiempo_de_gracia}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.tiempo_de_gracia && errors.tiempo_de_gracia) ? (<Alert color="danger">{errors.tiempo_de_gracia}</Alert>) : null}
+                                    </FormGroup>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="puntos_descontados_por_obsequio">Puntos descontados por obsequio</Label>
-                                            <Input type="text" id="puntos_descontados_por_obsequio" name="puntos_descontados_por_obsequio" value={values.puntos_descontados_por_obsequio}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.puntos_descontados_por_obsequio && errors.puntos_descontados_por_obsequio) ? (<Alert color="danger">{errors.puntos_descontados_por_obsequio}</Alert>) : null}
-                                        </FormGroup>
+                                </div>
+                                <div className='row'>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="tiempo_de_gracia">Tiempo de gracia</Label>
-                                            <Input type="text" id="tiempo_de_gracia" name="tiempo_de_gracia" value={values.tiempo_de_gracia}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.tiempo_de_gracia && errors.tiempo_de_gracia) ? (<Alert color="danger">{errors.tiempo_de_gracia}</Alert>) : null}
-                                        </FormGroup>
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="tiempo_de_redencion">Tiempo de redención</Label>
+                                        <Input type="text" id="tiempo_de_redencion" name="tiempo_de_redencion" value={values.tiempo_de_redencion}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.tiempo_de_redencion && errors.tiempo_de_redencion) ? (<Alert color="danger">{errors.tiempo_de_redencion}</Alert>) : null}
+                                    </FormGroup>
 
-                                    </div>
-                                    <div className='row'>
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="tiempo_de_redencion">Tiempo de redención</Label>
-                                            <Input type="text" id="tiempo_de_redencion" name="tiempo_de_redencion" value={values.tiempo_de_redencion}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur} />
-                                            {(touched.tiempo_de_redencion && errors.tiempo_de_redencion) ? (<Alert color="danger">{errors.tiempo_de_redencion}</Alert>) : null}
-                                        </FormGroup>
 
-                                        <FormGroup  className='col-12 col-sm-6' >
-                                            <br></br>
-                                            <div class="d-flex justify-content-center" >
-                                                <Button className="secondary-button" type="submit" value="submit"  style={{ backgroundColor: '#fdd835', color: '#000000'}}>Actualizar parámetros</Button>
-                                            </div>
-                                        </FormGroup>
+                                </div>
+                                <div className='row'>
 
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="descuento">Descuento por defecto a clientes empresariales</Label>
+                                        <Input type="text" id="descuento" name="descuento" value={values.descuento}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
+                                    </FormGroup>
+
+
+
+                                </div>
+                                <div className='row'>
+                                    <FormGroup className='col-12 col-sm-6' >
+                                        <br></br>
+                                        <div class="d-flex justify-content-center" >
+                                            <Button className="secondary-button" type="submit" value="submit" style={{ backgroundColor: '#fdd835', color: '#000000' }}>Actualizar parámetros</Button>
                                         </div>
+                                    </FormGroup>
+                                </div>
 
-                                </CardBody>
+                            </CardBody>
 
-                            </Card>
-
-
-                        </Form>
-
-                    </div>
-                </CardBody>
-                <SystemParametersUpdateModalAlert toggle = {toggleSystemParametersUpdateModal} isOpen={isSystemParametersUpdateModalOPen}></SystemParametersUpdateModalAlert>
-            </Card>
-        );
-    
+                        </Card>
 
 
-    
+                    </Form>
+
+                </div>
+            </CardBody>
+            <SystemParametersUpdateModalAlert toggle={toggleSystemParametersUpdateModal} isOpen={isSystemParametersUpdateModalOPen}></SystemParametersUpdateModalAlert>
+        </Card>
+    );
+
+
+
+
 }
 
 const SystemParametersAdministration = () => {
@@ -295,9 +294,9 @@ const SystemParametersAdministration = () => {
         );
     }
     else if (result) {
-        if(result.data.length>0){
+        if (result.data.length > 0) {
             return (
-                <RenderSystemParameters params ={result.data[0]}></RenderSystemParameters>
+                <RenderSystemParameters params={result.data[0]}></RenderSystemParameters>
             );
         }
         return (
@@ -306,11 +305,11 @@ const SystemParametersAdministration = () => {
     }
     return (
         <div>Error desconocido</div>
-    ); 
+    );
 
-    
 
-    
+
+
 }
 
 
