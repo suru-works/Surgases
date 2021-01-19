@@ -392,17 +392,18 @@ pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
     res.json(JSON.parse(JSON.stringify(results[0])));
 }));
 
-pedidoRouter.post('/print/:fecha/:numero', asyncHandler(async (req, res, next) => {
+pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
+    const body = req.body;
     const result = await pool.promise().execute(
         'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra pe.empleado_despachador AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.unidades AS unidades FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
-        [req.params.fecha, req.params.numero]
+        [body.fecha, body.numero]
     );
     const results = JSON.parse(JSON.stringify(result[0]));
     const ped = results[0];
 
     let cabecera = ""+
-        "FECHA: "+req.params.fecha+"\n"+
-        "NUMERO DE PEDIDO: "+req.params.numero+"\n"+
+        "FECHA: "+body.fecha+"\n"+
+        "NUMERO DE PEDIDO: "+body.numero+"\n"+
         "MENSAJERO: "+ped.empd+"\n"+
         "===================================\n";
     
@@ -425,7 +426,7 @@ pedidoRouter.post('/print/:fecha/:numero', asyncHandler(async (req, res, next) =
         "\n \n";
     
     fs.writeFile(
-        'G:\\Unidades compartidas\\suru-works\\surgas\\carpetadondeesten' + req.params.fecha + '_' + req.params.numero + '.txt',
+        'G:\\Unidades compartidas\\suru-works\\surgas\\Impresoras\\' + body.impresora + '\\' + body.fecha + '_' + body.numero + '.txt',
         cabecera + datos + productos + final,
         (err, file) => {
             if (err) {

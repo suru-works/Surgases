@@ -102,3 +102,9 @@ CREATE TABLE user_sessions(
     session_id VARCHAR(128) NOT NULL COLLATE 'utf8mb4_bin',
     username VARCHAR(30) NOT NULL
 );
+
+CREATE TABLE impresora(
+    codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    descripcion VARCHAR(200),
+    PRIMARY KEY (codigo)
+);

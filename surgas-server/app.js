@@ -18,6 +18,7 @@ const productoRouter = require('./routes/productoRouter');
 const clienteRouter = require('./routes/clienteRouter');
 const systemRouter = require('./routes/systemRouter');
 const mapsRouter = require('./routes/mapsRouter');
+const impresoraRouter = require('./routes/impresoraRouter');
 
 // authentication imports
 const passport = require('passport');
@@ -90,6 +91,7 @@ app.use('/productos', productoRouter);
 app.use('/clientes', clienteRouter);
 app.use('/system', systemRouter);
 app.use('/maps', mapsRouter);
+app.use('/impresoras', impresoraRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
