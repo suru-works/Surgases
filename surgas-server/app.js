@@ -28,7 +28,7 @@ const app = express();
 
 //middleware for cross origin
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'https://www.surgasdeantioquia.com');
+  res.header('Access-Control-Allow-Origin', 'localhost:3000');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Host');
   res.header('Access-Control-Allow-Credentials', true);
