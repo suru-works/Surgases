@@ -5,10 +5,12 @@ import * as yup from "yup";
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from "formik";
 import { clients } from '../redux/ActionCreators';
-import Client from './ClientTableComponent';
+
 import { Loading } from './LoadingComponent';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import AddClientComponent from './AddClientComponent';
+
+import ReactTableClientsComponent from './ReactTableClientsComponent';
 
 const validationSchema = yup.object(
 
@@ -25,23 +27,23 @@ const validationSchema = yup.object(
         nombre: yup
             .string()
             .max(25, "El nombre debe ser de máximo 25 caracteres"),
-        
+
         fechaRegistroMinima: yup
             .string(),
-        
+
         fechaRegistroMaxima: yup
             .string(),
-        
+
         puntosMinimos: yup
             .number()
             .positive("No pueden haber puntos negativos")
             .integer("Ingrese solo números enteros"),
-        
+
         puntosMaximos: yup
             .number()
             .positive("No pueden haber puntos negativos")
             .integer("Ingrese solo números enteros"),
-        
+
         descuentoMinimo: yup
             .number()
             .max(100, "El descuento debe ser de máximo el 100%"),
@@ -49,28 +51,28 @@ const validationSchema = yup.object(
         descuentoMaximo: yup
             .number()
             .max(100, "El descuento debe ser de máximo el 100%"),
-        
+
         fechaPedidoMinima: yup
             .string(),
-        
+
         fechaPedidoMaxima: yup
             .string(),
-        
+
         numeroUltimoPedidoMinimo: yup
             .number()
             .positive("El número de pedido no puede ser negativo")
             .integer("Ingrese solo números enteros"),
-        
+
         numeroUltimoPedidoMaximo: yup
             .number()
             .positive("El número de pedido no puede ser negativo")
             .integer("Ingrese solo números enteros"),
-        
+
         numeroPedidosMinimo: yup
             .number()
             .positive("La cantidad de pedidos no puede ser negativa")
             .integer("Ingrese solo números enteros"),
-        
+
         numeroPedidosMaximo: yup
             .number()
             .positive("La cantidad de pedidos no puede ser negativa")
@@ -80,9 +82,9 @@ const validationSchema = yup.object(
 
 const SearchCriteria = () => {
     const dispatch = useDispatch();
-    /* useEffect(() => {
+    useEffect(() => {
         dispatch(clients());
-    }, []); */
+    }, []);
 
     const doSearch = (clientData) => dispatch(clients(clientData));
 
@@ -112,7 +114,7 @@ const SearchCriteria = () => {
                 clientData.push('telefono=' + values.telefono);
             }
             if (values.email != '') {
-                clientData.push('email=' + values.email.replace('@','%40'));
+                clientData.push('email=' + values.email.replace('@', '%40'));
             }
             if (values.nombre != '') {
                 clientData.push('nombre=' + values.nombre);
@@ -164,7 +166,7 @@ const SearchCriteria = () => {
     return (
         <div className="d-flex space-around row">
             <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}  >
-                
+
                 <CardTitle tag="h3"> Ingresa los datos de la búsqueda</CardTitle>
                 <hr />
 
@@ -196,7 +198,7 @@ const SearchCriteria = () => {
                         {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
                     </FormGroup>
 
-                
+
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-4 align-self-end'>
                         <Label htmlFor="nombre">Nombre</Label>
@@ -402,7 +404,7 @@ const RenderSearchResultTuple = (props) => {
     const clientData = props.client;
 
     return (
-        <Client client={clientData} />
+        <ReactTableClientsComponent client={clientData} />
     );
 
 }
@@ -420,35 +422,13 @@ const SearchResult = () => {
 
     }
     if (result) {
-        const ResultTuples = result.data.map((client) => {
-            return (
 
-                <RenderSearchResultTuple client={client} key={client.telefono} />
-
-            );
-        })
 
         return (
-            <Table className='col'  responsive={true} bordered striped   >
-                <thead className='theadClientsWidth'>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Tel&eacute;fono</th>
-                        <th>Correo</th>
-                        <th>Fecha de Registro</th>
-                        <th>Puntos</th>
-                        <th>Descuento</th>
-                        <th>Tipo</th>
-                        <th>Fecha del &Uacute;ltimo Pedido</th>
-                        <th>N&uacute;mero del &Uacute;ltimo Pedido</th>
-                        <th>N&uacute;mero Total de Pedidos</th>
-                    </tr>
-                </thead>
-                <tbody className='tbodyAlto600px tbodyClientsWidth'>
-                    {ResultTuples}
-                </tbody>
-            </Table>
+            <RenderSearchResultTuple client={result.data} />
         );
+
+
     }
     if (error) {
 
@@ -476,10 +456,10 @@ const ClientsAdministration = () => {
         }
     }
 
-    if (userResult.data.tipo=== "administrador") {
+    if (userResult.data.tipo === "administrador") {
         return (
             <div className='col' >
-                <Card   style={{ margin: "10px", padding: "7px" }}>
+                <Card style={{ margin: "10px", padding: "7px" }}>
                     <CardBody>
                         <SearchCriteria></SearchCriteria>
                     </CardBody>
@@ -487,7 +467,7 @@ const ClientsAdministration = () => {
                 <Card>
                     <br />
                     <CardTitle tag="h3">Clientes</CardTitle>
-                    
+
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>
@@ -517,11 +497,11 @@ const ClientsAdministration = () => {
                 <Card>
                     <br />
                     <CardTitle tag="h3">Clientes</CardTitle>
-                    
+
                     <CardBody>
                         <SearchResult></SearchResult>
                     </CardBody>
-                    
+
                 </Card>
             </div>
 
