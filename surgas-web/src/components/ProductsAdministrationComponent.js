@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import { Loading } from './LoadingComponent';
-import Product from './ProductTableComponent';
+import ReactTableProductsComponent from './ReactTableProductsComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { products, updateProduct } from '../redux/ActionCreators';
 
@@ -195,16 +195,6 @@ const SearchCriteria = () => {
     );
 }
 
-const RenderSearchResultTuple = (props) => {
-    const productData = props.product;
-
-    return (
-        <Product product={productData} />
-
-    );
-
-}
-
 
 
 const SearchResult = () => {
@@ -220,42 +210,16 @@ const SearchResult = () => {
 
     }
     if (result) {
-        const ResultTuples = result.data.map((product) => {
             return (
 
-                <RenderSearchResultTuple product={product} key={product.codigo}></RenderSearchResultTuple>
+                <ReactTableProductsComponent products={result.data}></ReactTableProductsComponent>
 
-            );
-        })
-
-        return ( 
-            <Table className='col' responsive={true} bordered striped   >
-                
-                <thead className='theadProductsWidth'>
-                    
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Disponible</th>
-                        <th>Tipo</th>
-                        <th>Color</th>
-                        <th>Peso</th>
-                        <th>Precio</th>
-                        <th>Inventario</th>
-                    </tr>
-                    
-                </thead>
-                <tbody className='tbodyAlto600px tbodyProductsWidth'>
-                    {ResultTuples}
-                </tbody>
-
-            </Table>
-        );
+            );       
     }
     if (error) {
 
         return (
             <div> hubo un error</div>
-
         );
 
     }
