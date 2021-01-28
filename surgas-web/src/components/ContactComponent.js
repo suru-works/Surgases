@@ -137,17 +137,17 @@ const Contact = () => {
                         <h5>Nuestra dirección</h5>
 
                         <address>
-                            Carrera 69 # 69 - 69.<br />
-                            Apartamento número 420<br />
-                            <i className="fa fa-mobile fa-lg"></i>: 420 420 69 69<br />
-                            <i className="fa fa-mobile fa-lg"></i>: 420 420 69 69<br />
-                            <i className="fa fa-envelope fa-lg"></i>: mi correo@gmail.com
+                            Calle 112 sur # 51 03<br />
+                                Caldas, Antioquia<br />
+                            <i className="fa fa-phone fa-lg"></i>: 322 39 47<br />
+                            <i className="fa fa-mobile fa-lg"></i>: 312 299 44 42<br />
+                            <i className="fa fa-envelope fa-lg"></i>: surgasdeantioquia@gmail.com
                         </address>
                         <div className="col-12 col-sm-11 offset-sm-1">
                             <div className="btn-group" role="group">
-                                <a role="button" className="btn btn-primary" target="_blank" rel="noopener noreferrer" href="tel:+4204206969"><i className="fa fa-phone"></i> Call</a>
-                                <a role="button" className="btn btn-success" target="_blank" rel="noopener noreferrer" href="https://wa.me/4204206969"><i className="fa fa-whatsapp"></i> Whatsapp </a>
-                                <a role="button" className="btn btn-info" target="_blank" rel="noopener noreferrer" href="mailto:micorreo@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                                <a role="button" className="btn btn-primary" target="_blank" rel="noopener noreferrer" href="tel:+3122994442"><i className="fa fa-phone"></i> Call</a>
+                                <a role="button" className="btn btn-success" target="_blank" rel="noopener noreferrer" href="https://wa.me/573122994442"><i className="fa fa-whatsapp"></i> Whatsapp </a>
+                                <a role="button" className="btn btn-info" target="_blank" rel="noopener noreferrer" href="mailto:surgasdeantioquia@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
                             </div>
                         </div>
                     </div>
