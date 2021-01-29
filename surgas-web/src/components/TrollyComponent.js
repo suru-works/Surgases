@@ -6,7 +6,6 @@ import { orders, addOrder, ordersUpdateReset, clients, updateClient, clientsUpda
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { products, updateProduct, trolleyProducts } from '../redux/ActionCreators';
-import Product from './ProductTableComponent';
 import AddNewOrderProductComponent from './AddNewOrderProductComponent';
 import EditNewOrderProductComponent from './EditNewOrderProductComponent';
 import SearchNewOrderEmployee from './SearchNewOrderEmployeeComponent';

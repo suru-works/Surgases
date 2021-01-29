@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Alert, Table, Card, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import { Loading } from './LoadingComponent';
-import User from './UserComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { users } from '../redux/ActionCreators';
 
@@ -13,6 +12,7 @@ import * as yup from "yup";
 
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import AddUserComponent from './AddUserComponent';
+import ReactTableUsersComponent from './ReactTableUsersComponent';
 
 
 
@@ -53,19 +53,19 @@ const SearchCriteria = () => {
         validationSchema,
         onSubmit(values) {
             let userData = []
-            if(values.username != ''){
-                userData.push('username='+values.username);
+            if (values.username != '') {
+                userData.push('username=' + values.username);
             }
-            if(values.nombre != ''){
-                userData.push('nombre='+values.nombre);
+            if (values.nombre != '') {
+                userData.push('nombre=' + values.nombre);
             }
-            if(values.email != ''){
-                userData.push('email='+(values.email).replace('@','%40'));
+            if (values.email != '') {
+                userData.push('email=' + (values.email).replace('@', '%40'));
             }
-            if(values.tipo != 'sin especificar'){
-                userData.push('tipo='+values.tipo);
+            if (values.tipo != 'sin especificar') {
+                userData.push('tipo=' + values.tipo);
             }
-             
+
             doSearch(userData);
         }
     });
@@ -121,8 +121,8 @@ const SearchCriteria = () => {
 
                     <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 align-self-end'>
                         <div class="d-flex justify-content-center" >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
                     </FormGroup>
 
@@ -134,13 +134,7 @@ const SearchCriteria = () => {
     );
 }
 
-const RenderSearchResultTuple = (props) => {
-    const userData = props.user;
-    return (
-        <User user={userData} />
-    );
 
-}
 
 
 
@@ -159,26 +153,9 @@ const SearchResult = () => {
 
     }
     if (result) {
-        const ResultTuples = result.data.map((user) => {
-            return (
-                <RenderSearchResultTuple user={user} key={user.username}></RenderSearchResultTuple>
-
-            );
-        })
         return (
-            <Table className='col' responsive={true} bordered striped   >
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Tipo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {ResultTuples}
-                </tbody>
-            </Table>
+            <ReactTableUsersComponent users={result.data} ></ReactTableUsersComponent>
+
         );
     }
     if (error) {
@@ -207,7 +184,7 @@ const UsersAdministration = () => {
 
     return (
         <div className='col' >
-            <Card  style={{ margin: "10px", padding: "7px" }}>    
+            <Card style={{ margin: "10px", padding: "7px" }}>
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
                 </CardBody>
@@ -222,9 +199,9 @@ const UsersAdministration = () => {
             </Card>
             <FloatingButtonContainer >
                 <FloatingButton tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddUserModal} >
-                    
-                        <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    
+
+                    <i className="fa fa-plus fa-2x plusbutton" ></i>
+
                 </FloatingButton>
             </FloatingButtonContainer>
             <AddUserComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddUserComponent>

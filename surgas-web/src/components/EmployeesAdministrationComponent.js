@@ -12,7 +12,7 @@ import * as yup from "yup";
 
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import AddUserComponent from './AddUserComponent';
-import Employee from './EmployeeComponent';
+import ReactTableEmployeesComponent from './ReactTableEmployeesComponent';
 
 
 
@@ -39,35 +39,35 @@ const SearchCriteria = () => {
             telefono: '',
             estado: 'sin especificar',
             tipo: 'sin especificar',
-            username:''
+            username: ''
 
         },
         validationSchema,
         onSubmit(values) {
             let employeeData = []
-            if(values.id != ''){
-                employeeData.push('id='+values.id);
+            if (values.id != '') {
+                employeeData.push('id=' + values.id);
             }
-            if(values.nombre != ''){
-                employeeData.push('nombre='+values.nombre);
+            if (values.nombre != '') {
+                employeeData.push('nombre=' + values.nombre);
             }
-            if(values.direccion != ''){
-                employeeData.push('direccion='+(values.direccion));
+            if (values.direccion != '') {
+                employeeData.push('direccion=' + (values.direccion));
             }
-            if(values.telefono != ''){
-                employeeData.push('telefono='+(values.telefono));
+            if (values.telefono != '') {
+                employeeData.push('telefono=' + (values.telefono));
             }
-            if(values.tipo != 'sin especificar'){
-                employeeData.push('tipo='+values.tipo);
+            if (values.tipo != 'sin especificar') {
+                employeeData.push('tipo=' + values.tipo);
             }
-            if(values.estado != 'sin especificar'){
-                employeeData.push('estado='+values.estado);
+            if (values.estado != 'sin especificar') {
+                employeeData.push('estado=' + values.estado);
             }
-            if(values.username != ''){
-                employeeData.push('username='+values.username);
+            if (values.username != '') {
+                employeeData.push('username=' + values.username);
             }
 
-             
+
             doSearch(employeeData);
         }
     });
@@ -144,8 +144,8 @@ const SearchCriteria = () => {
 
                     <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 align-self-end'>
                         <div class="d-flex justify-content-center" >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000'}} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit"  >Buscar</Button>
+                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={resetForm}>Reiniciar parámetros</Button>
                         </div>
                     </FormGroup>
 
@@ -156,16 +156,6 @@ const SearchCriteria = () => {
         </div>
     );
 }
-
-const RenderSearchResultTuple = (props) => {
-    const employeeData = props.employee;
-    return (
-        <Employee employee={employeeData} />
-    );
-
-}
-
-
 
 const SearchResult = () => {
 
@@ -182,29 +172,8 @@ const SearchResult = () => {
 
     }
     if (result) {
-        const ResultTuples = result.data.map((employee) => {
-            return (
-                <RenderSearchResultTuple employee={employee} key={employee.id}></RenderSearchResultTuple>
-
-            );
-        })
         return (
-            <Table className='col' responsive={true} bordered striped   >
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>direccion</th>
-                        <th>telefono</th>
-                        <th>estado</th>
-                        <th>tipo</th>
-                        <th>usuario</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {ResultTuples}
-                </tbody>
-            </Table>
+            <ReactTableEmployeesComponent employees={result.data} ></ReactTableEmployeesComponent>
         );
     }
     if (error) {
@@ -233,7 +202,7 @@ const EmployeesAdministration = () => {
 
     return (
         <div className='col' >
-            <Card  style={{ margin: "10px", padding: "7px" }}>    
+            <Card style={{ margin: "10px", padding: "7px" }}>
                 <CardBody>
                     <SearchCriteria></SearchCriteria>
                 </CardBody>
@@ -248,9 +217,9 @@ const EmployeesAdministration = () => {
             </Card>
             <FloatingButtonContainer >
                 <FloatingButton tooltip="Añadir un usuario" styles={{ backgroundColor: "#fdd835" }} onClick={toggleAddUserModal} >
-                    
-                        <i className="fa fa-plus fa-2x plusbutton" ></i>
-                    
+
+                    <i className="fa fa-plus fa-2x plusbutton" ></i>
+
                 </FloatingButton>
             </FloatingButtonContainer>
             <AddUserComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddUserComponent>
