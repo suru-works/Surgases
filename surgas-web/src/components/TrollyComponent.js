@@ -15,6 +15,8 @@ import SetClient from './OrderSetClientComponent';
 import CreateClientData from './OrderCreateClientDataComponent';
 import UpdateClientData from './OrderUpdateClientDataComponent';
 
+import ReactTableProductsForTrolleyComponent from './ReactTableProductsForTrolleyComponent';
+
 const validationSchema = yup.object(
 
     {
@@ -192,6 +194,7 @@ const SearchCriteria = () => {
     );
 }
 
+/*
 const RenderSearchResultTuple = (props) => {
     const product = props.product;
 
@@ -219,7 +222,7 @@ const RenderSearchResultTuple = (props) => {
         </tr>
     );
 
-}
+}*/
 
 const SearchResult = (props) => {
 
@@ -234,16 +237,20 @@ const SearchResult = (props) => {
 
     }
     if (result) {
-        const ResultTuples = result.data.map((product) => {
+        /*const ResultTuples = result.data.map((product) => {
             return (
 
                 <RenderSearchResultTuple addNewOrderProduct={props.addNewOrderProduct} product={product} key={product.codigo}></RenderSearchResultTuple>
 
             );
-        })
+        })*/
+
+        
 
         return (
-            <div>
+
+            <ReactTableProductsForTrolleyComponent  products={result.data} />
+            /*<div>
                 <Table className='col' responsive={true} size="sm" bordered striped   >
 
                     <thead className='theadTrolleyWidth'>
@@ -264,7 +271,7 @@ const SearchResult = (props) => {
                     </tbody>
 
                 </Table>
-            </div>
+            </div>*/
         );
     }
     if (error) {
