@@ -4,23 +4,15 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 
+
+//TO DO, ROBARSE LOS ONCLICK DE LA TABLA DE LOS PRODUCTOS UNA VEZ ESTÉ LISTA
+
 const Tuple = (props) => {
-
-
-  //TO DO, CAMBIAR ESTE MODAL EL IMPORTAR EL MODAL CORRECTO, MODIFICAR LOS ONCLICK 
-  const [isEditProductModalOpen, setIsEditProductModalOpen] = useState(false);
-
-  const toggleEditModal = () => {
-    if (isEditProductModalOpen) {
-      setIsEditProductModalOpen(false);
-    } else {
-      setIsEditProductModalOpen(true);
-    }
-  }
+  
 
   if (props.cellValue) {
     return (
-      <div className="row col-12 justify-content-center" onClick={() => toggleEditModal()}>
+      <div className="row col-12 justify-content-center" >
         {props.cellValue}
         
 
@@ -33,7 +25,7 @@ const Tuple = (props) => {
   }
   else {
     return (
-      <div className="row col-12 p-2" onClick={() => toggleEditModal()}>
+      <div className="row col-12 p-2" >
         
         
 
@@ -45,18 +37,7 @@ const Tuple = (props) => {
 
 }
 
-const ReactTableProductsForTrolleyComponent = (props) => {
-  const getDisponible = (disponible) => {
-    if (disponible.data[0] == 1) {
-        return(
-            "Si"
-        );
-    } else {
-        return(
-            "No"
-        );
-    }
-}
+const ReactTableOrdersForTrolleyComponent = (props) => {
 
   const columns = [
 
@@ -115,8 +96,8 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       }
     },
     {
-      Header: "Inventario",
-      accessor: "inventario",
+      Header: "Cantidad",
+      accessor: "cantidad",
       Cell: porps => {
         return (
           <Tuple product={porps.original} cellValue={porps.original.inventario}></Tuple>
@@ -134,7 +115,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       data={props.products}
       filterable
       columns={columns}
-      defaultPageSize={10}
+      defaultPageSize={5}
     >
     </ReactTable>
 
@@ -145,6 +126,6 @@ const ReactTableProductsForTrolleyComponent = (props) => {
 
 }
 
-ReactTableProductsForTrolleyComponent.propTypes = {};
+ReactTableOrdersForTrolleyComponent.propTypes = {};
 
-export default ReactTableProductsForTrolleyComponent;
+export default ReactTableOrdersForTrolleyComponent;

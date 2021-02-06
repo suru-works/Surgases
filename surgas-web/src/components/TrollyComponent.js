@@ -15,6 +15,8 @@ import CreateClientData from './OrderCreateClientDataComponent';
 import UpdateClientData from './OrderUpdateClientDataComponent';
 
 import ReactTableProductsForTrolleyComponent from './ReactTableProductsForTrolleyComponent';
+import ReactTableOrdersForTrolleyComponent from './ReactTableOrdersForTrolleyComponent';
+
 
 const validationSchema = yup.object(
 
@@ -249,7 +251,10 @@ const SearchResult = (props) => {
         return (
 
             <ReactTableProductsForTrolleyComponent  products={result.data} />
-            /*<div>
+
+
+            /*<div>   TO DO: botar este residuo una vez funcione el pasar productos a las ordenes
+
                 <Table className='col' responsive={true} size="sm" bordered striped   >
 
                     <thead className='theadTrolleyWidth'>
@@ -287,8 +292,11 @@ const SearchResult = (props) => {
 
 }
 
+
+//TO DO: MATAR ESTE BODY UNA VEZ FUNCIONE EL CREAR FILAS EN ORDENES
 const RenderNewOrderProductTuple = (props) => {
-    const product = props.product;
+
+    /*const product = props.product;
 
     const [isEditNewOrderProductModalOpen, setIsEditNewOrderProductModalOpen] = useState(false);
 
@@ -298,10 +306,14 @@ const RenderNewOrderProductTuple = (props) => {
         } else {
             setIsEditNewOrderProductModalOpen(true);
         }
-    }
+    }*/
 
     return (
 
+        <a>ESTE BODY HAY QUE MATARLO</a>
+
+        /* TO DO MATAR ESTE BODY RAPIDO QUE ES LA DE LAS ORDENES
+        
         <tr onClick={() => toggleEditNewOrderProductProductModal()}>
             <th scope="row">{product.nombre}</th>
             <td>{product.tipo}</td>
@@ -311,20 +323,28 @@ const RenderNewOrderProductTuple = (props) => {
             <td>{product.cantidad}</td>
 
             <EditNewOrderProductComponent updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} isOpen={isEditNewOrderProductModalOpen} toggle={toggleEditNewOrderProductProductModal}></EditNewOrderProductComponent>
-        </tr>
+        </tr>*/
     );
 }
 
+/*TO DO YA MISMO, ESTA TABLA SE VA A UN COMPONENTE*/
 const NewOrderProductsTable = (props) => {
-    const NewOrderProductsTuples = props.newOrderProducts.map((product) => {
+    
+    
+    
+    /*const NewOrderProductsTuples = props.newOrderProducts.map((product) => {
         return (
 
             <RenderNewOrderProductTuple updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} key={product.codigo}></RenderNewOrderProductTuple>
 
         );
-    })
+    })*/
 
     return (
+
+        <a>AAAAAAAAAAAAAAAAA PROBANDO TABLA</a>
+        
+        /*
         <div>
             <Table className='col' responsive={true} size="sm" bordered striped   >
 
@@ -346,7 +366,7 @@ const NewOrderProductsTable = (props) => {
 
             </Table>
 
-        </div>
+        </div>*/
     );
 }
 
@@ -438,7 +458,9 @@ const NewOrder = (props) => {
             </div>
 
             <CardBody className='p-0'>
-                <NewOrderProductsTable newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct}></NewOrderProductsTable>
+
+                <ReactTableOrdersForTrolleyComponent />
+                
             </CardBody>
 
             <br />
