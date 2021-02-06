@@ -250,7 +250,7 @@ const SearchResult = (props) => {
 
         return (
 
-            <ReactTableProductsForTrolleyComponent  products={result.data} />
+            <ReactTableProductsForTrolleyComponent  products={result.data} addNewOrderProduct={props.addNewOrderProduct} />
 
 
             /*<div>   TO DO: botar este residuo una vez funcione el pasar productos a las ordenes
@@ -327,7 +327,8 @@ const RenderNewOrderProductTuple = (props) => {
     );
 }
 
-/*TO DO YA MISMO, ESTA TABLA SE VA A UN COMPONENTE*/
+
+/*TO DO YA MISMO, ESTA TABLA SE VA A UN COMPONENTE Y SE PIERDE O YA SABE PAPA*/
 const NewOrderProductsTable = (props) => {
     
     
@@ -459,7 +460,7 @@ const NewOrder = (props) => {
 
             <CardBody className='p-0'>
 
-                <ReactTableOrdersForTrolleyComponent />
+                <ReactTableOrdersForTrolleyComponent newOrderProducts={props.newOrderProducts} />
                 
             </CardBody>
 
@@ -566,6 +567,7 @@ const Trolly = (props) => {
     const addNewOrderProduct = (producto) => {
         let findParams = findByKey('codigo', producto.codigo);
         let index = newOrderProducts.findIndex(findParams);
+
         if (index < 0) {
             let producticos = newOrderProducts.slice();
             producticos.push(producto);
@@ -576,6 +578,7 @@ const Trolly = (props) => {
             setNewOrderProducts(producticos);
             return (false);
         }
+
         return (true);
 
     }

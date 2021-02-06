@@ -4,24 +4,30 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 
+import AddNewOrderProductComponent from './AddNewOrderProductComponent';
+import EditProductComponent from './EditProductComponent';
+
 const Tuple = (props) => {
 
 
   //TO DO, CAMBIAR ESTE MODAL EL IMPORTAR EL MODAL CORRECTO, MODIFICAR LOS ONCLICK 
-  const [isEditProductModalOpen, setIsEditProductModalOpen] = useState(false);
+  const [isAddNewOrderModalOpen, setIsAddNewOrderModalOpen] = useState(false);
 
-  const toggleEditModal = () => {
-    if (isEditProductModalOpen) {
-      setIsEditProductModalOpen(false);
+  const toggleAddNewOrderProductModal = () => {
+    if (isAddNewOrderModalOpen) {
+        setIsAddNewOrderModalOpen(false);
     } else {
-      setIsEditProductModalOpen(true);
+        setIsAddNewOrderModalOpen(true);
     }
   }
 
   if (props.cellValue) {
     return (
-      <div className="row col-12 justify-content-center" onClick={() => toggleEditModal()}>
+      <div className="row col-12 justify-content-center" onClick={() => toggleAddNewOrderProductModal()}>
         {props.cellValue}
+
+        <AddNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} product={props.product} isOpen={isAddNewOrderModalOpen} toggle={toggleAddNewOrderProductModal}></AddNewOrderProductComponent>
+
         
 
 
@@ -33,9 +39,9 @@ const Tuple = (props) => {
   }
   else {
     return (
-      <div className="row col-12 p-2" onClick={() => toggleEditModal()}>
+      <div className="row col-12 p-2" onClick={() => toggleAddNewOrderProductModal()}>
         
-        
+        <AddNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} product={props.product} isOpen={isAddNewOrderModalOpen} toggle={toggleAddNewOrderProductModal}></AddNewOrderProductComponent>
 
 
 
@@ -69,7 +75,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       width: 150,
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.nombre}></Tuple>
+          <Tuple addNewOrderProduct={props.addNewOrderProduct} product={porps.original} cellValue={porps.original.nombre}></Tuple>
         );
       }
     },
@@ -79,7 +85,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       width: 150,
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.tipo}></Tuple>
+          <Tuple addNewOrderProduct={props.addNewOrderProduct} product={porps.original} cellValue={porps.original.tipo}></Tuple>
         );
       }
     },
@@ -88,7 +94,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       accessor: "color",
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.color}></Tuple>
+          <Tuple addNewOrderProduct={props.addNewOrderProduct} product={porps.original} cellValue={porps.original.color}></Tuple>
         );
       }
     },
@@ -101,7 +107,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       width: 80,
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.peso}></Tuple>
+          <Tuple addNewOrderProduct={props.addNewOrderProduct} product={porps.original} cellValue={porps.original.peso}></Tuple>
         );
       }
     },
@@ -110,7 +116,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       accessor: "precio",
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.precio}></Tuple>
+          <Tuple addNewOrderProduct={props.addNewOrderProduct}  product={porps.original} cellValue={porps.original.precio}></Tuple>
         );
       }
     },
@@ -119,7 +125,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
       accessor: "inventario",
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.inventario}></Tuple>
+          <Tuple addNewOrderProduct={props.addNewOrderProduct} product={porps.original} cellValue={porps.original.inventario}></Tuple>
         );
       }
     }

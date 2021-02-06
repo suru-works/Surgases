@@ -67,6 +67,9 @@ const AddNewOrderProductComponent = (props) => {
                 precio: values.precio,
                 cantidad: values.cantidad
             }
+
+
+
             let aux = props.addNewOrderProduct(productData);
             setError(aux);
             if(!aux){

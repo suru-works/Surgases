@@ -100,7 +100,7 @@ const ReactTableOrdersForTrolleyComponent = (props) => {
       accessor: "cantidad",
       Cell: porps => {
         return (
-          <Tuple product={porps.original} cellValue={porps.original.inventario}></Tuple>
+          <Tuple product={porps.original} cellValue={porps.original.cantidad}></Tuple>
         );
       }
     }
@@ -112,7 +112,7 @@ const ReactTableOrdersForTrolleyComponent = (props) => {
     <ReactTable
       keyField="codigo"
       className="-striped -highlight"
-      data={props.products}
+      data={props.newOrderProducts}
       filterable
       columns={columns}
       defaultPageSize={5}
