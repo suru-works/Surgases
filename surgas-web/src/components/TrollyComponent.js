@@ -460,7 +460,7 @@ const NewOrder = (props) => {
 
             <CardBody className='p-0'>
 
-                <ReactTableOrdersForTrolleyComponent newOrderProducts={props.newOrderProducts} />
+                <ReactTableOrdersForTrolleyComponent newOrderProducts={props.newOrderProducts} updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={props.product}/>
                 
             </CardBody>
 

@@ -16,21 +16,12 @@ const Tuple = (props) => {
     }
   }
 
-  if (props.cellValue) {
-    return (
-      <div className="row col-12 justify-content-center" onClick={() => toggleEditModal()}>
-        {props.cellValue}
-        <EditClientComponent client={props.client} isOpen={isEditClientModalOpen} toggle={toggleEditModal} />
-      </div>
-    );
-  }
-  else {
-    return (
-      <div className="row col-12 p-2" onClick={() => toggleEditModal()}>
-        <EditClientComponent client={props.client} isOpen={isEditClientModalOpen} toggle={toggleEditModal} />
-      </div>
-    );
-  }
+  return (
+    <div className="row col-12 justify-content-center" onClick={() => toggleEditModal()}>
+      <label>{props.cellValue}</label>
+      <EditClientComponent client={props.client} isOpen={isEditClientModalOpen} toggle={toggleEditModal} />
+    </div>
+  );
 
 }
 
