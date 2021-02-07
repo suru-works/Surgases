@@ -1,31 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import EditClientComponent from './EditClientComponent';
+import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 
 const Tuple = (props) => {
-  const [isEditClientModalOpen, setIsEditClientModalOpen] = useState(false);
+  
 
-  const toggleEditModal = () => {
-    if (isEditClientModalOpen) {
-      setIsEditClientModalOpen(false);
+  const getIsOpen = () => {
+    
+
+    var number;
+
+    (function repeat() {
+      number = Math.random();
+      setTimeout(repeat, 5000);
+    })();
+
+    if (number < 0.1) {
+      return(true);
     } else {
-      setIsEditClientModalOpen(true);
+      return(false);
     }
+
+
+    console.log(number, "EL NUMERO RANDOM ES");
+    console.log(props.isEditClientModalOpen.find(clientModal => clientModal.id === props.client.telefono).isOpen, "a ber, a ti te hacen find")
+    
   }
 
+
+
+  
   return (
-    <div className="row col-12 justify-content-center" onClick={() => toggleEditModal()}>
-      <label>{props.cellValue}</label>
-      <EditClientComponent client={props.client} isOpen={isEditClientModalOpen} toggle={toggleEditModal} />
+    <div>
+      {props.client.telefono}
+      <EditClientComponent client={props.client} isOpen={getIsOpen} toggle={props.toggleEditModal} />
     </div>
   );
-
 }
 
+
+
+
 const ReactTableClientsComponent = (props) => {
+
+  const [isEditClientModalOpen, setIsEditClientModalOpen] = useState([]);
+
+  const toggleEditModal = (id) => {
+    var isEditClientModalOpenCopy = isEditClientModalOpen;
+    var item = isEditClientModalOpenCopy.find(x => x.id === id);
+
+    if (item) {
+      console.log("PUTOP EL QUE LO LEA", item.isOpen);
+      item.isOpen = !item.isOpen;
+      setIsEditClientModalOpen(isEditClientModalOpenCopy);
+    }
+    item = isEditClientModalOpen.find(x => x.id === id);
+    console.log("PUTOP EL QUE LO LEA", item.isOpen);
+    console.log(isEditClientModalOpen);
+  }
 
   const columns = [
 
@@ -36,11 +72,7 @@ const ReactTableClientsComponent = (props) => {
         textAlign: "right"
       },
       width: 200,
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.nombre}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Teléfono",
@@ -50,84 +82,61 @@ const ReactTableClientsComponent = (props) => {
       },
       width: 100,
       Cell: porps => {
+        const found = isEditClientModalOpen.find(clientModal => clientModal.id === porps.original.telefono);
+        if (!found) {
+          var isEditClientModalOpenCopy = isEditClientModalOpen;
+          isEditClientModalOpenCopy.push({ "id": porps.original.telefono, "isOpen": false })
+          setIsEditClientModalOpen(isEditClientModalOpenCopy);
+        }
+        console.log("AHHHHHHHH", isEditClientModalOpen.find(clientModal => clientModal.id === porps.original.telefono).isOpen);
         return (
-          <Tuple client={porps.original} cellValue={porps.original.telefono}></Tuple>
+          <Tuple client={porps.original} isEditClientModalOpen={isEditClientModalOpen} toggleEditModal={toggleEditModal}/>
+
         );
       }
+
     },
     {
       Header: "Email",
       accessor: "email",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.email}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Puntos",
       accessor: "puntos",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.puntos}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Descuento",
       accessor: "descuento",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.descuento}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Tipo",
       accessor: "tipo",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.tipo}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Fecha último pedido",
       accessor: "fecha_ultimo_pedido",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.fecha_ultimo_pedido}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Número último pedido",
       accessor: "numero_ultimo_pedido",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.numero_ultimo_pedido}></Tuple>
-        );
-      }
+
     },
     {
       Header: "Número pedidos",
       accessor: "numero_pedidos",
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.numero_pedidos}></Tuple>
-        );
-      }
+
 
     },
     {
       Header: "Fecha registro",
       accessor: "fecha_registro",
       width: 200,
-      Cell: porps => {
-        return (
-          <Tuple client={porps.original} cellValue={porps.original.fecha_registro}></Tuple>
-        );
-      }
+
     }
 
   ]
@@ -141,6 +150,28 @@ const ReactTableClientsComponent = (props) => {
       filterable
       columns={columns}
       defaultPageSize={20}
+
+      getTdProps={(column, props) => {
+        return {
+          onClick: (e) => {
+            console.log('A Td Element was clicked!')
+            console.log('it produced this event:', e)
+            console.log('It was in this column:', column)
+            console.log('DARME LOS DATOS DEL CLIENTE:', props.original)
+
+            //mostrarHoli(props.original)
+
+            toggleEditModal(props.original.telefono);
+
+
+          }
+
+
+
+        }
+      }}
+
+
     >
     </ReactTable>
 

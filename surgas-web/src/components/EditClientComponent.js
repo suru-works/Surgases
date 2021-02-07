@@ -41,6 +41,7 @@ const EditClientComponent = (props) => {
     const [puntos] = useState(props.client.puntos);
     const [descuento] = useState(props.client.descuento);
     const [tipo] = useState(props.client.tipo);
+    const [isOpen] = useState(props.isOpen());
 
     const error = useSelector(state => state.clientsUpdate.errMess);
     const result = useSelector(state => state.clientsUpdate.result);
@@ -51,7 +52,7 @@ const EditClientComponent = (props) => {
     const toogleAndReset = () => {
         dispatch(clients());
         dispatch(clientsUpdateReset());
-        props.toggle();
+        props.toggle(props.client.telefono);
     }
 
     const doUpdateClient = (clientData) => dispatch(updateClient(clientData));
@@ -102,7 +103,7 @@ const EditClientComponent = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal isOpen={isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
                 <ModalBody>
                     <Loading />
@@ -112,7 +113,7 @@ const EditClientComponent = (props) => {
     }
     else if (error) {
         return (
-            <Modal isOpen={props.isOpen} toggle={props.toggle}>
+            <Modal isOpen={isOpen} toggle={props.toggle}>
                 <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
@@ -122,7 +123,7 @@ const EditClientComponent = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal isOpen={isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
                 <ModalBody>
                     <p>Cliente editado correctamente.</p>
@@ -140,7 +141,7 @@ const EditClientComponent = (props) => {
     else {
         return (
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+            <Modal className="modal-lg" isOpen={isOpen} toggle={toogleAndReset}>
 
                 <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
 
