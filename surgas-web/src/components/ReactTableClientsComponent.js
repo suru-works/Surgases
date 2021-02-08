@@ -7,10 +7,10 @@ import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 
 const Tuple = (props) => {
-  
+
 
   const getIsOpen = () => {
-    
+
 
     var number;
 
@@ -20,24 +20,24 @@ const Tuple = (props) => {
     })();
 
     if (number < 0.1) {
-      return(true);
+      return (true);
     } else {
-      return(false);
+      return (false);
     }
 
 
     console.log(number, "EL NUMERO RANDOM ES");
     console.log(props.isEditClientModalOpen.find(clientModal => clientModal.id === props.client.telefono).isOpen, "a ber, a ti te hacen find")
-    
+
   }
 
 
 
-  
+
   return (
     <div>
       {props.client.telefono}
-      <EditClientComponent client={props.client} isOpen={getIsOpen} toggle={props.toggleEditModal} />
+
     </div>
   );
 }
@@ -48,19 +48,10 @@ const Tuple = (props) => {
 const ReactTableClientsComponent = (props) => {
 
   const [isEditClientModalOpen, setIsEditClientModalOpen] = useState([]);
+  const [selectedClient, setSelectedClient] = useState();
 
-  const toggleEditModal = (id) => {
-    var isEditClientModalOpenCopy = isEditClientModalOpen;
-    var item = isEditClientModalOpenCopy.find(x => x.id === id);
-
-    if (item) {
-      console.log("PUTOP EL QUE LO LEA", item.isOpen);
-      item.isOpen = !item.isOpen;
-      setIsEditClientModalOpen(isEditClientModalOpenCopy);
-    }
-    item = isEditClientModalOpen.find(x => x.id === id);
-    console.log("PUTOP EL QUE LO LEA", item.isOpen);
-    console.log(isEditClientModalOpen);
+  const toggleEditModal = () => {
+     setIsEditClientModalOpen(!isEditClientModalOpen);
   }
 
   const columns = [
@@ -81,19 +72,6 @@ const ReactTableClientsComponent = (props) => {
         textAlign: "right"
       },
       width: 100,
-      Cell: porps => {
-        const found = isEditClientModalOpen.find(clientModal => clientModal.id === porps.original.telefono);
-        if (!found) {
-          var isEditClientModalOpenCopy = isEditClientModalOpen;
-          isEditClientModalOpenCopy.push({ "id": porps.original.telefono, "isOpen": false })
-          setIsEditClientModalOpen(isEditClientModalOpenCopy);
-        }
-        console.log("AHHHHHHHH", isEditClientModalOpen.find(clientModal => clientModal.id === porps.original.telefono).isOpen);
-        return (
-          <Tuple client={porps.original} isEditClientModalOpen={isEditClientModalOpen} toggleEditModal={toggleEditModal}/>
-
-        );
-      }
 
     },
     {
@@ -143,37 +121,43 @@ const ReactTableClientsComponent = (props) => {
 
 
   return (
-    <ReactTable
-      keyField="telefono"
-      className="-striped -highlight"
-      data={props.client}
-      filterable
-      columns={columns}
-      defaultPageSize={20}
+    <div>
+      <EditClientComponent client={selectedClient} isOpen={isEditClientModalOpen} toggle={toggleEditModal} />
+      <ReactTable
+        keyField="telefono"
+        className="-striped -highlight"
+        data={props.client}
+        filterable
+        columns={columns}
+        defaultPageSize={20}
 
-      getTdProps={(column, props) => {
-        return {
-          onClick: (e) => {
-            console.log('A Td Element was clicked!')
-            console.log('it produced this event:', e)
-            console.log('It was in this column:', column)
-            console.log('DARME LOS DATOS DEL CLIENTE:', props.original)
+        getTdProps={(column, props) => {
+          return {
+            onClick: (e) => {
+              console.log('A Td Element was clicked!')
+              console.log('it produced this event:', e)
+              console.log('It was in this column:', column)
+              console.log('DARME LOS DATOS DEL CLIENTE:', props.original)
 
-            //mostrarHoli(props.original)
+              //mostrarHoli(props.original)
 
-            toggleEditModal(props.original.telefono);
+              setSelectedClient(props.original);
+
+              toggleEditModal();
+
+
+            }
+
 
 
           }
+        }}
 
 
+      >
+      </ReactTable>
+    </div>
 
-        }
-      }}
-
-
-    >
-    </ReactTable>
 
 
   );
