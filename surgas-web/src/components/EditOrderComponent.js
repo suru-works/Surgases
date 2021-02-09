@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 
-const EditOrderComponent = (props) => {
+const OrderModal = (props) => {
     const [error, setError] = useState(false);
 
     /*const [fecha] = useState(props.order.fecha);
@@ -50,7 +50,7 @@ const EditOrderComponent = (props) => {
 
     const dispatch = useDispatch();
 
-
+    TO DO: hacer que no diga AAAAAAAAAAAAAAAA
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -136,6 +136,20 @@ const EditOrderComponent = (props) => {
 
 
     );
+}
+
+
+const EditOrderComponent = (props) => {
+
+    if(props.order){
+        return(
+            <OrderModal order={props.order} isOpen={props.isOpen} toggle={props.toggle}></OrderModal>
+        );
+    }
+    return(
+        <div></div>
+    );
+    
 }
 
 EditOrderComponent.propTypes = {};

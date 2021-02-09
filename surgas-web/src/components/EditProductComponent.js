@@ -54,8 +54,8 @@ const validationSchema = yup.object(
             .max(999999999999999, "El inventario debe ser de máximo 15 caracteres"),
     }
 );
-const EditProductComponent = (props) => {
 
+const ProductModal = (props) => {
 
     const [nombre] = useState(props.product.nombre);
     const [disponible] = useState(props.product.disponible);
@@ -65,15 +65,11 @@ const EditProductComponent = (props) => {
     const [precio] = useState(props.product.precio);
     const [inventario] = useState(props.product.inventario);
 
-
-
     const error = useSelector(state => state.productsUpdate.errMess);
     const result = useSelector(state => state.productsUpdate.result);
     const loading = useSelector(state => state.productsUpdate.isLoading);
 
     const userResult = useSelector(state => state.user.result);
-
-
 
     const dispatch = useDispatch();
 
@@ -190,7 +186,7 @@ const EditProductComponent = (props) => {
 
                 <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                    <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
+                    <ModalHeader toggle={props.toggle}>Editar un producto</ModalHeader>
 
                     <ModalBody>
 
@@ -406,6 +402,20 @@ const EditProductComponent = (props) => {
     }
 
 }
+
+const EditProductComponent = (props) => {
+
+    if(props.product){
+        return(
+            <ProductModal product={props.product} isOpen={props.isOpen} toggle={props.toggle}></ProductModal>
+        );
+    }
+    return(
+        <div></div>
+    );
+    
+}
+
 EditProductComponent.propTypes = {};
 
 export default EditProductComponent;

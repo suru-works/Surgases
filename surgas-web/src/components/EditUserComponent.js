@@ -9,14 +9,17 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const validationSchema = yup.object(
-    //TO DO: hacer las validaciones
+    //TO DO: hacer las validaciones del correo, si es que se puede editar, no se
     {
         nombre: yup
             .string()
-            .min(2, "El nombre debe ser de mínimo 2 caracteres")
-            .max(25, "El nombre debe ser de máximo 25 caracteres"),
+            .required("El usuario debe tener un nombre")
+            .min(3, "El nombre debe ser de mínimo 3 caracteres")
+            .max(30, "El nombre debe ser de máximo 30 caracteres"),
+
     });
-const EditUserComponent = (props) => {
+
+const UserModal = (props) => {
     const [username] = useState(props.user.username);
     const [nombre] = useState(props.user.nombre);
     const [email] = useState(props.user.email);
@@ -110,7 +113,7 @@ const EditUserComponent = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                <ModalHeader toggle={props.toggle}>Editar un usuario</ModalHeader>
 
                 <ModalBody>
 
@@ -176,6 +179,21 @@ const EditUserComponent = (props) => {
     }
 
 }
+
+const EditUserComponent = (props) => {
+
+    if(props.user){
+        return(
+            <UserModal user={props.user} isOpen={props.isOpen} toggle={props.toggle}></UserModal>
+        );
+    }
+    return(
+        <div></div>
+    );
+    
+
+}
+
 EditUserComponent.propTypes = {};
 
 export default EditUserComponent;

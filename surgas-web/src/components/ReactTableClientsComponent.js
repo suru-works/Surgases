@@ -6,53 +6,19 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 
-const Tuple = (props) => {
-
-
-  const getIsOpen = () => {
-
-
-    var number;
-
-    (function repeat() {
-      number = Math.random();
-      setTimeout(repeat, 5000);
-    })();
-
-    if (number < 0.1) {
-      return (true);
-    } else {
-      return (false);
-    }
-
-
-    console.log(number, "EL NUMERO RANDOM ES");
-    console.log(props.isEditClientModalOpen.find(clientModal => clientModal.id === props.client.telefono).isOpen, "a ber, a ti te hacen find")
-
-  }
-
-
-
-
-  return (
-    <div>
-      {props.client.telefono}
-
-    </div>
-  );
-}
-
-
-
-
 const ReactTableClientsComponent = (props) => {
 
-  const [isEditClientModalOpen, setIsEditClientModalOpen] = useState([]);
+  const [isEditClientModalOpen, setIsEditClientModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState();
 
   const toggleEditModal = () => {
-     setIsEditClientModalOpen(!isEditClientModalOpen);
-  }
+
+    if (isEditClientModalOpen ){
+      setSelectedClient(null);
+    }
+
+    setIsEditClientModalOpen(!isEditClientModalOpen);
+ }
 
   const columns = [
 
@@ -108,7 +74,6 @@ const ReactTableClientsComponent = (props) => {
       Header: "Número pedidos",
       accessor: "numero_pedidos",
 
-
     },
     {
       Header: "Fecha registro",
@@ -116,9 +81,7 @@ const ReactTableClientsComponent = (props) => {
       width: 200,
 
     }
-
   ]
-
 
   return (
     <div>
@@ -134,35 +97,24 @@ const ReactTableClientsComponent = (props) => {
         getTdProps={(column, props) => {
           return {
             onClick: (e) => {
-              console.log('A Td Element was clicked!')
-              console.log('it produced this event:', e)
-              console.log('It was in this column:', column)
-              console.log('DARME LOS DATOS DEL CLIENTE:', props.original)
-
-              //mostrarHoli(props.original)
-
-              setSelectedClient(props.original);
-
-              toggleEditModal();
-
-
+              try {
+                setSelectedClient(props.original);
+                toggleEditModal();
+              } catch (error) {
+                console.log("No hay nada en esta fila");
+              }
             }
 
-
+            
 
           }
         }}
-
 
       >
       </ReactTable>
     </div>
 
-
-
   );
-
-
 
 }
 

@@ -12,12 +12,16 @@ const validationSchema = yup.object(
     {
         email: yup
             .string()
-            .required("El cliente debe tener un email")
-            .email(),
+            .required("El cliente debe tener un correo")
+            .email()
+            .min(5, "El correo debe ser de mínimo 5 caracteres")
+            .max(100, "El correo debe ser de máximo 100 caracteres"),
 
         nombre: yup
             .string()
-            .required("El cliente debe tener un nombre"),
+            .required("El cliente debe tener un nombre")
+            .min(3, "El nombre debe ser de mínimo 3 caracteres")
+            .max(100, "El nombre debe ser de máximo 100 caracteres"),
 
         puntos: yup
             .number()
@@ -141,9 +145,9 @@ const ClientModal = (props) => {
     else {
         return (
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
+                <ModalHeader toggle={props.toggle}>Editar un cliente</ModalHeader>
 
                 <ModalBody>
 

@@ -3,16 +3,29 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { updateEmployee, deleteEmployee, employeesUpdateReset } from '../redux/ActionCreators';
+import { employees, updateEmployee, deleteEmployee, employeesUpdateReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 const validationSchema = yup.object(
-    //TO DO: hacer las validaciones
     {
+        email: yup
+            .string()
+            .required("El empleado debe tener un correo")
+            .email()
+            .min(5, "El correo debe ser de mínimo 5 caracteres")
+            .max(100, "El correo debe ser de máximo 100 caracteres"),
+
+        nombre: yup
+            .string()
+            .required("El empleado debe tener un nombre")
+            .min(3, "El nombre debe ser de mínimo 3 caracteres")
+            .max(100, "El nombre debe ser de máximo 100 caracteres"),
+
     });
-const EditEmployeeComponent = (props) => {
+
+const EmployeeModal = (props) => {
     const [id] = useState(props.employee.id);
     const [nombre] = useState(props.employee.nombre);
     const [direccion] = useState(props.employee.direccion);
@@ -30,6 +43,7 @@ const EditEmployeeComponent = (props) => {
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
+        dispatch(employees())
         dispatch(employeesUpdateReset());
         props.toggle();
     }
@@ -93,7 +107,7 @@ const EditEmployeeComponent = (props) => {
     }
     else if (error) {
         return (
-            <Modal isOpen={props.isOpen} toggle={props.toggle}>
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
@@ -115,7 +129,7 @@ const EditEmployeeComponent = (props) => {
     else {
         return (
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
                 <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
 
@@ -138,10 +152,10 @@ const EditEmployeeComponent = (props) => {
 
                                     <FormGroup>
                                         <Label htmlFor="email">Correo</Label>
-                                        <Input type="email" id="correo" name="correo" value={values.email}
+                                        <Input type="email" id="email" name="email" value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
-                                        {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
+                                        {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
 
                                     </FormGroup>
 
@@ -179,11 +193,24 @@ const EditEmployeeComponent = (props) => {
                 </ModalBody>
             </Modal>
 
-
         );
     }
 
 }
+
+const EditEmployeeComponent = (props) => {
+
+    if(props.employee){
+        return(
+            <EmployeeModal employee={props.employee} isOpen={props.isOpen} toggle={props.toggle}></EmployeeModal>
+        );
+    }
+    return(
+        <div></div>
+    );
+    
+}
+
 EditEmployeeComponent.propTypes = {};
 
 export default EditEmployeeComponent;

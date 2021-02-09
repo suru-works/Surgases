@@ -8,7 +8,7 @@ import { products, updateProduct, deleteProduct, productsUpdateReset } from '../
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const EditNewOrderComponent = (props) => {
+const OrderProductModal = (props) => {
 
     const [error, setError] = useState(false);
 
@@ -42,8 +42,6 @@ const EditNewOrderComponent = (props) => {
     const userResult = useSelector(state => state.user.result);
 
     const dispatch = useDispatch();
-
-
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -211,6 +209,23 @@ const EditNewOrderComponent = (props) => {
 
     );
 }
+
+
+const EditNewOrderComponent = (props) => {
+
+    if(props.product){
+        return(
+            <OrderProductModal updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} 
+            product={props.product} isOpen={props.isOpen} toggle={props.toggle}></OrderProductModal>
+        );
+    }
+    return(
+        <div></div>
+    );
+
+}
+
+
 EditNewOrderComponent.propTypes = {};
 
 export default EditNewOrderComponent;

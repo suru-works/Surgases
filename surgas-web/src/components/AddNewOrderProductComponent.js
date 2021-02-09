@@ -8,7 +8,7 @@ import { products, updateProduct, deleteProduct, productsUpdateReset } from '../
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const AddNewOrderProductComponent = (props) => {
+const NewProductModal = (props) => {
 
     const [error, setError] = useState(false);
 
@@ -98,9 +98,9 @@ const AddNewOrderProductComponent = (props) => {
     }
     return (
 
-        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+        <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-            <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Añadir un producto al pedido</ModalHeader>
 
             <ModalBody>
 
@@ -196,6 +196,23 @@ const AddNewOrderProductComponent = (props) => {
 
     );
 }
+
+
+const AddNewOrderProductComponent = (props) => {
+
+    if(props.product){
+        return(
+            <NewProductModal addNewOrderProduct={props.addNewOrderProduct} product={props.product} isOpen={props.isOpen} toggle={props.toggle}></NewProductModal>
+        );
+    }
+    return(
+        <div></div>
+    );
+    
+
+}
+
+
 AddNewOrderProductComponent.propTypes = {};
 
 export default AddNewOrderProductComponent;
