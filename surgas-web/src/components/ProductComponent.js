@@ -43,7 +43,7 @@ const ProductsComponent = () => {
                                 <CardImg top width="50%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
                             </Media>
                             <div className="align-self-center m-3">
-                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardTitle tag="h5">Argón</CardTitle>
                                 <CardText>El argón es un elemento químico de número atómico 18 y símbolo Ar. Es el tercero de los gases nobles, incoloro e inerte como ellos, constituye el 0,934 % del aire seco. Su nombre proviene del griego ἀργός [argos], que significa inactivo (debido a que no reacciona)</CardText>
                             </div>
                         </Media>
@@ -68,7 +68,7 @@ const ProductsComponent = () => {
                             </Media>
                             <div className="align-self-center m-3">
                                 <CardTitle tag="h5">Acetileno</CardTitle>
-                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                                <CardText>El acetileno o etino es el alquino más sencillo. Es un gas, altamente inflamable, un poco más ligero que el aire e incoloro. Produce una de las temperaturas de llama adiabática más altas (3250°C)</CardText>
                             </div>
                         </Media>
                     </Card>
@@ -79,7 +79,7 @@ const ProductsComponent = () => {
                                 <CardImg top width="50%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
                             </Media>
                             <div className="align-self-center m-3">
-                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardTitle tag="h5">Argón</CardTitle>
                                 <CardText>El argón es un elemento químico de número atómico 18 y símbolo Ar. Es el tercero de los gases nobles, incoloro e inerte como ellos, constituye el 0,934 % del aire seco. Su nombre proviene del griego ἀργός [argos], que significa inactivo (debido a que no reacciona)</CardText>
                             </div>
                         </Media>
@@ -104,7 +104,7 @@ const ProductsComponent = () => {
                             </Media>
                             <div className="align-self-center m-3">
                                 <CardTitle tag="h5">Acetileno</CardTitle>
-                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                                <CardText>El acetileno o etino es el alquino más sencillo. Es un gas, altamente inflamable, un poco más ligero que el aire e incoloro. Produce una de las temperaturas de llama adiabática más altas (3250°C)</CardText>
                             </div>
                         </Media>
                     </Card>
@@ -115,8 +115,8 @@ const ProductsComponent = () => {
                                 <CardImg top width="50%" src={baseFrontUrl + "public/productos/oxigeno.jpg"} alt="oxigeno"/>
                             </Media>
                             <div className="align-self-center m-3">
-                                <CardTitle tag="h5">Argon</CardTitle>
-                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                                <CardTitle tag="h5">Argón</CardTitle>
+                                <CardText>El argón es un elemento químico de número atómico 18 y símbolo Ar. Es el tercero de los gases nobles, incoloro e inerte como ellos, constituye el 0,934 % del aire seco. Su nombre proviene del griego ἀργός [argos], que significa inactivo (debido a que no reacciona)</CardText>
                             </div>
                         </Media>
                     </Card>
@@ -151,7 +151,7 @@ const ProductsComponent = () => {
                                 <CardImg top width="50%" src={baseFrontUrl + "public/productos/argon.jpg"} alt="argon" />
                             </Media>
                             <div className="align-self-center m-3">
-                                <CardTitle tag="h5">Argon</CardTitle>
+                                <CardTitle tag="h5">Argón</CardTitle>
                                 <CardText>El argón es un elemento químico de número atómico 18 y símbolo Ar. Es el tercero de los gases nobles, incoloro e inerte como ellos, constituye el 0,934 % del aire seco. Su nombre proviene del griego ἀργός [argos], que significa inactivo (debido a que no reacciona)</CardText>
                             </div>
                         </Media>
@@ -175,8 +175,8 @@ const ProductsComponent = () => {
                                 <CardImg top width="50%" src={baseFrontUrl + "public/productos/extintores.jpg"} alt="extintores" />
                             </Media>
                             <div className="align-self-center m-3">
-                                <CardTitle tag="h5">Argon</CardTitle>
-                                <CardText>Huele delicioso y cocina, el gas perfecto</CardText>
+                                <CardTitle tag="h5">Argón</CardTitle>
+                                <CardText>El argón es un elemento químico de número atómico 18 y símbolo Ar. Es el tercero de los gases nobles, incoloro e inerte como ellos, constituye el 0,934 % del aire seco. Su nombre proviene del griego ἀργός [argos], que significa inactivo (debido a que no reacciona)</CardText>
                             </div>
                         </Media>
                     </Card>
