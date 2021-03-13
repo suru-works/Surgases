@@ -111,6 +111,7 @@ clienteRouter.route("/")
     res.json(JSON.parse(JSON.stringify(results[0])));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+    // TODO: usar procedimiento insertar_cliente
     pool.getConnection(async (err, conn) => {
         const cl = req.body;
         let result;
@@ -189,6 +190,7 @@ clienteRouter.route("/:telefono")
 }));
 
 clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    // TODO: usar procedimiento consultar_ultima_orden
     let results = await pool.promise().execute(
         'SELECT fecha_ultimo_pedido, numero_ultimo_pedido FROM cliente WHERE telefono = ?',
         [req.params.telefono]
