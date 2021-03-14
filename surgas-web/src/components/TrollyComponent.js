@@ -252,30 +252,6 @@ const SearchResult = (props) => {
 
             <ReactTableProductsForTrolleyComponent  products={result.data} addNewOrderProduct={props.addNewOrderProduct} />
 
-
-            /*<div>   TO DO: botar este residuo una vez funcione el pasar productos a las ordenes
-
-                <Table className='col' responsive={true} size="sm" bordered striped   >
-
-                    <thead className='theadTrolleyWidth'>
-
-                        <tr>
-                            <th>Nombre</th>
-
-                            <th>Tipo</th>
-                            <th>Color</th>
-                            <th>Peso</th>
-                            <th>Precio</th>
-                            <th>Inventario</th>
-                        </tr>
-
-                    </thead>
-                    <tbody className='tbodyAlto300px tbodyTrolleyWidth'>
-                        {ResultTuples}
-                    </tbody>
-
-                </Table>
-            </div>*/
         );
     }
     if (error) {
@@ -290,85 +266,6 @@ const SearchResult = (props) => {
         <div></div>
     );
 
-}
-
-
-//TO DO: MATAR ESTE BODY UNA VEZ FUNCIONE EL CREAR FILAS EN ORDENES
-const RenderNewOrderProductTuple = (props) => {
-
-    /*const product = props.product;
-
-    const [isEditNewOrderProductModalOpen, setIsEditNewOrderProductModalOpen] = useState(false);
-
-    const toggleEditNewOrderProductProductModal = () => {
-        if (isEditNewOrderProductModalOpen) {
-            setIsEditNewOrderProductModalOpen(false);
-        } else {
-            setIsEditNewOrderProductModalOpen(true);
-        }
-    }*/
-
-    return (
-
-        <a>ESTE BODY HAY QUE MATARLO</a>
-
-        /* TO DO MATAR ESTE BODY RAPIDO QUE ES LA DE LAS ORDENES
-        
-        <tr onClick={() => toggleEditNewOrderProductProductModal()}>
-            <th scope="row">{product.nombre}</th>
-            <td>{product.tipo}</td>
-            <td>{product.color}</td>
-            <td>{product.peso}</td>
-            <td>{product.precio}</td>
-            <td>{product.cantidad}</td>
-
-            <EditNewOrderProductComponent updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} isOpen={isEditNewOrderProductModalOpen} toggle={toggleEditNewOrderProductProductModal}></EditNewOrderProductComponent>
-        </tr>*/
-    );
-}
-
-
-/*TO DO YA MISMO, ESTA TABLA SE VA A UN COMPONENTE Y SE PIERDE O YA SABE PAPA*/
-const NewOrderProductsTable = (props) => {
-    
-    
-    
-    /*const NewOrderProductsTuples = props.newOrderProducts.map((product) => {
-        return (
-
-            <RenderNewOrderProductTuple updateNewOrderProduct={props.updateNewOrderProduct} deleteNewOrderProduct={props.deleteNewOrderProduct} product={product} key={product.codigo}></RenderNewOrderProductTuple>
-
-        );
-    })*/
-
-    return (
-
-        <a>AAAAAAAAAAAAAAAAA PROBANDO TABLA</a>
-        
-        /*
-        <div>
-            <Table className='col' responsive={true} size="sm" bordered striped   >
-
-                <thead className='theadTrolleyWidth'>
-
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Color</th>
-                        <th>Peso</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                    </tr>
-
-                </thead>
-                <tbody className='tbodyAlto300px tbodyTrolleyWidth'>
-                    {NewOrderProductsTuples}
-                </tbody>
-
-            </Table>
-
-        </div>*/
-    );
 }
 
 const NewOrder = (props) => {

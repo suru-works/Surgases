@@ -17,7 +17,48 @@ import AddOrderComponent from './AddOrderComponent';
 const validationSchema = yup.object(
 
     {
-        //TO DO: no veo nada aqui, A TRABAJAR EL DEL FRONT EN- ah, que soy yo...   :v
+        numeroMinimo: yup
+            .number()
+            .positive("No pueden haber puntos negativos")
+            .max(99999999999999999999999999999999, "El número no puede tener más de 32 dígitos")
+            .integer("Ingrese solo números enteros"),
+            
+        numeroMaximo: yup
+            .number()
+            .positive("No pueden haber puntos negativos")
+            .max(99999999999999999999999999999999, "El número no puede tener más de 32 dígitos")
+            .integer("Ingrese solo números enteros"),
+
+        precioBrutoMinimo: yup
+            .number()
+            .max(99999999999999999999999999999999, "El precio no puede tener más de 32 dígitos")
+            .integer("Ingrese solo números enteros"),
+
+        precioBrutoMaximo: yup
+            .number()
+            .max(99999999999999999999999999999999, "El precio no puede tener más de 32 dígitos")
+            .integer("Ingrese solo números enteros"),
+
+        direccion: yup
+            .string()
+            .max(100, "La dirección debe caber en 100 caracteres"),
+
+        puntosMinimos: yup
+            .number()
+            .positive("No pueden haber puntos negativos")
+            .max(99999999999999999999999999999999, "Los puntos no pueden tener más de 32 dígitos")
+            .integer("Ingrese solo números enteros"),
+
+        puntosMaximos: yup
+            .number()
+            .positive("No pueden haber puntos negativos")
+            .max(99999999999999999999999999999999, "Los puntos no pueden tener más de 32 dígitos")
+            .integer("Ingrese solo números enteros"),
+
+        nota: yup
+            .string()
+            .max(280, "La nota debe caber en 280 caracteres"),
+
     }
 );
 
@@ -91,7 +132,7 @@ const SearchCriteria = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-                        {(touched.numeroMinimo && errors.numeroMinimo) ? (<Alert color="danger">{errors.fechaMinima}</Alert>) : null}
+                        {(touched.numeroMinimo && errors.numeroMinimo) ? (<Alert color="danger">{errors.numeroMinimo}</Alert>) : null}
                     </FormGroup>
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
                         <Label htmlFor="numeroMaximo">Número máximo</Label>
@@ -100,7 +141,7 @@ const SearchCriteria = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-                        {(touched.numeroMaximo && errors.numeroMaximo) ? (<Alert color="danger">{errors.fechaMaxima}</Alert>) : null}
+                        {(touched.numeroMaximo && errors.numeroMaximo) ? (<Alert color="danger">{errors.numeroMaximo}</Alert>) : null}
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-2 align-self-end'>
@@ -205,7 +246,7 @@ const SearchCriteria = () => {
                             onBlur={handleBlur}>
                             <option>sin especificar</option>
                             <option>empresarial</option>
-                            <option>comun</option>
+                            <option>común</option>
                         </Input>
                         {(touched.tipoCliente && errors.tipoCliente) ? (<Alert color="danger">{errors.tipoCliente}</Alert>) : null}
                     </FormGroup>
