@@ -40,13 +40,13 @@ const Jambo = () => {
         return(
 
             
-            <div className="jumbotron pt-5">
+            <div className="jumbotron pt-5 pb-1">
                 <div className="row row-header">
-                    <div >
+                    <div className="col-9" >
 
-                        <div className="mr-auto row m-3 " >
+                        <div className="justify-content-center row m-3 " >
 
-                            <img className="float-right d-none d-md-block" height="150" 
+                            <img className="d-none d-md-block" height="150" 
                             src={baseFrontUrl + "public/logo/S-14-cropped.png"} alt="company-logo"></img>
 
                         </div>
@@ -70,9 +70,9 @@ const Jambo = () => {
                         </div>
 
                     </div>
-                    <div className="ml-auto">
-                        <img className="float-right d-none d-lg-block" height="300" 
-                        src={baseFrontUrl + "public/home/DSC_0052.jpg"} alt="pipetas_azules"></img>
+                    <div className="mr-auto col-3">
+                        <img className="d-none d-lg-block" height="300" 
+                        src={baseFrontUrl + "public/home/DSC_0052BrowserPNG.png"} alt="pipetas_azules"></img>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@ const Vitrina = () => {
                 </div>
                 <div className="ml-auto">
                     <img className="float-right d-none d-md-block" height="150" 
-                    src={baseFrontUrl + "public/home/DSC_0048.jpg"} alt="prod2"></img>
+                    src={baseFrontUrl + "public/home/DSC_0048BrowserPNG.png"} alt="prod2"></img>
                 </div>
             </div>
         </div>
