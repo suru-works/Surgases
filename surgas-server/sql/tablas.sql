@@ -1,38 +1,43 @@
 CREATE TABLE usuario(
-    username VARCHAR(30) PRIMARY KEY,
+    username VARCHAR(30),
     email VARCHAR(100) NOT NULL,
     password_hash VARCHAR(100) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(120) NOT NULL,
     verificado BIT NOT NULL,
     restorePasswordToken VARCHAR(200),
-    verificationToken VARCHAR(200)
+    verificationToken VARCHAR(200),
+    PRIMARY KEY (username)
 );
 
 CREATE TABLE empleado(
-    id VARCHAR(100) PRIMARY KEY,
+    id VARCHAR(100),
     nombre VARCHAR(100) NOT NULL,
     direccion VARCHAR(100) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
     estado ENUM('activo', 'inactivo', 'despedido') NOT NULL,
     tipo VARCHAR(120) NOT NULL,
     username VARCHAR(30),
-    CONSTRAINT `fk_emp_usuario` FOREIGN KEY (username) REFERENCES usuario(username)
+    PRIMARY KEY (id),
+    FOREIGN KEY (username) REFERENCES usuario(username)
 );
 
 CREATE TABLE cliente(
-    telefono VARCHAR(50) PRIMARY KEY,
+    telefono VARCHAR(50),
     email VARCHAR(100),
     nombre VARCHAR(100),
     fecha_registro DATE NOT NULL,
     puntos INT NOT NULL,
-    descuento FLOAT,
+    --descuento FLOAT,
     tipo ENUM('vendedor', 'empresarial') NOT NULL,
+    promotor VARCHAR(50),
     fecha_ultimo_pedido DATE,
     numero_ultimo_pedido INT,
     numero_pedidos INT,
     username VARCHAR(30),
-    CONSTRAINT `fk_cl_usuario` FOREIGN KEY (username) REFERENCES usuario(username)
+    PRIMARY KEY (telefono),
+    FOREIGN KEY (username) REFERENCES usuario(username),
+    FOREIGN KEY (promotor) REFERENCES promotor(telefono)
 );
 
 CREATE TABLE pago(
@@ -42,8 +47,8 @@ CREATE TABLE pago(
     empleado VARCHAR(100) NOT NULL,
     usuario VARCHAR(30) NOT NULL,
     PRIMARY KEY (codigo),
-    CONSTRAINT `fk_pago_emp` FOREIGN KEY (empleado) REFERENCES empleado(id),
-    CONSTRAINT `fk_pago_user` FOREIGN KEY (usuario) REFERENCES usuario(username)
+    FOREIGN KEY (empleado) REFERENCES empleado(id),
+    FOREIGN KEY (usuario) REFERENCES usuario(username)
 );
 
 CREATE TABLE producto(
@@ -55,8 +60,18 @@ CREATE TABLE producto(
     precio INT NOT NULL,
     inventario INT NOT NULL,
     disponible BIT NOT NULL,
+    iva_incluido BIT NOT NULL,
     PRIMARY KEY (codigo),
     UNIQUE (nombre, color, peso, tipo)
+);
+
+CREATE TABLE clientexproducto(
+    cliente VARCHAR(50) NOT NULL,
+    producto BIGINT UNSIGNED NOT NULL,
+    descuento FLOAT NOT NULL,
+    PRIMARY KEY (cliente, producto),
+    FOREIGN KEY (cliente) REFERENCES cliente(telefono),
+    FOREIGN KEY (producto) REFERENCES producto(codigo),
 );
 
 CREATE TABLE pedido(
@@ -66,7 +81,7 @@ CREATE TABLE pedido(
     direccion VARCHAR(100) NOT NULL,
     precio_bruto INT,
     precio_final FLOAT,
-    estado ENUM('verificacion', 'cola', 'proceso', 'fiado', 'pago') NOT NULL,
+    estado ENUM('verificacion', 'cola', 'proceso', 'fiado', 'pago', 'cancelado') NOT NULL,
     bodega VARCHAR(15),
     puntos_compra INT,
     tipo_cliente ENUM('vendedor', 'empresarial'),
@@ -75,9 +90,9 @@ CREATE TABLE pedido(
     cliente_pedidor VARCHAR(15) NOT NULL,
     empleado_despachador VARCHAR(100),
     PRIMARY KEY (fecha, numero),
-    CONSTRAINT `fk_pedido_usuario` FOREIGN KEY (usuario_registrador) REFERENCES usuario(username),
-    CONSTRAINT `fk_pedido_cliente` FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono),
-    CONSTRAINT `fk_pedido_empleado` FOREIGN KEY (empleado_despachador) REFERENCES empleado(id)
+    FOREIGN KEY (usuario_registrador) REFERENCES usuario(username),
+    FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono),
+    FOREIGN KEY (empleado_despachador) REFERENCES empleado(id)
 );
 
 CREATE TABLE pedidoxproducto(
@@ -87,18 +102,43 @@ CREATE TABLE pedidoxproducto(
     precio_venta INT NOT NULL,
     unidades INT NOT NULL,
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
-    CONSTRAINT `fk_pedido` FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
-    CONSTRAINT `fk_producto` FOREIGN KEY (producto) REFERENCES producto(codigo)
+    FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
+    FOREIGN KEY (producto) REFERENCES producto(codigo)
+);
+
+CREATE TABLE promotor(
+    telefono VARCHAR(50),
+    nombre VARCHAR(100) NOT NULL,
+    PRIMARY KEY (telefono)
+);
+
+CREATE TABLE promotorxproducto(
+    promotor VARCHAR(50) NOT NULL,
+    producto BIGINT UNSIGNED NOT NULL,
+    FOREIGN KEY (promotor) REFERENCES promotor(telefono),
+    FOREIGN KEY (producto) REFERENCES producto(codigo)
+);
+
+CREATE TABLE comision(
+    codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    fecha_hora DATETIME NOT NULL,
+    monto INT NOT NULL,
+    promotor VARCHAR(50),
+    usuario VARCHAR(30),
+    PRIMARY KEY (codigo),
+    FOREIGN KEY (promotor) REFERENCES promotor(telefono),
+    FOREIGN KEY (usuario) REFERENCES usuario(username)
 );
 
 CREATE TABLE static(
-    codigo VARCHAR(8) PRIMARY KEY,
+    codigo VARCHAR(8),
     limite_puntos INT NOT NULL,
     limite_puntos_acumulables INT NOT NULL,
     puntosxlibra INT NOT NULL,
     tiempo_de_gracia INT NOT NULL,
-	 tiempo_de_redencion INT NOT NULL, 
-    descuento FLOAT NOT NULL
+	tiempo_de_redencion INT NOT NULL, 
+    descuento FLOAT NOT NULL,
+    PRIMARY KEY (codigo)
 );
 
 CREATE TABLE user_sessions(
