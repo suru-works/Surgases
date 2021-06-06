@@ -22,13 +22,18 @@ CREATE TABLE empleado(
     FOREIGN KEY (username) REFERENCES usuario(username)
 );
 
+CREATE TABLE promotor(
+    telefono VARCHAR(50),
+    nombre VARCHAR(100) NOT NULL,
+    PRIMARY KEY (telefono)
+);
+
 CREATE TABLE cliente(
     telefono VARCHAR(50),
     email VARCHAR(100),
     nombre VARCHAR(100),
     fecha_registro DATE NOT NULL,
     puntos INT NOT NULL,
-    --descuento FLOAT,
     tipo ENUM('vendedor', 'empresarial') NOT NULL,
     promotor VARCHAR(50),
     fecha_ultimo_pedido DATE,
@@ -104,12 +109,6 @@ CREATE TABLE pedidoxproducto(
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
     FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
     FOREIGN KEY (producto) REFERENCES producto(codigo)
-);
-
-CREATE TABLE promotor(
-    telefono VARCHAR(50),
-    nombre VARCHAR(100) NOT NULL,
-    PRIMARY KEY (telefono)
 );
 
 CREATE TABLE promotorxproducto(
