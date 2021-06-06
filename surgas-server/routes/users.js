@@ -97,7 +97,7 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
 
     const connPromise = conn.promise();
     
-    const [results,] = connPromise.execute(
+    const [results,] = await connPromise.execute(
       "INSERT INTO usuario(username, email, password_hash, verificado, es_admin, cliente) VALUES (?, ?, ?, b'0', b'0', ?)",
       [user.username, user.email, hash, user.telefono]
     );
