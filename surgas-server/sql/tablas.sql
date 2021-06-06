@@ -1,21 +1,3 @@
-CREATE TABLE usuario(
-    username VARCHAR(30),
-    email VARCHAR(100) NOT NULL,
-    password_hash VARCHAR(100) NOT NULL,
-    verificado BIT NOT NULL,
-    restore_password_token VARCHAR(200),
-    verification_token VARCHAR(200),
-    es_admin BIT NOT NULL,
-    cliente VARCHAR(50),
-    empleado VARCHAR(100),
-    PRIMARY KEY (username),
-    UNIQUE (email),
-    UNIQUE (cliente),
-    UNIQUE (empleado),
-    FOREIGN KEY (cliente) REFERENCES cliente(telefono),
-    FOREIGN KEY (empleado) REFERENCES empleado(id)
-);
-
 CREATE TABLE empleado(
     id VARCHAR(100),
     nombre VARCHAR(100) NOT NULL,
@@ -39,6 +21,24 @@ CREATE TABLE cliente(
     promotor VARCHAR(50),
     PRIMARY KEY (telefono),
     FOREIGN KEY (promotor) REFERENCES empleado(id)
+);
+
+CREATE TABLE usuario(
+    username VARCHAR(30),
+    email VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(100) NOT NULL,
+    verificado BIT NOT NULL,
+    restore_password_token VARCHAR(200),
+    verification_token VARCHAR(200),
+    es_admin BIT NOT NULL,
+    cliente VARCHAR(50),
+    empleado VARCHAR(100),
+    PRIMARY KEY (username),
+    UNIQUE (email),
+    UNIQUE (cliente),
+    UNIQUE (empleado),
+    FOREIGN KEY (cliente) REFERENCES cliente(telefono),
+    FOREIGN KEY (empleado) REFERENCES empleado(id)
 );
 
 CREATE TABLE pago(
