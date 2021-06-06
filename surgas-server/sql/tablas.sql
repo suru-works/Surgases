@@ -2,13 +2,18 @@ CREATE TABLE usuario(
     username VARCHAR(30),
     email VARCHAR(100) NOT NULL,
     password_hash VARCHAR(100) NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    tipo VARCHAR(120) NOT NULL,
     verificado BIT NOT NULL,
-    restorePasswordToken VARCHAR(200),
-    verificationToken VARCHAR(200),
+    restore_password_token VARCHAR(200),
+    verification_token VARCHAR(200),
+    es_admin BIT NOT NULL,
+    cliente VARCHAR(50),
+    empleado VARCHAR(100),
     PRIMARY KEY (username),
-    UNIQUE (email)
+    UNIQUE (email),
+    UNIQUE (cliente),
+    UNIQUE (empleado),
+    FOREIGN KEY (cliente) REFERENCES cliente(telefono),
+    FOREIGN KEY (empleado) REFERENCES empleado(id)
 );
 
 CREATE TABLE empleado(
@@ -18,15 +23,7 @@ CREATE TABLE empleado(
     telefono VARCHAR(15) NOT NULL,
     estado ENUM('activo', 'inactivo', 'despedido') NOT NULL,
     tipo VARCHAR(120) NOT NULL,
-    username VARCHAR(30),
-    PRIMARY KEY (id),
-    FOREIGN KEY (username) REFERENCES usuario(username)
-);
-
-CREATE TABLE promotor(
-    telefono VARCHAR(50),
-    nombre VARCHAR(100) NOT NULL,
-    PRIMARY KEY (telefono)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE cliente(
@@ -35,26 +32,24 @@ CREATE TABLE cliente(
     nombre VARCHAR(100),
     fecha_registro DATE NOT NULL,
     puntos INT NOT NULL,
-    tipo ENUM('vendedor', 'empresarial') NOT NULL,
-    promotor VARCHAR(50),
+    tipo ENUM('natural', 'juridica') NOT NULL,
     fecha_ultimo_pedido DATE,
     numero_ultimo_pedido INT,
     numero_pedidos INT,
-    username VARCHAR(30),
+    promotor VARCHAR(50),
     PRIMARY KEY (telefono),
-    FOREIGN KEY (username) REFERENCES usuario(username),
-    FOREIGN KEY (promotor) REFERENCES promotor(telefono)
+    FOREIGN KEY (promotor) REFERENCES empleado(id)
 );
 
 CREATE TABLE pago(
     codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    fechaHora DATETIME NOT NULL,
+    fecha_hora DATETIME NOT NULL,
     monto INT NOT NULL,
-    empleado VARCHAR(100) NOT NULL,
-    usuario VARCHAR(30) NOT NULL,
+    registrador VARCHAR(100) NOT NULL,
+    beneficiario VARCHAR(100) NOT NULL,
     PRIMARY KEY (codigo),
-    FOREIGN KEY (empleado) REFERENCES empleado(id),
-    FOREIGN KEY (usuario) REFERENCES usuario(username)
+    FOREIGN KEY (registrador) REFERENCES empleado(id),
+    FOREIGN KEY (beneficiario) REFERENCES empleado(id)
 );
 
 CREATE TABLE producto(
@@ -88,17 +83,17 @@ CREATE TABLE pedido(
     precio_bruto INT,
     precio_final FLOAT,
     estado ENUM('verificacion', 'cola', 'proceso', 'fiado', 'pago', 'cancelado') NOT NULL,
-    bodega VARCHAR(15),
+    bodega VARCHAR(15) NOT NULL,
     puntos_compra INT,
     tipo_cliente ENUM('vendedor', 'empresarial'),
     nota VARCHAR(280),
-    usuario_registrador VARCHAR(30) NOT NULL,
+    empleado_vendedor VARCHAR(30) NOT NULL,
+    empleado_repartidor VARCHAR(30),
     cliente_pedidor VARCHAR(15) NOT NULL,
-    empleado_despachador VARCHAR(100),
     PRIMARY KEY (fecha, numero),
-    FOREIGN KEY (usuario_registrador) REFERENCES usuario(username),
+    FOREIGN KEY (empleado_vendedor) REFERENCES empleado(id),
+    FOREIGN KEY (empleado_repartidor) REFERENCES empleado(id),
     FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono),
-    FOREIGN KEY (empleado_despachador) REFERENCES empleado(id)
 );
 
 CREATE TABLE pedidoxproducto(
@@ -115,19 +110,8 @@ CREATE TABLE pedidoxproducto(
 CREATE TABLE promotorxproducto(
     promotor VARCHAR(50) NOT NULL,
     producto BIGINT UNSIGNED NOT NULL,
-    FOREIGN KEY (promotor) REFERENCES promotor(telefono),
+    FOREIGN KEY (promotor) REFERENCES empleado(id),
     FOREIGN KEY (producto) REFERENCES producto(codigo)
-);
-
-CREATE TABLE comision(
-    codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    fecha_hora DATETIME NOT NULL,
-    monto INT NOT NULL,
-    promotor VARCHAR(50),
-    usuario VARCHAR(30),
-    PRIMARY KEY (codigo),
-    FOREIGN KEY (promotor) REFERENCES promotor(telefono),
-    FOREIGN KEY (usuario) REFERENCES usuario(username)
 );
 
 CREATE TABLE static(
@@ -148,6 +132,6 @@ CREATE TABLE user_sessions(
 
 CREATE TABLE impresora(
     codigo BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    descripcion VARCHAR(200) UNIQUE,
+    descripcion VARCHAR(200),
     PRIMARY KEY (codigo)
 );
