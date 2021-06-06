@@ -68,10 +68,9 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
 }));
 
 router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
-  const results = await pool.promise().execute('SELECT * FROM usuario WHERE cliente = ?', [req.params.telefono]);
-  const users = utils.parseToJSON(results[0]);
+  const [results,] = await pool.promise().execute('SELECT * FROM usuario WHERE cliente = ?', [req.params.telefono]);
   res.json({
-    'found': users.length > 0
+    'found': results.length > 0
   });
 }));
 
