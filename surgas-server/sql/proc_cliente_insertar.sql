@@ -1,6 +1,6 @@
 DELIMITER $$
 
-CREATE OR REPLACE PROCEDURE insertar_cliente
+CREATE OR REPLACE PROCEDURE proc_cliente_insertar
 (IN tel TYPE OF cliente.telefono, IN correo TYPE OF cliente.email, IN nom TYPE OF cliente.nombre, IN fecha_reg TYPE OF cliente.fecha_registro, IN tip TYPE OF cliente.tipo)
 MODIFIES SQL DATA
 DETERMINISTIC

@@ -1,6 +1,6 @@
 DELIMITER $$
 
-CREATE OR REPLACE PROCEDURE consultar_ultimo_pedido
+CREATE OR REPLACE PROCEDURE proc_cliente_consultar_ultimo_pedido
 (IN tel TYPE OF cliente.telefono)
 MODIFIES SQL DATA
 DETERMINISTIC
