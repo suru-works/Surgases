@@ -85,6 +85,37 @@ router.get('/current', auth.isAuthenticated, (req, res, next) => {
   });
 });
 
+router.post('/signup', asyncHandler(async (req, res, next) => {
+  const user = req.body;
+  const hash = await bcrypt.hash(user.password, 10);
+
+  pool.getConnection(async (err, conn) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    const connPromise = conn.promise();
+    
+    const [results,] = connPromise.execute(
+      "INSERT INTO usuario(username, email, password_hash, verificado, es_admin, cliente) VALUES (?, ?, ?, b'0', b'0', ?)",
+      [user.username, user.email, hash, user.telefono]
+    );
+
+    if (results.affectedRows == 1) {
+      await connPromise.commit();
+      conn.release();
+      res.json({
+        success: true
+      });
+    } else {
+      await connPromise.rollback();
+      conn.release();
+      next(new Error('Hubo un error al insertar el usuario'));
+    }
+  });
+}));
+
 router.post('/signup/client', asyncHandler(async (req, res, next) => {
   const user = req.body.user;
   const cliente = req.body.client;
@@ -106,17 +137,19 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
 
     if (results.affectedRows == 2) {
       await connPromise.commit();
+      conn.release();
       res.json({
         success: true
       });
     } else {
       await connPromise.rollback();
+      conn.release();
       next(new Error('Hubo un error al insertar el usuario y el cliente'));
     }
   });
 }));
 
-router.post('/signup/employee', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+/*router.post('/signup/employee', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
   const user = req.body;
   const hash = await bcrypt.hash(user.password, 10);
 
@@ -126,64 +159,9 @@ router.post('/signup/employee', auth.isAuthenticated, auth.isAdmin, asyncHandler
       return;
     }
 
-    let result = await conn.promise().execute(
-      "INSERT INTO usuario VALUES (?, ?, ?, ?, ?, b'0')",
-      [user.username, user.email, hash, user.nombre, user.tipo]
-    );
-
-    if (result[0].affectedRows == 1) {
-      result = await conn.promise().execute(
-        'INSERT INTO empleado VALUES (?, ?, ?, ?, ?, ?)',
-        [user.id, user.nombre, user.direccion, user.telefono, user.estado, user.username]
-      );
-
-      if (result[0].affectedRows == 1) {
-        conn.commit();
-
-        res.json({
-          username: user.username,
-          nombre: user.nombre,
-          tipo: user.tipo,
-          email: user.email
-        });
-      } else {
-        conn.rollback();
-        next(new Error('insertion error'));
-      }
-    } else {
-      conn.rollback();
-      next(new Error('insertion error'));
-    }
+    
   });
-}));
-
-router.post('/signup', asyncHandler(async (req, res, next) => {
-  const user = req.body;
-  const hash = await bcrypt.hash(user.password, 10);
-
-  pool.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    const connPromise = conn.promise();
-    const [results,] = connPromise.execute(
-      "INSERT INTO usuario(username, email, password_hash, verificado, es_admin, cliente) VALUES (?, ?, ?, b'0', b'0', ?)",
-      [user.username, user.email, hash, user.telefono]
-    );
-
-    if (results.affectedRows == 1) {
-      await connPromise.commit();
-      res.json({
-        success: true
-      });
-    } else {
-      await connPromise.rollback();
-      next(new Error('Hubo un error al insertar el usuario'));
-    }
-  });
-}));
+}));*/
 
 router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
   if (req.body.remember) {
@@ -199,42 +177,21 @@ router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
       next(err);
     }
 
-    let result = await conn.promise().execute('INSERT INTO user_sessions VALUES(?, ?)', [req.sessionID, user.username]);
-    if (result[0].affectedRows == 1) {
-      conn.commit();
+    const connPromise = conn.promise();
 
-      let resp = {
+    let result = await connPromise.execute('INSERT INTO user_sessions VALUES(?, ?)', [req.sessionID, user.username]);
+    if (result[0].affectedRows == 1) {
+      await connPromise.commit();
+      conn.release();
+      req.logout();
+      res.json({
         username: user.username,
-        nombre: user.nombre,
-        email: user.email,
-        tipo: user.tipo
-      }
-      const tipos = user.tipo.split(',');
-      let rows, fields;
-      if (tipos.indexOf('cliente') != -1) {
-        [rows, fields] = await pool.promise().execute('SELECT * FROM cliente WHERE username = ?', [user.username]);
-        if (rows.length > 0) {
-          resp.existeCliente = true;
-        } else {
-          resp.existeCliente = false;
-        }
-      } else {
-        resp.existeCliente = true;
-      }
-      if (tipos.indexOf('vendedor') != -1 || tipos.indexOf('administrador') != -1 || tipos.indexOf('repartidor') != -1) {
-        [rows, fields] = await pool.promise().execute('SELECT * FROM empleado WHERE username = ?', [user.username]);
-        if (rows.length > 0) {
-          resp.existeEmpleado = true;
-        } else {
-          resp.existeEmpleado = false;
-        }
-      } else {
-        resp.existeEmpleado = true;
-      }
-      res.json(resp);
+        email: user.email
+      });
     } else {
-      conn.rollback();
-      next(new Error('update error'));
+      await connPromise.rollback();
+      conn.release();
+      next(new Error('Hubo un error al guardar la sesión'));
     }
   });
 });
@@ -242,7 +199,7 @@ router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
 router.post('/logout', auth.isAuthenticated, (req, res, next) => {
   req.logout();
   res.json({
-    msg: 'logged out successfully'
+    success: true
   });
 });
 
