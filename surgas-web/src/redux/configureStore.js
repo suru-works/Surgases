@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { Register } from './register';
+import { Register, CheckTel } from './register';
 import { Login } from './login';
 import { Logout } from './logout';
 import { User, UserUpdate } from './user';
@@ -21,6 +21,7 @@ import { OrderStats } from './orderStats';
     const store = createStore(
         combineReducers({
             register: Register,
+            checkTel: CheckTel,
             login: Login,
             logout: Logout,
             user: User,
