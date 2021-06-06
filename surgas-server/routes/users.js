@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const auth = require('../auth');
 const cors = require('./cors');
 const db = require('../db');
+const utils = require('../utils');
 const { concat } = require('mysql2/lib/constants/charset_encodings');
 
 const crypto = require("crypto");
@@ -62,6 +63,14 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
   }
 }));
 
+router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
+  const results = pool.promise().execute('SELECT * FROM usuario WHERE telefono = ?', [req.params.telefono]);
+  const users = utils.parseToJSON(results[0]);
+  res.json({
+    'found': users.length > 0
+  });
+}));
+
 router.get('/current', auth.isAuthenticated, (req, res, next) => {
   const user = req.user;
   res.json({
@@ -73,49 +82,32 @@ router.get('/current', auth.isAuthenticated, (req, res, next) => {
 });
 
 router.post('/signup/client', asyncHandler(async (req, res, next) => {
-  const user = req.body;
+  const user = req.body.user;
+  const cliente = req.body.client;
+
   const hash = await bcrypt.hash(user.password, 10);
 
   pool.getConnection(async (err, conn) => {
     if (err) {
       console.log(err);
-      return;
+      next(err);
     }
 
-    let result = await conn.promise().execute(
-      "INSERT INTO usuario VALUES (?, ?, ?, ?, ?, b'0')",
-      [user.username, user.email, hash, user.nombre, user.tipo]
+    const connPromise = conn.promise();
+
+    const [results, fields] = await connPromise.execute(
+      'CALL proc_usuario_cliente_insertar(?, ?, ?, ?, ?, ?, ?)',
+      [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, user.username, user.email, hash]
     );
 
-    if (result[0].affectedRows == 1) {
-      if (user.tipoCl == 'empresarial') {
-        result = await conn.promise().execute('SELECT descuento FROM static');
-        user.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
-      } else {
-        user.descuento = 0.0;
-      }
-
-      result = await conn.promise().execute(
-        'INSERT INTO cliente VALUES(?, ?, ?, ?, 0, ?, ?, NULL, NULL, 0, ?)',
-        [user.telefono, user.email, user.nombre, user.fecha_registro, user.descuento, user.tipoCl, user.username]
-      );
-
-      if (result[0].affectedRows == 1) {
-        conn.commit();
-
-        res.json({
-          username: user.username,
-          nombre: user.nombre,
-          tipo: user.tipo,
-          email: user.email
-        });
-      } else {
-        conn.rollback();
-        next(new Error('insertion error'));
-      }
+    if (results.affectedRows == 2) {
+      await connPromise.commit();
+      res.json({
+        success: true
+      });
     } else {
-      conn.rollback();
-      next(new Error('insertion error'));
+      await connPromise.rollback();
+      next(new Error('Hubo un error al insertar el usuario y el cliente'));
     }
   });
 }));
@@ -171,23 +163,20 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
       return;
     }
 
-    let result = await conn.promise().execute(
-      "INSERT INTO usuario(username, email, password_hash, nombre, tipo, verificado) VALUES (?, ?, ?, ?, ?, b'0')",
-      [user.username, user.email, hash, user.nombre, user.tipo]
+    const connPromise = conn.promise();
+    const [results, fields] = connPromise.execute(
+      "INSERT INTO usuario(username, email, password_hash, verificado, es_admin, cliente) VALUES (?, ?, ?, b'0', b'0', ?)",
+      [user.username, user.email, hash, user.telefono]
     );
 
-    if (result[0].affectedRows == 1) {
-      conn.commit();
-
+    if (results.affectedRows == 1) {
+      await connPromise.commit();
       res.json({
-        username: user.username,
-        nombre: user.nombre,
-        tipo: user.tipo,
-        email: user.email
+        success: true
       });
     } else {
-      conn.rollback();
-      next(new Error('insertion error'));
+      await connPromise.rollback();
+      next(new Error('Hubo un error al insertar el usuario'));
     }
   });
 }));
