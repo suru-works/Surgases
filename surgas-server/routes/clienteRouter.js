@@ -22,8 +22,8 @@ clienteRouter.route("/")
         query = query + ' WHERE ';
 
         if (params.telefono) {
-            conditions.push('telefono LIKE ?');
-            values.push('%' + params.telefono + '%');
+            conditions.push('telefono = ?');
+            values.push(params.telefono);
         }
 
         if (params.email) {

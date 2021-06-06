@@ -37,30 +37,34 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
       values.push('%' + params.username + '%');
     }
 
-    if (params.nombre) {
-      conditions.push("nombre LIKE ?");
-      values.push('%' + params.nombre + '%');
-    }
-
     if (params.email) {
       conditions.push("email LIKE ?");
       values.push('%' + params.email + '%');
     }
 
-    if (params.tipo) {
-      conditions.push('tipo = ?');
-      values.push(params.tipo);
+    if (params.verificado) {
+      conditions.push("verificado = b'?'");
+      values.push(params.verificado ? '1' : '0');
+    }
+
+    if (params.admin) {
+      conditions.push("es_admin = b'?'");
+      values.push(params.admin ? '1' : '0');
+    }
+
+    if (params.cliente) {
+      conditions.push('cliente = ?');
+      values.push(params.cliente);
+    }
+
+    if (params.empleado) {
+      conditions.push('empleado = ?');
+      values.push(params.empleado);
     }
   }
 
-  const results = await pool.promise().execute(query + conditions.join(' AND '), values);
-  if (results) {
-    res.json(JSON.parse(JSON.stringify(results[0])))
-  } else {
-    throw {
-      status: 500
-    };
-  }
+  const [results,] = await pool.promise().execute(query + conditions.join(' AND '), values);
+  res.json(utils.parseToJSON(results));
 }));
 
 router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
@@ -95,7 +99,7 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
 
     const connPromise = conn.promise();
 
-    const [results, fields] = await connPromise.execute(
+    const [results,] = await connPromise.execute(
       'CALL proc_usuario_cliente_insertar(?, ?, ?, ?, ?, ?, ?)',
       [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, user.username, user.email, hash]
     );
@@ -164,7 +168,7 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
     }
 
     const connPromise = conn.promise();
-    const [results, fields] = connPromise.execute(
+    const [results,] = connPromise.execute(
       "INSERT INTO usuario(username, email, password_hash, verificado, es_admin, cliente) VALUES (?, ?, ?, b'0', b'0', ?)",
       [user.username, user.email, hash, user.telefono]
     );
