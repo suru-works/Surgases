@@ -149,6 +149,13 @@ clienteRouter.route("/:telefono")
     res.setHeader('Content-Type', 'application/json');
     next();
 })
+.get(asyncHandler(async (req, res, next) => {
+    const [results,] = pool.promise().execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    const clients = utils.parseToJSON(results);
+    res.json({
+        'found': clients.length > 0
+    });
+}))
 .put(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     pool.getConnection(async (err, conn) => {
         if (err) {
