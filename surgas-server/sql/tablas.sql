@@ -72,7 +72,7 @@ CREATE TABLE clientexproducto(
     descuento FLOAT NOT NULL,
     PRIMARY KEY (cliente, producto),
     FOREIGN KEY (cliente) REFERENCES cliente(telefono),
-    FOREIGN KEY (producto) REFERENCES producto(codigo),
+    FOREIGN KEY (producto) REFERENCES producto(codigo)
 );
 
 CREATE TABLE pedido(
@@ -93,7 +93,7 @@ CREATE TABLE pedido(
     PRIMARY KEY (fecha, numero),
     FOREIGN KEY (empleado_vendedor) REFERENCES empleado(id),
     FOREIGN KEY (empleado_repartidor) REFERENCES empleado(id),
-    FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono),
+    FOREIGN KEY (cliente_pedidor) REFERENCES cliente(telefono)
 );
 
 CREATE TABLE pedidoxproducto(
