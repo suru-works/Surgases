@@ -8,12 +8,12 @@ BEGIN
     DECLARE tipo_cliente TYPE OF cliente.tipo;
 	SELECT tipo INTO tipo_cliente FROM cliente WHERE telefono = telefono_cliente;
 
-	DECLARE max_pedido TYPE OF pedido.numero;
+	DECLARE numero_pedido TYPE OF pedido.numero;
 	IF (fecha_pedido IN (SELECT fecha FROM pedido)) THEN
-		SELECT MAX(numero) INTO max_pedido FROM pedido WHERE fecha = fecha_pedido;
-		SET max_pedido := max_pedido + 1;
+		SELECT MAX(numero) INTO numero_pedido FROM pedido WHERE fecha = fecha_pedido;
+		SET numero_pedido := numero_pedido + 1;
 	ELSE
-		max_pedido = 1;
+		numero_pedido = 1;
 	END IF;
 	
 	SELECT fecha_ultimo_pedido, numero_ultimo_pedido INTO fup, nup FROM cliente WHERE telefono = tel;

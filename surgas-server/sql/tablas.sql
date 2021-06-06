@@ -7,7 +7,8 @@ CREATE TABLE usuario(
     verificado BIT NOT NULL,
     restorePasswordToken VARCHAR(200),
     verificationToken VARCHAR(200),
-    PRIMARY KEY (username)
+    PRIMARY KEY (username),
+    UNIQUE (email)
 );
 
 CREATE TABLE empleado(
