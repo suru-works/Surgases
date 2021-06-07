@@ -1,8 +1,7 @@
 DELIMITER $$
 
 CREATE OR REPLACE PROCEDURE proc_usuario_current (IN usuario_username TYPE OF usuario.username)
-MODIFIES SQL DATA
-DETERMINISTIC
+READS SQL DATA
 BEGIN
     DECLARE usuario_cliente TYPE OF usuario.cliente;
     DECLARE usuario_empleado TYPE OF usuario.empleado;

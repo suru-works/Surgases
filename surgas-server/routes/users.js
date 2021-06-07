@@ -92,11 +92,11 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
     const connPromise = conn.promise();
     
     const [results,] = await connPromise.execute(
-      "INSERT INTO usuario(username, email, password_hash, verificado, es_admin, cliente) VALUES (?, ?, ?, b'0', b'0', ?)",
-      [user.username, user.email, hash, user.telefono]
+      "CALL proc_usuario_insertar(?, ?, ?, ?)",
+      [user.username, user.email, hash, user.cliente]
     );
 
-    if (results.affectedRows == 1) {
+    if (results.affectedRows == 2) {
       await connPromise.commit();
       conn.release();
       res.json({
