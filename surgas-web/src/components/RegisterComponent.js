@@ -21,22 +21,26 @@ const validationSchema = Yup.object(
         username: Yup
             .string()
             .min(4, "El nombre de usuario debe ser de mínimo 4 caracteres")
-            .max(15, "El nombre de usuario debe ser de mínimo 4 caracteres")
+            .max(15, "El nombre de usuario debe ser de máximo 15 caracteres")
             .required("Este campo es obligatorio"),
         email: Yup
             .string()
-            .email("Ingresa un correo electronico valido.")
+            .email("Ingresa un correo electronico válido.")
             .required("Este campo es obligatorio"),
         password: Yup
             .string()
-            .min(8, "la contraseña debe ser de minimo 8 caracteres")
-            .max(40, "la contraseña debe ser de maximo 40 caracteres")
+            .min(8, "La contraseña debe ser de mínimo 8 caracteres")
+            .max(40, "La contraseña debe ser de máximo 40 caracteres")
+            .required("Este campo es obligatorio"),
+        password2: Yup
+            .string()
+            .oneOf([Yup.ref('password'), null], 'Las contraseñas deben ser iguales')
             .required("Este campo es obligatorio"),
         name: Yup
             .string(),
         phoneNumber: Yup
             .string()
-            .matches(phoneRegExp, 'Ingresa un telefono valido'),
+            .matches(phoneRegExp, 'Ingresa un teléfono válido'),
     });
 
 const checkTelValidationSchema = Yup.object(
@@ -106,6 +110,7 @@ const RegisterComponent = (props) => {
             email: '',
             username: '',
             password: '',
+            password2: '',
             phoneNumber: clientTel
         },
         validationSchema,
@@ -137,6 +142,7 @@ const RegisterComponent = (props) => {
             email: '',
             username: '',
             password: '',
+            password2: '',
             name: '',
             phoneNumber: clientTel
         },
@@ -176,7 +182,7 @@ const RegisterComponent = (props) => {
                     <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                         <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
                         <ModalBody>
-                            <p>El telefono ingresado ya se encuentra registrado.</p>
+                            <p>El teléfono ingresado ya se encuentra registrado.</p>
                         </ModalBody>
                     </Modal>
                 );
@@ -287,6 +293,15 @@ const RegisterComponent = (props) => {
                             </FormGroup>
 
                             <FormGroup>
+                                <Label htmlFor="password">Confirme su contraseña*</Label>
+                                <Input type="password" id="password2" name="password2" className="form-control" values={registerClientFormik.values}
+                                    onChange={registerClientFormik.handleChange}
+                                    onBlur={registerClientFormik.handleBlur}
+                                />
+                                {(registerClientFormik.touched.password2 && registerClientFormik.errors.password2) ? (<Alert color="danger">{registerClientFormik.errors.password2}</Alert>) : null}
+                            </FormGroup>
+
+                            <FormGroup>
                                 <Label htmlFor="phoneNumber">Número de teléfono</Label>
                                 <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" value={clientTel} disabled={true} />
                             </FormGroup>
@@ -366,6 +381,15 @@ const RegisterComponent = (props) => {
                                     onBlur={handleBlur}
                                 />
                                 {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="password2">Confirme su contraseña*</Label>
+                                <Input type="password" id="password2" name="password2" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.password2 && errors.password2) ? (<Alert color="danger">{errors.password2}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup>
