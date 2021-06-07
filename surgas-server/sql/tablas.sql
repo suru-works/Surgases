@@ -20,7 +20,8 @@ CREATE TABLE cliente(
     numero_pedidos INT,
     promotor VARCHAR(50),
     PRIMARY KEY (telefono),
-    FOREIGN KEY (promotor) REFERENCES empleado(id)
+    FOREIGN KEY (promotor) REFERENCES empleado(id),
+    CHECK (telefono != '')
 );
 
 CREATE TABLE usuario(
