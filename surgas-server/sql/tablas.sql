@@ -80,6 +80,7 @@ CREATE TABLE pedido(
     numero INT NOT NULL,
     hora_registro TIME NOT NULL,
     direccion VARCHAR(100) NOT NULL,
+    municipio VARCHAR(100) NOT NULL,
     precio_bruto INT,
     precio_final FLOAT,
     estado ENUM('verificacion', 'cola', 'proceso', 'fiado', 'pago', 'cancelado') NOT NULL,
