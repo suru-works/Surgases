@@ -7,7 +7,7 @@ import {
 
 
 import { Loading } from './LoadingComponent';
-import { checkTel, register, registerReset } from '../redux/ActionCreators';
+import { checkTel, registerClient, register, registerReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 
@@ -50,8 +50,8 @@ const checkTelValidationSchema = Yup.object(
 const RegisterComponent = (props) => {
 
     const [requireTel, setRequireTel] = useState(true);
-    const [registerClient, setRegisterClient] = useState(false);
-    const [register, setRegister] = useState(false);
+    const [registerClientModal, setRegisterClientModal] = useState(false);
+    const [registerModal, setRegisterModal] = useState(false);
     const [clientTel, setClientTel] = useState('');
 
     const dispatch = useDispatch();
@@ -94,11 +94,10 @@ const RegisterComponent = (props) => {
 
     const handleRegisterClient = values => {
         doRegisterClient({
-            email: values.email,
-            username: values.username,
-            password: values.password,
-            tipo: 'cliente,',
-            nombre: values.name
+                username:values.username,
+                email:values.email,
+                password:values.password,
+                cliente:clientTel
         });
     }
 
@@ -107,7 +106,6 @@ const RegisterComponent = (props) => {
             email: '',
             username: '',
             password: '',
-            name: '',
             phoneNumber: clientTel
         },
         validationSchema,
@@ -120,11 +118,17 @@ const RegisterComponent = (props) => {
 
     const handleRegister = values => {
         doRegister({
-            email: values.email,
-            username: values.username,
-            password: values.password,
-            tipo: 'cliente,',
-            nombre: values.name
+            user:{
+                username:values.username,
+                email:values.email,
+                password:values.password
+            },
+            client:{
+                telefono:clientTel,
+                email: values.email,
+                nombre: values.name,
+                tipo: 'natural'
+            }
         });
     }
 
@@ -180,11 +184,11 @@ const RegisterComponent = (props) => {
             //Verificando si el telefono del cliente ya existe en la base de clientes
             else if (checkTelResult.foundInClients) {
                 setRequireTel(false);
-                setRegister(true);
+                setRegisterClientModal(true);                
             }
             else {
                 setRequireTel(false);
-                setRegisterClient(true);
+                setRegisterModal(true);
             }
 
         }
@@ -214,7 +218,8 @@ const RegisterComponent = (props) => {
         }
     }
     //Registrando el cliente y usuario luego de verificaciones
-    if (registerClient) {
+    if (registerClientModal) {
+        // si existe el telefono en la base clientes
         if (registerClientError) {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
@@ -282,15 +287,6 @@ const RegisterComponent = (props) => {
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor="name">Nombre</Label>
-                                <Input type="text" id="name" name="name" className="form-control" values={registerClientFormik.values}
-                                    onChange={registerClientFormik.handleChange}
-                                    onBlur={registerClientFormik.handleBlur}
-                                />
-                                {(registerClientFormik.touched.name && registerClientFormik.errors.name) ? (<Alert color="danger">{registerClientFormik.errors.name}</Alert>) : null}
-                            </FormGroup>
-
-                            <FormGroup>
                                 <Label htmlFor="phoneNumber">Número de teléfono</Label>
                                 <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" value={clientTel} disabled={true} />
                             </FormGroup>
@@ -304,8 +300,8 @@ const RegisterComponent = (props) => {
             );
         }
     }
-
-    if (register) {
+    //si no existe en ninguna parte
+    if (registerModal) {
         if (registerError) {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
@@ -385,23 +381,7 @@ const RegisterComponent = (props) => {
                                 <Label htmlFor="phoneNumber">Número de teléfono</Label>
                                 <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" value={clientTel} disabled={true} />
                             </FormGroup>
-
-                            <div className="row">
-
-                                <FormGroup className='col-12 col-sm-6'>
-                                    <Label htmlFor="nombre">Nombre</Label>
-                                    <Input
-                                        type="nombre"
-                                        id="nombre"
-                                        name="nombre"
-                                        value={values.nombre}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-                                </FormGroup>
-                            </div>
-
+                
                             <div className="d-flex justify-content-center">
                                 <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Registrarse</Button>
                             </div>
