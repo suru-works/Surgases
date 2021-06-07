@@ -1,20 +1,24 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+
+const utils = require('./utils');
 const mail = require('./com/mail');
 
-const pool = require('./db').pool.promise();
+const poolPromise = require('./db').pool.promise();
 const LocalStrategy = require('passport-local').Strategy;
 
 passport.serializeUser((user, cb) => {
     cb(null, user.username);
 });
+
 passport.deserializeUser(async (username, cb) => {
     try {
-        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE username = ?', [username]);
-        if (rows.length == 0) {
+        const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE username = ?', [username]);
+        if (results.length == 0) {
             throw new Error('user does not exist');
         }
-        const user = JSON.parse(JSON.stringify(rows[0]));
+        const user = util.parseToJSON(results)[0];
+
         cb(null, user);
     } catch (err) {
         return cb(err);
@@ -23,13 +27,14 @@ passport.deserializeUser(async (username, cb) => {
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE username = ?', [username]);
-        if (rows.length == 0) {
+        const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE username = ?', [username]);
+        if (results.length == 0) {
             return done(null, false, {
                 message: 'user does not exist'
             });
         }
-        const user = JSON.parse(JSON.stringify(rows[0]));
+        const user = utils.parseToJSON(results)[0];
+
         const compHash = await bcrypt.compare(password, user.password_hash);
         if (compHash) {
             return done(null, user);
@@ -57,22 +62,25 @@ module.exports.isAuthenticated = (req, res, next) => {
 
 module.exports.isVerified = async (req, res, next) => {
     try {
-        const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE username = ? AND verificado = 1', [req.body.username]);
-        if (rows.length == 0) {
+        const [results,] = await poolPromise.execute(
+            'SELECT * FROM usuario WHERE username = ? AND verificado = (1)',
+            [req.body.username]
+        );
+        if (results.length == 0) {
             mail.sendVerifyMail(req.body.username);
             let err = new Error('user is not verified');
             err.status = 403;
             next(err);
         }
+
         next();
     } catch (err) {
-        console.log(err);
         next(err);
     }
 }
 
 module.exports.isAdmin = (req, res, next) => {
-    if (req.user.tipo.split(',').indexOf('administrador') != -1) {
+    if (req.user.es_admin == 1) {
         next();
     } else {
         let err = new Error('not authorized');

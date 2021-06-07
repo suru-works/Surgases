@@ -1,21 +1,17 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+
 const auth = require('../auth');
-const cors = require('./cors');
 const db = require('../db');
 const utils = require('../utils');
-const { concat } = require('mysql2/lib/constants/charset_encodings');
-
-const crypto = require("crypto");
-const CryptoJS = require('crypto-js');
-
 const mail = require('../com/mail');
 const restoreView = require('../view/restoreView');
 
 const router = express.Router();
-const poolPromise = db.pool.promise();
-
+const pool = db.pool;
+const poolPromise = pool.promise();
 const expires = 54000000;
 
 function parseISOString(s) {
@@ -43,12 +39,12 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
     }
 
     if (params.verificado) {
-      conditions.push("verificado = b'?'");
+      conditions.push("verificado = (?)");
       values.push(params.verificado ? '1' : '0');
     }
 
     if (params.admin) {
-      conditions.push("es_admin = b'?'");
+      conditions.push("es_admin = (?)");
       values.push(params.admin ? '1' : '0');
     }
 
@@ -64,18 +60,7 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
   }
 
   const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
-  res.json(utils.parseToJSON(results));
-}));
 
-router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
-  const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE cliente = ?', [req.params.telefono]);
-  res.json({
-    'found': results.length > 0
-  });
-}));
-
-router.get('/current', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-  const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
   res.json(utils.parseToJSON(results));
 }));
 
@@ -110,20 +95,6 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
   });
 }));
 
-/*router.post('/signup/employee', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-  const user = req.body;
-  const hash = await bcrypt.hash(user.password, 10);
-
-  poolPromise.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    
-  });
-}));*/
-
 router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
   if (req.body.remember) {
     req.session.cookie.expires = new Date(Date.now() + expires);
@@ -148,89 +119,61 @@ router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
 router.post('/logout', auth.isAuthenticated, (req, res, next) => {
   req.logout();
   req.session.destroy();
+
   res.json({
     success: true
   });
 });
 
-router.put('/current', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-  if (req.body.tipo && req.user.tipo.split(',').indexOf('administrador') == -1) {
-    let error = new Error('not authorized');
-    error.status = 403;
-    throw error;
-  } else {
-    poolPromise.getConnection(async (err, conn) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+router.route('/current')
+.all(auth.isAuthenticated)
+.get(asyncHandler(async (req, res, next) => {
+  const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
 
-      const connPromise = conn;
+  res.json(utils.parseToJSON(results));
+}))
+.put(asyncHandler(async (req, res, next) => {
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn;
 
-      const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
-      let [results,] = await connPromise.execute(query.query, query.values);
-      if (results.affectedRows == 1) {
-        await connPromise.commit();
+  const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
+  await connPromise.execute(query.query, query.values);
 
-        [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
-        const user = utils.parseToJSON(results)[0];
-        conn.release();
-        req.login(user, (err) => {
-          next(err);
-        });
-      } else {
-        conn.rollback();
-        conn.release();
-        next(new Error('update error'));
-      }
-    });
-  }
-}));
+  const [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
+  const user = utils.parseToJSON(results)[0];
 
-router.put('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-  poolPromise.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
+  conn.release();
 
-    const connPromise = conn;
-    const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
-    const [results,] = await connPromise.execute(query.query, query.values);
-    if (results.affectedRows == 1) {
-      await connPromise.commit();
-      conn.release();
-      res.json({
-        msg: 'user updated successfully'
-      });
-    } else {
-      await connPromise.rollback();
-      conn.release()
-      next(new Error('update error'));
-    }
+  req.login(user, (err) => {
+    next(err);
   });
 }));
 
-router.delete('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-  poolPromise.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
+router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
+  const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE cliente = ?', [req.params.telefono]);
 
-    const connPromise = conn;
-    const [results,] = await connPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
-    if (results.affectedRows == 1) {
-      await connPromise.commit();
-      conn.release();
-      res.json({
-        msg: 'user deleted successfully'
-      });
-    } else {
-      await connPromise.rollback();
-      conn.release();
-      next(new Error('deletion error'));
-    }
+  res.json({
+    'found': results.length > 0
+  });
+}));
+
+router.route('/:username')
+.all(auth.isAuthenticated, auth.isAdmin)
+.put(asyncHandler(async (req, res, next) => {
+  const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
+  await poolPromise.execute(query.query, query.values);
+
+  res.json({
+    success: true,
+    msg: 'user updated successfully'
+  });
+}))
+.delete(asyncHandler(async (req, res, next) => {
+  await poolPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
+
+  res.json({
+    success: true,
+    msg: 'user deleted successfully'
   });
 }));
 
