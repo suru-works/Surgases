@@ -74,10 +74,10 @@ router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
   });
 }));
 
-router.get('/current', auth.isAuthenticated, (req, res, next) => {
+router.get('/current', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
   const [results,] = await pool.promise().execute('CALL proc_usuario_current(?)', [req.user.username]);
   res.json(utils.parseToJSON(results));
-});
+}));
 
 router.post('/signup', asyncHandler(async (req, res, next) => {
   const user = req.body;
