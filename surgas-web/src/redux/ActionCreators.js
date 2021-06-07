@@ -41,6 +41,34 @@ export const checkTel = (tel) => async (dispatch) => {
     }
 }
 
+export const registerClientReset = () => ({
+    type: ActionTypes.REGISTERCLIENT_RESET
+});
+
+export const registerClientRequest = () => ({
+    type: ActionTypes.REGISTERCLIENT_REQUEST
+});
+
+export const registerClientSuccess = (result) => ({
+    type: ActionTypes.REGISTERCLIENT_SUCCESS,
+    payload: result
+});
+
+export const registerClientFailed = (errmess) => ({
+    type: ActionTypes.REGISTERCLIENT_FAILED,
+    payload: errmess
+});
+
+export const registerClient = (user) => async (dispatch) => {
+    dispatch(registerClientRequest());
+
+    try {
+        const res = await axios.post(baseBackUrl + 'users/signup', user);
+        dispatch(registerClientSuccess(res));
+    } catch (err) {
+        dispatch(registerClientFailed(err));
+    }
+}
 
 export const registerReset = () => ({
     type: ActionTypes.REGISTER_RESET
@@ -60,11 +88,11 @@ export const registerFailed = (errmess) => ({
     payload: errmess
 });
 
-export const register = (user) => async (dispatch) => {
+export const register = (userClient) => async (dispatch) => {
     dispatch(registerRequest());
 
     try {
-        const res = await axios.post(baseBackUrl + 'users/signup', user);
+        const res = await axios.post(baseBackUrl + 'users/signup/client', userClient);
         dispatch(registerSuccess(res));
     } catch (err) {
         dispatch(registerFailed(err));
