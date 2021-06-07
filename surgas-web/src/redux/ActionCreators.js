@@ -7,6 +7,41 @@ axios.defaults.withCredentials = true;
 
 // Register
 
+export const checkTelReset = () => ({
+    type: ActionTypes.CHECKTEL_RESET
+});
+
+export const checkTelRequest = () => ({
+    type: ActionTypes.CHECKTEL_REQUEST
+});
+
+export const checkTelSuccess = (result) => ({
+    type: ActionTypes.CHECKTEL_SUCCESS,
+    payload: result
+});
+
+export const checkTelFailed = (errmess) => ({
+    type: ActionTypes.CHECKTEL_FAILED,
+    payload: errmess
+});
+
+export const checkTel = (tel) => async (dispatch) => {
+    dispatch(checkTelRequest());
+
+    try {
+        const resCheckClient = await axios.get(baseBackUrl + 'users/check-client/'+tel);
+        const resGetClient = await axios.get(baseBackUrl + 'clientes/check-client/'+tel);
+        let res ={
+            foundInUsers: resCheckClient.data.found,
+            foundInClients: resGetClient.data.found
+        }
+        dispatch(checkTelSuccess(res));
+    } catch (err) {
+        dispatch(checkTelFailed(err));
+    }
+}
+
+
 export const registerReset = () => ({
     type: ActionTypes.REGISTER_RESET
 });

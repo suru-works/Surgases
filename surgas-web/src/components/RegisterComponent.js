@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Button, Modal, ModalHeader, ModalBody,
@@ -7,7 +7,7 @@ import {
 
 
 import { Loading } from './LoadingComponent';
-import { register, registerReset } from '../redux/ActionCreators';
+import { checkTel, register, registerReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 
@@ -17,7 +17,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 
 const validationSchema = Yup.object(
-    {   
+    {
         username: Yup
             .string()
             .min(4, "El nombre de usuario debe ser de mínimo 4 caracteres")
@@ -39,19 +39,50 @@ const validationSchema = Yup.object(
             .matches(phoneRegExp, 'Ingresa un telefono valido'),
     });
 
+    const checkTelValidationSchema = Yup.object(
+        {
+            phoneNumber: Yup
+                .string()
+                .matches(phoneRegExp, 'Ingresa un telefono valido'),
+        });
+
 
 const RegisterComponent = (props) => {
 
+    const [requireTel, setRequireTel] = useState(true);
+    const [registerClient, setRegisterClient] = useState(false);
+
     const dispatch = useDispatch();
 
-    const error = useSelector(state => state.register.errMess);
-    const result = useSelector(state => state.register.result);
-    const loading = useSelector(state => state.register.isLoading);
+    const checkTelError = useSelector(state => state.checkTel.errMess);
+    const checkTelResult = useSelector(state => state.checkTel.result);
+    const checkTelLoading = useSelector(state => state.checkTel.isLoading);
+
+    const registerError = useSelector(state => state.register.errMess);
+    const registerResult = useSelector(state => state.register.result);
+    const registerLoading = useSelector(state => state.register.isLoading);
 
     const toogleAndReset = () => {
         dispatch(registerReset());
         props.toggle();
     }
+
+    const doCheckTel = data => dispatch(checkTel(data));
+
+    const handleRequireTelCheck = values => {
+        doCheckTel(values.phoneNumber);
+    }
+
+    const checkTelFormik = useFormik({
+        initialValues: {
+            phoneNumber: ''
+        },
+        checkTelValidationSchema,
+        onSubmit(values) {
+            console.log("puto el quelo lea paso");
+            handleRequireTelCheck(values);
+        }
+    });
 
     const doRegister = data => dispatch(register(data));
 
@@ -78,28 +109,107 @@ const RegisterComponent = (props) => {
             handleRegister(values);
         }
     });
+    //Solicitando telefono para registrar al usuario
+    if (requireTel) {
 
-    if (error) {
-        return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
-                <ModalBody>
-                    <p>Hubo un error registrandose.</p>
-                </ModalBody>
-            </Modal>
-        );
+        if (checkTelError) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error verificando el telefono.</p>
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        if (checkTelLoading) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                    <ModalBody>
+                        <Loading />
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        if (checkTelResult) {
+
+            //Verificando si el telefono ya esta asignado a algun usuario
+            if (checkTelResult.foundInUsers) {
+                return (
+                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                        <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                        <ModalBody>
+                            <p>El telefono ingresado ya se encuentra registrado.</p>
+                        </ModalBody>
+                    </Modal>
+                );
+            }
+            //Verificando si el telefono del cliente ya existe en la base de clientes
+            else if (checkTelResult.foundInClients) {
+                return (
+                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                        <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                        <ModalBody>
+                            <p>Putito, ya estas en la base</p>
+                        </ModalBody>
+                    </Modal>
+                );
+            }
+            else {
+                setRequireTel(false);
+                setRegisterClient(true);
+            }
+
+        }
+        else {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+
+                    <ModalBody>
+                        <Form onSubmit={checkTelFormik.handleSubmit}>
+                            <FormGroup>
+                                <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: 3002312301)</Label>
+                                <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" values={checkTelFormik.values}
+                                    onChange={checkTelFormik.handleChange}
+                                    onBlur={checkTelFormik.handleBlur}
+                                />
+                                {(checkTelFormik.touched.phoneNumber && checkTelFormik.errors.phoneNumber) ? (<Alert color="danger">{checkTelFormik.errors.phoneNumber}</Alert>) : null}
+                            </FormGroup>
+
+                            <div className="d-flex justify-content-center">
+                                <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Continuar</Button>
+                            </div>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+            );
+        }
     }
-    if (loading) {
-        return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
-                <ModalBody>
-                    <Loading />
-                </ModalBody>
-            </Modal>
-        );
-    }
-    if (result) {
+    //Registrando el cliente y usuario luego de verificaciones
+    if (registerClient) {
+        if (registerError) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error registrandose.</p>
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        if (registerLoading) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                    <ModalBody>
+                        <Loading />
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        if (registerResult) {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
@@ -108,69 +218,71 @@ const RegisterComponent = (props) => {
                     </ModalBody>
                 </Modal>
             );
+        }
+        else {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+
+                    <ModalBody>
+                        <Form onSubmit={handleSubmit}>
+                            <FormGroup>
+                                <Label htmlFor="email">Correo electrónico*</Label>
+                                <Input type="email" id="email" name="email" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="username">Nombre de usuario*</Label>
+                                <Input type="text" id="username" name="username" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
+
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="password">Contraseña*</Label>
+                                <Input type="password" id="password" name="password" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="name">Nombre</Label>
+                                <Input type="text" id="name" name="name" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.name && errors.name) ? (<Alert color="danger">{errors.name}</Alert>) : null}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
+                                <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {(touched.phoneNumber && errors.phoneNumber) ? (<Alert color="danger">{errors.phoneNumber}</Alert>) : null}
+                            </FormGroup>
+
+                            <div className="d-flex justify-content-center">
+                                <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Registrarse</Button>
+                            </div>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+            );
+        }
     }
-    else {
-        return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
 
-                <ModalBody>
-                    <Form onSubmit={handleSubmit}>
-                        <FormGroup>
-                            <Label htmlFor="email">Correo electrónico*</Label>
-                            <Input type="email" id="email" name="email" className="form-control" values={values}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
-
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="username">Nombre de usuario*</Label>
-                            <Input type="text" id="username" name="username" className="form-control" values={values}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
-
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="password">Contraseña*</Label>
-                            <Input type="password" id="password" name="password" className="form-control" values={values}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="name">Nombre</Label>
-                            <Input type="text" id="name" name="name" className="form-control" values={values}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.name && errors.name) ? (<Alert color="danger">{errors.name}</Alert>) : null}
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
-                            <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" values={values}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            {(touched.phoneNumber && errors.phoneNumber) ? (<Alert color="danger">{errors.phoneNumber}</Alert>) : null}
-                        </FormGroup>
-
-                        <div className="d-flex justify-content-center">
-                            <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Registrarse</Button>
-                        </div>
-                    </Form>
-                </ModalBody>
-            </Modal>
-        );
-    }
 };
 
 RegisterComponent.propTypes = {};
