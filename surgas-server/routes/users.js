@@ -177,7 +177,6 @@ router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
     if (result[0].affectedRows == 1) {
       await connPromise.commit();
       conn.release();
-      req.logout();
       res.json({
         username: user.username,
         email: user.email
@@ -185,6 +184,7 @@ router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
     } else {
       await connPromise.rollback();
       conn.release();
+      req.logout();
       next(new Error('Hubo un error al guardar la sesión'));
     }
   });
@@ -209,21 +209,22 @@ router.put('/current', auth.isAuthenticated, asyncHandler(async (req, res, next)
         return;
       }
 
-      const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
-      let result = await conn.promise().execute(query.query, query.values);
-      if (result[0].affectedRows == 1) {
-        conn.commit();
+      const connPromise = conn.promise();
 
-        result = await pool.promise().execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
-        const user = JSON.parse(JSON.stringify(result[0]))[0];
+      const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
+      let [results,] = await connPromise.execute(query.query, query.values);
+      if (results.affectedRows == 1) {
+        await connPromise.commit();
+
+        [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
+        const user = utils.parseToJSON(results)[0];
+        conn.release();
         req.login(user, (err) => {
           next(err);
         });
-        /*res.json({
-          msg: 'user updated successfully'
-        });*/
       } else {
         conn.rollback();
+        conn.release();
         next(new Error('update error'));
       }
     });
@@ -237,15 +238,18 @@ router.put('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(async 
       return;
     }
 
+    const connPromise = conn.promise();
     const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
-    const result = await conn.promise().execute(query.query, query.values);
-    if (result[0].affectedRows == 1) {
-      conn.commit();
+    const [results,] = await connPromise.execute(query.query, query.values);
+    if (results.affectedRows == 1) {
+      await connPromise.commit();
+      conn.release();
       res.json({
         msg: 'user updated successfully'
       });
     } else {
-      conn.rollback();
+      await connPromise.rollback();
+      conn.release()
       next(new Error('update error'));
     }
   });
@@ -258,14 +262,17 @@ router.delete('/:username', auth.isAuthenticated, auth.isAdmin, asyncHandler(asy
       return;
     }
 
-    const result = await conn.promise().execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
-    if (result[0].affectedRows == 1) {
-      conn.commit();
+    const connPromise = conn.promise();
+    const [results,] = await connPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
+    if (results.affectedRows == 1) {
+      await connPromise.commit();
+      conn.release();
       res.json({
         msg: 'user deleted successfully'
       });
     } else {
-      conn.rollback();
+      await connPromise.rollback();
+      conn.release();
       next(new Error('deletion error'));
     }
   });
