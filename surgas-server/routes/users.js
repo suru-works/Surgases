@@ -75,13 +75,8 @@ router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
 }));
 
 router.get('/current', auth.isAuthenticated, (req, res, next) => {
-  const user = req.user;
-  res.json({
-    username: user.username,
-    nombre: user.nombre,
-    email: user.email,
-    tipo: user.tipo
-  });
+  const [results,] = await pool.promise().execute('CALL proc_usuario_current(?)', [req.user.username]);
+  res.json(utils.parseToJSON(results));
 });
 
 router.post('/signup', asyncHandler(async (req, res, next) => {
