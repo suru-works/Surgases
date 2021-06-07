@@ -129,20 +129,20 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
         'CALL proc_usuario_cliente_insertar(?, ?, ?, ?, ?, ?, ?)',
         [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, user.username, user.email, hash]
       );
+
+      if (results.affectedRows == 2) {
+        await connPromise.commit();
+        conn.release();
+        res.json({
+          success: true
+        });
+      } else {
+        await connPromise.rollback();
+        conn.release();
+        next(new Error('Hubo un error al insertar el usuario y el cliente'));
+      }
     } catch (err) {
       next(err);
-    }
-
-    if (results.affectedRows == 2) {
-      await connPromise.commit();
-      conn.release();
-      res.json({
-        success: true
-      });
-    } else {
-      await connPromise.rollback();
-      conn.release();
-      next(new Error('Hubo un error al insertar el usuario y el cliente'));
     }
   });
 }));
