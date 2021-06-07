@@ -124,10 +124,14 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
 
     const connPromise = conn.promise();
 
-    const [results,] = await connPromise.execute(
-      'CALL proc_usuario_cliente_insertar(?, ?, ?, ?, ?, ?, ?)',
-      [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, user.username, user.email, hash]
-    );
+    try {
+      const [results,] = await connPromise.execute(
+        'CALL proc_usuario_cliente_insertar(?, ?, ?, ?, ?, ?, ?)',
+        [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, user.username, user.email, hash]
+      );
+    } catch (err) {
+      next(err);
+    }
 
     if (results.affectedRows == 2) {
       await connPromise.commit();
