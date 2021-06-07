@@ -1,10 +1,14 @@
-const db = require('../db');
-const auth = require('../auth');
 const asyncHandler = require('express-async-handler');
 
+const db = require('../db');
+const auth = require('../auth');
+const utils = require('../utils');
+
 const clienteRouter = require('express').Router();
-clienteRouter.use(require('body-parser').json());
 const pool = db.pool;
+const poolPromise = pool.promise();
+
+clienteRouter.use(require('body-parser').json());
 
 clienteRouter.route("/")
 .all((req, res, next) => {
@@ -107,90 +111,47 @@ clienteRouter.route("/")
         }
     }
 
-    const results = await pool.promise().execute(query + conditions.join(' AND '), values);
-    res.json(JSON.parse(JSON.stringify(results[0])));
+    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+
+    res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    // TODO: usar procedimiento insertar_cliente
-    pool.getConnection(async (err, conn) => {
-        const cl = req.body;
-        let result;
+    const cliente = req.body;
+    
+    await poolPromise.execute(
+        'INSERT INTO cliente(telefono, email, nombre, fecha_registro, puntos, tipo, numero_pedidos) VALUES (?, ?, ?, DATE(NOW()), 0, ?, 0)',
+        [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo]
+    );
 
-        if (cl.tipo == 'empresarial') {
-            try {
-                result = await conn.promise().execute('SELECT descuento FROM static');
-                cl.descuento = JSON.parse(JSON.stringify(result[0]))[0].descuento;
-            } catch(err) {
-                cl.descuento = 0.0;
-            }
-        } else {
-            cl.descuento = 0.0;
-        }
-        
-        result = await conn.promise().execute(
-            'INSERT INTO cliente VALUES (?, ?, ?, ?, 0, ?, ?, NULL, NULL, 0, NULL)',
-            [cl.telefono, cl.email, cl.nombre, cl.fecha_registro, cl.descuento, cl.tipo]
-        );
-
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json(req.body);
-        } else {
-            conn.rollback();
-            throw {
-                status: 500
-            }
-        }
-    });
+    res.json(cliente);
 }));
 
 clienteRouter.route("/:telefono")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
-})
-.put(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            next(err);
-        }
+}, auth.isAuthenticated, auth.isAdmin)
+.put(asyncHandler(async (req, res, next) => {
+    const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.telefono }, req.body);
+    await poolPromise.execute(query.query, query.values);
 
-        const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.telefono }, req.body);
-        const result = await conn.promise().execute(query.query, query.values);
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'client updated successfully'
-            });
-        } else {
-            conn.rollback();
-            next(new Error('update error'));
-        }
-    })
+    res.json({
+        success: true,
+        msg: 'client updated successfully'
+    });
 }))
-.delete(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            next(err);
-        }
+.delete(asyncHandler(async (req, res, next) => {
+    await poolPromise.execute('DELETE FROM cliente WHERE telefono = ?', [req.params.telefono]);
 
-        const result = await conn.promise().execute('DELETE FROM cliente WHERE telefono = ?', [req.params.telefono]);
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'client deleted successfully'
-            });
-        } else {
-            conn.rollback();
-            next(new Error('deletion error'));
-        }
-    })
+    res.json({
+        success: true,
+        msg: 'client deleted successfully'
+    });
 }));
 
 clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
-    const [results,] = await pool.promise().execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    const [results,] = await poolPromise.execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
+
     res.json({
         'found': results.length > 0
     });
@@ -198,17 +159,17 @@ clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next)
 
 clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     // TODO: usar procedimiento consultar_ultima_orden
-    let results = await pool.promise().execute(
+    let results = await poolPromise.execute(
         'SELECT fecha_ultimo_pedido, numero_ultimo_pedido FROM cliente WHERE telefono = ?',
         [req.params.telefono]
     );
     const fk = JSON.parse(JSON.stringify(results[0]))[0];
-    results = await pool.promise().execute(
+    results = await poolPromise.execute(
         'SELECT * FROM pedido WHERE fecha = ? AND numero = ?',
         [fk.fecha_ultimo_pedido, fk.numero_ultimo_pedido]
     );
     const pedido = JSON.parse(JSON.stringify(results[0]))[0];
-    results = await pool.promise().execute(
+    results = await poolPromise.execute(
         'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN pedidoxproducto pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND pp.numero_pedido = ?',
         [fk.fecha_ultimo_pedido, fk.numero_ultimo_pedido]
     );
