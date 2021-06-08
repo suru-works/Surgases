@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 
 import * as Yup from "yup";
 
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+const phoneRegExp = /^[0-9]{7,14}$/
 
 
 const validationSchema = Yup.object(
@@ -46,8 +46,11 @@ const validationSchema = Yup.object(
 const checkTelValidationSchema = Yup.object(
     {
         phoneNumber: Yup
-            .string()
-            .matches(phoneRegExp, 'Ingresa un telefono valido'),
+            .number()
+            .required("Este campo es obligatorio")
+            .min(7, "El teléfono debe ser de mínimo 7 dígitos")
+            .max(14, "El teléfono debe ser de máximo 14 dígitos")
+            //.matches(phoneRegExp, "Ingresa un teléfono válido"),
     });
 
 
@@ -85,7 +88,7 @@ const RegisterComponent = (props) => {
 
     const checkTelFormik = useFormik({
         initialValues: {
-            phoneNumber: ''
+            phoneNumber: ""
         },
         checkTelValidationSchema,
         onSubmit(values) {
@@ -137,7 +140,7 @@ const RegisterComponent = (props) => {
         });
     }
 
-    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+    const registerFormik = useFormik({
         initialValues: {
             email: '',
             username: '',
@@ -207,7 +210,7 @@ const RegisterComponent = (props) => {
                         <Form onSubmit={checkTelFormik.handleSubmit}>
                             <FormGroup>
                                 <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: 3002312301)</Label>
-                                <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" values={checkTelFormik.values}
+                                <Input type="phone" id="phoneNumber" name="phoneNumber" className="form-control" value={checkTelFormik.values.phoneNumber}
                                     onChange={checkTelFormik.handleChange}
                                     onBlur={checkTelFormik.handleBlur}
                                 />
@@ -265,7 +268,7 @@ const RegisterComponent = (props) => {
                         <Form onSubmit={registerClientFormik.handleSubmit}>
                             <FormGroup>
                                 <Label htmlFor="email">Correo electrónico*</Label>
-                                <Input type="email" id="email" name="email" className="form-control" values={registerClientFormik.values}
+                                <Input type="email" id="email" name="email" className="form-control" value={registerClientFormik.values.email}
                                     onChange={registerClientFormik.handleChange}
                                     onBlur={registerClientFormik.handleBlur}
                                 />
@@ -275,7 +278,7 @@ const RegisterComponent = (props) => {
 
                             <FormGroup>
                                 <Label htmlFor="username">Nombre de usuario*</Label>
-                                <Input type="text" id="username" name="username" className="form-control" values={registerClientFormik.values}
+                                <Input type="text" id="username" name="username" className="form-control" value={registerClientFormik.values.username}
                                     onChange={registerClientFormik.handleChange}
                                     onBlur={registerClientFormik.handleBlur}
                                 />
@@ -285,7 +288,7 @@ const RegisterComponent = (props) => {
 
                             <FormGroup>
                                 <Label htmlFor="password">Contraseña*</Label>
-                                <Input type="password" id="password" name="password" className="form-control" values={registerClientFormik.values}
+                                <Input type="password" id="password" name="password" className="form-control" value={registerClientFormik.values.password}
                                     onChange={registerClientFormik.handleChange}
                                     onBlur={registerClientFormik.handleBlur}
                                 />
@@ -294,7 +297,7 @@ const RegisterComponent = (props) => {
 
                             <FormGroup>
                                 <Label htmlFor="password">Confirme su contraseña*</Label>
-                                <Input type="password" id="password2" name="password2" className="form-control" values={registerClientFormik.values}
+                                <Input type="password" id="password2" name="password2" className="form-control" value={registerClientFormik.values.password2}
                                     onChange={registerClientFormik.handleChange}
                                     onBlur={registerClientFormik.handleBlur}
                                 />
@@ -353,52 +356,52 @@ const RegisterComponent = (props) => {
                     <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
 
                     <ModalBody>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={registerFormik.handleSubmit}>
                             <FormGroup>
                                 <Label htmlFor="email">Correo electrónico*</Label>
-                                <Input type="email" id="email" name="email" className="form-control" values={values}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                <Input type="email" id="email" name="email" className="form-control" value={registerFormik.values.email}
+                                    onChange={registerFormik.handleChange}
+                                    onBlur={registerFormik.handleBlur}
                                 />
-                                {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+                                {(registerFormik.touched.email && registerFormik.errors.email) ? (<Alert color="danger">{registerFormik.errors.email}</Alert>) : null}
 
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor="username">Nombre de usuario*</Label>
-                                <Input type="text" id="username" name="username" className="form-control" values={values}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                <Input type="text" id="username" name="username" className="form-control" value={registerFormik.values.username}
+                                    onChange={registerFormik.handleChange}
+                                    onBlur={registerFormik.handleBlur}
                                 />
-                                {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
+                                {(registerFormik.touched.username && registerFormik.errors.username) ? (<Alert color="danger">{registerFormik.errors.username}</Alert>) : null}
 
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor="password">Contraseña*</Label>
-                                <Input type="password" id="password" name="password" className="form-control" values={values}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                <Input type="password" id="password" name="password" className="form-control" value={registerFormik.values.password}
+                                    onChange={registerFormik.handleChange}
+                                    onBlur={registerFormik.handleBlur}
                                 />
-                                {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
+                                {(registerFormik.touched.password && registerFormik.errors.password) ? (<Alert color="danger">{registerFormik.errors.password}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor="password2">Confirme su contraseña*</Label>
-                                <Input type="password" id="password2" name="password2" className="form-control" values={values}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                <Input type="password" id="password2" name="password2" className="form-control" value={registerFormik.values.password2}
+                                    onChange={registerFormik.handleChange}
+                                    onBlur={registerFormik.handleBlur}
                                 />
-                                {(touched.password2 && errors.password2) ? (<Alert color="danger">{errors.password2}</Alert>) : null}
+                                {(registerFormik.touched.password2 && registerFormik.errors.password2) ? (<Alert color="danger">{registerFormik.errors.password2}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor="name">Nombre</Label>
-                                <Input type="text" id="name" name="name" className="form-control" values={values}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                <Input type="text" id="name" name="name" className="form-control" value={registerFormik.values.name}
+                                    onChange={registerFormik.handleChange}
+                                    onBlur={registerFormik.handleBlur}
                                 />
-                                {(touched.name && errors.name) ? (<Alert color="danger">{errors.name}</Alert>) : null}
+                                {(registerFormik.touched.name && registerFormik.errors.name) ? (<Alert color="danger">{registerFormik.errors.name}</Alert>) : null}
                             </FormGroup>
 
                             <FormGroup>
