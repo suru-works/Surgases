@@ -31,7 +31,7 @@ module.exports.buildUpdate = (table, id, params) => {
         values.push(params[key]);
     });
 
-    values = values.concat([id.value]);
+    values = values.push(id.value);
 
     return {
         query: 'UPDATE ' + table + ' SET ' + changes.join(' , ') + ' WHERE ' + id.name + ' = ?',

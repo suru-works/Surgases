@@ -4,10 +4,10 @@ const db = require('../db');
 const auth = require('../auth');
 const utils = require('../utils');
 
-const clienteRouter = require('express').Router();
 const pool = db.pool;
 const poolPromise = pool.promise();
 
+const clienteRouter = require('express').Router();
 clienteRouter.use(require('body-parser').json());
 
 clienteRouter.route("/")
@@ -60,16 +60,6 @@ clienteRouter.route("/")
             values.push(params.puntosMaximos);
         }
 
-        if (params.descuentoMinimo) {
-            conditions.push('descuento >= ?');
-            values.push(params.descuentoMinimo);
-        }
-
-        if (params.descuentoMaximo) {
-            conditions.push('descuento <= ?');
-            values.push(params.descuentoMaximo);
-        }
-
         if (params.tipo) {
             conditions.push('tipo = ?');
             values.push(params.tipo);
@@ -103,11 +93,6 @@ clienteRouter.route("/")
         if (params.numeroPedidosMaximo) {
             conditions.push('numero_pedidos <= ?');
             values.push(params.numeroPedidosMaximo);
-        }
-
-        if (params.username) {
-            conditions.push('username LIKE ?');
-            values.push('%' + params.username + '%');
         }
     }
 
@@ -158,24 +143,25 @@ clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next)
 }));
 
 clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    // TODO: usar procedimiento consultar_ultima_orden
-    let results = await poolPromise.execute(
-        'SELECT fecha_ultimo_pedido, numero_ultimo_pedido FROM cliente WHERE telefono = ?',
+    const conn = await pool.getConnectionPromise();
+    const connPromise = conn.promise();
+
+    let [results,] = await connPromise.execute(
+        'CALL proc_cliente_consultar_ultimo_pedido(?)',
         [req.params.telefono]
     );
-    const fk = JSON.parse(JSON.stringify(results[0]))[0];
-    results = await poolPromise.execute(
-        'SELECT * FROM pedido WHERE fecha = ? AND numero = ?',
-        [fk.fecha_ultimo_pedido, fk.numero_ultimo_pedido]
-    );
-    const pedido = JSON.parse(JSON.stringify(results[0]))[0];
-    results = await poolPromise.execute(
+    const pedido = utils.parseToJSON(results)[0];
+
+    [results,] = await connPromise.execute(
         'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN pedidoxproducto pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND pp.numero_pedido = ?',
-        [fk.fecha_ultimo_pedido, fk.numero_ultimo_pedido]
+        [pedido.fecha, pedido.numero]
     );
+
+    conn.release();
+
     res.json({
         pedido: pedido,
-        productos: JSON.parse(JSON.stringify(results[0]))
+        productos: utils.parseToJSON(results)
     });
 }));
 
