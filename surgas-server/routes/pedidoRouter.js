@@ -1,12 +1,14 @@
 const fs = require('fs');
+const asyncHandler = require('express-async-handler');
 
 const db = require('../db');
 const auth = require('../auth');
-const asyncHandler = require('express-async-handler');
+
+const pool = db.pool;
+const poolPromise = pool.promise();
 
 const pedidoRouter = require('express').Router();
 pedidoRouter.use(require('body-parser').json());
-const pool = db.pool;
 
 pedidoRouter.route("/")
 .all((req, res, next) => {
@@ -14,13 +16,12 @@ pedidoRouter.route("/")
     next();
 })
 .get(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    if (req.user.tipo == 'cliente') {
+    if (req.user.cliente) {
         let err = new Error('not authorized');
         err.status = 403;
         next(err);
     }
-
-    //const query = db.buildQuery('producto', req.query);
+    
     let query = 'SELECT * FROM pedido';
     const params = req.query;
     let conditions = [];
@@ -62,6 +63,11 @@ pedidoRouter.route("/")
         if (params.direccion) {
             conditions.push('direccion LIKE ?');
             values.push('%' + params.direccion + '%');
+        }
+
+        if (params.municipio) {
+            conditions.push('municipio LIKE ?');
+            values.push('%' + params.municipio + '%');
         }
 
         if (params.precioBrutoMinimo) {
@@ -115,17 +121,47 @@ pedidoRouter.route("/")
         }
     }
 
-    const results = await pool.promise().execute(query + conditions.join(' AND '), values);
-    if (results) {
-        res.json(JSON.parse(JSON.stringify(results[0])))
-    } else {
-        throw {
-            status: 500
-        };
-    }
+    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+
+    res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    const pedido = req.body;
+    /*const pedido = req.body;
+
+    const conn = await pool.getConnectionPromise();
+    const connPromise = conn.promise();
+
+    await connPromise.beginTransaction();
+
+    try {
+        let [results,] = await connPromise.execute(
+            'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?)',
+            [pedido.direccion, pedido.municipio, pedido.estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
+        );
+        const pk = utils.parseToJSON(results)[0];
+
+        let productos = pedido.productos;
+
+        let precio_bruto = 0;
+
+        for (let i = 0; i < productos.length; i++) {
+            let producto = productos[i];
+
+            await connPromise.execute(
+                'INSERT INTO pedidoxproducto VALUES(?, ?, ?, ?, ?)',
+                [producto.codigo, pk.fecha, pk.numero, producto.precio, producto.cantidad]
+            );
+
+            precio_bruto += producto.precio * producto.cantidad * (1 - (producto));
+        }
+
+        const precio_final = precio_bruto;
+
+
+    } catch(err) {
+        connPromise.rollback();
+        next(err);
+    }*/
 
     if (pedido.productos.length == 0) {
         let error = new Error('no hay productos');
@@ -133,9 +169,9 @@ pedidoRouter.route("/")
         throw error;
     }
     
-    let results = await pool.promise().execute('SELECT tipo FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
+    let results = await poolPromise.execute('SELECT tipo FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
     const tipoCliente = JSON.parse(JSON.stringify(results[0]))[0].tipo;
-    results = await pool.promise().execute('SELECT MAX(numero) AS num FROM pedido WHERE fecha = ?', [pedido.fecha]);
+    results = await poolPromise.execute('SELECT MAX(numero) AS num FROM pedido WHERE fecha = ?', [pedido.fecha]);
     let numero = JSON.parse(JSON.stringify(results[0]))[0].num;
     if (numero) {
         numero += 1;
@@ -181,12 +217,12 @@ pedidoRouter.route("/")
                 query = 'UPDATE pedido SET precio_bruto = ?, precio_final = ? WHERE fecha = ? AND numero = ?';
                 par = [precio_bruto, precio_final, pedido.fecha, numero];
             } else {
-                results = await pool.promise().execute(
+                results = await poolPromise.execute(
                     'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN pedidoxproducto pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
                     [pedido.fecha, numero]
                 );
                 const peso_total = JSON.parse(JSON.stringify(results[0]))[0].peso_total;
-                results = await pool.promise().execute("SELECT puntosxlibra FROM static WHERE codigo = '1'");
+                results = await poolPromise.execute("SELECT puntosxlibra FROM static WHERE codigo = '1'");
                 const puntosxlibra = JSON.parse(JSON.stringify(results[0]))[0].puntosxlibra;
                 puntos_compra = Math.floor(peso_total * puntosxlibra);
                 query = 'UPDATE pedido SET precio_bruto = ?, precio_final = ?, puntos_compra = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?';
@@ -206,7 +242,7 @@ pedidoRouter.route("/")
                 results = await conn.promise().execute(query, par);
                 if (results[0].affectedRows == 1) {
                     conn.commit();
-                    results = await pool.promise().execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, numero]);
+                    results = await poolPromise.execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, numero]);
                     res.json(JSON.parse(JSON.stringify(results[0])));
                 } else {
                     conn.rollback();
@@ -266,13 +302,13 @@ pedidoRouter.route("/")
             changes.push('estado = ? ');
             values.push(estado);
             if (estado == 'proceso' || estado == 'fiado' || estado == 'pago') {
-                let re = await pool.promise().execute(
+                let re = await poolPromise.execute(
                     'SELECT estado FROM pedido WHERE fecha = ? AND numero = ?',
                     [params.fecha, params.numero]
                 );
                 const original = JSON.parse(JSON.stringify(re[0]))[0].estado;
                 if (original == 'verificacion' || original == 'cola') {
-                    re = await pool.promise().execute(
+                    re = await poolPromise.execute(
                         'SELECT producto FROM pedidoxproducto WHERE fecha_pedido = ? AND numero_pedido = ?',
                         [params.fecha, params.numero]
                     );
@@ -318,7 +354,7 @@ pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (re
         next(err);
     }
 
-    const results = await pool.promise().execute(
+    const results = await poolPromise.execute(
         'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [req.params.fecha, req.params.numero]
     );
@@ -341,12 +377,12 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
 
     const pedido = req.body;
 
-    let results = await pool.promise().execute(
+    let results = await poolPromise.execute(
         'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [pedido.fecha, pedido.numero]
     );
     const peso_total = JSON.parse(JSON.stringify(results[0]))[0].peso_total;
-    results = await pool.promise().execute("SELECT puntosxlibra FROM static WHERE codigo = '1'");
+    results = await poolPromise.execute("SELECT puntosxlibra FROM static WHERE codigo = '1'");
     const puntosxlibra = JSON.parse(JSON.stringify(results[0]))[0].puntosxlibra;
     const puntos_compra = Math.floor(peso_total * puntosxlibra);
     pool.getConnection(async (err, conn) => {
@@ -387,13 +423,13 @@ pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res,
 }));
 
 pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
-    const results = await pool.promise().execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
+    const results = await poolPromise.execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
     res.json(JSON.parse(JSON.stringify(results[0])));
 }));
 
 pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
     const body = req.body;
-    const result = await pool.promise().execute(
+    const result = await poolPromise.execute(
         'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra pe.empleado_despachador AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.unidades AS unidades FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [body.fecha, body.numero]
     );

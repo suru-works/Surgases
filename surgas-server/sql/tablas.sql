@@ -87,7 +87,7 @@ CREATE TABLE pedido(
     estado ENUM('verificacion', 'cola', 'proceso', 'fiado', 'pago', 'cancelado') NOT NULL,
     bodega VARCHAR(15) NOT NULL,
     puntos_compra INT,
-    tipo_cliente ENUM('vendedor', 'empresarial'),
+    tipo_cliente ENUM('natural', 'juridica'),
     nota VARCHAR(280),
     empleado_vendedor VARCHAR(30) NOT NULL,
     empleado_repartidor VARCHAR(30),

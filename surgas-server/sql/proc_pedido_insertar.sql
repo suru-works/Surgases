@@ -1,24 +1,61 @@
 DELIMITER $$
 
-CREATE OR REPLACE PROCEDURE proc_pedido_insertar
-(IN telefono_cliente TYPE OF cliente.telefono, IN fecha_pedido TYPE OF pedido.fecha)
+CREATE OR REPLACE PROCEDURE proc_pedido_insertar (
+	IN pedido_direccion TYPE OF pedido.direccion,
+	IN pedido_municipio TYPE OF pedido.municipio,
+	IN pedido_estado TYPE OF pedido.estado,
+	IN pedido_bodega TYPE OF pedido.bodega,
+	IN pedido_nota TYPE OF pedido.nota,
+	IN empleado_id TYPE OF empleado.id,
+	IN cliente_telefono TYPE OF cliente.telefono
+)
 MODIFIES SQL DATA
-DETERMINISTIC
 BEGIN
-    DECLARE tipo_cliente TYPE OF cliente.tipo;
-	SELECT tipo INTO tipo_cliente FROM cliente WHERE telefono = telefono_cliente;
+	DECLARE ahora TIMESTAMP;
+	DECLARE pedido_fecha TYPE OF pedido.fecha;
+	DECLARE pedido_numero TYPE OF pedido.numero;
+	DECLARE cliente_tipo TYPE OF cliente.tipo;
 
-	DECLARE numero_pedido TYPE OF pedido.numero;
-	IF (fecha_pedido IN (SELECT fecha FROM pedido)) THEN
-		SELECT MAX(numero) INTO numero_pedido FROM pedido WHERE fecha = fecha_pedido;
-		SET numero_pedido := numero_pedido + 1;
+	SET ahora = NOW();
+	
+	SET pedido_fecha := DATE(ahora);
+
+	IF (pedido_fecha IN (SELECT fecha FROM pedido)) THEN
+		SELECT MAX(numero) INTO pedido_numero FROM pedido WHERE fecha = pedido_fecha;
+		SET pedido_numero := pedido_numero + 1;
 	ELSE
-		numero_pedido = 1;
+		SET pedido_numero := 1;
 	END IF;
+
+	SELECT tipo INTO cliente_tipo FROM cliente WHERE telefono = cliente_telefono;
 	
-	SELECT fecha_ultimo_pedido, numero_ultimo_pedido INTO fup, nup FROM cliente WHERE telefono = tel;
-	
-	SELECT * FROM pedido WHERE fecha = fup AND numero = nup;
+	INSERT INTO pedido(
+		fecha,
+		numero,
+		hora_registro,
+		direccion,
+		municipio,
+		estado,
+		bodega,
+		tipo_cliente,
+		nota,
+		empleado_vendedor,
+		cliente_pedidor
+	) VALUES (
+		pedido_fecha,
+		pedido_numero,
+		TIME(ahora),
+		pedido_direccion,
+		pedido_municipio,
+		pedido_estado,
+		pedido_bodega,
+		cliente_tipo,
+		pedido_nota,
+		empleado_id,
+		cliente_telefono
+	);
+
+	SELECT pedido_fecha, pedido_numero;
 END; $$
 
 DELIMITER ;
