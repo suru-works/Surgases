@@ -143,19 +143,27 @@ pedidoRouter.route("/")
         let productos = pedido.productos;
 
         let precio_bruto = 0;
+        let precio_final = 0;
+        let peso_total = 0;
 
         for (let i = 0; i < productos.length; i++) {
             let producto = productos[i];
 
-            await connPromise.execute(
-                'INSERT INTO pedidoxproducto VALUES(?, ?, ?, ?, ?)',
-                [producto.codigo, pk.fecha, pk.numero, producto.precio, producto.cantidad]
+            [results, ] = await connPromise.execute(
+                'CALL proc_pedidoxproducto_insertar(?, ?, ?, ?, ?, ?)',
+                [producto.codigo, pk.fecha, pk.numero, producto.precio, producto.cantidad, pedido.cliente_pedidor]
             );
+            const precios = utils.parseToJSON(results)[0];
 
-            precio_bruto += producto.precio * producto.cantidad * (1 - (producto));
+            precio_bruto += precios.precio_bruto;
+            precio_final += precios.precio_final;
+            peso_total += producto.peso;
         }
 
-        const precio_final = precio_bruto;
+        await connPromise.execute(
+            'UPDATE pedido SET precio_bruto = ?, precio_final = ? WHERE fecha = ? AND numero = ?',
+            [precio_bruto, precio_final, pk.fecha, pk.numero]
+        );
 
 
     } catch(err) {

@@ -55,7 +55,7 @@ BEGIN
 		cliente_telefono
 	);
 
-	SELECT pedido_fecha, pedido_numero;
+	SELECT pedido_fecha AS fecha, pedido_numero AS numero;
 END; $$
 
 DELIMITER ;
