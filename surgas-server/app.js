@@ -112,7 +112,7 @@ app.use('/clientes', clienteRouter);
 app.use('/system', systemRouter);
 app.use('/maps', mapsRouter);
 app.use('/impresoras', impresoraRouter);
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(require('./docs')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
