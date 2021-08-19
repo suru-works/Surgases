@@ -1,10 +1,14 @@
+const asyncHandler = require('express-async-handler');
+
 const db = require('../db');
 const auth = require('../auth');
-const asyncHandler = require('express-async-handler');
+const utils = require('../utils');
+
+const pool = db.pool;
+const poolPromise = pool.promise();
 
 const productoRouter = require('express').Router();
 productoRouter.use(require('body-parser').json());
-const pool = db.pool;
 
 productoRouter.route("/")
 .all((req, res, next) => {
@@ -75,80 +79,49 @@ productoRouter.route("/")
             conditions.push('disponible = (?)');
             values.push(params.disponible);
         }
+
+        if (params.iva_incluido) {
+            conditions.push('iva_incluido = (?)');
+            values.push(params.iva_incluido);
+        }
     }
 
-    const results = await pool.promise().execute(query + conditions.join(' AND '), values);
-    if (results) {
-        res.json(JSON.parse(JSON.stringify(results[0])))
-    } else {
-        throw {
-            status: 500
-        };
-    }
+    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+    
+    res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        const prod = req.body;
-        const result = await conn.promise().execute(
-            'INSERT INTO producto(nombre, color, peso, tipo, precio, inventario, disponible) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [prod.nombre, prod.color, prod.peso, prod.tipo, prod.precio, prod.inventario, prod.disponible]
-        );
+    const producto = req.body;
 
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json(req.body);
-        } else {
-            conn.rollback();
-            throw {
-                status: 500
-            }
-        }
-    });
+    await poolPromise.execute(
+        'INSERT INTO producto(nombre, color, peso, tipo, precio, inventario, disponible, iva_incluido) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [producto.nombre, producto.color, producto.peso, producto.tipo, producto.precio, producto.inventario, producto.disponible, producto.iva_incluido]
+    )
+    
+    res.json(producto);
 }));
 
 productoRouter.route("/:codigo")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
-})
-.put(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            next(err);
-        }
+}, auth.isAuthenticated, auth.isAdmin)
+.put(asyncHandler(async (req, res, next) => {
+    const query = db.buildUpdate('producto', { name: 'codigo', value: req.params.codigo }, req.body);
+    await poolPromise.execute(query.query, query.values);
 
-        const query = db.buildUpdate('producto', { name: 'codigo', value: req.params.codigo }, req.body);
-        const result = await conn.promise().execute(query.query, query.values);
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'product updated successfully'
-            });
-        } else {
-            conn.rollback();
-            next(new Error('update error'));
-        }
-    })
+    res.json({
+        success: true,
+        msg: 'product updated successfully'
+    });
 }))
-.delete(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            next(err);
-        }
+.delete(asyncHandler(async (req, res, next) => {
+    await poolPromise.execute('DELETE FROM producto WHERE codigo = ?', [req.params.codigo]);
 
-        const result = await conn.promise().execute('DELETE FROM producto WHERE codigo = ?', [req.params.codigo]);
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'product deleted successfully'
-            });
-        } else {
-            conn.rollback();
-            next(new Error('deletion error'));
-        }
-    })
+    res.json({
+        success: true,
+        msg: 'product deleted successfully'
+    });
 }));
 
 module.exports = productoRouter;
