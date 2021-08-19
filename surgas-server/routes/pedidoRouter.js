@@ -135,8 +135,8 @@ pedidoRouter.route("/")
         next(error);
     }
     
-    const conn = pool.getConnectionPromise();
-    const connPromise = await conn.promise();
+    const conn = await pool.getConnectionPromise();
+    const connPromise = conn.promise();
 
     await connPromise.beginTransaction();
 
@@ -159,7 +159,6 @@ pedidoRouter.route("/")
 
         let precio_bruto = 0;
         let precio_final = 0;
-        let peso_total = 0;
 
         for (let i = 0; i < productos.length; i++) {
             let producto = productos[i];
@@ -172,7 +171,6 @@ pedidoRouter.route("/")
 
             precio_bruto += precios.precio_bruto;
             precio_final += precios.precio_final;
-            peso_total += producto.peso;
         }
 
         await connPromise.execute(
@@ -200,14 +198,14 @@ pedidoRouter.route('/:fecha/:numero')
     next();
 }, auth.isAuthenticated)
 .put(asyncHandler(async (req, res, next) => {
-    if (req.user.tipo == 'cliente') {
+    if (!req.user.empleado) {
         let err = new Error('not authorized');
         err.status = 403;
         next(err);
     }
 
-    const conn = pool.getConnectionPromise();
-    const connPromise = await conn.promise();
+    const conn = await pool.getConnectionPromise();
+    const connPromise = conn.promise();
 
     const fecha = req.params.fecha;
     const numero = req.params.numero;
@@ -260,99 +258,44 @@ pedidoRouter.route('/:fecha/:numero')
         values
     );
     
+    conn.release();
+    
     res.json({
         success: true,
         msg: 'order updated successfully'
     });
 }));
 
-/*pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    if (req.user.tipo == 'cliente') {
+pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    if (!req.user.empleado) {
         let err = new Error('not authorized');
         err.status = 403;
         next(err);
     }
 
-    const results = await poolPromise.execute(
+    const pedido = req.params;
+
+    const [results,] = await poolPromise.execute(
         'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
-        [req.params.fecha, req.params.numero]
-    );
-
-    if (results) {
-        res.json(JSON.parse(JSON.stringify(results[0])));
-    } else {
-        throw {
-            status: 500
-        };
-    }
-}));*/
-
-pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    if (req.user.tipo == 'cliente') {
-        let err = new Error('not authorized');
-        err.status = 403;
-        next(err);
-    }
-
-    const pedido = req.body;
-
-    let results = await poolPromise.execute(
-        'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [pedido.fecha, pedido.numero]
     );
-    const peso_total = JSON.parse(JSON.stringify(results[0]))[0].peso_total;
-    results = await poolPromise.execute("SELECT puntosxlibra FROM static WHERE codigo = '1'");
-    const puntosxlibra = JSON.parse(JSON.stringify(results[0]))[0].puntosxlibra;
-    const puntos_compra = Math.floor(peso_total * puntosxlibra);
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
 
-        results = await conn.promise().execute(
-            "UPDATE pedido SET estado = 'cola', puntos_compra = ?, bodega = ? WHERE fecha = ? AND numero = ?",
-            [puntos_compra, pedido.bodega, pedido.fecha, pedido.numero]
-        );
-
-        if (results[0].affectedRows == 1) {
-            results = await conn.promise().execute(
-                "UPDATE cliente SET puntos = puntos + (SELECT puntos_compra FROM pedido WHERE fecha = ? AND numero = ?) WHERE telefono = (SELECT cliente_pedidor FROM pedido WHERE fecha = ? AND numero = ?)",
-                [pedido.fecha, pedido.numero, pedido.fecha, pedido.numero]
-            );
-
-            if (results[0].affectedRows == 1) {
-                conn.commit();
-                res.json({
-                    msg: 'puntos adicionados'
-                });
-            } else {
-                conn.rollback();
-                throw {
-                    status: 500
-                }
-            }
-        } else {
-            conn.rollback();
-            throw {
-                status: 500
-            }
-        }
-    });
+    res.json(utils.parseToJSON(results));
 }));
 
 pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
-    const results = await poolPromise.execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
-    res.json(JSON.parse(JSON.stringify(results[0])));
+    const [results,] = await poolPromise.execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
+
+    res.json(utils.parseToJSON(results));
 }));
 
 pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
     const body = req.body;
-    const result = await poolPromise.execute(
+    const [result,] = await poolPromise.execute(
         'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra pe.empleado_despachador AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.unidades AS unidades FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [body.fecha, body.numero]
     );
-    const results = JSON.parse(JSON.stringify(result[0]));
+    const results = utils.parseToJSON(result);
     const ped = results[0];
 
     let cabecera = ""+
