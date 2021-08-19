@@ -26,7 +26,7 @@ const validationSchema = yup.object(
             .oneOf([yup.ref('password'), null], 'Las contraseñas deben de coincidir',),
     });
 
-const Verify = (props) => {
+const Verify = () => {
     let params = useParams();
     const dispatch = useDispatch();
 
@@ -83,6 +83,8 @@ const Verify = (props) => {
         );
     }
     else {
+        console.log("token llegando");
+        console.log(params.token);
         doVerify({token: params.token});
         return (
             <div className="container">

@@ -671,7 +671,7 @@ export const verify = (data) => async (dispatch) => {
     dispatch(verifyRequest());
 
     try {
-        const res = await axios.post(baseBackUrl + 'users/verify/',data, {
+        const res = await axios.post(baseBackUrl + 'users/verify',data, {
             headers: {
                 'Content-Type': 'application/json'
             },

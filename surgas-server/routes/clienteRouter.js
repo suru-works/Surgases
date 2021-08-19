@@ -135,7 +135,7 @@ clienteRouter.route("/:telefono")
 }));
 
 clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
-    const [results,] = await poolPromise.execute('SELECT  FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    const [results,] = await poolPromise.execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
 
     res.json({
         'found': results.length > 0

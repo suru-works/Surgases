@@ -8,6 +8,7 @@ const db = require('../db');
 const utils = require('../utils');
 const mail = require('../com/mail');
 const restoreView = require('../view/restoreView');
+const verifyView = require('../view/verifyView');
 
 const router = express.Router();
 const pool = db.pool;
@@ -80,15 +81,84 @@ router.post('/signup', asyncHandler(async (req, res, next) => {
 }));
 
 router.post('/signup/client', asyncHandler(async (req, res, next) => {
-  const user = req.body.user;
+  const data = req.body.user;
   const cliente = req.body.client;
 
-  const hash = await bcrypt.hash(user.password, 10);
+  const hash = await bcrypt.hash(data.password, 10);
 
-  await poolPromise.execute(
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn.promise();
+
+  await connPromise.execute(
     'CALL proc_usuario_cliente_insertar(?, ?, ?, ?, ?, ?, ?)',
-    [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, user.username, user.email, hash]
+    [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, data.username, data.email, hash]
   );
+
+  //Sending user verification mail
+  try {
+    let [resUser,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [data.username]);
+    let user = utils.parseToJSON(resUser)[0];
+    if (user) {
+      isTokenNotUnique = true;
+      let now = new Date();
+      now.setMinutes(now.getMinutes() + 10);
+      var key = crypto.randomBytes(20).toString('hex');
+
+      while (isTokenNotUnique) {
+        var verification_token = now + ',' + key;
+        var resUserByToken = await connPromise.execute('SELECT * FROM usuario WHERE verification_token = ?', [verification_token]);
+        let userByToken = JSON.parse(JSON.stringify(resUserByToken[0]))[0];
+        if (userByToken) {
+          //the token allready exist
+          key = crypto.randomBytes(20).toString('hex');
+        }
+        else {
+          isTokenNotUnique = false;
+          data.verify_token = verification_token;
+          let result = await connPromise.execute('UPDATE usuario SET verification_token = ? WHERE username = ?', [verification_token, data.username]);
+          if (result[0].affectedRows == 1) {
+            connPromise.commit();
+            res.json({
+              msg: 'user updated successfully'
+            });
+          } else {
+            connPromise.rollback();
+            var err = new Error("user update failed successfully");
+            err.statusCode = 500;
+            throw err;
+          }
+        }
+
+      }
+      const verifyHTML = verifyView.verifyView(data);
+      //sending email for user verification
+      mailData = {
+        host: process.env.EMAIL_SERVER,
+        port: process.env.EMAIL_SERVER_PORT,
+        secure: false,
+        //serverService: 'hotmail',
+        serverMail: process.env.AUTH_EMAIL_USER,
+        serverPassword: process.env.AUTH_EMAIL_PASSWORD,
+        sender: '"Surgas de antioquia" <' + process.env.AUTH_EMAIL_USER + '>',
+        receivers: user.email,
+        subject: 'Verificacion de cuenta',
+        text: '',
+        html: verifyHTML
+      };
+      mail.mail(mailData);
+      res.status(200);
+    }
+    else {
+      var err = new Error("User does not exist");
+      err.statusCode = 404;
+      throw err;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+
+
 
   res.json({
     success: true
@@ -126,28 +196,28 @@ router.post('/logout', auth.isAuthenticated, (req, res, next) => {
 });
 
 router.route('/current')
-.all(auth.isAuthenticated)
-.get(asyncHandler(async (req, res, next) => {
-  const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
+  .all(auth.isAuthenticated)
+  .get(asyncHandler(async (req, res, next) => {
+    const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
 
-  res.json(utils.parseToJSON(results));
-}))
-.put(asyncHandler(async (req, res, next) => {
-  const conn = await pool.getConnectionPromise();
-  const connPromise = conn;
+    res.json(utils.parseToJSON(results));
+  }))
+  .put(asyncHandler(async (req, res, next) => {
+    const conn = await pool.getConnectionPromise();
+    const connPromise = conn;
 
-  const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
-  await connPromise.execute(query.query, query.values);
+    const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
+    await connPromise.execute(query.query, query.values);
 
-  const [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
-  const user = utils.parseToJSON(results)[0];
+    const [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
+    const user = utils.parseToJSON(results)[0];
 
-  conn.release();
+    conn.release();
 
-  req.login(user, (err) => {
-    next(err);
-  });
-}));
+    req.login(user, (err) => {
+      next(err);
+    });
+  }));
 
 router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
   const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE cliente = ?', [req.params.telefono]);
@@ -158,24 +228,24 @@ router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
 }));
 
 router.route('/:username')
-.all(auth.isAuthenticated, auth.isAdmin)
-.put(asyncHandler(async (req, res, next) => {
-  const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
-  await poolPromise.execute(query.query, query.values);
+  .all(auth.isAuthenticated, auth.isAdmin)
+  .put(asyncHandler(async (req, res, next) => {
+    const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
+    await poolPromise.execute(query.query, query.values);
 
-  res.json({
-    success: true,
-    msg: 'user updated successfully'
-  });
-}))
-.delete(asyncHandler(async (req, res, next) => {
-  await poolPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
+    res.json({
+      success: true,
+      msg: 'user updated successfully'
+    });
+  }))
+  .delete(asyncHandler(async (req, res, next) => {
+    await poolPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
 
-  res.json({
-    success: true,
-    msg: 'user deleted successfully'
-  });
-}));
+    res.json({
+      success: true,
+      msg: 'user deleted successfully'
+    });
+  }));
 
 router.post('/restorepassword', asyncHandler(async (req, res, next) => {
 
@@ -197,8 +267,8 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
         var key = crypto.randomBytes(20).toString('hex');
 
         while (isTokenNotUnique) {
-          var restorePasswordToken = now + ',' + key;
-          var resUserByToken = await conn.execute('SELECT * FROM usuario WHERE restorePasswordToken = ?', [restorePasswordToken]);
+          var restore_password_token = now + ',' + key;
+          var resUserByToken = await conn.execute('SELECT * FROM usuario WHERE restore_password_token = ?', [restore_password_token]);
           let userByToken = JSON.parse(JSON.stringify(resUserByToken[0]))[0];
           if (userByToken) {
             //the token allready exist
@@ -206,8 +276,8 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
           }
           else {
             isTokenNotUnique = false;
-            data.restorePasswordToken = restorePasswordToken;
-            let result = await conn.execute('UPDATE usuario SET restorePasswordToken = ? WHERE username = ?', [restorePasswordToken, data.username]);
+            data.restore_password_token = restore_password_token;
+            let result = await conn.execute('UPDATE usuario SET restore_password_token = ? WHERE username = ?', [restore_password_token, data.username]);
             if (result[0].affectedRows == 1) {
               conn.commit();
               res.json({
@@ -305,6 +375,7 @@ router.post('/changePassword', async function (req, res, next) {
 });
 
 router.post('/verify', async function (req, res, next) {
+  console.log("puto el que lo lea");
   poolPromise.getConnection(async (err, conn) => {
     if (err) {
       console.log(err);
@@ -326,7 +397,7 @@ router.post('/verify', async function (req, res, next) {
       }
       else {
         //actualizando la estado de verificacion del usuario
-        let result = await poolPromise.execute('SELECT username FROM usuario WHERE verificationToken = ?', [token]);
+        let result = await poolPromise.execute('SELECT username FROM usuario WHERE verification_token = ?', [token]);
         if (result[0].length == 1) {
           const username = JSON.parse(JSON.stringify(result[0]))[0].username;
           await conn.execute('UPDATE usuario SET verificado = 1 WHERE username = ?', [username]);
