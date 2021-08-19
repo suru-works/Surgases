@@ -25,7 +25,7 @@ BEGIN
     FROM clientexproducto
     WHERE cliente = cliente_telefono AND producto = producto_codigo;
 
-    SET precio_final := pedidoxproducto_precio_venta * descuento;
+    SET precio_final := pedidoxproducto_precio_venta * clientexproducto_descuento;
 
     SELECT pedidoxproducto_precio_venta AS precio_bruto, precio_final;
 END; $$
