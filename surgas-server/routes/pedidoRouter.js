@@ -126,17 +126,30 @@ pedidoRouter.route("/")
     res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    /*const pedido = req.body;
+    const pedido = req.body;
 
-    const conn = await pool.getConnectionPromise();
-    const connPromise = conn.promise();
+    if (pedido.productos.length == 0) {
+        let error = new Error('no hay productos');
+        error.status = 400;
+        next(error);
+    }
+    
+    const connPromise = await pool.getConnectionPromise().promise();
 
     await connPromise.beginTransaction();
 
     try {
+        let pedido_estado;
+        if (req.user.empleado) {
+            pedido_estado = 'cola';
+        } else if (req.user.cliente) {
+            pedido_estado = 'verificacion';
+        } else {
+            throw new Error('usuario no es ni cliente ni empleado');
+        }
         let [results,] = await connPromise.execute(
             'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?)',
-            [pedido.direccion, pedido.municipio, pedido.estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
+            [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
         );
         const pk = utils.parseToJSON(results)[0];
 
@@ -165,112 +178,16 @@ pedidoRouter.route("/")
             [precio_bruto, precio_final, pk.fecha, pk.numero]
         );
 
+        await connPromise.commit();
 
+        res.json({
+            fecha: pk.fecha,
+            numero: pk.numero
+        });
     } catch(err) {
         connPromise.rollback();
         next(err);
-    }*/
-
-    if (pedido.productos.length == 0) {
-        let error = new Error('no hay productos');
-        error.status = 400;
-        throw error;
     }
-    
-    let results = await poolPromise.execute('SELECT tipo FROM cliente WHERE telefono = ?', [pedido.cliente_pedidor]);
-    const tipoCliente = JSON.parse(JSON.stringify(results[0]))[0].tipo;
-    results = await poolPromise.execute('SELECT MAX(numero) AS num FROM pedido WHERE fecha = ?', [pedido.fecha]);
-    let numero = JSON.parse(JSON.stringify(results[0]))[0].num;
-    if (numero) {
-        numero += 1;
-    } else {
-        numero = 1;
-    }
-    const date = new Date();
-    const hora_registro = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        
-        results = await conn.promise().execute(
-            "INSERT INTO pedido(fecha, numero, hora_registro, direccion, estado, tipo_cliente, nota, usuario_registrador, cliente_pedidor, bodega) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [pedido.fecha, numero, hora_registro, pedido.direccion, pedido.estado, tipoCliente, pedido.nota, req.user.username, pedido.cliente_pedidor, pedido.bodega]
-        );
-
-        let productos = pedido.productos;
-        if (results[0].affectedRows == 1) {
-            let precio_bruto = 0;
-            for (let i = 0; i < productos.length; i++) {
-                results = await conn.promise().execute(
-                    'INSERT INTO pedidoxproducto VALUES(?, ?, ?, ?, ?)',
-                    [productos[i].codigo, pedido.fecha, numero, productos[i].precio, productos[i].cantidad]
-                );
-
-                precio_bruto += productos[i].precio * productos[i].cantidad;
-
-                if (results[0].affectedRows != 1) {
-                    conn.rollback();
-                    throw {
-                        status: 500
-                    }
-                }
-            }
-            const precio_final = precio_bruto * (1 - (pedido.descuento / 100));
-            
-            let query, par;
-            let puntos_compra = 0;
-            if (pedido.estado === 'verificacion') {
-                query = 'UPDATE pedido SET precio_bruto = ?, precio_final = ? WHERE fecha = ? AND numero = ?';
-                par = [precio_bruto, precio_final, pedido.fecha, numero];
-            } else {
-                results = await poolPromise.execute(
-                    'SELECT SUM(p.peso) AS peso_total FROM (pedido pe INNER JOIN pedidoxproducto pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
-                    [pedido.fecha, numero]
-                );
-                const peso_total = JSON.parse(JSON.stringify(results[0]))[0].peso_total;
-                results = await poolPromise.execute("SELECT puntosxlibra FROM static WHERE codigo = '1'");
-                const puntosxlibra = JSON.parse(JSON.stringify(results[0]))[0].puntosxlibra;
-                puntos_compra = Math.floor(peso_total * puntosxlibra);
-                query = 'UPDATE pedido SET precio_bruto = ?, precio_final = ?, puntos_compra = ?, empleado_despachador = ? WHERE fecha = ? AND numero = ?';
-                par = [precio_bruto, precio_final, puntos_compra, pedido.empleado, pedido.fecha, numero];
-            }
-            results = await conn.promise().execute(query, par);
-
-            if (results[0].affectedRows == 1) {
-                if (pedido.estado = 'verificacion') {
-                    query = 'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ?, numero_pedidos = numero_pedidos + 1, puntos = puntos + ? WHERE telefono = ?';
-                    par = [pedido.fecha, numero, puntos_compra, pedido.cliente_pedidor]
-                } else {
-                    query = 'UPDATE cliente SET fecha_ultimo_pedido = ?, numero_ultimo_pedido = ?, numero_pedidos = numero_pedidos + 1 WHERE telefono = ?';
-                    [pedido.fecha, numero, pedido.cliente_pedidor];
-                }
-
-                results = await conn.promise().execute(query, par);
-                if (results[0].affectedRows == 1) {
-                    conn.commit();
-                    results = await poolPromise.execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [pedido.fecha, numero]);
-                    res.json(JSON.parse(JSON.stringify(results[0])));
-                } else {
-                    conn.rollback();
-                    throw {
-                        status: 500
-                    }
-                }
-            } else {
-                conn.rollback();
-                throw {
-                    status: 500
-                }
-            }
-        } else {
-            conn.rollback();
-            throw {
-                status: 500
-            }
-        }
-    });
 }))
 .put(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     if (req.user.tipo == 'cliente') {

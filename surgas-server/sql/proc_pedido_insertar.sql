@@ -28,6 +28,10 @@ BEGIN
 	END IF;
 
 	SELECT tipo INTO cliente_tipo FROM cliente WHERE telefono = cliente_telefono;
+
+	UPDATE cliente
+	SET fecha_ultimo_pedido = pedido_fecha, numero_ultimo_pedido = pedido_numero, numero_pedidos = numero_pedidos + 1
+	WHERE telefono = cliente_telefono;
 	
 	INSERT INTO pedido(
 		fecha,
