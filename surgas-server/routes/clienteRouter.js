@@ -10,29 +10,6 @@ const poolPromise = pool.promise();
 const clienteRouter = require('express').Router();
 clienteRouter.use(require('body-parser').json());
 
-/**
- *  @swagger
- *  /clientes:
- *      get:
- *          summary: Retrieve a list of clients
- *          description: Retrieve a list of clients based on search criteria
- *          responses:
- *              200:
- *                  description: A list of clients
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: object
- *                              properties:
- *                                  telefono:
- *                                      type: string
- *                                      description: The client's telephone number.
- *                                      example: 3333333333
- *                                  email:
- *                                      type: string
- *                                      description: The client's email address.
- *                                      example: client@example.com
-*/
 clienteRouter.route("/")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
@@ -40,7 +17,7 @@ clienteRouter.route("/")
 })
 .get(asyncHandler(async (req, res, next) => {
     //const query = db.buildQuery('producto', req.query);
-    let query = 'SELECT * FROM cliente';
+    let query = 'SELECT  FROM cliente';
     const params = req.query;
     let conditions = [];
     let values = [];
@@ -158,7 +135,7 @@ clienteRouter.route("/:telefono")
 }));
 
 clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
-    const [results,] = await poolPromise.execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    const [results,] = await poolPromise.execute('SELECT  FROM cliente WHERE telefono = ?', [req.params.telefono]);
 
     res.json({
         'found': results.length > 0
