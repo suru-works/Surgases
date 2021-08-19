@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 const db = require('../db');
 const auth = require('../auth');
+const { values } = require('mysql2/lib/constants/charset_encodings');
 
 const pool = db.pool;
 const poolPromise = pool.promise();
@@ -134,7 +135,8 @@ pedidoRouter.route("/")
         next(error);
     }
     
-    const connPromise = await pool.getConnectionPromise().promise();
+    const conn = pool.getConnectionPromise();
+    const connPromise = await conn.promise();
 
     await connPromise.beginTransaction();
 
@@ -179,6 +181,7 @@ pedidoRouter.route("/")
         );
 
         await connPromise.commit();
+        conn.release();
 
         res.json({
             fecha: pk.fecha,
@@ -186,93 +189,84 @@ pedidoRouter.route("/")
         });
     } catch(err) {
         connPromise.rollback();
+        conn.release();
         next(err);
     }
-}))
-.put(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+}));
+
+pedidoRouter.route('/:fecha/:numero')
+.all((req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+}, auth.isAuthenticated)
+.put(asyncHandler(async (req, res, next) => {
     if (req.user.tipo == 'cliente') {
         let err = new Error('not authorized');
         err.status = 403;
         next(err);
     }
 
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            return;
+    const conn = pool.getConnectionPromise();
+    const connPromise = await conn.promise();
+
+    const fecha = req.params.fecha;
+    const numero = req.params.numero;
+    const body = req.body;
+    let values = [];
+
+    if (body.estado) {
+        const estado = body.estado;
+        changes.push('estado = ? ');
+        values.push(estado);
+
+        if (estado == 'fiado' || estado == 'pago') {
+            await connPromise.execute(
+                'CALL proc_pedido_inventario_puntos(?, ?)',
+                [fecha, numero]
+            )
         }
+    }
+
+    if (body.direccion) {
+        changes.push('direccion = ? ');
+        values.push(body.direccion);
+    }
+
+    if (body.municipio) {
+        changes.push('municipio = ? ');
+        values.push(body.municipio);
+    }
+
+    if (body.bodega) {
+        changes.push('bodega = ? ');
+        values.push(body.bodega);
+    }
+
+    if (body.nota) {
+        changes.push('nota = ? ');
+        values.push(body.nota);
+    }
+
+    if (body.empleado_repartidor) {
+        changes.push('empleado_repartidor = ? ');
+        values.push(body.empleado_repartidor);
+    }
+
+    values.push(fecha);
+    values.push(numero);
+
+    await connPromise.execute(
+        'UPDATE pedido SET ' + changes.join(', ') + 'WHERE fecha = ? AND numero = ?',
+        values
+    );
     
-        let changes = [];
-        let values = [];
-
-        const params = req.body;
-
-        if (params.direccion) {
-            changes.push('direccion = ? ');
-            values.push(params.direccion);
-        }
-
-        if (params.nota) {
-            changes.push('nota = ? ');
-            values.push(params.nota);
-        }
-
-        if (params.bodega) {
-            changes.push('bodega = ?');
-            values.push(params.bodega);
-        }
-        
-        if (params.estado) {
-            const estado = params.estado;
-            changes.push('estado = ? ');
-            values.push(estado);
-            if (estado == 'proceso' || estado == 'fiado' || estado == 'pago') {
-                let re = await poolPromise.execute(
-                    'SELECT estado FROM pedido WHERE fecha = ? AND numero = ?',
-                    [params.fecha, params.numero]
-                );
-                const original = JSON.parse(JSON.stringify(re[0]))[0].estado;
-                if (original == 'verificacion' || original == 'cola') {
-                    re = await poolPromise.execute(
-                        'SELECT producto FROM pedidoxproducto WHERE fecha_pedido = ? AND numero_pedido = ?',
-                        [params.fecha, params.numero]
-                    );
-                    const productos = JSON.parse(JSON.stringify(re[0]));
-                    for (let i = 0; i < productos.length; i++) {
-                        re = await conn.promise().execute(
-                            'UPDATE producto SET inventario = inventario - (SELECT unidades FROM pedidoxproducto WHERE producto = ? AND fecha_pedido = ? AND numero_pedido = ?) WHERE codigo = ?',
-                            [productos[i].producto, params.fecha, params.numero, productos[i].producto]
-                        );
-                    }
-                }
-            }
-        }
-
-        if (params.empleado) {
-            changes.push('empleado_despachador = ? ');
-            values.push(params.empleado);
-        }
-
-        values.push(params.fecha);
-        values.push(params.numero);
-
-        const result = await conn.promise().execute(
-            'UPDATE pedido SET ' + changes.join(', ') + 'WHERE fecha = ? AND numero = ?',
-            values
-        );
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'pedido updated successfully'
-            });
-        } else {
-            conn.rollback();
-            next(new Error('update error'));
-        }
+    res.json({
+        success: true,
+        msg: 'order updated successfully'
     });
 }));
 
-pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+/*pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     if (req.user.tipo == 'cliente') {
         let err = new Error('not authorized');
         err.status = 403;
@@ -291,7 +285,7 @@ pedidoRouter.get('/:fecha/:numero', auth.isAuthenticated, asyncHandler(async (re
             status: 500
         };
     }
-}));
+}));*/
 
 pedidoRouter.post('/verify', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     if (req.user.tipo == 'cliente') {
