@@ -82,6 +82,26 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// endpoint documentation
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Surgas API',
+    description: 'This is a REST API made with Express for the Surgas website.',
+    license: {
+      name: 'MIT License'
+    },
+    version: '1.0.0'
+  }
+};
+const options = {
+  swaggerDefinition,
+  apis: ['./routes/*.js'],
+};
+const swaggerSpec = swaggerJSDoc(options);
+
 // using routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -92,6 +112,7 @@ app.use('/clientes', clienteRouter);
 app.use('/system', systemRouter);
 app.use('/maps', mapsRouter);
 app.use('/impresoras', impresoraRouter);
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

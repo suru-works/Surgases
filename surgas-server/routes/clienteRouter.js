@@ -10,6 +10,29 @@ const poolPromise = pool.promise();
 const clienteRouter = require('express').Router();
 clienteRouter.use(require('body-parser').json());
 
+/**
+ *  @swagger
+ *  /clientes:
+ *      get:
+ *          summary: Retrieve a list of clients
+ *          description: Retrieve a list of clients based on search criteria
+ *          responses:
+ *              200:
+ *                  description: A list of clients
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              properties:
+ *                                  telefono:
+ *                                      type: string
+ *                                      description: The client's telephone number.
+ *                                      example: 3333333333
+ *                                  email:
+ *                                      type: string
+ *                                      description: The client's email address.
+ *                                      example: client@example.com
+*/
 clienteRouter.route("/")
 .all((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
