@@ -227,26 +227,6 @@ router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
   });
 }));
 
-router.route('/:username')
-  .all(auth.isAuthenticated, auth.isAdmin)
-  .put(asyncHandler(async (req, res, next) => {
-    const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
-    await poolPromise.execute(query.query, query.values);
-
-    res.json({
-      success: true,
-      msg: 'user updated successfully'
-    });
-  }))
-  .delete(asyncHandler(async (req, res, next) => {
-    await poolPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
-
-    res.json({
-      success: true,
-      msg: 'user deleted successfully'
-    });
-  }));
-
 router.post('/restorepassword', asyncHandler(async (req, res, next) => {
 
   const data = req.body;
@@ -422,5 +402,25 @@ router.post('/verify', async function (req, res, next) {
   });
 
 });
+
+router.route('/:username')
+.all(auth.isAuthenticated, auth.isAdmin)
+.put(asyncHandler(async (req, res, next) => {
+  const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
+  await poolPromise.execute(query.query, query.values);
+
+  res.json({
+    success: true,
+    msg: 'user updated successfully'
+  });
+}))
+.delete(asyncHandler(async (req, res, next) => {
+  await poolPromise.execute('DELETE FROM usuario WHERE username = ?', [req.params.username]);
+
+  res.json({
+    success: true,
+    msg: 'user deleted successfully'
+  });
+}));
 
 module.exports = router;
