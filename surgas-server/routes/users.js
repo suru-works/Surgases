@@ -355,13 +355,15 @@ router.post('/changePassword', async function (req, res, next) {
 });
 
 router.post('/verify', async function (req, res, next) {
-  console.log("puto el que lo lea");
+  
   poolPromise.getConnection(async (err, conn) => {
     if (err) {
       console.log(err);
       return;
     }
+    console.log("puto el que lo lea");
     try {
+      console.log("puto el que lo lea 2");
       const data = req.body;
       const token = data.token;
       console.log(token);
