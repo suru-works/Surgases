@@ -354,56 +354,46 @@ router.post('/changePassword', async function (req, res, next) {
 
 });
 
-router.post('/verify', async function (req, res, next) {
-  
-  poolPromise.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
+router.post('/verify', asyncHandler(async function (req, res, next) {
+  const data = req.body;
+  const token = data.token;
+  const tokenTokens = token.split(',');
+
+  const now = new Date();
+  const exp = Date.parse(tokenTokens[0]);
+
+  if (now > exp) {
+    var err = new Error("The token has expired");
+    err.statusCode = 401;
+    next(err);
+  }
+  else {
+    //actualizando la estado de verificacion del usuario
+    const conn = await pool.getConnectionPromise();
+    const connPromise = conn.promise();
+
+    let [result,] = await connPromise.execute('SELECT username FROM usuario WHERE verification_token = ?', [token]);
+
+    if (result.length == 1) {
+      const username = utils.parseToJSON(result)[0].username;
+
+      await connPromise.execute('UPDATE usuario SET verificado = 1 WHERE username = ?', [username]);
+
+      conn.release();
+
+      res.json({
+        msg: 'user verified successfully'
+      });
     }
-    console.log("puto el que lo lea");
-    try {
-      console.log("puto el que lo lea 2");
-      const data = req.body;
-      const token = data.token;
-      console.log(token);
-      const tokenTokens = token.split(',');
-
-      const now = new Date();
-      const exp = Date.parse(tokenTokens[0]);
-
-      if (now > exp) {
-        var err = new Error("The token has expired");
-        err.statusCode = 401;
-        throw err;
-      }
-      else {
-        //actualizando la estado de verificacion del usuario
-        let result = await poolPromise.execute('SELECT username FROM usuario WHERE verification_token = ?', [token]);
-        if (result[0].length == 1) {
-          const username = JSON.parse(JSON.stringify(result[0]))[0].username;
-          await conn.execute('UPDATE usuario SET verificado = 1 WHERE username = ?', [username]);
-          conn.commit();
-          res.json({
-            msg: 'user verified successfully'
-          });
-        }
-        else {
-          var err = new Error("The token is not valid");
-          err.statusCode = 401;
-          throw err;
-        }
-
-      }
-
-
-    } catch (error) {
-      console.log(error);
-      next(error);
+    else {
+      conn.release();
+      
+      var err = new Error("The token is not valid");
+      err.statusCode = 401;
+      next(err);
     }
-  });
-
-});
+  }
+}));
 
 router.route('/:username')
 .all(auth.isAuthenticated, auth.isAdmin)
