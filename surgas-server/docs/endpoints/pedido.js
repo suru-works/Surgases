@@ -508,8 +508,20 @@ module.exports = {
                     schema: {
                         type: 'integer'
                     }
+                },
+                {
+                    in: 'body',
+                    name: 'impresora',
+                    schema: {
+                        type: 'string'
+                    }
                 }
-            ]
+            ],
+            responses: {
+                200: {
+                    description: 'Order receipt printed successfully.'
+                }
+            }
         }
     }
 }
