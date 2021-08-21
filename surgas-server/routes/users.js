@@ -200,7 +200,9 @@ router.route('/current')
 .get(asyncHandler(async (req, res, next) => {
   const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
 
-  res.json(utils.parseToJSON(results))[0];
+  console.log(results);
+
+  res.json(utils.parseToJSON(results)[0][0]);
 }))
 .put(asyncHandler(async (req, res, next) => {
   const conn = await pool.getConnectionPromise();

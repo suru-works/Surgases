@@ -154,7 +154,7 @@ const UserOptionsSales = () => {
 const UserOptionsAdmin = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.tipo.includes('administrador,')) {
+        if (result.data.es_admin.data[0]) {
             return (
                 <NavItem >
                     <NavLink className='nav-link' to='/administrador'><span className='fa fa-list fa-lg'></span> Administración</NavLink>
