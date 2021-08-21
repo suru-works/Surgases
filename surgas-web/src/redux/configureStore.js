@@ -4,6 +4,7 @@ import { Register, RegisterClient, CheckTel } from './register';
 import { Login } from './login';
 import { Logout } from './logout';
 import { User, UserUpdate } from './user';
+import { Account, AccountUpdate} from './account'
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
 import { Products, ProductsUpdate, TrolleyProducts } from './products';
@@ -25,6 +26,8 @@ import { OrderStats } from './orderStats';
             registerClient: RegisterClient,
             login: Login,
             logout: Logout,
+            account: Account,
+            accountUpdate: AccountUpdate,
             user: User,
             userUpdate: UserUpdate,
             users: Users,

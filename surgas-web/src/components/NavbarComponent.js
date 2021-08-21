@@ -10,6 +10,7 @@ import LogoutComponent from './LogoutComponent';
 import { Loading } from './LoadingComponent';
 import { useSelector } from 'react-redux';
 import { __esModule } from 'reactstrap/lib/Row';
+import EditAccountComponent from './EditAccountComponent';
 
 
 const AuthOptions = () => {
@@ -115,7 +116,7 @@ const AuthOptions = () => {
                         <DropdownItem style={{ color: '#001644'}} onClick={toggleLogoutModal} >Cerrar sesión</DropdownItem>
                             <LogoutComponent isOpen={isLogoutModalOpened} toggle={toggleLogoutModal} />
                         <DropdownItem style={{ color: '#001644'}} onClick={toggleAcountManagementModal} >Gestionar cuenta</DropdownItem>
-                            <AcountManagement isOpen={isAcountManagementModalOpened} toggle={toggleAcountManagementModal} user={result.data } />
+                            <EditAccountComponent isOpen={isAcountManagementModalOpened} toggle={toggleAcountManagementModal} account={result.data } />
                     </DropdownMenu>
                     
                 </ButtonDropdown>

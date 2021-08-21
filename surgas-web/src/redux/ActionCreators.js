@@ -647,6 +647,38 @@ export const restorePassword = (username) => async (dispatch) => {
     }
 }
 
+//Account
+
+export const getAccountDataRequest = () => ({
+    type: ActionTypes.GET_ACCOUNT_DATA_REQUEST
+});
+
+export const getAccountDataReset = () => ({
+    type: ActionTypes.GET_ACCOUNT_DATA_RESET
+});
+
+export const getAccountDataSuccess = (result) => ({
+    type: ActionTypes.GET_ACCOUNT_DATA_SUCCESS,
+    payload: result
+});
+
+export const getAccountDataFailed = (errmess) => ({
+    type: ActionTypes.GET_ACCOUNT_DATA_FAILED,
+    payload: errmess
+});
+
+export const getAccountData = () => async (dispatch) => {
+    dispatch(getAccountDataRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'users/account');
+        dispatch(getAccountDataSuccess(res));
+    } catch (err) {
+        dispatch(getAccountDataFailed(err));
+    }
+}
+
+
 //verify account
 
 export const verifyRequest = () => ({
