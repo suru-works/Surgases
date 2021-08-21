@@ -196,28 +196,28 @@ router.post('/logout', auth.isAuthenticated, (req, res, next) => {
 });
 
 router.route('/current')
-  .all(auth.isAuthenticated)
-  .get(asyncHandler(async (req, res, next) => {
-    const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
+.all(auth.isAuthenticated)
+.get(asyncHandler(async (req, res, next) => {
+  const [results,] = await poolPromise.execute('CALL proc_usuario_current(?)', [req.user.username]);
 
-    res.json(utils.parseToJSON(results));
-  }))
-  .put(asyncHandler(async (req, res, next) => {
-    const conn = await pool.getConnectionPromise();
-    const connPromise = conn;
+  res.json(utils.parseToJSON(results))[0];
+}))
+.put(asyncHandler(async (req, res, next) => {
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn;
 
-    const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
-    await connPromise.execute(query.query, query.values);
+  const query = db.buildUpdate('usuario', { name: 'username', value: req.user.username }, req.body);
+  await connPromise.execute(query.query, query.values);
 
-    const [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
-    const user = utils.parseToJSON(results)[0];
+  const [results,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [req.user.username]);
+  const user = utils.parseToJSON(results)[0];
 
-    conn.release();
+  conn.release();
 
-    req.login(user, (err) => {
-      next(err);
-    });
-  }));
+  req.login(user, (err) => {
+    next(err);
+  });
+}));
 
 router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
   const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE cliente = ?', [req.params.telefono]);
