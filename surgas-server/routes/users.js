@@ -368,7 +368,7 @@ router.post('/verify', asyncHandler(async function (req, res, next) {
     next(err);
   }
   else {
-    //actualizando la estado de verificacion del usuario
+    //updating the user's verification state
     const conn = await pool.getConnectionPromise();
     const connPromise = conn.promise();
 

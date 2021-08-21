@@ -17,7 +17,7 @@ passport.deserializeUser(async (username, cb) => {
         if (results.length == 0) {
             throw new Error('user does not exist');
         }
-        const user = util.parseToJSON(results)[0];
+        const user = utils.parseToJSON(results)[0];
 
         cb(null, user);
     } catch (err) {
