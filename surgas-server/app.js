@@ -24,6 +24,9 @@ const impresoraRouter = require('./routes/impresoraRouter');
 const passport = require('passport');
 const session = require('express-session');
 
+// documentation imports
+const swaggerUI = require('swagger-ui-express');
+
 const app = express();
 
 //middleware for cross origin
@@ -81,26 +84,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// endpoint documentation
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUI = require('swagger-ui-express');
-const swaggerDefinition = {
-  openapi: '3.0.0',
-  info: {
-    title: 'Surgas API',
-    description: 'This is a REST API made with Express for the Surgas website.',
-    license: {
-      name: 'MIT License'
-    },
-    version: '1.0.0'
-  }
-};
-const options = {
-  swaggerDefinition,
-  apis: ['./docs/*.js'],
-};
-const swaggerSpec = swaggerJSDoc(options);
 
 // using routes
 app.use('/', indexRouter);

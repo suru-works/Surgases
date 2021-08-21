@@ -1,7 +1,7 @@
-const info = require('./info')
-const clientes = require('./clientes');
+const info = require('./info');
+const endpoints = require('./endpoints');
 
 module.exports = {
     ...info,
-    ...clientes
+    ...endpoints
 };
