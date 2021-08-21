@@ -229,6 +229,82 @@ router.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
   });
 }));
 
+router.route('/account')
+.all(auth.isAuthenticated)
+.get(asyncHandler(async (req, res, next) => {
+  const user = req.user;
+
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn.promise();
+
+  let [results,] = await connPromise.execute(
+    'SELECT * FROM empleado WHERE id = ?',
+    [user.empleado]
+  );
+  const empleado = utils.parseToJSON(results)[0];
+
+  [results] = await connPromise.execute(
+    'SELECT telefono, email, nombre, fecha_registro, puntos, tipo FROM cliente WHERE telefono = ?',
+    [user.cliente]
+  );
+  const cliente = utils.parseToJSON(results)[0];
+
+  conn.release();
+
+  res.json({
+    usuario: {
+      username: user.username,
+      email: user.email,
+      es_admin: user.es_admin
+    },
+    cliente: cliente,
+    empleado: empleado
+  });
+}))
+.put(asyncHandler(async (req, res, next) => {
+  const user = req.user;
+  const body = req.body;
+
+  if (!user.cliente && body.cliente) {
+    let err = new Error('El usuario no es un cliente');
+    err.statusCode = 403;
+    next(err);
+  }
+
+  if (!user.empleado && body.empleado) {
+    let err = new Error('El usuario no es un empleado');
+    err.statusCode = 403;
+    next(err);
+  }
+
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn.promise();
+
+  await connPromise.beginTransaction();
+
+  try {
+    let query = db.buildUpdate('cliente', { name: 'telefono', value: user.cliente }, body.cliente);
+    await connPromise.execute(query.query, query.values);
+
+    query = db.buildUpdate('empleado', { name: 'id', value: user.empleado }, body.empleado);
+    await connPromise.execute(query.query, query.values);
+    
+    query = db.buildUpdate('usuario', { name: 'username', value: user.username }, body.usuario);
+    await connPromise.execute(query.query, query.values);
+
+    await connPromise.commit();
+    conn.release();
+
+    res.json({
+      success: true
+    });
+  } catch (error) {
+    connPromise.rollback();
+    conn.release();
+    next(error);
+  }
+}));
+
 router.post('/restorepassword', asyncHandler(async (req, res, next) => {
 
   const data = req.body;
