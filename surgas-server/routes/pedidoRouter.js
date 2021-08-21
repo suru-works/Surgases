@@ -153,7 +153,7 @@ pedidoRouter.route("/")
             'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?)',
             [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
         );
-        const pk = utils.parseToJSON(results)[0];
+        const pk = utils.parseToJSON(results)[0][0];
 
         let productos = pedido.productos;
 
@@ -167,7 +167,7 @@ pedidoRouter.route("/")
                 'CALL proc_pedidoxproducto_insertar(?, ?, ?, ?, ?, ?)',
                 [producto.codigo, pk.fecha, pk.numero, producto.precio, producto.cantidad, pedido.cliente_pedidor]
             );
-            const precios = utils.parseToJSON(results)[0];
+            const precios = utils.parseToJSON(results)[0][0];
 
             precio_bruto += precios.precio_bruto;
             precio_final += precios.precio_final;
