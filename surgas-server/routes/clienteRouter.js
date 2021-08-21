@@ -150,7 +150,7 @@ clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(as
         'CALL proc_cliente_consultar_ultimo_pedido(?)',
         [req.params.telefono]
     );
-    const pedido = utils.parseToJSON(results)[0];
+    const pedido = utils.parseToJSON(results)[0][0];
 
     [results,] = await connPromise.execute(
         'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN pedidoxproducto pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND pp.numero_pedido = ?',
