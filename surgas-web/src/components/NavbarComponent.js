@@ -130,12 +130,19 @@ const AuthOptions = () => {
 const UserOptionsSales = () => {
     const result = useSelector(state => state.user.result);
     if (result) {
-        if (result.data.es_admin.data[0] || result.data.empleado_tipo.includes('vendedor,')) {
-            return (
-                <NavItem >
-                    <NavLink className='nav-link' to='/ventas'><span className='fa fa-list fa-lg'></span> Ventas</NavLink>
-                </NavItem>
-            );
+        if (result.data.empleado_tipo) {
+            if (result.data.empleado_tipo.includes('vendedor,')) {
+                return (
+                    <NavItem >
+                        <NavLink className='nav-link' to='/ventas'><span className='fa fa-list fa-lg'></span> Ventas</NavLink>
+                    </NavItem>
+                );
+            }
+            else{
+                return (
+                    <div></div>
+                );
+            }
         }
         else {
             return (
