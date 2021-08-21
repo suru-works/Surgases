@@ -243,7 +243,7 @@ router.route('/account')
   );
   const empleado = utils.parseToJSON(results)[0];
 
-  [results] = await connPromise.execute(
+  [results,] = await connPromise.execute(
     'SELECT telefono, email, nombre, fecha_registro, puntos, tipo FROM cliente WHERE telefono = ?',
     [user.cliente]
   );

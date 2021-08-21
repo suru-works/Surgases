@@ -276,7 +276,7 @@ pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, asyncHandler
     const pedido = req.params;
 
     const [results,] = await poolPromise.execute(
-        'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+        'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, p.tipo AS tipo, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [pedido.fecha, pedido.numero]
     );
 
