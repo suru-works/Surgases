@@ -94,7 +94,7 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
     [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, data.username, data.email, hash]
   );
 
-  //Sending user verification mail
+  //Generating a verification token and Sending user verification mail
   try {
     let [resUser,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [data.username]);
     let user = utils.parseToJSON(resUser)[0];
@@ -309,15 +309,12 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
 
   const data = req.body;
 
-  poolPromise.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn.promise();
+    //Generating a restore password token and Sending password restore mail
     try {
-      let resUser = await conn.execute('SELECT * FROM usuario WHERE username = ?', [data.username]);
-      let user = JSON.parse(JSON.stringify(resUser[0]))[0];
+      let [resUser,] = await connPromise.execute('SELECT * FROM usuario WHERE username = ?', [data.username]);
+      let user = utils.parseToJSON(resUser)[0];
       if (user) {
         isTokenNotUnique = true;
         let now = new Date();
@@ -326,7 +323,7 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
 
         while (isTokenNotUnique) {
           var restore_password_token = now + ',' + key;
-          var resUserByToken = await conn.execute('SELECT * FROM usuario WHERE restore_password_token = ?', [restore_password_token]);
+          var resUserByToken = await connPromise.execute('SELECT * FROM usuario WHERE restore_password_token = ?', [restore_password_token]);
           let userByToken = JSON.parse(JSON.stringify(resUserByToken[0]))[0];
           if (userByToken) {
             //the token allready exist
@@ -335,14 +332,14 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
           else {
             isTokenNotUnique = false;
             data.restore_password_token = restore_password_token;
-            let result = await conn.execute('UPDATE usuario SET restore_password_token = ? WHERE username = ?', [restore_password_token, data.username]);
+            let result = await connPromise.execute('UPDATE usuario SET restore_password_token = ? WHERE username = ?', [restore_password_token, data.username]);
             if (result[0].affectedRows == 1) {
-              conn.commit();
+              connPromise.commit();
               res.json({
                 msg: 'user updated successfully'
               });
             } else {
-              conn.rollback();
+              connPromise.rollback();
               var err = new Error("user update failed successfully");
               err.statusCode = 500;
               throw err;
@@ -380,8 +377,10 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
       console.log(error);
       next(error);
     }
-  }
-  );
+
+    res.json({
+      success: true
+    });
 }));
 
 router.post('/changePassword', async function (req, res, next) {
