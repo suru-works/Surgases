@@ -378,17 +378,16 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
       next(error);
     }
 
+    conn.release();
+
     res.json({
       success: true
     });
 }));
 
 router.post('/changePassword', async function (req, res, next) {
-  poolPromise.getConnection(async (err, conn) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
+  const conn = await pool.getConnectionPromise();
+  const connPromise = conn.promise();
     try {
       const data = req.body;
       const token = data.token;
@@ -405,18 +404,18 @@ router.post('/changePassword', async function (req, res, next) {
       else {
         //actualizando la contraseña del usuario
         const hash = await bcrypt.hash(data.newPassword, 10);
-        let result = await conn.execute('UPDATE usuario SET password_hash = ? WHERE restorePasswordToken = ?', [hash, token]);
+        let result = await connPromise.execute('UPDATE usuario SET password_hash = ? WHERE restore_password_token = ?', [hash, token]);
         if (result[0].affectedRows == 1) {
-          result = await poolPromise.execute('SELECT username FROM usuario WHERE restorePasswordToken = ?', [token]);
-          const username = JSON.parse(JSON.stringify(result[0]))[0].username;
-          result = await conn.execute('DELETE FROM sessions WHERE session_id IN (SELECT session_id FROM user_sessions WHERE username = ?)', [username]);
-          result = await conn.execute('DELETE FROM user_sessions WHERE username = ?', [username]);
-          conn.commit();
+          [result,] = await connPromise.execute('SELECT username FROM usuario WHERE restore_password_token = ?', [token]);
+          let username = utils.parseToJSON(result)[0].username;
+          await connPromise.execute('DELETE FROM sessions WHERE session_id IN (SELECT session_id FROM user_sessions WHERE username = ?)', [username]);
+          await connPromise.execute('DELETE FROM user_sessions WHERE username = ?', [username]);
+          connPromise.commit();
           res.json({
             msg: 'password updated successfully'
           });
         } else {
-          conn.rollback();
+          connPromise.rollback();
           var err = new Error("password update failed successfully");
           err.statusCode = 500;
           throw err;
@@ -427,7 +426,12 @@ router.post('/changePassword', async function (req, res, next) {
       console.log(error);
       next(error);
     }
-  });
+
+    conn.release();
+
+    res.json({
+      success: true
+    });
 
 });
 
