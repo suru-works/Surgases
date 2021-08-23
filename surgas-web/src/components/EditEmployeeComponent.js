@@ -52,13 +52,12 @@ const EmployeeModal = (props) => {
 
     const uploadChanges = (values) => {
         const employeeData = {
-            id: props.employee.id,
+            id: id,
             nombre: values.nombre,
             direccion: values.direccion,
             telefono: values.telefono,
             estado: values.estado,
-            tipo: values.tipo,
-            username: values.username
+            tipo: values.tipo
         }
         doUpdateEmployee(employeeData);
     }
@@ -78,8 +77,7 @@ const EmployeeModal = (props) => {
             direccion: direccion,
             telefono: telefono,
             estado: estado,
-            tipo: tipo,
-            username: username
+            tipo: tipo
         },
         validationSchema,
         onSubmit(values) {

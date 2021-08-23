@@ -43,7 +43,6 @@ const AddUserComponent = (props) => {
     }
 
     const doAddUser = (userData) => {
-        console.log(userData);
         dispatch(addUser(userData));
     }
 
