@@ -80,7 +80,7 @@ module.exports.isVerified = async (req, res, next) => {
 }
 
 module.exports.isAdmin = (req, res, next) => {
-    if (req.user.es_admin == 1) {
+    if (req.user.es_admin.data[0] == 1) {
         next();
     } else {
         let err = new Error('not authorized');
