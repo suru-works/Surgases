@@ -69,13 +69,6 @@ const ReactTableEmployeesComponent = (props) => {
       },
       width: 100,
     },
-    {
-      Header: "Usuario",
-      accessor: "username",
-      style: {
-        textAlign: "right"
-      },
-    },
   ]
 
   return (

@@ -32,7 +32,6 @@ const EmployeeModal = (props) => {
     const [telefono] = useState(props.employee.telefono);
     const [estado] = useState(props.employee.estado);
     const [tipo] = useState(props.employee.tipo);
-    const [username] = useState(props.employee.username);
 
     const error = useSelector(state => state.employeesUpdate.errMess);
     const result = useSelector(state => state.employeesUpdate.result);
@@ -51,15 +50,24 @@ const EmployeeModal = (props) => {
     const doUpdateEmployee = (employeeData) => dispatch(updateEmployee(employeeData));
 
     const uploadChanges = (values) => {
+        let type = '';
+        if (values.vendedor) {
+            tipo += 'vendedor,';
+        }
+        if (values.repartidor) {
+            tipo += 'repartidor,';
+        }
+        if (values.promotor) {
+            tipo += 'promotor,';
+        }
         const employeeData = {
-            id: props.employee.id,
+            id: id,
             nombre: values.nombre,
             direccion: values.direccion,
             telefono: values.telefono,
             estado: values.estado,
-            tipo: values.tipo,
-            username: values.username
-        }
+            tipo: 'repartidor,'
+        };
         doUpdateEmployee(employeeData);
     }
 
@@ -78,20 +86,13 @@ const EmployeeModal = (props) => {
             direccion: direccion,
             telefono: telefono,
             estado: estado,
-            tipo: tipo,
-            username: username
+            vendedor: tipo.includes(' vendedor,'),
+            repartidor: tipo.includes(' repartidor,'),
+            promotor: tipo.includes(' promotor,')
         },
         validationSchema,
         onSubmit(values) {
-            const employeeData = {
-                nombre: values.nombre,
-                direccion: values.direccion,
-                telefono: values.telefono,
-                estado: values.estado,
-                tipo: values.tipo,
-                username: values.username
-            }
-            uploadChanges(employeeData);
+            uploadChanges(values);
         }
     });
 
@@ -136,50 +137,81 @@ const EmployeeModal = (props) => {
                 <ModalBody>
 
                     <div className="d-flex space-around row">
+                        {values.vendedor}
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
                                 <CardTitle> Ingresa los datos del usuario: {id}</CardTitle>
                                 <CardBody style={{ padding: 8 }}>
 
                                     <FormGroup>
+
                                         <Label htmlFor="nombre">Nombre</Label>
                                         <Input type="text" id="nombre" name="nombre" value={values.nombre}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
                                         {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-
                                     </FormGroup>
 
                                     <FormGroup>
-                                        <Label htmlFor="email">Correo</Label>
-                                        <Input type="email" id="email" name="email" value={values.email}
+
+                                        <Label htmlFor="direccion">Direccion</Label>
+                                        <Input type="direccion" id="direccion" name="direccion" value={values.direccion}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
-                                        {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
-
+                                        {(touched.direccion && errors.direccion) ? (<Alert color="danger">{errors.direccion}</Alert>) : null}
                                     </FormGroup>
 
                                     <FormGroup>
-                                        <Label for="tipo">Tipo</Label>
-                                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
+
+                                        <Label htmlFor="telefono">Telefono</Label>
+                                        <Input type="telefono" id="telefono" name="telefono" value={values.telefono}
                                             onChange={handleChange}
-                                            onBlur={handleBlur}>
-                                            <option>vendedor</option>
-                                            <option>administrador</option>
-                                            <option>repartidor</option>
-                                        </Input>
+                                            onBlur={handleBlur} />
+                                        {(touched.telefono && errors.telefono) ? (<Alert color="danger">{errors.telefono}</Alert>) : null}
                                     </FormGroup>
 
-                                    <div class="d-flex justify-content-center" >
-                                        <FormGroup>
+                                    <FormGroup>
 
-                                            <div className="d-flex justify-content-center" >
-
-                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
-                                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary" onClick={() => deleteThatEmployee()}  >Eliminar Empleado</Button>
+                                        <Label htmlFor="nombre">Tipo</Label>
+                                        <div className="l-flex ml-auto " class="col-12" >
+                                            <div class="col-12 col-sm-8">
+                                                <Label check  >
+                                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" values={values.vendedor}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                    />{' '}
+                                                    Vendedor
+                                                </Label>
                                             </div>
-                                        </FormGroup>
+                                        </div>
+                                        <div className="l-flex ml-auto " class="col-12" >
+                                            <div class="col-12 col-sm-8">
+                                                <Label check  >
+                                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" values={values.repartidor}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                    />{' '}
+                                                    Repartidor
+                                                </Label>
+                                            </div>
+                                        </div>
+                                        <div className="l-flex ml-auto " class="col-12" >
+                                            <div class="col-12 col-sm-8">
+                                                <Label check  >
+                                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" values={values.promotor}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                    />{' '}
+                                                    Promotor
+                                                </Label>
+                                            </div>
+                                        </div>
+                                    </FormGroup>
 
+                                    <br></br>
+
+                                    <div class="d-flex justify-content-center" >
+                                        <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit"  >Actualizar</Button>
                                     </div>
 
                                 </CardBody>
@@ -191,7 +223,7 @@ const EmployeeModal = (props) => {
                     </div>
 
                 </ModalBody>
-            </Modal>
+            </Modal >
 
         );
     }
@@ -200,15 +232,15 @@ const EmployeeModal = (props) => {
 
 const EditEmployeeComponent = (props) => {
 
-    if(props.employee){
-        return(
+    if (props.employee) {
+        return (
             <EmployeeModal employee={props.employee} isOpen={props.isOpen} toggle={props.toggle}></EmployeeModal>
         );
     }
-    return(
+    return (
         <div></div>
     );
-    
+
 }
 
 EditEmployeeComponent.propTypes = {};

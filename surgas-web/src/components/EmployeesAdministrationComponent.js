@@ -11,7 +11,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
-import AddUserComponent from './AddUserComponent';
+import AddEmployeeComponent from './AddEmployeeComponent';
 import ReactTableEmployeesComponent from './ReactTableEmployeesComponent';
 
 
@@ -38,8 +38,7 @@ const SearchCriteria = () => {
             direccion: '',
             telefono: '',
             estado: 'sin especificar',
-            tipo: 'sin especificar',
-            username: ''
+            tipo: 'sin especificar'
 
         },
         validationSchema,
@@ -62,9 +61,6 @@ const SearchCriteria = () => {
             }
             if (values.estado != 'sin especificar') {
                 employeeData.push('estado=' + values.estado);
-            }
-            if (values.username != '') {
-                employeeData.push('username=' + values.username);
             }
 
 
@@ -222,7 +218,7 @@ const EmployeesAdministration = () => {
 
                 </FloatingButton>
             </FloatingButtonContainer>
-            <AddUserComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddUserComponent>
+            <AddEmployeeComponent isOpen={isAddClientModalOPen} toggle={toggleAddUserModal}></AddEmployeeComponent>
         </div>
 
     );

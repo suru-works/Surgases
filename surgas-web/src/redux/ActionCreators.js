@@ -876,8 +876,7 @@ export const updateEmployee = (employeeData) => async (dispatch) => {
         direccion: employeeData.direccion,
         telefono: employeeData.telefono,
         estado: employeeData.estado,
-        tipo: employeeData.tipo,
-        username: employeeData.username
+        tipo: employeeData.tipo
     }
     try {
         const res = await axios.put(baseBackUrl + 'empleados/'+ id, employee, {
