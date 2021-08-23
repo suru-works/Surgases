@@ -38,8 +38,7 @@ const SearchCriteria = () => {
             direccion: '',
             telefono: '',
             estado: 'sin especificar',
-            tipo: 'sin especificar',
-            username: ''
+            tipo: 'sin especificar'
 
         },
         validationSchema,
@@ -62,9 +61,6 @@ const SearchCriteria = () => {
             }
             if (values.estado != 'sin especificar') {
                 employeeData.push('estado=' + values.estado);
-            }
-            if (values.username != '') {
-                employeeData.push('username=' + values.username);
             }
 
 
