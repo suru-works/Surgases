@@ -3,6 +3,8 @@ const asyncHandler = require('express-async-handler');
 
 const db = require('../db');
 const auth = require('../auth');
+const utils = require('../utils');
+
 const { values } = require('mysql2/lib/constants/charset_encodings');
 
 const pool = db.pool;
