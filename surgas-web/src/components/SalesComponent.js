@@ -82,7 +82,7 @@ const SalesComponent = () => {
                 return("Consultar productos");
             }
         }
-        if (result.data.tipo.includes('vendedor,') || result.data.tipo.includes('administrador,')) {
+        if (result.data.empleado_tipo.includes('vendedor,')) {
             return (
 
                 <div class="container-fluid">

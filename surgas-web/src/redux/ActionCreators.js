@@ -303,12 +303,8 @@ export const usersUpdateFailed = (errmess) => ({
 export const updateUser = (userData) => async (dispatch) => {
     dispatch(usersUpdateRequest());
     const id = userData.username;
-    const user = {
-        nombre: userData.nombre,
-        tipo: userData.tipo
-    }
     try {
-        const res = await axios.put(baseBackUrl + 'users/'+ id, user, {
+        const res = await axios.put(baseBackUrl + 'users/'+ id, userData, {
             headers: {
                 'Content-Type': 'application/json'
             },

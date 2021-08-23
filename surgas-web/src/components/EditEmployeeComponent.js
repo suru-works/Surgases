@@ -10,18 +10,6 @@ import * as yup from "yup";
 
 const validationSchema = yup.object(
     {
-        email: yup
-            .string()
-            .required("El empleado debe tener un correo")
-            .email()
-            .min(5, "El correo debe ser de mínimo 5 caracteres")
-            .max(100, "El correo debe ser de máximo 100 caracteres"),
-
-        nombre: yup
-            .string()
-            .required("El empleado debe tener un nombre")
-            .min(3, "El nombre debe ser de mínimo 3 caracteres")
-            .max(100, "El nombre debe ser de máximo 100 caracteres"),
 
     });
 
@@ -176,7 +164,7 @@ const EmployeeModal = (props) => {
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
-                                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" values={values.vendedor}
+                                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" value={'on'}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                     />{' '}
@@ -211,7 +199,7 @@ const EmployeeModal = (props) => {
                                     <br></br>
 
                                     <div class="d-flex justify-content-center" >
-                                        <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit"  >Actualizar</Button>
+                                        <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit">Actualizar</Button>
                                     </div>
 
                                 </CardBody>

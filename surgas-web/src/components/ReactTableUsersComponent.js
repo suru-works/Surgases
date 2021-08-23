@@ -6,7 +6,7 @@ import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 
 const Tuple = (props) => {
-  
+
   return (
     <div className="row col-12 justify-content-center">
       {props.cellValue}
@@ -21,7 +21,7 @@ const ReactTableUsersComponent = (props) => {
 
   const toggleEditModal = () => {
 
-    if (isEditUserModalOpen ){
+    if (isEditUserModalOpen) {
       setSelectedUser(null);
     }
 
@@ -30,13 +30,25 @@ const ReactTableUsersComponent = (props) => {
 
   const getVerificado = (verificado) => {
     if (verificado.data[0] == 1) {
-        return(
-            "Si"
-        );
+      return (
+        "Si"
+      );
     } else {
-        return(
-            "No"
-        );
+      return (
+        "No"
+      );
+    }
+  }
+
+  const getAdmin = (admin) => {
+    if (admin.data[0] == 1) {
+      return (
+        "Si"
+      );
+    } else {
+      return (
+        "No"
+      );
     }
   }
 
@@ -46,7 +58,7 @@ const ReactTableUsersComponent = (props) => {
       Header: "Usuario",
       accessor: "username",
       style: {
-        textAlign: "right"
+        textAlign: "center"
       },
       width: 250,
     },
@@ -54,23 +66,38 @@ const ReactTableUsersComponent = (props) => {
       Header: "Email",
       accessor: "email",
       style: {
-        textAlign: "right"
+        textAlign: "center"
       },
       width: 300,
     },
     {
-      Header: "Nombre",
-      accessor: "nombre",
+      Header: "Id de empleado",
+      accessor: "empleado",
       style: {
-        textAlign: "right"
+        textAlign: "center"
       },
+      width: 250,
     },
     {
-      Header: "Tipo",
-      accessor: "tipo",
+      Header: "Id de cliente",
+      accessor: "cliente",
       style: {
-        textAlign: "right"
+        textAlign: "center"
       },
+      width: 250,
+    },
+    {
+      Header: "Administrador",
+      accessor: "administrador",
+      style: {
+        textAlign: "center"
+      },
+      width: 80,
+      Cell: porps => {
+        return (
+          <Tuple user={porps.original} cellValue={getAdmin(porps.original.es_admin)}></Tuple>
+        );
+      }
     },
     {
       Header: "Verificado",
@@ -106,11 +133,11 @@ const ReactTableUsersComponent = (props) => {
               try {
                 setSelectedUser(props.original);
                 toggleEditModal();
-                
+
               } catch (error) {
                 console.log("No hay nada en esta fila");
               }
-              
+
             }
           }
         }}

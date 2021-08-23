@@ -16,7 +16,6 @@ const User = (props) => {
     return (
             <tr  onClick={() => toggleEditModal()}>
                 <th scope="row">{props.user.username}</th>
-                <td>{props.user.nombre}</td>
                 <td>{props.user.email}</td>
                 <td>{props.user.tipo}</td>
                 <EditUserComponent user={props.user} isOpen={isEditClientModalOPen} toggle={toggleEditModal}></EditUserComponent>

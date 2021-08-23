@@ -11,19 +11,15 @@ import * as yup from "yup";
 const validationSchema = yup.object(
     //TO DO: hacer las validaciones del correo, si es que se puede editar, no se
     {
-        nombre: yup
-            .string()
-            .required("El usuario debe tener un nombre")
-            .min(3, "El nombre debe ser de mínimo 3 caracteres")
-            .max(30, "El nombre debe ser de máximo 30 caracteres"),
 
     });
 
 const UserModal = (props) => {
     const [username] = useState(props.user.username);
-    const [nombre] = useState(props.user.nombre);
     const [email] = useState(props.user.email);
-    const [tipo] = useState(props.user.tipo);
+    const [admin] = useState(props.user.es_admin);
+    const [empleado] = useState(props.user.empleado);
+    const [cliente] = useState(props.user.cliente);
 
     const error = useSelector(state => state.usersUpdate.errMess);
     const result = useSelector(state => state.usersUpdate.result);
@@ -43,10 +39,11 @@ const UserModal = (props) => {
 
     const uploadChanges = (values) => {
         const userData = {
-            username: props.user.username,
-            nombre: values.nombre,
+            username: username,
             email: values.email,
-            tipo: values.tipo
+            cliente: values.cliente,
+            empleado: values.empleado,
+            es_admin: true
         }
         doUpdateUser(userData);
     }
@@ -62,18 +59,14 @@ const UserModal = (props) => {
 
     const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-            nombre: nombre,
             email: email,
-            tipo: tipo
+            cliente: cliente,
+            empleado: empleado,
+            es_admin: admin
         },
         validationSchema,
         onSubmit(values) {
-            const userData = {
-                nombre: values.nombre,
-                email: values.email,
-                tipo: values.tipo
-            }
-            uploadChanges(userData);
+            uploadChanges(values);
         }
     });
 
@@ -124,15 +117,6 @@ const UserModal = (props) => {
                                 <CardBody style={{ padding: 8 }}>
 
                                     <FormGroup>
-                                        <Label htmlFor="nombre">Nombre</Label>
-                                        <Input type="text" id="nombre" name="nombre" value={values.nombre}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur} />
-                                        {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
-
-                                    </FormGroup>
-
-                                    <FormGroup>
                                         <Label htmlFor="email">Correo</Label>
                                         <Input type="email" id="correo" name="correo" value={values.email}
                                             onChange={handleChange}
@@ -142,14 +126,35 @@ const UserModal = (props) => {
                                     </FormGroup>
 
                                     <FormGroup>
-                                        <Label for="tipo">Tipo</Label>
-                                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
+                                        <Label htmlFor="empleado">Id empleado</Label>
+                                        <Input type="empleado" id="empleado" name="empleado" value={values.empleado}
                                             onChange={handleChange}
-                                            onBlur={handleBlur}>
-                                            <option>vendedor</option>
-                                            <option>administrador</option>
-                                        </Input>
+                                            onBlur={handleBlur} />
+                                        {(touched.empleado && errors.empleado) ? (<Alert color="danger">{errors.empleado}</Alert>) : null}
+
                                     </FormGroup>
+
+                                    <FormGroup>
+                                        <Label htmlFor="cliente">Id cliente</Label>
+                                        <Input type="cliente" id="cliente" name="cliente" value={values.cliente}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.cliente && errors.cliente) ? (<Alert color="danger">{errors.cliente}</Alert>) : null}
+
+                                    </FormGroup>
+
+
+                                    <div className="l-flex ml-auto " class="col-12" >
+                                        <div class="col-12 col-sm-8">
+                                            <Label check  >
+                                                <Input type="checkbox" id="es_admin" name="es_admin" className="form-control" values={values.es_admin}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                />{' '}
+                                                Administrador
+                                            </Label>
+                                        </div>
+                                    </div>
 
                                     <div class="d-flex justify-content-center" >
                                         <FormGroup>
@@ -182,15 +187,15 @@ const UserModal = (props) => {
 
 const EditUserComponent = (props) => {
 
-    if(props.user){
-        return(
+    if (props.user) {
+        return (
             <UserModal user={props.user} isOpen={props.isOpen} toggle={props.toggle}></UserModal>
         );
     }
-    return(
+    return (
         <div></div>
     );
-    
+
 
 }
 
