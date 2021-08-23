@@ -192,6 +192,7 @@ const EditAccountComponent = (props) => {
     const toogleAndReset = () => {
         dispatch(user());
         dispatch(restoreReset());
+        props.toggle();
     }
 
     const aux = () => {
