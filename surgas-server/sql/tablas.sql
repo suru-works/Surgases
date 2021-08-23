@@ -71,6 +71,7 @@ CREATE TABLE clientexproducto(
     cliente VARCHAR(50) NOT NULL,
     producto BIGINT UNSIGNED NOT NULL,
     descuento FLOAT NOT NULL,
+    iva_incluido BIT NOT NULL,
     PRIMARY KEY (cliente, producto),
     FOREIGN KEY (cliente) REFERENCES cliente(telefono),
     FOREIGN KEY (producto) REFERENCES producto(codigo)
