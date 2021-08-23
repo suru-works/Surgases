@@ -207,6 +207,7 @@ pedidoRouter.route('/:fecha/:numero')
     const fecha = req.params.fecha;
     const numero = req.params.numero;
     const body = req.body;
+    let changes = [];
     let values = [];
 
     if (body.estado) {

@@ -327,12 +327,30 @@ router.post('/changePassword', asyncHandler(async (req, res, next) => {
 router.route('/:username')
 .all(auth.isAuthenticated, auth.isAdmin)
 .put(asyncHandler(async (req, res, next) => {
-  const query = db.buildUpdate('usuario', { name: 'username', value: req.params.username }, req.body);
-  await pool.execute(query.query, query.values);
+  const body = req.body;
+
+  let changes = []
+  let values = []
+
+  if (body.email) {
+    changes.push('email = ?');
+    values.push(body.email);
+  }
+
+  if (body.es_admin !== undefined) {
+    changes.push['es_admin = ?'];
+    values.push[body.es_admin ? '1' : '0'];
+  }
+
+  values.push(req.params.username);
+
+  await pool.execute(
+    `UPDATE usuario SET ${changes.join(', ')} WHERE username = ?`,
+    [values]
+  );
 
   res.json({
-    success: true,
-    msg: 'user updated successfully'
+    success: true
   });
 }))
 .delete(asyncHandler(async (req, res, next) => {
