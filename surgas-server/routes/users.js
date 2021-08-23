@@ -93,7 +93,7 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
       [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo, usuario.username, usuario.email, hash]
     );
   
-    await auth.generateToken('verification_token', conn, usuario.username);
+    usuario.verify_token = await auth.generateToken('verification_token', conn, usuario.username);
 
     await conn.commit();
     conn.release();
@@ -287,7 +287,7 @@ router.post('/restorepassword', asyncHandler(async (req, res, next) => {
   const user = utils.parseToJSON(result)[0];
 
   if (user) {
-    await auth.generateToken('restore_password_token', conn, username);
+    data.restore_password_token = await auth.generateToken('restore_password_token', conn, username);
 
     conn.release();
 

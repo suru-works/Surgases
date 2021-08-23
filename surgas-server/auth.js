@@ -103,6 +103,8 @@ module.exports.generateToken = async (field, conn, username) => {
     } while (userByToken);
 
     await conn.execute(`UPDATE usuario SET ${field} = ? WHERE username = ?`, [token, username]);
+
+    return token;
 }
 
 module.exports.validateToken = (token) => {
