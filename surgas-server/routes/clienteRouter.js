@@ -5,7 +5,6 @@ const auth = require('../auth');
 const utils = require('../utils');
 
 const pool = db.pool;
-const poolPromise = pool.promise();
 
 const clienteRouter = require('express').Router();
 clienteRouter.use(require('body-parser').json());
@@ -16,7 +15,6 @@ clienteRouter.route("/")
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
-    //const query = db.buildQuery('producto', req.query);
     let query = 'SELECT  FROM cliente';
     const params = req.query;
     let conditions = [];
@@ -96,14 +94,14 @@ clienteRouter.route("/")
         }
     }
 
-    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+    const [results,] = await pool.execute(query + conditions.join(' AND '), values);
 
     res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     const cliente = req.body;
     
-    await poolPromise.execute(
+    await pool.execute(
         'INSERT INTO cliente(telefono, email, nombre, fecha_registro, puntos, tipo, numero_pedidos) VALUES (?, ?, ?, DATE(NOW()), 0, ?, 0)',
         [cliente.telefono, cliente.email, cliente.nombre, cliente.tipo]
     );
@@ -118,7 +116,7 @@ clienteRouter.route("/:telefono")
 }, auth.isAuthenticated, auth.isAdmin)
 .put(asyncHandler(async (req, res, next) => {
     const query = db.buildUpdate('cliente', { name: 'telefono', value: req.params.telefono }, req.body);
-    await poolPromise.execute(query.query, query.values);
+    await pool.execute(query.query, query.values);
 
     res.json({
         success: true,
@@ -126,7 +124,7 @@ clienteRouter.route("/:telefono")
     });
 }))
 .delete(asyncHandler(async (req, res, next) => {
-    await poolPromise.execute('DELETE FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    await pool.execute('DELETE FROM cliente WHERE telefono = ?', [req.params.telefono]);
 
     res.json({
         success: true,
@@ -135,7 +133,7 @@ clienteRouter.route("/:telefono")
 }));
 
 clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next) => {
-    const [results,] = await poolPromise.execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
+    const [results,] = await pool.execute('SELECT * FROM cliente WHERE telefono = ?', [req.params.telefono]);
 
     res.json({
         'found': results.length > 0
@@ -143,16 +141,15 @@ clienteRouter.get('/check-client/:telefono', asyncHandler(async (req, res, next)
 }));
 
 clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    const conn = await pool.getConnectionPromise();
-    const connPromise = conn.promise();
+    const conn = await pool.getConnection();
 
-    let [results,] = await connPromise.execute(
+    let [results,] = await conn.execute(
         'CALL proc_cliente_consultar_ultimo_pedido(?)',
         [req.params.telefono]
     );
     const pedido = utils.parseToJSON(results)[0][0];
 
-    [results,] = await connPromise.execute(
+    [results,] = await conn.execute(
         'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN pedidoxproducto pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND pp.numero_pedido = ?',
         [pedido.fecha, pedido.numero]
     );

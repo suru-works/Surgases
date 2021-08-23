@@ -67,7 +67,7 @@ app.use(cors.corsWithOptions)
 
 // authentication settings
 const MySQLStore = require('express-mysql-session')(session);
-const sessionStore = new MySQLStore({}, require('./db').pool.promise());
+const sessionStore = new MySQLStore({}, require('./db').pool);
 app.set('trust proxy', true); // PARA EL REVERSE PROXY
 app.use(session({
   cookie: {

@@ -1,5 +1,4 @@
-const mysql = require('mysql2');
-const promisify = require('util').promisify;
+const mysql = require('mysql2/promise');
 
 module.exports.buildQuery = (table, params, cols) => {
     let conditions = [];
@@ -39,18 +38,12 @@ module.exports.buildUpdate = (table, id, params) => {
     };
 }
 
-function getPool() {
-    const pool = mysql.createPool({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE,
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0
-    });
-    pool.getConnectionPromise = promisify(pool.getConnection);
-    return pool;
-}
-
-module.exports.pool = getPool();
+module.exports.pool = mysql.createPool({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});

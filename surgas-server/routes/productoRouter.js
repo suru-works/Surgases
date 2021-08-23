@@ -5,7 +5,6 @@ const auth = require('../auth');
 const utils = require('../utils');
 
 const pool = db.pool;
-const poolPromise = pool.promise();
 
 const productoRouter = require('express').Router();
 productoRouter.use(require('body-parser').json());
@@ -86,14 +85,14 @@ productoRouter.route("/")
         }
     }
 
-    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+    const [results,] = await pool.execute(query + conditions.join(' AND '), values);
     
     res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     const producto = req.body;
 
-    await poolPromise.execute(
+    await pool.execute(
         'INSERT INTO producto(nombre, color, peso, tipo, precio, inventario, disponible, iva_incluido) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
         [producto.nombre, producto.color, producto.peso, producto.tipo, producto.precio, producto.inventario, producto.disponible, producto.iva_incluido]
     )
@@ -108,7 +107,7 @@ productoRouter.route("/:codigo")
 }, auth.isAuthenticated, auth.isAdmin)
 .put(asyncHandler(async (req, res, next) => {
     const query = db.buildUpdate('producto', { name: 'codigo', value: req.params.codigo }, req.body);
-    await poolPromise.execute(query.query, query.values);
+    await pool.execute(query.query, query.values);
 
     res.json({
         success: true,
@@ -116,7 +115,7 @@ productoRouter.route("/:codigo")
     });
 }))
 .delete(asyncHandler(async (req, res, next) => {
-    await poolPromise.execute('DELETE FROM producto WHERE codigo = ?', [req.params.codigo]);
+    await pool.execute('DELETE FROM producto WHERE codigo = ?', [req.params.codigo]);
 
     res.json({
         success: true,

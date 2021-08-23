@@ -6,7 +6,6 @@ const auth = require('../auth');
 const { values } = require('mysql2/lib/constants/charset_encodings');
 
 const pool = db.pool;
-const poolPromise = pool.promise();
 
 const pedidoRouter = require('express').Router();
 pedidoRouter.use(require('body-parser').json());
@@ -122,7 +121,7 @@ pedidoRouter.route("/")
         }
     }
 
-    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+    const [results,] = await pool.execute(query + conditions.join(' AND '), values);
 
     res.json(utils.parseToJSON(results));
 }))
@@ -135,10 +134,9 @@ pedidoRouter.route("/")
         next(error);
     }
     
-    const conn = await pool.getConnectionPromise();
-    const connPromise = conn.promise();
+    const conn = await pool.getConnection();
 
-    await connPromise.beginTransaction();
+    await conn.beginTransaction();
 
     try {
         let pedido_estado;
@@ -149,7 +147,7 @@ pedidoRouter.route("/")
         } else {
             throw new Error('usuario no es ni cliente ni empleado');
         }
-        let [results,] = await connPromise.execute(
+        let [results,] = await conn.execute(
             'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?)',
             [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
         );
@@ -163,7 +161,7 @@ pedidoRouter.route("/")
         for (let i = 0; i < productos.length; i++) {
             let producto = productos[i];
 
-            [results, ] = await connPromise.execute(
+            [results, ] = await conn.execute(
                 'CALL proc_pedidoxproducto_insertar(?, ?, ?, ?, ?, ?)',
                 [producto.codigo, pk.fecha, pk.numero, producto.precio, producto.cantidad, pedido.cliente_pedidor]
             );
@@ -173,12 +171,12 @@ pedidoRouter.route("/")
             precio_final += precios.precio_final;
         }
 
-        await connPromise.execute(
+        await conn.execute(
             'UPDATE pedido SET precio_bruto = ?, precio_final = ? WHERE fecha = ? AND numero = ?',
             [precio_bruto, precio_final, pk.fecha, pk.numero]
         );
 
-        await connPromise.commit();
+        await conn.commit();
         conn.release();
 
         res.json({
@@ -186,7 +184,7 @@ pedidoRouter.route("/")
             numero: pk.numero
         });
     } catch(err) {
-        connPromise.rollback();
+        await conn.rollback();
         conn.release();
         next(err);
     }
@@ -204,8 +202,7 @@ pedidoRouter.route('/:fecha/:numero')
         next(err);
     }
 
-    const conn = await pool.getConnectionPromise();
-    const connPromise = conn.promise();
+    const conn = await pool.getConnection();
 
     const fecha = req.params.fecha;
     const numero = req.params.numero;
@@ -218,7 +215,7 @@ pedidoRouter.route('/:fecha/:numero')
         values.push(estado);
 
         if (estado == 'fiado' || estado == 'pago') {
-            await connPromise.execute(
+            await conn.execute(
                 'CALL proc_pedido_inventario_puntos(?, ?)',
                 [fecha, numero]
             )
@@ -253,7 +250,7 @@ pedidoRouter.route('/:fecha/:numero')
     values.push(fecha);
     values.push(numero);
 
-    await connPromise.execute(
+    await conn.execute(
         'UPDATE pedido SET ' + changes.join(', ') + 'WHERE fecha = ? AND numero = ?',
         values
     );
@@ -275,7 +272,7 @@ pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, asyncHandler
 
     const pedido = req.params;
 
-    const [results,] = await poolPromise.execute(
+    const [results,] = await pool.execute(
         'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, p.tipo AS tipo, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [pedido.fecha, pedido.numero]
     );
@@ -284,14 +281,14 @@ pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, asyncHandler
 }));
 
 pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
-    const [results,] = await poolPromise.execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
+    const [results,] = await pool.execute('SELECT fecha, COUNT(*) AS cantidad FROM pedido GROUP BY fecha');
 
     res.json(utils.parseToJSON(results));
 }));
 
 pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
     const body = req.body;
-    const [result,] = await poolPromise.execute(
+    const [result,] = await pool.execute(
         'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra pe.empleado_despachador AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.unidades AS unidades FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [body.fecha, body.numero]
     );

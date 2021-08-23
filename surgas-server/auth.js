@@ -1,10 +1,11 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const utils = require('./utils');
 const mail = require('./com/mail');
 
-const poolPromise = require('./db').pool.promise();
+const pool = require('./db').pool;
 const LocalStrategy = require('passport-local').Strategy;
 
 passport.serializeUser((user, cb) => {
@@ -13,7 +14,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser(async (username, cb) => {
     try {
-        const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE username = ?', [username]);
+        const [results,] = await pool.execute('SELECT * FROM usuario WHERE username = ?', [username]);
         if (results.length == 0) {
             throw new Error('user does not exist');
         }
@@ -27,7 +28,7 @@ passport.deserializeUser(async (username, cb) => {
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        const [results,] = await poolPromise.execute('SELECT * FROM usuario WHERE username = ?', [username]);
+        const [results,] = await pool.execute('SELECT * FROM usuario WHERE username = ?', [username]);
         if (results.length == 0) {
             return done(null, false, {
                 message: 'user does not exist'
@@ -62,7 +63,7 @@ module.exports.isAuthenticated = (req, res, next) => {
 
 module.exports.isVerified = async (req, res, next) => {
     try {
-        const [results,] = await poolPromise.execute(
+        const [results,] = await pool.execute(
             'SELECT * FROM usuario WHERE username = ? AND verificado = (1)',
             [req.body.username]
         );
@@ -87,4 +88,26 @@ module.exports.isAdmin = (req, res, next) => {
         err.status = 403;
         next(err);
     }
+}
+
+module.exports.generateToken = async (field, conn, username) => {
+    let token, userByToken;
+
+    do {
+        let now = new Date();
+        now.setMinutes(now.getMinutes() + 10);
+        token = now + ',' + crypto.randomBytes(20).toString('hex');
+
+        let [result,] = await conn.execute(`SELECT * FROM usuario WHERE ${field} = ?`, [token]);
+        userByToken = utils.parseToJSON(result)[0];
+    } while (userByToken);
+
+    await conn.execute(`UPDATE usuario SET ${field} = ? WHERE username = ?`, [token, username]);
+}
+
+module.exports.validateToken = (token) => {
+    const tokenTokens = token.split(',');
+    const now = new Date();
+    const exp = Date.parse(tokenTokens[0]);
+    return now < exp;
 }

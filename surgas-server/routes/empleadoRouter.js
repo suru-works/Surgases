@@ -5,7 +5,6 @@ const db = require('../db');
 const auth = require('../auth');
 
 const pool = db.pool;
-const poolPromise = pool.promise();
 
 const empleadoRouter = require('express').Router();
 empleadoRouter.use(require('body-parser').json());
@@ -55,14 +54,14 @@ empleadoRouter.route("/")
         }
     }
 
-    const [results,] = await poolPromise.execute(query + conditions.join(' AND '), values);
+    const [results,] = await pool.execute(query + conditions.join(' AND '), values);
 
     res.json(utils.parseToJSON(results));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     const empleado = req.body;
 
-    await poolPromise.execute(
+    await pool.execute(
         "INSERT INTO empleado VALUES (?, ?, ?, ?, 'activo', ?)",
         [empleado.id, empleado.nombre, empleado.direccion, empleado.telefono, empleado.tipo]
     );
@@ -77,7 +76,7 @@ empleadoRouter.route("/:id")
 }, auth.isAuthenticated, auth.isAdmin)
 .put(asyncHandler(async (req, res, next) => {
     const query = db.buildUpdate('empleado', { name: 'id', value: req.params.id }, req.body);
-    await poolPromise.execute(query.query, query.values);
+    await pool.execute(query.query, query.values);
 
     res.json({
         success: true,
@@ -85,7 +84,7 @@ empleadoRouter.route("/:id")
     });
 }))
 .delete(asyncHandler(async (req, res, next) => {
-    await poolPromise.execute('DELETE FROM empleado WHERE id = ?', [req.params.id]);
+    await pool.execute('DELETE FROM empleado WHERE id = ?', [req.params.id]);
 
     res.json({
         success: true,
