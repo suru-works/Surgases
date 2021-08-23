@@ -356,7 +356,7 @@ router.route('/:username')
 
   await pool.execute(
     `UPDATE usuario SET ${changes.join(', ')} WHERE username = ?`,
-    [values]
+    values
   );
 
   res.json({
