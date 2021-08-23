@@ -342,6 +342,16 @@ router.route('/:username')
     values.push[body.es_admin ? '1' : '0'];
   }
 
+  if (body.cliente) {
+    changes.push('cliente = ?');
+    values.push(body.cliente);
+  }
+
+  if (body.empleado) {
+    changes.push('empleado = ?');
+    values.push(body.empleado);
+  }
+
   values.push(req.params.username);
 
   await pool.execute(
