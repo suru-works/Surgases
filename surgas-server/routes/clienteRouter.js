@@ -15,7 +15,7 @@ clienteRouter.route("/")
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
-    let query = 'SELECT  FROM cliente';
+    let query = 'SELECT * FROM cliente';
     const params = req.query;
     let conditions = [];
     let values = [];
