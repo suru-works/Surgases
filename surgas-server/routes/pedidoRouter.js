@@ -18,8 +18,8 @@ pedidoRouter.route("/")
     next();
 })
 .get(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    if (req.user.cliente) {
-        let err = new Error('not authorized');
+    if (!req.user.empleado) {
+        let err = new Error('solo los empleados pueden consultar pedidos');
         err.status = 403;
         next(err);
     }
@@ -199,7 +199,7 @@ pedidoRouter.route('/:fecha/:numero')
 }, auth.isAuthenticated)
 .put(asyncHandler(async (req, res, next) => {
     if (!req.user.empleado) {
-        let err = new Error('not authorized');
+        let err = new Error('solo los empleados puedena actualizar pedidos');
         err.status = 403;
         next(err);
     }
@@ -214,7 +214,7 @@ pedidoRouter.route('/:fecha/:numero')
 
     if (body.estado) {
         const estado = body.estado;
-        changes.push('estado = ? ');
+        changes.push('estado = ?');
         values.push(estado);
 
         if (estado == 'fiado' || estado == 'pago') {
@@ -226,27 +226,27 @@ pedidoRouter.route('/:fecha/:numero')
     }
 
     if (body.direccion) {
-        changes.push('direccion = ? ');
+        changes.push('direccion = ?');
         values.push(body.direccion);
     }
 
     if (body.municipio) {
-        changes.push('municipio = ? ');
+        changes.push('municipio = ?');
         values.push(body.municipio);
     }
 
     if (body.bodega) {
-        changes.push('bodega = ? ');
+        changes.push('bodega = ?');
         values.push(body.bodega);
     }
 
     if (body.nota) {
-        changes.push('nota = ? ');
+        changes.push('nota = ?');
         values.push(body.nota);
     }
 
     if (body.empleado_repartidor) {
-        changes.push('empleado_repartidor = ? ');
+        changes.push('empleado_repartidor = ?');
         values.push(body.empleado_repartidor);
     }
 
@@ -268,7 +268,7 @@ pedidoRouter.route('/:fecha/:numero')
 
 pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     if (!req.user.empleado) {
-        let err = new Error('not authorized');
+        let err = new Error('solo los empleados pueden consultar pedidos');
         err.status = 403;
         next(err);
     }

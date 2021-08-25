@@ -12,11 +12,6 @@ const router = express.Router();
 const pool = db.pool;
 const expires = 54000000;
 
-function parseISOString(s) {
-  var b = s.split(/\D+/);
-  return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
-};
-
 router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
   const params = req.query;
   let query = 'SELECT * FROM usuario';
@@ -111,7 +106,7 @@ router.post('/signup/client', asyncHandler(async (req, res, next) => {
   }  
 }));
 
-router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
+router.post('/login', auth.isVerified, auth.login, asyncHandler(async (req, res, next) => {
   if (req.body.remember) {
     req.session.cookie.expires = new Date(Date.now() + expires);
     req.session.cookie.maxAge = expires;
@@ -119,27 +114,31 @@ router.post('/login', auth.isVerified, auth.login, (req, res, next) => {
 
   const user = req.user;
 
-  /*try {
+  try {
     await pool.execute('INSERT INTO user_sessions VALUES(?, ?)', [req.sessionID, user.username]);
   } catch (err) {
     req.logout();
+    req.session.destroy();
+
     next(err);
-  }*/
+  }
 
   res.json({
     username: user.username,
     email: user.email
   });
-});
+}));
 
-router.post('/logout', auth.isAuthenticated, (req, res, next) => {
+router.post('/logout', auth.isAuthenticated, asyncHandler((req, res, next) => {
+  await pool.execute('DELETE FROM user_sessions WHERE session_id = ?', [req.sessionID]);
+
   req.logout();
   req.session.destroy();
 
   res.json({
     success: true
   });
-});
+}));
 
 router.route('/current')
 .all(auth.isAuthenticated)

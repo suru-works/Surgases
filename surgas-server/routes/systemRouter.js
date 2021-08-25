@@ -1,54 +1,36 @@
+const asyncHandler = require('express-async-handler');
+
 const db = require('../db');
 const auth = require('../auth');
-const asyncHandler = require('express-async-handler');
-const exec = require('child_process').exec;
+const utils = require('../utils');
 
+const exec = require('child_process').exec;
 const pool = db.pool;
 
 const systemRouter = require('express').Router();
 systemRouter.use(require('body-parser').json());
 
-systemRouter.get('/parameters/:codigo', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    const results = await pool.promise().execute('SELECT * FROM static WHERE codigo = ?', [req.params.codigo]);
-    if (results) {
-        res.json(JSON.parse(JSON.stringify(results[0])));
-    } else {
-        throw {
-            status: 500
-        };
-    }
-}));
-systemRouter.put('/parameters/:codigo', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
+systemRouter.route('/parameters/:codigo')
+.all(auth.isAuthenticated, auth.isAdmin)
+.get(asyncHandler(async (req, res, next) => {
+    const [results,] = await pool.execute('SELECT * FROM static WHERE codigo = ?', [req.params.codigo]);
+    
+    res.json(utils.parseToJSON(results))[0];
+}))
+.put(asyncHandler(async (req, res, next) => {
+    const query = db.buildUpdate('static', { name: 'codigo', value: req.params.codigo }, req.body);
+    await pool.execute(query.query, query.values);
 
-        const query = db.buildUpdate('static', { name: 'codigo', value: req.params.codigo }, req.body);
-        const result = await conn.promise().execute(query.query, query.values);
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json({
-                msg: 'parameters updated successfully'
-            });
-        } else {
-            conn.rollback();
-            next(new Error('update error'));
-        }
+    res.json({
+        success: true
     });
 }));
 
 systemRouter.post('/backup', auth.isAuthenticated, auth.isAdmin, (req, res, next) => {
     exec(__dirname + '\\backup.bat', (err, stdout, stderr) => {
         if (err) {
-            console.log(err);
-            throw {
-                status: 500
-            };
+            next(err);
         }
-
-        console.log(stdout);
 
         res.json({
             msg: 'backup successful'

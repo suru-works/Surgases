@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
-const utils =  require('../utils');
 
+const utils =  require('../utils');
 const db = require('../db');
 const auth = require('../auth');
 
