@@ -149,17 +149,23 @@ clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(as
     );
     const pedido = utils.parseToJSON(results)[0][0];
 
-    [results,] = await conn.execute(
-        'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN pedidoxproducto pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND pp.numero_pedido = ?',
-        [pedido.fecha, pedido.numero]
-    );
-
-    conn.release();
-
-    res.json({
-        pedido: pedido,
-        productos: utils.parseToJSON(results)
-    });
+    if (pedido) {
+        [results,] = await conn.execute(
+            'SELECT pr.nombre AS nombre, pr.color AS color, pr.peso AS peso, pr.tipo AS tipo, pp.precio_venta AS precio_venta, pp.unidades AS unidades FROM producto pr INNER JOIN pedidoxproducto pp ON pr.codigo = pp.producto WHERE pp.fecha_pedido = ? AND pp.numero_pedido = ?',
+            [pedido.fecha, pedido.numero]
+        );
+    
+        conn.release();
+    
+        res.json({
+            pedido: pedido,
+            productos: utils.parseToJSON(results)
+        });
+    } else {
+        res.json({
+            pedido: null
+        });
+    }
 }));
 
 module.exports = clienteRouter;

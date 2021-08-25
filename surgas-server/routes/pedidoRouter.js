@@ -129,6 +129,7 @@ pedidoRouter.route("/")
 }))
 .post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     const pedido = req.body;
+    const productos = pedido.productos;
 
     if (pedido.productos.length == 0) {
         let error = new Error('no hay productos');
@@ -154,8 +155,6 @@ pedidoRouter.route("/")
             [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
         );
         const pk = utils.parseToJSON(results)[0][0];
-
-        let productos = pedido.productos;
 
         let precio_bruto = 0;
         let precio_final = 0;
