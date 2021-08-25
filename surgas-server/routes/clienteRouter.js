@@ -162,6 +162,8 @@ clienteRouter.get('/:telefono/last_order', auth.isAuthenticated, asyncHandler(as
             productos: utils.parseToJSON(results)
         });
     } else {
+        conn.release();
+        
         res.json({
             pedido: null
         });
