@@ -129,7 +129,7 @@ router.post('/login', auth.isVerified, auth.login, asyncHandler(async (req, res,
   });
 }));
 
-router.post('/logout', auth.isAuthenticated, asyncHandler((req, res, next) => {
+router.post('/logout', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
   await pool.execute('DELETE FROM user_sessions WHERE session_id = ?', [req.sessionID]);
 
   req.logout();
