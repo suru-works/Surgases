@@ -21,6 +21,8 @@ BEGIN
         pedidoxproducto_unidades
     );
 
+    SET clientexproducto_descuento := 1;
+
     SELECT descuento INTO clientexproducto_descuento
     FROM clientexproducto
     WHERE cliente = cliente_telefono AND producto = producto_codigo;
