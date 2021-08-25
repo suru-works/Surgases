@@ -72,8 +72,8 @@ app.set('trust proxy', true); // PARA EL REVERSE PROXY
 app.use(session({
   cookie: {
     httpOnly: true,
-    sameSite: 'none',
-    secure: true/*,
+    sameSite: 'none'/*,
+    secure: true,
     maxAge: 60000*/ // SIN ESTO NO ES PERSISTENTE
   },
   proxy: true,
