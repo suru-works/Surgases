@@ -152,7 +152,7 @@ pedidoRouter.route("/")
         }
         let [results,] = await conn.execute(
             'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?)',
-            [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, pedido.empleado_vendedor, pedido.cliente_pedidor]
+            [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, req.user.empleado, pedido.cliente_pedidor]
         );
         const pk = utils.parseToJSON(results)[0][0];
 
