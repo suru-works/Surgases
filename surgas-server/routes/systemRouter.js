@@ -30,11 +30,9 @@ systemRouter.post('/backup', auth.isAuthenticated, auth.isAdmin, (req, res, next
     childProcess.exec(`${__dirname}\\backup.bat ${process.env.DATABASE_USER} ${process.env.DATABASE_PASSWORD} ${process.env.DATABASE}`, (err, stdout, stderr) => {
         if (err) {
             next(err);
+        } else {
+            next();
         }
-
-        res.json({
-            msg: 'backup successful'
-        });
     });
 });
 
