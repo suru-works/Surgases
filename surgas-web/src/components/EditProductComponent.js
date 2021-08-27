@@ -64,6 +64,7 @@ const ProductModal = (props) => {
     const [peso] = useState(props.product.peso);
     const [precio] = useState(props.product.precio);
     const [inventario] = useState(props.product.inventario);
+    const [iva_incluido] = useState(props.product.iva_incluido);
 
     const error = useSelector(state => state.productsUpdate.errMess);
     const result = useSelector(state => state.productsUpdate.result);
@@ -81,24 +82,8 @@ const ProductModal = (props) => {
 
     const doUpdateProduct = (productData) => dispatch(updateProduct(productData));
 
-    const uploadChanges = (values) => {
-        const productData = {
-            codigo: props.product.codigo,
-            nombre: values.nombre,
-            tipo: values.tipo,
-            color: values.color,
-            peso: values.peso,
-            precio: values.precio,
-            inventario: values.inventario
-
-        }
-
-        if (values.disponible == "1") {
-            productData.disponible = 1;
-        } else {
-            productData.disponible = 0;
-        }
-
+    const uploadChanges = (productData) => {
+        
         doUpdateProduct(productData);
     }
 
@@ -120,25 +105,33 @@ const ProductModal = (props) => {
             color: color,
             peso: peso,
             precio: precio,
-            inventario: inventario
+            inventario: inventario,
+            iva_incluido: iva_incluido.data[0]
         },
         validationSchema,
-        onSubmit(values) {
+        onSubmit(values) {    
             const productData = {
+                codigo: props.product.codigo,
                 nombre: values.nombre,
                 tipo: values.tipo,
                 color: values.color,
                 peso: values.peso,
                 precio: values.precio,
                 inventario: values.inventario
+    
             }
-
+    
             if (values.disponible == "1") {
                 productData.disponible = 1;
             } else {
                 productData.disponible = 0;
             }
-
+    
+            if (values.iva_incluido == "1") {
+                productData.iva_incluido = 1;
+            } else {
+                productData.iva_incluido = 0;
+            }        
             uploadChanges(productData);
         }
     });
@@ -181,7 +174,7 @@ const ProductModal = (props) => {
         );
     }
     else {
-        if (userResult.data.tipo.includes('administrador,')) {
+        if (userResult.data.es_admin.data[0] == 1) {
             return (
 
                 <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
@@ -277,6 +270,22 @@ const ProductModal = (props) => {
                                             </FormGroup>
 
                                             <FormGroup className='col-12 col-sm-6'>
+                                                <Label htmlFor="iva_incluido">Iva</Label>
+
+                                                <Input type="select" id="iva_incluido" name="iva_incluido" value={values.iva_incluido}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur} >
+
+                                                    <option selected value={1}>Si</option>
+                                                    <option value={0}>No</option>
+                                                </Input>
+                                                {(touched.iva_incluido && errors.iva_incluido) ? (<Alert color="danger">{errors.iva_incluido}</Alert>) : null}
+
+                                            </FormGroup>
+
+                                        </div>
+                                        <div className='row'>
+                                            <FormGroup className='col-12 col-sm-6'>
                                                 <br></br>
                                                 <div class="d-flex justify-content-center"  >
                                                     <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>
@@ -284,7 +293,6 @@ const ProductModal = (props) => {
                                                 </div>
 
                                             </FormGroup>
-
                                         </div>
 
                                     </CardBody>
@@ -323,7 +331,7 @@ const ProductModal = (props) => {
 
                                             <FormGroup className='col-12 col-sm-6'>
                                                 <Label htmlFor="nombre">Nombre</Label>
-                                                <Input type="text" id="nombre" name="nombre" value={nombre} disabled={true}/>
+                                                <Input type="text" id="nombre" name="nombre" value={nombre} disabled={true} />
 
                                             </FormGroup>
 
@@ -372,7 +380,19 @@ const ProductModal = (props) => {
                                                 <Label htmlFor="inventario">Inventario</Label>
                                                 <Input type="text" id="inventario" name="inventario" value={inventario} disabled={true}></Input>
                                             </FormGroup>
+                                            <Input type="select" id="iva_incluido" name="iva_incluido" value={values.iva_incluido}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur} >
 
+                                                <option selected value={1}>Si</option>
+                                                <option value={0}>No</option>
+                                            </Input>
+                                            {(touched.iva_incluido && errors.iva_incluido) ? (<Alert color="danger">{errors.iva_incluido}</Alert>) : null}
+
+
+
+                                        </div>
+                                        <div className='row'>
                                             <FormGroup className='col-12 col-sm-6'>
                                                 <br></br>
                                                 <div class="d-flex justify-content-center"  >
@@ -380,7 +400,6 @@ const ProductModal = (props) => {
                                                 </div>
 
                                             </FormGroup>
-
                                         </div>
 
                                     </CardBody>
@@ -405,15 +424,15 @@ const ProductModal = (props) => {
 
 const EditProductComponent = (props) => {
 
-    if(props.product){
-        return(
+    if (props.product) {
+        return (
             <ProductModal product={props.product} isOpen={props.isOpen} toggle={props.toggle}></ProductModal>
         );
     }
-    return(
+    return (
         <div></div>
     );
-    
+
 }
 
 EditProductComponent.propTypes = {};

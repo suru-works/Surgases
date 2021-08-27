@@ -92,11 +92,11 @@ const AddProductComponent = (props) => {
         else {
             productData.disponible = 0;
         }
-        if (values.iva_obligatorio == "1") {
-            productData.iva_obligatorio = 1;
+        if (values.iva_incluido == "1") {
+            productData.iva_incluido = 1;
         }
         else {
-            productData.iva_obligatorio = 0;
+            productData.iva_incluido = 0;
         }
 
         doAddProduct(productData);
@@ -110,7 +110,7 @@ const AddProductComponent = (props) => {
             peso: '',
             precio: '',
             inventario: 1,
-            iva_obligatorio: 1
+            iva_incluido: 1
         },
         validationSchema,
         onSubmit(values) {
@@ -248,16 +248,16 @@ const AddProductComponent = (props) => {
                             </FormGroup>
 
                             <FormGroup className='col-12 col-sm-6'>
-                                <Label htmlFor="iva_obligatorio">Iva</Label>
+                                <Label htmlFor="iva_incluido">Iva</Label>
 
-                                <Input type="select" id="iva_obligatorio" name="iva_obligatorio" value={values.iva_obligatorio}
+                                <Input type="select" id="iva_incluido" name="iva_incluido" value={values.iva_incluido}
                                     onChange={handleChange}
                                     onBlur={handleBlur} >
 
                                     <option selected value={1}>Si</option>
                                     <option value={0}>No</option>
                                 </Input>
-                                {(touched.iva_obligatorio && errors.iva_obligatorio) ? (<Alert color="danger">{errors.iva_obligatorio}</Alert>) : null}
+                                {(touched.iva_incluido && errors.iva_incluido) ? (<Alert color="danger">{errors.iva_incluido}</Alert>) : null}
 
                             </FormGroup>
 
