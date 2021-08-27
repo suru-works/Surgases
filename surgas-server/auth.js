@@ -80,6 +80,26 @@ module.exports.isVerified = async (req, res, next) => {
     }
 }
 
+module.exports.isClient = (req, res, next) => {
+    if (req.user.cliente) {
+        next();
+    } else {
+        let err = new Error('not a client');
+        err.status = 403;
+        next(err);
+    }
+}
+
+module.exports.isEmployee = (req, res, next) => {
+    if (req.user.empleado) {
+        next();
+    } else {
+        let err = new Error('not an employee');
+        err.status = 403;
+        next(err);
+    }
+}
+
 module.exports.isAdmin = (req, res, next) => {
     if (req.user.es_admin.data[0] == 1) {
         next();

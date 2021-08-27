@@ -196,13 +196,7 @@ pedidoRouter.route('/:fecha/:numero')
     res.setHeader('Content-Type', 'application/json');
     next();
 }, auth.isAuthenticated)
-.put(asyncHandler(async (req, res, next) => {
-    if (!req.user.empleado) {
-        let err = new Error('solo los empleados puedena actualizar pedidos');
-        err.status = 403;
-        next(err);
-    }
-
+.put(auth.isEmployee, asyncHandler(async (req, res, next) => {
     const conn = await pool.getConnection();
 
     const fecha = req.params.fecha;
@@ -265,13 +259,7 @@ pedidoRouter.route('/:fecha/:numero')
     });
 }));
 
-pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    if (!req.user.empleado) {
-        let err = new Error('solo los empleados pueden consultar pedidos');
-        err.status = 403;
-        next(err);
-    }
-
+pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, auth.isEmployee, asyncHandler(async (req, res, next) => {
     const pedido = req.params;
 
     const [results,] = await pool.execute(

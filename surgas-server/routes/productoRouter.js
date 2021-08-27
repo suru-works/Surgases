@@ -123,4 +123,49 @@ productoRouter.route("/:codigo")
     });
 }));
 
+productoRouter.route('/:codigo/cliente/:telefono')
+.all((req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+}, auth.isAuthenticated)
+.get(asyncHandler(async (req, res, next) => {
+    const params = req.params;
+
+    const [result,] = await pool.execute(
+        'SELECT descuento, iva_incluido FROM clientexproducto WHERE cliente = ? AND producto = ?',
+        [params.telefono, params.codigo]
+    );
+    
+    res.json(utils.parseToJSON(result))[0];
+}))
+.put(auth.isEmployee, asyncHandler(async (req, res, next) => {
+    const params = req.params;
+    const body = req.body;
+
+    let changes = [];
+    let values = [];
+
+    if (body.descuento) {
+        changes.push('descuento = ?');
+        values.push(body.descuento);
+    }
+
+    if (body.iva_incluido !== undefined) {
+        changes.push('iva_incluido = ?');
+        values.push(body.iva_incluido ? '1' : '0');
+    }
+
+    values.push(params.telefono);
+    values.push(params.codigo);
+
+    await pool.execute(
+        `UPDATE clientexproducto SET ${changes.join(', ')} WHERE cliente = ? AND producto = ?`,
+        values
+    );
+
+    res.json({
+        success: true
+    });
+}));
+
 module.exports = productoRouter;
