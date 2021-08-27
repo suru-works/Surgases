@@ -1,0 +1,1 @@
+"C:\Program Files\MariaDB 10.6\bin\mysqldump.exe" --user=%1 --password=%2 %3 > "Z:\Shared drives\suru-works\surgas\Respaldos\%date:~10,4%-%date:~7,2%-%date:~4,2%_%time:~0,2%-%time:~3,2%-%time:~6,2%.sql"

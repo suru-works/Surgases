@@ -1,10 +1,10 @@
 const asyncHandler = require('express-async-handler');
+const childProcess = require('child_process');
 
 const db = require('../db');
 const auth = require('../auth');
 const utils = require('../utils');
 
-const exec = require('child_process').exec;
 const pool = db.pool;
 
 const systemRouter = require('express').Router();
@@ -27,7 +27,7 @@ systemRouter.route('/parameters/:codigo')
 }));
 
 systemRouter.post('/backup', auth.isAuthenticated, auth.isAdmin, (req, res, next) => {
-    exec(__dirname + '\\backup.bat', (err, stdout, stderr) => {
+    childProcess.exec(`${__dirname}\\backup.bat ${process.env.DATABASE_USER} ${process.env.DATABASE_PASSWORD} ${process.env.DATABASE}`, (err, stdout, stderr) => {
         if (err) {
             next(err);
         }
