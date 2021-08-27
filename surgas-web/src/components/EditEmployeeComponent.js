@@ -40,13 +40,13 @@ const EmployeeModal = (props) => {
     const uploadChanges = (values) => {
         let type = '';
         if (values.vendedor) {
-            tipo += 'vendedor,';
+            type += 'vendedor,';
         }
         if (values.repartidor) {
-            tipo += 'repartidor,';
+            type += 'repartidor,';
         }
         if (values.promotor) {
-            tipo += 'promotor,';
+            type += 'promotor,';
         }
         const employeeData = {
             id: id,
@@ -54,7 +54,7 @@ const EmployeeModal = (props) => {
             direccion: values.direccion,
             telefono: values.telefono,
             estado: values.estado,
-            tipo: 'repartidor,'
+            tipo: type
         };
         doUpdateEmployee(employeeData);
     }

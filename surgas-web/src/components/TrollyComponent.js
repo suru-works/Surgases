@@ -333,7 +333,7 @@ const NewOrder = (props) => {
                     </Input>
                 </FormGroup>
                 <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6  align-self-end'>
-                    <Label htmlFor="tipoCliente">Repartidor</Label>
+                    <Label htmlFor="repartidor">Repartidor</Label>
                     <Input type="Text" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderEmpleado.nombre + '(' + props.newOrderEmpleado.id + ')'}
                         disabled>
