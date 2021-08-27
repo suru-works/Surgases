@@ -48,13 +48,19 @@ empleadoRouter.route("/")
             values.push(params.estado);
         }
 
+        query += conditions.join(' AND ');
+
         if (params.tipo) {
-            conditions.push('tipo = ?');
-            values.push(params.tipo);
+            query += '(';
+            const tipos = params.tipo.split(',');
+            for (let i = 0; i < tipos.length; i++) {
+                query += `tipo LIKE ${tipos[i]}`;
+                query += i < tipos.length - 1 ? ' OR ' : ')';
+            }
         }
     }
 
-    const [results,] = await pool.execute(query + conditions.join(' AND '), values);
+    const [results,] = await pool.execute(query, values);
 
     res.json(utils.parseToJSON(results));
 }))

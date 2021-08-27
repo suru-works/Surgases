@@ -6,7 +6,8 @@ CREATE OR REPLACE PROCEDURE proc_pedido_insertar (
 	IN pedido_estado TYPE OF pedido.estado,
 	IN pedido_bodega TYPE OF pedido.bodega,
 	IN pedido_nota TYPE OF pedido.nota,
-	IN empleado_id TYPE OF empleado.id,
+	IN pedido_empleado_vendedor TYPE OF empleado.id,
+	IN pedido_empleado_repartidor TYPE OF empleado.id,
 	IN cliente_telefono TYPE OF cliente.telefono
 )
 MODIFIES SQL DATA
@@ -44,6 +45,7 @@ BEGIN
 		tipo_cliente,
 		nota,
 		empleado_vendedor,
+		empleado_repartidor,
 		cliente_pedidor
 	) VALUES (
 		pedido_fecha,
@@ -55,7 +57,8 @@ BEGIN
 		pedido_bodega,
 		cliente_tipo,
 		pedido_nota,
-		empleado_id,
+		pedido_empleado_vendedor,
+		pedido_empleado_repartidor,
 		cliente_telefono
 	);
 

@@ -151,8 +151,8 @@ pedidoRouter.route("/")
             throw new Error('usuario no es ni cliente ni empleado');
         }
         let [results,] = await conn.execute(
-            'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?)',
-            [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, req.user.empleado, pedido.cliente_pedidor]
+            'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?, ?)',
+            [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, req.user.empleado, pedido.empleado_repartidor, pedido.cliente_pedidor]
         );
         const pk = utils.parseToJSON(results)[0][0];
 
