@@ -51,10 +51,11 @@ empleadoRouter.route("/")
         query += conditions.join(' AND ');
 
         if (params.tipo) {
-            query += '(';
+            query += ' (';
             const tipos = params.tipo.split(',');
             for (let i = 0; i < tipos.length; i++) {
-                query += `tipo LIKE ${tipos[i]}`;
+                query += 'tipo = ?';
+                values.push(tipos[i]);
                 query += i < tipos.length - 1 ? ' OR ' : ')';
             }
         }
