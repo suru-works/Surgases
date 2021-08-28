@@ -55,3 +55,41 @@ export const TrolleyProducts = (state = {
             return state;
     }
 }
+
+export const LastProductPrice = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.LAST_PRODUCT_PRICE_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.LAST_PRODUCT_PRICE_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.LAST_PRODUCT_PRICE_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.LAST_PRODUCT_PRICE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
+
+export const Productoxcliente = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.PRODUCTOXCLIENTE_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.PRODUCTOXCLIENTE_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.PRODUCTOXCLIENTE_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.PRODUCTOXCLIENTE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}

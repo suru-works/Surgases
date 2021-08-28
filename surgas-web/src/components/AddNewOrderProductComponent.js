@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { products, updateProduct, deleteProduct, productsUpdateReset } from '../redux/ActionCreators';
+import { lastProductPrice, productoxclientePrice } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -18,6 +18,22 @@ const NewProductModal = (props) => {
     const [peso] = useState(props.product.peso);
     const [precio] = useState(props.product.precio);
     const [inventario] = useState(props.product.inventario);
+
+    const userResult = useSelector(state => state.user.result);
+    const precioAnteriorResult = useSelector(state => state.lastProductPrice.result);
+    const precioAnteriorLoading = useSelector(state => state.lastProductPrice.loading);
+    const precioAnteriorError = useSelector(state => state.lastProductPrice.result);
+
+    const productoxclienteResult = useSelector(state => state.productoxcliente.result);
+    const productoxclienteLoading = useSelector(state => state.productoxcliente.loading);
+    const productoxclienteError = useSelector(state => state.productoxcliente.result);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(lastProductPrice({product: props.product.codigo, client:props.client}));
+        dispatch(productoxclientePrice({product: props.product.codigo, client:props.client}));
+    }, []);
 
     const validationSchema = yup.object(
         {
@@ -39,9 +55,7 @@ const NewProductModal = (props) => {
     );
 
 
-    const userResult = useSelector(state => state.user.result);
-
-    const dispatch = useDispatch();
+    
 
 
 
@@ -52,6 +66,7 @@ const NewProductModal = (props) => {
             tipo: tipo,
             color: color,
             peso: peso,
+            precioSugerido: precio,
             precio: precio,
             inventario: inventario,
             cantidad: 1
@@ -68,11 +83,9 @@ const NewProductModal = (props) => {
                 cantidad: values.cantidad
             }
 
-
-
             let aux = props.addNewOrderProduct(productData);
             setError(aux);
-            if(!aux){
+            if (!aux) {
                 toogleAndReset();
             }
         }
@@ -91,7 +104,7 @@ const NewProductModal = (props) => {
 
                 <ModalBody>
                     El producto ya existia en los productos del pedido.
-            </ModalBody>
+                </ModalBody>
             </Modal>
         );
 
@@ -159,10 +172,39 @@ const NewProductModal = (props) => {
 
                                 <div className='row'>
 
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="iva">Iva</Label>
+                                        <Input type="select" name="iva" id="iva" value={values.iva}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}>
+                                            <option>Si</option>
+                                            <option>No</option>
+                                        </Input>
+                                    </FormGroup>
+
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="ivaEnCompra">Iva en la compra</Label>
+                                        <Input type="select" name="ivaEnCompra" id="ivaEnCompra" value={values.ivaEnCompra}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}>
+                                            <option>Si</option>
+                                            <option>No</option>
+                                        </Input>
+                                    </FormGroup>
+
+                                </div>
+
+                                <div className='row'>
+
 
 
                                     <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="precio">Precio</Label>
+                                        <Label htmlFor="precioSugerido">Precio sugerido</Label>
+                                        <Input type="text" id="precioSugerido" name="precioSugerido" value={values.precioSugerido} disabled />
+                                    </FormGroup>
+
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="precio">Precio de la venta</Label>
                                         <Input type="text" id="precio" name="precio" value={values.precio}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
@@ -170,6 +212,30 @@ const NewProductModal = (props) => {
                                         {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
                                     </FormGroup>
 
+
+                                </div>
+                                <div className='row'>
+
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="descuento">Porcentaje de descuento por unidad</Label>
+                                        <Input type="text" id="descuento" name="descuento" value={values.descuento}
+                                        ></Input>
+                                        {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
+                                    </FormGroup>
+
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="precio">Descuento por unidad</Label>
+                                        <Input type="text" id="precio" name="precio" value={values.precio}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        ></Input>
+                                        {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
+                                    </FormGroup>
+
+
+                                </div>
+
+                                <div className='row'>
                                     <FormGroup className='col-12 col-sm-6'>
                                         <br></br>
                                         <div class="d-flex justify-content-center"  >
@@ -178,7 +244,6 @@ const NewProductModal = (props) => {
                                         </div>
 
                                     </FormGroup>
-
                                 </div>
 
                             </CardBody>
@@ -200,15 +265,15 @@ const NewProductModal = (props) => {
 
 const AddNewOrderProductComponent = (props) => {
 
-    if(props.product){
-        return(
-            <NewProductModal addNewOrderProduct={props.addNewOrderProduct} product={props.product} isOpen={props.isOpen} toggle={props.toggle}></NewProductModal>
+    if (props.product) {
+        return (
+            <NewProductModal addNewOrderProduct={props.addNewOrderProduct} client={props.client} product={props.product} isOpen={props.isOpen} toggle={props.toggle}></NewProductModal>
         );
     }
-    return(
+    return (
         <div></div>
     );
-    
+
 
 }
 

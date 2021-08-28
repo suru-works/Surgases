@@ -7,7 +7,7 @@ import { User, UserUpdate } from './user';
 import { Account, AccountUpdate} from './account'
 import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
-import { Products, ProductsUpdate, TrolleyProducts } from './products';
+import { Products, ProductsUpdate, TrolleyProducts, LastProductPrice, Productoxcliente } from './products';
 import { Orders, OrdersUpdate } from './orders';
 import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
 import { Restore } from './restore';
@@ -35,6 +35,8 @@ import { OrderStats } from './orderStats';
             products: Products,
             productsUpdate: ProductsUpdate,
             trolleyProducts: TrolleyProducts,
+            lastProductPrice:LastProductPrice,
+            productoxcliente:Productoxcliente,
             orders: Orders,
             ordersUpdate: OrdersUpdate,
             systemParameters: SystemParameters,

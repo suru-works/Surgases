@@ -607,6 +607,65 @@ export const trolleyProducts = (args) => async (dispatch) => {
     }
 }
 
+//lastProductPrice
+
+export const lastProductPriceReset = () => ({
+    type: ActionTypes.LAST_PRODUCT_PRICE_RESET
+});
+
+export const lastProductPriceRequest = () => ({
+    type: ActionTypes.LAST_PRODUCT_PRICE_REQUEST
+});
+
+export const lastProductPriceSuccess = (result) => ({
+    type: ActionTypes.LAST_PRODUCT_PRICE_SUCCESS,
+    payload: result
+});
+
+export const lastProductPriceFailed = (errmess) => ({
+    type: ActionTypes.LAST_PRODUCT_PRICE_FAILED,
+    payload: errmess
+});
+
+export const lastProductPrice = (args) => async (dispatch) => {
+    dispatch(lastProductPriceRequest());
+    try {
+        const res = await axios.get(baseBackUrl + "pedidos/last-product-price/"+args.product+"/"+args.client);
+        dispatch(lastProductPriceSuccess(res));
+    } catch (err) {
+        dispatch(lastProductPriceFailed(err));
+    }
+}
+
+//productoxclientePrice
+
+export const productoxclientePriceReset = () => ({
+    type: ActionTypes.PRODUCTOXCLIENTE_RESET
+});
+
+export const productoxclientePriceRequest = () => ({
+    type: ActionTypes.PRODUCTOXCLIENTE_REQUEST
+});
+
+export const productoxclientePriceSuccess = (result) => ({
+    type: ActionTypes.PRODUCTOXCLIENTE_SUCCESS,
+    payload: result
+});
+
+export const productoxclientePriceFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTOXCLIENTE_FAILED,
+    payload: errmess
+});
+
+export const productoxclientePrice = (args) => async (dispatch) => {
+    dispatch(productoxclientePriceRequest());
+    try {
+        const res = await axios.get(baseBackUrl + "productos/"+args.product+"/cliente/"+args.client);
+        dispatch(productoxclientePriceSuccess(res));
+    } catch (err) {
+        dispatch(productoxclientePriceFailed(err));
+    }
+}
 
 //Restore password
 export const restoreRequest = () => ({

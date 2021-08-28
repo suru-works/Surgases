@@ -61,7 +61,7 @@ const ReactTableProductsForTrolleyComponent = (props) => {
 
   return (
     <div>
-      <AddNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} product={selectedNewProduct} isOpen={isAddNewOrderModalOpen} toggle={toggleEditModal}></AddNewOrderProductComponent>
+      <AddNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} product={selectedNewProduct} client={props.client} isOpen={isAddNewOrderModalOpen} toggle={toggleEditModal}></AddNewOrderProductComponent>
       <ReactTable
         keyField="codigo"
         className="-striped -highlight"

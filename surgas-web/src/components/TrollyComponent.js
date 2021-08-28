@@ -250,7 +250,7 @@ const SearchResult = (props) => {
 
         return (
 
-            <ReactTableProductsForTrolleyComponent  products={result.data} addNewOrderProduct={props.addNewOrderProduct} />
+            <ReactTableProductsForTrolleyComponent  products={result.data} client ={props.client}addNewOrderProduct={props.addNewOrderProduct} />
 
         );
     }
@@ -390,7 +390,7 @@ const NewOrder = (props) => {
                     />
                 </FormGroup>
                 <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
-                    <Label htmlFor="descuento">Descuento</Label>
+                    <Label htmlFor="descuento">Descuento total</Label>
                     <Input type="number" id="descuento" name="descuento"
                         value={props.newOrderDescuento}
                         onChange={(event) => { props.setNewOrderDescuento(event.target.value) }}
@@ -614,7 +614,7 @@ const Trolly = (props) => {
                             <SearchCriteria />
                             <CardTitle tag="h5">Productos</CardTitle>
                             <CardBody className='p-0'>
-                                <SearchResult addNewOrderProduct={addNewOrderProduct}></SearchResult>
+                                <SearchResult addNewOrderProduct={addNewOrderProduct} client={orderClientResult.data[0].telefono}></SearchResult>
                             </CardBody>
 
                         </div>
