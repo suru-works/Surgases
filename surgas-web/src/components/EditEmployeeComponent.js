@@ -74,9 +74,9 @@ const EmployeeModal = (props) => {
             direccion: direccion,
             telefono: telefono,
             estado: estado,
-            vendedor: tipo.includes(' vendedor,'),
-            repartidor: tipo.includes(' repartidor,'),
-            promotor: tipo.includes(' promotor,')
+            vendedor: tipo.includes('vendedor'),
+            repartidor: tipo.includes('repartidor'),
+            promotor: tipo.includes('promotor')
         },
         validationSchema,
         onSubmit(values) {
@@ -160,11 +160,11 @@ const EmployeeModal = (props) => {
 
                                     <FormGroup>
 
-                                        <Label htmlFor="nombre">Tipo</Label>
+                                        <Label htmlFor="nombre">Tipo:</Label>
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
-                                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" value={'on'}
+                                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" checked={values.vendedor}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                     />{' '}
@@ -172,10 +172,11 @@ const EmployeeModal = (props) => {
                                                 </Label>
                                             </div>
                                         </div>
+                                        <br/>
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
-                                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" values={values.repartidor}
+                                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" checked={values.repartidor}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                     />{' '}
@@ -183,10 +184,11 @@ const EmployeeModal = (props) => {
                                                 </Label>
                                             </div>
                                         </div>
+                                        <br/>
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
-                                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" values={values.promotor}
+                                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" checked={values.promotor}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                     />{' '}
@@ -196,7 +198,7 @@ const EmployeeModal = (props) => {
                                         </div>
                                     </FormGroup>
 
-                                    <br></br>
+                                    <br/>
 
                                     <div class="d-flex justify-content-center" >
                                         <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit">Actualizar</Button>

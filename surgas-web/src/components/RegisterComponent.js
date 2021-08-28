@@ -21,22 +21,22 @@ const validationSchema = Yup.object(
         username: Yup
             .string()
             .min(4, "El nombre de usuario debe ser de mínimo 4 caracteres")
-            .max(15, "El nombre de usuario debe ser de mínimo 4 caracteres")
+            .max(15, "El nombre de usuario debe ser de máximo 15 caracteres")
             .required("Este campo es obligatorio"),
         email: Yup
             .string()
-            .email("Ingresa un correo electronico valido.")
+            .email("Ingresa un correo electrónico válido.")
             .required("Este campo es obligatorio"),
         password: Yup
             .string()
-            .min(8, "la contraseña debe ser de minimo 8 caracteres")
-            .max(40, "la contraseña debe ser de maximo 40 caracteres")
+            .min(8, "la contraseña debe ser de mínimo 8 caracteres")
+            .max(40, "la contraseña debe ser de máximo 40 caracteres")
             .required("Este campo es obligatorio"),
         name: Yup
             .string(),
         phoneNumber: Yup
             .string()
-            .matches(phoneRegExp, 'Ingresa un telefono valido'),
+            .matches(phoneRegExp, 'Ingresa un teléfono valido'),
     });
 
 const checkTelValidationSchema = Yup.object(

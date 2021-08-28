@@ -17,7 +17,7 @@ const validationSchema = yup.object(
 const UserModal = (props) => {
     const [username] = useState(props.user.username);
     const [email] = useState(props.user.email);
-    const [admin] = useState(props.user.es_admin);
+    const [admin] = useState(props.user.es_admin.data[0]);
     const [empleado] = useState(props.user.empleado);
     const [cliente] = useState(props.user.cliente);
 
@@ -35,6 +35,16 @@ const UserModal = (props) => {
         props.toggle();
     }
 
+    const passNumberToBool = (num) => {
+        if(num === 0){
+            return false
+        }
+        else if(num === 1){
+            return true
+        }
+        return false
+    }
+
     const doUpdateUser = (userData) => dispatch(updateUser(userData));
 
     const uploadChanges = (values) => {
@@ -43,7 +53,7 @@ const UserModal = (props) => {
             email: values.email,
             cliente: values.cliente,
             empleado: values.empleado,
-            es_admin: true
+            es_admin: values.es_admin
         }
         doUpdateUser(userData);
     }
@@ -62,7 +72,7 @@ const UserModal = (props) => {
             email: email,
             cliente: cliente,
             empleado: empleado,
-            es_admin: admin
+            es_admin: passNumberToBool(admin)
         },
         validationSchema,
         onSubmit(values) {
@@ -118,11 +128,10 @@ const UserModal = (props) => {
 
                                     <FormGroup>
                                         <Label htmlFor="email">Correo</Label>
-                                        <Input type="email" id="correo" name="correo" value={values.email}
+                                        <Input type="email" id="email" name="email" value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
-                                        {(touched.correo && errors.correo) ? (<Alert color="danger">{errors.correo}</Alert>) : null}
-
+                                        {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
                                     </FormGroup>
 
                                     <FormGroup>
@@ -131,7 +140,6 @@ const UserModal = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
                                         {(touched.empleado && errors.empleado) ? (<Alert color="danger">{errors.empleado}</Alert>) : null}
-
                                     </FormGroup>
 
                                     <FormGroup>
@@ -140,21 +148,19 @@ const UserModal = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
                                         {(touched.cliente && errors.cliente) ? (<Alert color="danger">{errors.cliente}</Alert>) : null}
-
                                     </FormGroup>
 
+                                    <FormGroup>
+                                        <Label check  >
+                                            <Input type="checkbox" id="es_admin" name="es_admin" className="form-control" checked={values.es_admin}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />{' '}
+                                            Administrador
+                                        </Label>
+                                    </FormGroup>
 
-                                    <div className="l-flex ml-auto " class="col-12" >
-                                        <div class="col-12 col-sm-8">
-                                            <Label check  >
-                                                <Input type="checkbox" id="es_admin" name="es_admin" className="form-control" values={values.es_admin}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />{' '}
-                                                Administrador
-                                            </Label>
-                                        </div>
-                                    </div>
+                                    <br/>
 
                                     <div class="d-flex justify-content-center" >
                                         <FormGroup>

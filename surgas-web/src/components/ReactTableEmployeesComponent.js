@@ -52,6 +52,7 @@ const ReactTableEmployeesComponent = (props) => {
       style: {
         textAlign: "right"
       },
+      width: 200,
     },
     {
       Header: "Tipo",
@@ -59,7 +60,7 @@ const ReactTableEmployeesComponent = (props) => {
       style: {
         textAlign: "right"
       },
-      width: 120,
+      width: 220,
     },
     {
       Header: "Estado",

@@ -21,11 +21,7 @@ const validationSchema = yup.object(
         
         nombre: yup
             .string()
-            .required("El cliente debe tener nombre"),
-        
-        tipo: yup
-            .string()
-            .required("El cliente debe tener tipo")
+            .required("El cliente debe tener nombre")
     }
 );
 
@@ -66,7 +62,7 @@ const AddClientComponent = (props) => {
             telefono: '',
             email: '',
             nombre: '',
-            tipo: ''
+            tipo: 'natural'
         },
         validationSchema,
         onSubmit(values) {
@@ -173,14 +169,16 @@ const AddClientComponent = (props) => {
                             <FormGroup className='col-12 col-sm-6'>
                                 <Label htmlFor="tipo">Tipo</Label>
                                 <Input
-                                    type="tipo"
+                                    type="select"
                                     id="tipo"
                                     name="tipo"
                                     value={values.tipo}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                />
-                                {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
+                                >
+                                    <option>natural</option>
+                                    <option>juridica</option>
+                                </Input>
                             </FormGroup>
 
                         </div>

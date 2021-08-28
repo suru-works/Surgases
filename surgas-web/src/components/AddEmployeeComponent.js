@@ -11,10 +11,27 @@ import * as yup from "yup";
 const validationSchema = yup.object(
 
     {
+        id: yup
+            .string()
+            .min(2, "El nombre debe ser de mínimo 2 caracteres")
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
         nombre: yup
             .string()
             .min(2, "El nombre debe ser de mínimo 2 caracteres")
             .max(25, "El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
+            //TO DO: Que el id y el telefono solo sean numeros, con su respectivo regex
+        direccion: yup
+            .string()
+            .min(2, "El nombre debe ser de mínimo 2 caracteres")
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
+        telefono: yup
+            .string()
+            .min(2, "El nombre debe ser de mínimo 2 caracteres")
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
     }
 );
 
@@ -60,6 +77,13 @@ const AddEmployeeComponent = (props) => {
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
+            id: '',
+            nombre: '',
+            direccion: '',
+            telefono: '',
+            vendedor: false,
+            repartidor: false,
+            promotor: false
         },
         validationSchema,
         onSubmit(values) {
@@ -111,7 +135,6 @@ const AddEmployeeComponent = (props) => {
                     <br></br>
 
                     <FormGroup>
-
                         <Label htmlFor="id">Documento de identidad</Label>
                         <Input type="text" id="id" name="id" value={values.id}
                             onChange={handleChange}
@@ -120,7 +143,6 @@ const AddEmployeeComponent = (props) => {
                     </FormGroup>
 
                     <FormGroup>
-
                         <Label htmlFor="nombre">Nombre</Label>
                         <Input type="text" id="nombre" name="nombre" value={values.nombre}
                             onChange={handleChange}
@@ -129,7 +151,6 @@ const AddEmployeeComponent = (props) => {
                     </FormGroup>
 
                     <FormGroup>
-
                         <Label htmlFor="direccion">Direccion</Label>
                         <Input type="direccion" id="direccion" name="direccion" value={values.direccion}
                             onChange={handleChange}
@@ -138,7 +159,6 @@ const AddEmployeeComponent = (props) => {
                     </FormGroup>
 
                     <FormGroup>
-
                         <Label htmlFor="telefono">Telefono</Label>
                         <Input type="telefono" id="telefono" name="telefono" value={values.telefono}
                             onChange={handleChange}
@@ -147,12 +167,11 @@ const AddEmployeeComponent = (props) => {
                     </FormGroup>
 
                     <FormGroup>
-
-                        <Label htmlFor="nombre">Tipo</Label>
+                        <Label htmlFor="nombre">Tipo:</Label>
                         <div className="l-flex ml-auto " class="col-12" >
                             <div class="col-12 col-sm-8">
                                 <Label check  >
-                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" values={values.vendedor}
+                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" checked={values.vendedor}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />{' '}
@@ -160,10 +179,11 @@ const AddEmployeeComponent = (props) => {
                                 </Label>
                             </div>
                         </div>
+                        <br/>
                         <div className="l-flex ml-auto " class="col-12" >
                             <div class="col-12 col-sm-8">
                                 <Label check  >
-                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" values={values.repartidor}
+                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" checked={values.repartidor}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />{' '}
@@ -171,10 +191,11 @@ const AddEmployeeComponent = (props) => {
                                 </Label>
                             </div>
                         </div>
+                        <br/>
                         <div className="l-flex ml-auto " class="col-12" >
                             <div class="col-12 col-sm-8">
                                 <Label check  >
-                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" values={values.promotor}
+                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" checked={values.promotor}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />{' '}
@@ -183,8 +204,7 @@ const AddEmployeeComponent = (props) => {
                             </div>
                         </div>
                     </FormGroup>
-
-                    <br></br>
+                    <br/>
 
                     <div class="d-flex justify-content-center" >
                         <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit"  >Añadir</Button>
