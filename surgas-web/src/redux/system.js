@@ -55,3 +55,23 @@ export const SystemBackup = (state = {
             return state;
     }
 }
+
+export const GetServerIva = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.GET_SERVER_IVA_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.GET_SERVER_IVA_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.GET_SERVER_IVA_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.GET_SERVER_IVA_FAILED:
+            return {...state, isLoading: false, errMess: action.payload,result: null};
+        default:
+            return state;
+    }
+}
+

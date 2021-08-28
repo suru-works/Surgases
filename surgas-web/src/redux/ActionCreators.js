@@ -869,6 +869,37 @@ export const systemParameters = () => async (dispatch) => {
     }
 }
 
+    //sever iva
+
+export const getServerIvaReset = () => ({
+    type: ActionTypes.GET_SERVER_IVA_RESET
+});
+
+export const getServerIvaRequest = () => ({
+    type: ActionTypes.GET_SERVER_IVA_REQUEST
+});
+
+export const getServerIvaSuccess = (result) => ({
+    type: ActionTypes.GET_SERVER_IVA_SUCCESS,
+    payload: result
+});
+
+export const getServerIvaFailed = (errmess) => ({
+    type: ActionTypes.GET_SERVER_IVA_FAILED,
+    payload: errmess
+});
+
+export const getServerIva = () => async (dispatch) => {
+    dispatch(getServerIvaRequest());
+
+    try {
+        const res = await axios.get(baseBackUrl + 'system/parameters/iva');
+        dispatch(getServerIvaSuccess(res));
+    } catch (err) {
+        dispatch(getServerIvaFailed(err));
+    }
+}
+
 // Employees
 
 export const employeesReset = () => ({

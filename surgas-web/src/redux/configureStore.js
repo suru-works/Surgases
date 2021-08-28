@@ -9,7 +9,7 @@ import { Maps } from './maps';
 import { Users, UsersUpdate } from './users';
 import { Products, ProductsUpdate, TrolleyProducts, LastProductPrice, Productoxcliente } from './products';
 import { Orders, OrdersUpdate } from './orders';
-import { SystemParameters, SystemParametersUpdate, SystemBackup } from './system';
+import { SystemParameters, SystemParametersUpdate, SystemBackup, GetServerIva } from './system';
 import { Restore } from './restore';
 import { Verify } from './verify';
 import { ChangePassword } from './restore';
@@ -42,6 +42,7 @@ import { OrderStats } from './orderStats';
             systemParameters: SystemParameters,
             systemParametersUpdate:SystemParametersUpdate,
             systemBackup: SystemBackup,
+            getServerIva: GetServerIva,
             restore: Restore,
             changePassword: ChangePassword,
             verify: Verify,

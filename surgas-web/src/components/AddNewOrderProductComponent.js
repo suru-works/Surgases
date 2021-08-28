@@ -3,7 +3,7 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { lastProductPrice, productoxclientePrice } from '../redux/ActionCreators';
+import { lastProductPrice, productoxclientePrice, getServerIva } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -29,11 +29,16 @@ const NewProductModal = (props) => {
     const productoxclienteLoading = useSelector(state => state.productoxcliente.loading);
     const productoxclienteError = useSelector(state => state.productoxcliente.result);
 
+    const getServerIvaResult = useSelector(state => state.getServerIva.result);
+    const getServerIvaLoading = useSelector(state => state.getServerIva.loading);
+    const getServerIvaError = useSelector(state => state.getServerIva.result);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(lastProductPrice({ product: props.product.codigo, client: props.client }));
         dispatch(productoxclientePrice({ product: props.product.codigo, client: props.client }));
+        dispatch(getServerIva());
     }, []);
 
     const validationSchema = yup.object(
@@ -128,7 +133,7 @@ const NewProductModal = (props) => {
         props.toggle();
     }
 
-    if (precioAnteriorResult && productoxclienteResult) {
+    if (precioAnteriorResult && productoxclienteResult && getServerIvaResult) {
         if (error) {
             return (
                 <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
@@ -296,7 +301,7 @@ const NewProductModal = (props) => {
 
         );
     }
-    if (precioAnteriorLoading || productoxclienteLoading) {
+    if (precioAnteriorLoading || productoxclienteLoading || getServerIvaLoading) {
         return (
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
