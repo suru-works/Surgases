@@ -125,8 +125,12 @@ CREATE TABLE static(
     tiempo_de_gracia INT NOT NULL,
 	tiempo_de_redencion INT NOT NULL, 
     descuento FLOAT NOT NULL,
+    iva_actual FLOAT NOT NULL
     PRIMARY KEY (codigo)
 );
+
+INSERT INTO static (codigo,limite_puntos,limite_puntos_acumulables,puntosxlibra,tiempo_de_gracia,tiempo_de_redencion,descuento,iva_actual)
+    VALUES (1,100000000,100000000,5,10,10,0,19);
 
 CREATE TABLE user_sessions(
     session_id VARCHAR(128) NOT NULL COLLATE 'utf8mb4_bin',

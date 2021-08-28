@@ -147,7 +147,7 @@ const NewProductModal = (props) => {
                 <ModalHeader toggle={props.toggle}>Añadir un producto al pedido</ModalHeader>
 
                 <ModalBody>
-
+ 
                     <div className="d-flex space-around row">
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
