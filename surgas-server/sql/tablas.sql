@@ -104,6 +104,8 @@ CREATE TABLE pedidoxproducto(
     fecha_pedido DATE NOT NULL,
     numero_pedido INT NOT NULL,
     precio_venta INT NOT NULL,
+    valor_iva FLOAT NOT NULL,
+    descuento FLOAT NOT NULL,
     unidades INT NOT NULL,
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
     FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),

@@ -138,6 +138,19 @@ productoRouter.route('/:codigo/cliente/:telefono')
     
     res.json(utils.parseToJSON(result))[0];
 }))
+.post(auth.isEmployee, asyncHandler(async (req, res, next) => {
+    const { codigo, telefono } = req.params;
+    const { descuento, iva_incluido } = req.body;
+
+    await pool.execute(
+        'INSERT INTO clientexproducto VALUES (?, ?, ?, ?)',
+        [telefono, codigo, descuento, iva_incluido]
+    );
+
+    res.json({
+        success: true
+    });
+}))
 .put(auth.isEmployee, asyncHandler(async (req, res, next) => {
     const params = req.params;
     const body = req.body;
