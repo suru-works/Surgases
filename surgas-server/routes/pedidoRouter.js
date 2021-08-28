@@ -276,6 +276,32 @@ pedidoRouter.get('/stats', asyncHandler(async (req, res, next) => {
     res.json(utils.parseToJSON(results));
 }));
 
+pedidoRouter.get('/last-product-price/:codigo/:telefono', auth.isAuthenticated, auth.isEmployee, asyncHandler(async (req, res, next) => {
+    const params = req.params;
+
+    const conn = await pool.getConnection();
+
+    let [result,] = await conn.execute("SELECT * FROM empleado WHERE id = ? AND tipo LIKE '%vendedor%'", [req.user.empleado]);
+    const empleado = utils.parseToJSON(result)[0];
+
+    if (empleado) {
+        [result,] = await conn.execute(
+            'SELECT precio_venta FROM pedidoxproducto WHERE (fecha_pedido, numero_pedido) IN (SELECT fecha, numero FROM pedido WHERE cliente_pedidor = ?) AND producto = ? ORDER BY fecha_pedido, numero_pedido DESC',
+            [params.telefono, params.codigo]
+        );
+
+        conn.release();
+
+        res.json(utils.parseToJSON(result)[0]);
+    } else {
+        conn.release();
+        
+        let err = new Error('El empleado no es un vendedor');
+        err.status = 403;
+        next(err);
+    }
+}));
+
 pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
     const body = req.body;
     const [result,] = await pool.execute(
