@@ -1,6 +1,6 @@
 DELIMITER $$
 
-CREATE OR REPLACE PROCEDURE proc_pedido_inventario_puntos (
+CREATE OR REPLACE PROCED-RE proc_pedido_inventario_puntos (
 	IN pedido_fecha TYPE OF pedido.fecha,
     IN pedido_numero TYPE OF pedido.numero
 )
@@ -29,6 +29,8 @@ BEGIN
         SELECT peso INTO producto_peso FROM producto WHERE codigo = pp.producto;
         SET puntos_totales := puntos_totales + (puntos_libra * producto_peso);
     END FOR;
+
+    UPDATE pedido SET puntos_compra = puntos_totales WHERE fecha = pedido_fecha AND numero = pedido_numero;
 
     SELECT cliente_pedidor INTO cliente_telefono FROM pedido WHERE fecha = pedido_fecha AND numero = pedido_numero;
     UPDATE cliente SET puntos = puntos + puntos_totales WHERE telefono = cliente_pedidor;
