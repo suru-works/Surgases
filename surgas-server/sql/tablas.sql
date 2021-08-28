@@ -104,6 +104,8 @@ CREATE TABLE pedidoxproducto(
     fecha_pedido DATE NOT NULL,
     numero_pedido INT NOT NULL,
     precio_venta INT NOT NULL,
+    valor_iva FLOAT NOT NULL,
+    descuento FLOAT NOT NULL,
     unidades INT NOT NULL,
     PRIMARY KEY (producto, fecha_pedido, numero_pedido),
     FOREIGN KEY (fecha_pedido, numero_pedido) REFERENCES pedido(fecha, numero),
@@ -125,8 +127,12 @@ CREATE TABLE static(
     tiempo_de_gracia INT NOT NULL,
 	tiempo_de_redencion INT NOT NULL, 
     descuento FLOAT NOT NULL,
+    iva_actual FLOAT NOT NULL
     PRIMARY KEY (codigo)
 );
+
+INSERT INTO static (codigo,limite_puntos,limite_puntos_acumulables,puntosxlibra,tiempo_de_gracia,tiempo_de_redencion,descuento,iva_actual)
+    VALUES (1,100000000,100000000,5,10,10,0,19);
 
 CREATE TABLE user_sessions(
     session_id VARCHAR(128) NOT NULL COLLATE 'utf8mb4_bin',

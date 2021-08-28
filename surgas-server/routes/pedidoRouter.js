@@ -6,6 +6,7 @@ const auth = require('../auth');
 const utils = require('../utils');
 
 const { values } = require('mysql2/lib/constants/charset_encodings');
+const { ok } = require('assert');
 
 const pool = db.pool;
 
@@ -154,7 +155,8 @@ pedidoRouter.route("/")
             'CALL proc_pedido_insertar(?, ?, ?, ?, ?, ?, ?, ?)',
             [pedido.direccion, pedido.municipio, pedido_estado, pedido.bodega, pedido.nota, req.user.empleado, pedido.empleado_repartidor, pedido.cliente_pedidor]
         );
-        const pk = utils.parseToJSON(results)[0][0];
+        let pk = utils.parseToJSON(results)[0][0];
+        pk.fecha = pk.fecha.substring(0, 10);
 
         let precio_bruto = 0;
         let precio_final = 0;

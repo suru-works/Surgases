@@ -10,24 +10,31 @@ CREATE OR REPLACE PROCEDURE proc_pedidoxproducto_insertar (
 )
 MODIFIES SQL DATA
 BEGIN
+    DECLARE pedidoxproducto_valor_iva TYPE OF pedidoxproducto.valor_iva;
+    DECLARE pedidoxproducto_descuento TYPE OF pedidoxproducto.descuento;
     DECLARE clientexproducto_descuento TYPE OF clientexproducto.descuento;
+    DECLARE precio_bruto TYPE OF pedido.precio_bruto;
     DECLARE precio_final TYPE OF pedido.precio_final;
+
+    SET pedidoxproducto_valor_iva := pedidoxproducto_precio_venta * ((SELECT iva_actual FROM static) / 100);
+
+    SET pedidoxproducto_descuento := 0;
+
+    SELECT descuento INTO pedidoxproducto_descuento
+    FROM clientexproducto
+    WHERE cliente = cliente_telefono AND producto = producto_codigo;
 
 	INSERT INTO pedidoxproducto VALUES (
         producto_codigo,
         pedido_fecha,
         pedido_numero,
         pedidoxproducto_precio_venta,
+        pedidoxproducto_valor_iva,
+        pedidoxproducto_descuento,
         pedidoxproducto_unidades
     );
 
-    SET clientexproducto_descuento := 0;
-
-    SELECT descuento INTO clientexproducto_descuento
-    FROM clientexproducto
-    WHERE cliente = cliente_telefono AND producto = producto_codigo;
-
-    SET precio_final := pedidoxproducto_precio_venta * ((100 - clientexproducto_descuento) / 100);
+    SET precio_final := (pedidoxproducto_precio_venta + pedidoxproducto_valor_iva) * ((100 - pedidoxproducto_descuento) / 100);
 
     SELECT pedidoxproducto_precio_venta AS precio_bruto, precio_final;
 END; $$
