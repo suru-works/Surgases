@@ -336,9 +336,13 @@ router.route('/:username')
     values.push(body.email);
   }
 
+  console.log(typeof(body.es_admin));
+  console.log(body.es_admin);
+
   if (body.es_admin !== undefined) {
-    changes.push['es_admin = ?'];
-    values.push[body.es_admin ? '1' : '0'];
+    console.log("Puta vida");
+    changes.push('es_admin = ?');
+    values.push(body.es_admin ? 1 : 0);
   }
 
   if (body.cliente) {
@@ -352,6 +356,8 @@ router.route('/:username')
   }
 
   values.push(req.params.username);
+
+  console.log(values);
 
   await pool.execute(
     `UPDATE usuario SET ${changes.join(', ')} WHERE username = ?`,
