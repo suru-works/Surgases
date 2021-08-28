@@ -165,7 +165,7 @@ productoRouter.route('/:codigo/cliente/:telefono')
 
     if (body.iva_incluido !== undefined) {
         changes.push('iva_incluido = ?');
-        values.push(body.iva_incluido ? '1' : '0');
+        values.push(body.iva_incluido ? 1 : 0);
     }
 
     values.push(params.telefono);
