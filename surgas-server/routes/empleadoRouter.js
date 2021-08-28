@@ -54,8 +54,8 @@ empleadoRouter.route("/")
             query += ' AND (';
             const tipos = params.tipo.split(',');
             for (let i = 0; i < tipos.length - 1; i++) {
-                query += 'tipo = ?';
-                values.push(tipos[i]);
+                query += 'tipo LIKE ?';
+                values.push(`%${tipos[i]}%`);
                 query += i < tipos.length - 2 ? ' OR ' : ')';
             }
         }
