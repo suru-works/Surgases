@@ -51,7 +51,7 @@ empleadoRouter.route("/")
         query += conditions.join(' AND ');
 
         if (params.tipo) {
-            query += ' (';
+            query += ' AND (';
             const tipos = params.tipo.split(',');
             for (let i = 0; i < tipos.length; i++) {
                 query += 'tipo = ?';
