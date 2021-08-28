@@ -127,7 +127,7 @@ CREATE TABLE static(
     tiempo_de_gracia INT NOT NULL,
 	tiempo_de_redencion INT NOT NULL, 
     descuento FLOAT NOT NULL,
-    iva_actual FLOAT NOT NULL
+    iva_actual FLOAT NOT NULL,
     PRIMARY KEY (codigo)
 );
 
