@@ -212,11 +212,14 @@ pedidoRouter.route('/:fecha/:numero')
         changes.push('estado = ?');
         values.push(estado);
 
-        if (estado == 'fiado' || estado == 'pago') {
+        const [result,] = await conn.execute('SELECT estado FROM pedido WHERE fecha = ? AND numero = ?', [fecha, numero]);
+        const estado_actual = utils.parseToJSON(result)[0];
+
+        if (estado_actual && (!['fiado', 'pago'].includes(estado_actual.estado)) && (estado == 'fiado' || estado == 'pago')) {
             await conn.execute(
                 'CALL proc_pedido_inventario_puntos(?, ?)',
                 [fecha, numero]
-            )
+            );
         }
     }
 
