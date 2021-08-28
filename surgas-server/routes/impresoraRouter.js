@@ -1,10 +1,9 @@
-const db = require('../db');
-const auth = require('../auth');
 const asyncHandler = require('express-async-handler');
-const fs = require('fs');
-const exec = require('child_process').exec;
+const fs = require('fs/promises');
 
-const pool = db.pool;
+const auth = require('../auth');
+const { pool } = require('../db');
+const { parseToJSON } = require('../utils');
 
 const impresoraRouter = require('express').Router();
 impresoraRouter.use(require('body-parser').json());
@@ -15,31 +14,24 @@ impresoraRouter.route('/')
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
-    const results = await pool.promise().execute('SELECT * FROM impresora');
-    res.json(JSON.parse(JSON.stringify(results[0])));
+    const [results,] = await pool.execute('SELECT * FROM impresora');
+
+    res.json(parseToJSON(results));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        let result = await conn.promise().execute('INSERT INTO impresora(descripcion) VALUES (?)', [req.body.descripcion]);
+    const conn = await pool.getConnection();
 
-        if (result[0].affectedRows == 1) {
-            conn.commit();
+    await conn.execute('INSERT INTO impresora(descripcion) VALUES (?)', [req.body.descripcion]);
 
-            result = await pool.promise().execute('SELECT * FROM impresora WHERE descripcion = ?', [req.body.descripcion]);
-            const printer = JSON.parse(JSON.stringify(result[0]))[0];
-            fs.mkdir('G:\\Unidades compartidas\\suru-works\\surgas\\Impresoras\\' + printer.codigo, (err) => {
-                if (err) {
-                    next(err);
-                }
+    const [result,] = await conn.execute('SELECT * FROM impresora WHERE descripcion = ?', [req.body.descripcion]);
+    const printer = parseToJSON(result);
 
-                res.json(printer);
-            });
-        } else {
-            conn.rollback();
-            throw {
-                status: 500
-            }
-        }
+    conn.release();
+
+    await fs.mkdir('Z:\\Unidades compartidas\\suru-works\\surgas\\Impresoras\\' + printer.codigo);
+
+    res.json({
+        success: true
     });
 }));
 
@@ -49,57 +41,28 @@ impresoraRouter.route('/:codigo')
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
-    const results = await pool.promise().execute('SELECT * FROM impresora WHERE codigo = ?', req.params.codigo);
-    res.json(JSON.parse(JSON.stringify(results[0])));
+    const [result,] = await pool.execute('SELECT * FROM impresora WHERE codigo = ?', req.params.codigo);
+
+    res.json(parseToJSON(result));
 }))
 .put(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    pool.getConnection(async (err, conn) => {
-        const result = await conn.promise().execute(
-            'UPDATE impresora SET descripcion = ? WHERE codigo = ?',
-            [req.body.descripcion, req.params.codigo]
-        );
+    await pool.execute(
+        'UPDATE impresora SET descripcion = ? WHERE codigo = ?',
+        [req.body.descripcion, req.params.codigo]
+    );
 
-        if (result[0].affectedRows == 1) {
-            conn.commit();
-            res.json(req.body);
-        } else {
-            conn.rollback();
-            throw {
-                status: 500
-            }
-        }
+    res.json({
+        success: true
     });
 }))
 .delete(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
-    fs.rmdir(
-        'G:\\Unidades compartidas\\suru-works\\surgas\\Impresoras\\' + req.params.codigo,
-        {
-            recursive: true
-        },
-        (err) => {
-            if (err) {
-                next(err);
-            }
-
-            pool.getConnection(async (err, conn) => {
-                const result = await conn.promise().execute('DELETE FROM impresora WHERE codigo = ?', [req.params.codigo]);
-        
-                if (result[0].affectedRows == 1) {
-                    conn.commit();
-                    
-                    res.json({
-                        msg: 'impresora eliminada'
-                    });
-                } else {
-                    conn.rollback();
-                    throw {
-                        status: 500
-                    }
-                }
-            });
-        }
-    );
+    await fs.rmdir('G:\\Unidades compartidas\\suru-works\\surgas\\Impresoras\\' + req.params.codigo, { recursive: true });
     
+    await pool.execute('DELETE FROM impresora WHERE codigo = ?', [req.params.codigo]);
+
+    res.json({
+        success: true
+    });
 }));
 
 module.exports = impresoraRouter;
