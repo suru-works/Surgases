@@ -110,7 +110,9 @@ const NewProductModal = (props) => {
                 color: color,
                 peso: peso,
                 precio: values.precio,
-                cantidad: values.cantidad
+                cantidad: values.cantidad,
+                descuento:values.precio * values.descuento / 100,
+                iva:values.precio * 19/100
             }
 
             let aux = props.addNewOrderProduct(productData);
@@ -262,7 +264,7 @@ const NewProductModal = (props) => {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             ></Input>
-                                            {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
+                                            {(touched.descuentoUnidad && errors.descuentoUnidad) ? (<Alert color="danger">{errors.descuentoUnidad}</Alert>) : null}
                                         </FormGroup>
 
 

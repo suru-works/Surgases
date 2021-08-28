@@ -250,7 +250,7 @@ const SearchResult = (props) => {
 
         return (
 
-            <ReactTableProductsForTrolleyComponent  products={result.data} client ={props.client}addNewOrderProduct={props.addNewOrderProduct} />
+            <ReactTableProductsForTrolleyComponent  products={result.data} client ={props.client} addNewOrderProduct={props.addNewOrderProduct} />
 
         );
     }
@@ -310,6 +310,13 @@ const NewOrder = (props) => {
                     <Input type="text" id="direccion" name="direccion"
                         value={props.newOrderDireccion}
                         onChange={(event) => { props.setNewOrderDireccion(event.target.value) }}
+                    />
+                </FormGroup>
+                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
+                    <Label htmlFor="municipio">Municipio</Label>
+                    <Input type="text" id="municipio" name="municipio"
+                        value={props.newOrdermunicipio}
+                        onChange={(event) => { props.setNewOrderMunicipio(event.target.value) }}
                     />
                 </FormGroup>
                 <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-2'>
@@ -394,18 +401,15 @@ const NewOrder = (props) => {
                     <Input type="number" id="descuento" name="descuento"
                         value={props.newOrderDescuento}
                         onChange={(event) => { props.setNewOrderDescuento(event.target.value) }}
+                        disabled
                     />
                 </FormGroup>
                 <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
-                    <Label htmlFor="estado">Estado</Label>
-                    <Input type="select" id="estado" name="estado"
-                        value={props.newOrderEstado}
-                        onChange={(event) => { props.setNewOrderEstado(event.target.value) }}
+                    <Label newOrderTotalIva="">Iva total</Label>
+                    <Input type="number" id="newOrderTotalIva" name="newOrderTotalIva"
+                        value={props.newOrderTotalIva}
+                        onChange={(event) => { props.setNewOrderTotalIva(event.target.value) }}
                         disabled>
-                        <option>cola</option>
-                        <option>proceso</option>
-                        <option>fiado</option>
-                        <option>pago</option>
                     </Input>
                 </FormGroup>
 
@@ -449,11 +453,13 @@ const Trolly = (props) => {
     const [newOrderPuntos, setNewOrderPuntos] = useState(0);
     const [newOrderFecha, setNewOrderFecha] = useState(agno + '-' + mes + '-' + dia);
     const [newOrderDireccion, setNewOrderDireccion] = useState('');
+    const [newOrderMunicipio, setNewOrderMunicipio] = useState('');
     const [newOrderBodega, setNewOrderBodega] = useState('1');
     const [newOrderTipoCliente, setNewOrderTipoCliente] = useState('comun');
     const [newOrderNota, setNewOrderNota] = useState('');
     const [newOrderEstado, setNewOrderEstado] = useState('cola');
     const [newOrderDescuento, setNewOrderDescuento] = useState(0.0);
+    const [newOrderTotalIva, setNewOrderTotalIva] = useState(0.0);
     const [newOrderEmpleado, setNewOrderEmpleado] = useState('');
 
 
@@ -468,10 +474,14 @@ const Trolly = (props) => {
         if (index < 0) {
             let producticos = newOrderProducts.slice();
             producticos.push(producto);
-            //calculando precios y puntos
+            //calculando precios, iva, descuentos y puntos
             let nuevoPrecio = newOrderPrecioBruto + (producto.precio) * producto.cantidad;
+            let nuevoTotalIva = newOrderTotalIva + producto.iva * producto.cantidad;
+            let nuevoTotalDescuento = newOrderDescuento + producto.descuento * producto.cantidad;
+            setNewOrderTotalIva(nuevoTotalIva);
+            setNewOrderDescuento(nuevoTotalDescuento);
             setNewOrderPrecioBruto(nuevoPrecio);
-            setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
+            setNewOrderPrecioFinal(nuevoPrecio + nuevoTotalIva - nuevoTotalDescuento);
             setNewOrderProducts(producticos);
             return (false);
         }
@@ -492,7 +502,7 @@ const Trolly = (props) => {
         let nuevoPrecio = newOrderPrecioBruto - (oldProduct.precio) * oldProduct.cantidad
         setNewOrderPrecioBruto(nuevoPrecio);
         setNewOrderPrecioBruto(nuevoPrecio + (product.precio) * product.cantidad);
-        setNewOrderPrecioFinal(nuevoPrecio - (nuevoPrecio * newOrderDescuento / 100));
+        setNewOrderPrecioFinal(nuevoPrecio - product.descuento);
         return (false);
     }
 
@@ -536,10 +546,10 @@ const Trolly = (props) => {
             cliente_pedidor: orderClientResult.data[0].telefono,
             fecha: newOrderFecha,
             direccion: newOrderDireccion,
+            municipio: newOrderMunicipio,
             nota: newOrderNota,
-            empleado: newOrderEmpleado.id,
+            empleado_repartidor: newOrderEmpleado.id,
             productos: newOrderProductsSimplified,
-            descuento: newOrderDescuento,
             estado: newOrderEstado,
             bodega: newOrderBodega
         }
@@ -594,6 +604,8 @@ const Trolly = (props) => {
                                 setNewOrderFecha={setNewOrderFecha}
                                 newOrderDireccion={newOrderDireccion}
                                 setNewOrderDireccion={setNewOrderDireccion}
+                                newOrderMunicipio={setNewOrderMunicipio}
+                                setNewOrderMunicipio={setNewOrderMunicipio}
                                 newOrderBodega={newOrderBodega}
                                 setNewOrderBodega={setNewOrderBodega}
                                 newOrderTipoCliente={newOrderTipoCliente}
@@ -606,6 +618,8 @@ const Trolly = (props) => {
                                 setNewOrderDescuento={setNewOrderDescuento}
                                 newOrderEmpleado={newOrderEmpleado}
                                 setNewOrderEmpleado={setNewOrderEmpleado}
+                                newOrderTotalIva={newOrderTotalIva}
+                                setNewOrderTotalIva={setNewOrderTotalIva}
                             />
                         </div>
 
