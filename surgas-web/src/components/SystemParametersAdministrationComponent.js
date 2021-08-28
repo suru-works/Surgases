@@ -120,7 +120,8 @@ const RenderSystemParameters = (props) => {
             puntosxlibra: props.params.puntosxlibra,
             tiempo_de_gracia: props.params.tiempo_de_gracia,
             tiempo_de_redencion: props.params.tiempo_de_redencion,
-            descuento: props.params.descuento
+            descuento: props.params.descuento,
+            iva_actual: props.params.iva_actual
         },
         validationSchema,
         onSubmit(values) {
@@ -205,6 +206,19 @@ const RenderSystemParameters = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
                                         {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
+                                    </FormGroup>
+
+
+
+                                </div>
+                                <div className='row'>
+
+                                    <FormGroup className='col-12 col-sm-6'>
+                                        <Label htmlFor="iva_actual">Iva actual</Label>
+                                        <Input type="text" id="iva_actual" name="iva_actual" value={values.iva_actual}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur} />
+                                        {(touched.iva_actual && errors.iva_actual) ? (<Alert color="danger">{errors.iva_actual}</Alert>) : null}
                                     </FormGroup>
 
 
