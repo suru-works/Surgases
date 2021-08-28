@@ -216,8 +216,8 @@ const LoginComponent = (props) => {
                             <br></br>
 
                             <div className="d-flex justify-content-center" >
-                                <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} color="secondary">Ingresar</Button>
-                                <Button onClick={() => submitPasswordChange(values.username)} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Olvidé mi contraseña</Button>
+                                <Button type="submit" value="submit" style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary">Ingresar</Button>
+                                <Button onClick={() => submitPasswordChange(values.username)} style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000'}} color="primary">Olvidé mi contraseña</Button>
                             </div>
                         </Form>
                     </ModalBody>

@@ -53,7 +53,6 @@ const ChangePassword = () => {
         },
         validationSchema,
         onSubmit(values) {
-            //console.log(values);
             submit(values);
         }
     });

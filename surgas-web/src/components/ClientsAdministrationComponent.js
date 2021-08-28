@@ -393,7 +393,6 @@ const SearchCriteria = () => {
                     </FormGroup>
                 </div>
 
-
             </Form>
 
         </div>
@@ -456,7 +455,7 @@ const ClientsAdministration = () => {
         }
     }
 
-    if (userResult.data.es_admin[0]==1) {
+    if (userResult.data.es_admin.data[0]===1) {
         return (
             <div className='col' >
                 <Card style={{ margin: "10px", padding: "7px" }}>
