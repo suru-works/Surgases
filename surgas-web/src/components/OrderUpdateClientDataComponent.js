@@ -200,20 +200,6 @@ const UpdateClientData = (props) => {
             <div className="row">
 
                 <FormGroup className='col-12 col-sm-6'>
-                    <Label htmlFor="descuento">Porcentaje de descuento</Label>
-                    <Input
-                        type="number"
-                        id="descuento"
-                        name="descuento"
-                        value={values.descuento}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled    
-                    />
-                    {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
-                </FormGroup>
-
-                <FormGroup className='col-12 col-sm-6'>
                     <Label htmlFor="numero_pedidos">Numero de pedidos</Label>
                     <Input
                         type="number"
@@ -228,9 +214,6 @@ const UpdateClientData = (props) => {
                     {(touched.numero_pedidos && errors.numero_pedidos) ? (<Alert color="danger">{errors.numero_pedidos}</Alert>) : null}
                 </FormGroup>
 
-            </div>
-
-            <div className="row">
                 <FormGroup className='col-12 col-sm-6'>
                     <Label htmlFor="username">Usuario</Label>
                     <Input

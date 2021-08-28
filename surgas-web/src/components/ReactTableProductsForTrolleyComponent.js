@@ -21,6 +21,27 @@ const ReactTableProductsForTrolleyComponent = (props) => {
     setIsAddNewOrderModalOpen(!isAddNewOrderModalOpen);
   }
 
+  const Tuple = (props) => {
+
+    return (
+      <div className="row col-12 justify-content-center">
+        {props.cellValue}
+      </div>
+    )
+  }
+
+  const getIva = (iva_incluido) => {
+    if (iva_incluido.data[0] == 1) {
+      return (
+        "Si"
+      );
+    } else {
+      return (
+        "No"
+      );
+    }
+  }
+
   const columns = [
 
     {
@@ -51,6 +72,19 @@ const ReactTableProductsForTrolleyComponent = (props) => {
     {
       Header: "Precio",
       accessor: "precio",
+    },
+    {
+      Header: "Iva",
+      accessor: "iva_inlcluido",
+      style: {
+        textAlign: "right"
+      },
+      width: 80,
+      Cell: porps => {
+        return (
+          <Tuple user={porps.original} cellValue={getIva(porps.original.iva_incluido)}></Tuple>
+        );
+      }
     },
     {
       Header: "Inventario",

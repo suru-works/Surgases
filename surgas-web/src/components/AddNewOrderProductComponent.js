@@ -18,6 +18,7 @@ const NewProductModal = (props) => {
     const [peso] = useState(props.product.peso);
     const [precio] = useState(props.product.precio);
     const [inventario] = useState(props.product.inventario);
+    const [iva] = useState(props.product.iva_incluido);
 
     const userResult = useSelector(state => state.user.result);
     const precioAnteriorResult = useSelector(state => state.lastProductPrice.result);
@@ -31,8 +32,8 @@ const NewProductModal = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(lastProductPrice({product: props.product.codigo, client:props.client}));
-        dispatch(productoxclientePrice({product: props.product.codigo, client:props.client}));
+        dispatch(lastProductPrice({ product: props.product.codigo, client: props.client }));
+        dispatch(productoxclientePrice({ product: props.product.codigo, client: props.client }));
     }, []);
 
     const validationSchema = yup.object(
@@ -50,13 +51,39 @@ const NewProductModal = (props) => {
                 .number()
                 .required("Ingrese una cantidad.")
                 .positive("La cantidad debe de ser positiva.")
-                .max(inventario, "La cantidad maxima del producto debe de ser menor o igual a la disponible en el inventario.")
+                .max(inventario, "La cantidad maxima del producto debe de ser menor o igual a la disponible en el inventario."),
+            
+            descuento: yup
+                .number()
+                .required("Ingrese una cantidad.")
+                .min(0,"El porcentaje de descuento debe de ser entre 0 y 100.")
+                .max(100, "El porcentaje de descuento debe de ser entre 0 y 100.")
         }
     );
 
 
-    
 
+    const getIva = () => {
+        let i = iva;
+        if (productoxclienteResult) {
+            if (productoxclienteResult.length > 0) {
+                if (productoxclienteResult.iva.data.value[0] == 1) {
+                    i = 'Si';
+                }
+            }
+        }
+        return (i);
+    }
+    const getPrecioVenta = () => {
+        let p = precio
+        if (precioAnteriorResult) {
+            if (precioAnteriorResult.length > 0) {
+                p = precioAnteriorResult.data[0].precio;
+            }
+        }
+
+        return (p);
+    }
 
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
@@ -67,9 +94,12 @@ const NewProductModal = (props) => {
             color: color,
             peso: peso,
             precioSugerido: precio,
-            precio: precio,
+            precio: getPrecioVenta(),
             inventario: inventario,
-            cantidad: 1
+            cantidad: 1,
+            iva: iva,
+            ivaEnCompra: getIva(),
+            descuento: 0
         },
         validationSchema,
         onSubmit(values) {
@@ -96,170 +126,200 @@ const NewProductModal = (props) => {
         props.toggle();
     }
 
-    if (error) {
+    if (precioAnteriorResult && productoxclienteResult) {
+        if (error) {
+            return (
+                <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+
+                    <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+
+                    <ModalBody>
+                        El producto ya existia en los productos del pedido.
+                    </ModalBody>
+                </Modal>
+            );
+
+        }
+        return (
+
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+
+                <ModalHeader toggle={props.toggle}>Añadir un producto al pedido</ModalHeader>
+
+                <ModalBody>
+
+                    <div className="d-flex space-around row">
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
+                            <Card style={{ padding: 11 }}>
+                                <CardTitle> Verifica los datos del producto: {nombre}</CardTitle>
+                                <CardBody style={{ padding: 8 }}>
+
+                                    <hr />
+
+                                    <div className='row'>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="nombre">Nombre</Label>
+                                            <Input type="text" id="nombre" name="nombre" value={nombre} disabled />
+
+                                        </FormGroup>
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="peso">Peso</Label>
+                                            <Input type="text" id="peso" name="peso" value={peso} disabled></Input>
+                                        </FormGroup>
+                                    </div>
+
+                                    <div className='row'>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="tipo">Tipo</Label>
+                                            <Input type="text" id="tipo" name="tipo" value={tipo} disabled></Input>
+                                        </FormGroup>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="color">Color</Label>
+                                            <Input type="text" id="color" name="color" value={color} disabled></Input>
+                                        </FormGroup>
+
+                                    </div>
+
+                                    <div className='row'>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="inventario">Inventario</Label>
+                                            <Input type="text" id="inventario" name="inventario" value={inventario} disabled></Input>
+                                        </FormGroup>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="cantidad">Cantidad</Label>
+                                            <Input type="number" id="cantidad" name="cantidad" value={values.cantidad}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            ></Input>
+                                            {(touched.cantidad && errors.cantidad) ? (<Alert color="danger">{errors.cantidad}</Alert>) : null}
+                                        </FormGroup>
+
+                                    </div>
+
+                                    <div className='row'>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="iva">Iva</Label>
+                                            <Input type="select" name="iva" id="iva" value={values.iva} disabled
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}>
+                                                <option>Si</option>
+                                                <option>No</option>
+                                            </Input>
+                                        </FormGroup>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="ivaEnCompra">Iva en la compra</Label>
+                                            <Input type="select" name="ivaEnCompra" id="ivaEnCompra" value={values.ivaEnCompra}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}>
+                                                <option>Si</option>
+                                                <option>No</option>
+                                            </Input>
+                                        </FormGroup>
+
+                                    </div>
+
+                                    <div className='row'>
+
+
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="precioSugerido">Precio sugerido</Label>
+                                            <Input type="text" id="precioSugerido" name="precioSugerido" value={values.precioSugerido} disabled />
+                                        </FormGroup>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="precio">Precio de la venta</Label>
+                                            <Input type="number" id="precio" name="precio" value={values.precio}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            ></Input>
+                                            {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
+                                        </FormGroup>
+
+
+                                    </div>
+                                    <div className='row'>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="descuento">Porcentaje de descuento por unidad</Label>
+                                            <Input type="number" id="descuento" name="descuento" value={values.descuento}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            ></Input>
+                                            {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
+                                        </FormGroup>
+
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <Label htmlFor="descuentoUnidad">Descuento por unidad</Label>
+                                            <Input type="text" id="descuentoUnidad" name="descuentoUnidad" value={values.precio * values.descuento / 100} disabled
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            ></Input>
+                                            {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
+                                        </FormGroup>
+
+
+                                    </div>
+
+                                    <div className='row'>
+                                        <FormGroup className='col-12 col-sm-6'>
+                                            <br></br>
+                                            <div class="d-flex justify-content-center"  >
+                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Añadir</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toogleAndReset}>Cerrar</Button>
+                                            </div>
+
+                                        </FormGroup>
+                                    </div>
+
+                                </CardBody>
+
+                            </Card>
+
+
+                        </Form>
+
+                    </div>
+
+                </ModalBody>
+            </Modal>
+
+
+        );
+    }
+    if (precioAnteriorLoading || productoxclienteLoading) {
         return (
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
                 <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
 
                 <ModalBody>
-                    El producto ya existia en los productos del pedido.
+                    <Loading></Loading>
                 </ModalBody>
             </Modal>
         );
-
     }
+
     return (
+        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
-        <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
-
-            <ModalHeader toggle={props.toggle}>Añadir un producto al pedido</ModalHeader>
+            <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
 
             <ModalBody>
-
-                <div className="d-flex space-around row">
-                    <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
-                        <Card style={{ padding: 11 }}>
-                            <CardTitle> Verifica los datos del producto: {nombre}</CardTitle>
-                            <CardBody style={{ padding: 8 }}>
-
-                                <hr />
-
-                                <div className='row'>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="nombre">Nombre</Label>
-                                        <Input type="text" id="nombre" name="nombre" value={nombre} disabled />
-
-                                    </FormGroup>
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="peso">Peso</Label>
-                                        <Input type="text" id="peso" name="peso" value={peso} disabled></Input>
-                                    </FormGroup>
-                                </div>
-
-                                <div className='row'>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="tipo">Tipo</Label>
-                                        <Input type="text" id="tipo" name="tipo" value={tipo} disabled></Input>
-                                    </FormGroup>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="color">Color</Label>
-                                        <Input type="text" id="color" name="color" value={color} disabled></Input>
-                                    </FormGroup>
-
-                                </div>
-
-                                <div className='row'>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="inventario">Inventario</Label>
-                                        <Input type="text" id="inventario" name="inventario" value={inventario} disabled></Input>
-                                    </FormGroup>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="cantidad">Cantidad</Label>
-                                        <Input type="text" id="cantidad" name="cantidad" value={values.cantidad}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        ></Input>
-                                        {(touched.cantidad && errors.cantidad) ? (<Alert color="danger">{errors.cantidad}</Alert>) : null}
-                                    </FormGroup>
-
-                                </div>
-
-                                <div className='row'>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="iva">Iva</Label>
-                                        <Input type="select" name="iva" id="iva" value={values.iva}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}>
-                                            <option>Si</option>
-                                            <option>No</option>
-                                        </Input>
-                                    </FormGroup>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="ivaEnCompra">Iva en la compra</Label>
-                                        <Input type="select" name="ivaEnCompra" id="ivaEnCompra" value={values.ivaEnCompra}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}>
-                                            <option>Si</option>
-                                            <option>No</option>
-                                        </Input>
-                                    </FormGroup>
-
-                                </div>
-
-                                <div className='row'>
-
-
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="precioSugerido">Precio sugerido</Label>
-                                        <Input type="text" id="precioSugerido" name="precioSugerido" value={values.precioSugerido} disabled />
-                                    </FormGroup>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="precio">Precio de la venta</Label>
-                                        <Input type="text" id="precio" name="precio" value={values.precio}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        ></Input>
-                                        {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
-                                    </FormGroup>
-
-
-                                </div>
-                                <div className='row'>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="descuento">Porcentaje de descuento por unidad</Label>
-                                        <Input type="text" id="descuento" name="descuento" value={values.descuento}
-                                        ></Input>
-                                        {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
-                                    </FormGroup>
-
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="precio">Descuento por unidad</Label>
-                                        <Input type="text" id="precio" name="precio" value={values.precio}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        ></Input>
-                                        {(touched.precio && errors.precio) ? (<Alert color="danger">{errors.precio}</Alert>) : null}
-                                    </FormGroup>
-
-
-                                </div>
-
-                                <div className='row'>
-                                    <FormGroup className='col-12 col-sm-6'>
-                                        <br></br>
-                                        <div class="d-flex justify-content-center"  >
-                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Añadir</Button>
-                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toogleAndReset}>Cerrar</Button>
-                                        </div>
-
-                                    </FormGroup>
-                                </div>
-
-                            </CardBody>
-
-                        </Card>
-
-
-                    </Form>
-
-                </div>
-
+                Ha ocurrido un error en la carga de informacion.
             </ModalBody>
         </Modal>
-
-
     );
+
+
+
 }
 
 

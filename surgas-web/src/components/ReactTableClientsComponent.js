@@ -51,23 +51,8 @@ const ReactTableClientsComponent = (props) => {
 
     },
     {
-      Header: "Descuento",
-      accessor: "descuento",
-
-    },
-    {
       Header: "Tipo",
       accessor: "tipo",
-
-    },
-    {
-      Header: "Fecha último pedido",
-      accessor: "fecha_ultimo_pedido",
-
-    },
-    {
-      Header: "Número último pedido",
-      accessor: "numero_ultimo_pedido",
 
     },
     {
@@ -79,6 +64,16 @@ const ReactTableClientsComponent = (props) => {
       Header: "Fecha registro",
       accessor: "fecha_registro",
       width: 200,
+
+    },
+    {
+      Header: "Fecha último pedido",
+      accessor: "fecha_ultimo_pedido",
+
+    },
+    {
+      Header: "Número último pedido",
+      accessor: "numero_ultimo_pedido",
 
     }
   ]
