@@ -8,6 +8,20 @@ module.exports.parseToJSON = (results) => {
     }
 }
 
+module.exports.soloFecha = (fecha) => {
+    return fecha.substring(0, 10);
+}
+
+module.exports.soloFechas = (results, param) => {
+    let objects = this.parseToJSON(results);
+
+    for (let i = 0; i < objects.length; i++) {
+        objects[i][param] = this.soloFecha(objects[i][param]);
+    }
+    
+    return objects;
+}
+
 module.exports.sendEmail = (receiver, subject, content) => {
     mail.mail({
         host: process.env.EMAIL_SERVER,

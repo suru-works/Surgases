@@ -125,13 +125,8 @@ pedidoRouter.route("/")
     }
 
     const [results,] = await pool.execute(query + conditions.join(' AND '), values);
-    let pedidos = utils.parseToJSON(results);
 
-    for (let i = 0; i < pedidos.length; i++) {
-        pedidos[i].fecha = pedidos[i].fecha.substring(0, 10);
-    }
-
-    res.json(pedidos);
+    res.json(utils.soloFechas(results, 'fecha'));
 }))
 .post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     const pedido = req.body;

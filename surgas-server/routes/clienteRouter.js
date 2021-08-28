@@ -96,7 +96,7 @@ clienteRouter.route("/")
 
     const [results,] = await pool.execute(query + conditions.join(' AND '), values);
 
-    res.json(utils.parseToJSON(results));
+    res.json(utils.soloFechas(results, 'fecha_registro'));
 }))
 .post(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
     const cliente = req.body;
