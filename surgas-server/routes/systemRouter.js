@@ -27,7 +27,7 @@ systemRouter.route('/parameters/:codigo')
 }));
 
 systemRouter.get('/parameters/iva', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    const [result,] = await pool.execute('SELECT iva_actual FROM static WHERE codigo = 1');
+    const [result,] = await pool.execute('SELECT iva_actual FROM static WHERE codigo = 1', []);
 
     res.json(utils.parseToJSON(result)[0]);
 }))
