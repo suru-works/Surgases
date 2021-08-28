@@ -21,13 +21,13 @@ BEGIN
         pedidoxproducto_unidades
     );
 
-    SET clientexproducto_descuento := 1;
+    SET clientexproducto_descuento := 0;
 
     SELECT descuento INTO clientexproducto_descuento
     FROM clientexproducto
     WHERE cliente = cliente_telefono AND producto = producto_codigo;
 
-    SET precio_final := pedidoxproducto_precio_venta * clientexproducto_descuento;
+    SET precio_final := pedidoxproducto_precio_venta * ((100 - clientexproducto_descuento) / 100);
 
     SELECT pedidoxproducto_precio_venta AS precio_bruto, precio_final;
 END; $$
