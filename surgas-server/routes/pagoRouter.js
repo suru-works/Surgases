@@ -74,7 +74,7 @@ pagoRouter.route("/:codigo")
     res.setHeader('Content-Type', 'application/json');
     next();
 })
-.put(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+.put(auth.isAuthenticated, auth.isEmployee, asyncHandler(async (req, res, next) => {
     const query = db.buildUpdate('pago', { name: 'codigo', value: req.params.codigo }, req.body);
     await pool.execute(query.query, query.values);
 
@@ -82,7 +82,7 @@ pagoRouter.route("/:codigo")
         success: true
     });
 }))
-.delete(auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res, next) => {
+.delete(auth.isAuthenticated, auth.isEmployee, asyncHandler(async (req, res, next) => {
     await pool.execute('DELETE FROM pago WHERE codigo = ?', [req.params.codigo]);
 
     res.json({
