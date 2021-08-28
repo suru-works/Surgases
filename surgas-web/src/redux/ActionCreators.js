@@ -667,6 +667,78 @@ export const productoxclientePrice = (args) => async (dispatch) => {
     }
 }
 
+//productoxcliente
+
+export const productoxclienteInsertReset = () => ({
+    type: ActionTypes.PRODUCTOXCLIENTEINSERT_RESET
+});
+
+export const productoxclienteInsertRequest = () => ({
+    type: ActionTypes.PRODUCTOXCLIENTEINSERT_REQUEST
+});
+
+export const productoxclienteInsertSuccess = (result) => ({
+    type: ActionTypes.PRODUCTOXCLIENTEINSERT_SUCCESS,
+    payload: result
+});
+
+export const productoxclienteInsertFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTOXCLIENTEINSERT_FAILED,
+    payload: errmess
+});
+
+export const productoxclienteInsert = (args) => async (dispatch) => {
+    dispatch(productoxclienteInsertRequest());
+    try {
+        const res = await axios.post(baseBackUrl + "productos/"+args.product+"/cliente/"+args.client,args
+        ,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        }
+        );
+        dispatch(productoxclienteInsertSuccess(res));
+    } catch (err) {
+        dispatch(productoxclienteInsertFailed(err));
+    }
+}
+
+export const productoxclienteUpdateReset = () => ({
+    type: ActionTypes.PRODUCTOXCLIENTEUPDATE_RESET
+});
+
+export const productoxclienteUpdateRequest = () => ({
+    type: ActionTypes.PRODUCTOXCLIENTEUPDATE_REQUEST
+});
+
+export const productoxclienteUpdateSuccess = (result) => ({
+    type: ActionTypes.PRODUCTOXCLIENTEUPDATE_SUCCESS,
+    payload: result
+});
+
+export const productoxclienteUpdateFailed = (errmess) => ({
+    type: ActionTypes.PRODUCTOXCLIENTEUPDATE_FAILED,
+    payload: errmess
+});
+
+
+export const productoxclienteUpdate = (data) => async (dispatch) => {
+    dispatch(productoxclienteUpdateRequest());
+    
+    try {
+        const res = await axios.put(baseBackUrl + "productos/"+data.product+"/cliente/"+data.client, {descuento: data.descuento,iva_incluido: data.iva_incluido}, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(productoxclienteUpdateSuccess(res));
+    } catch (err) {
+        dispatch(productoxclienteUpdateFailed(err));
+    }
+}
+
 //Restore password
 export const restoreRequest = () => ({
     type: ActionTypes.RESTORE_REQUEST

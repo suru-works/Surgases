@@ -93,3 +93,41 @@ export const Productoxcliente = (state = {
             return state;
     }
 }
+
+export const ProductoxclienteInsert = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.PRODUCTOXCLIENTEINSERT_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.PRODUCTOXCLIENTEINSERT_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.PRODUCTOXCLIENTEINSERT_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.PRODUCTOXCLIENTEINSERT_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
+
+export const ProductoxclienteUpdate = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.PRODUCTOXCLIENTEUPDATE_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.PRODUCTOXCLIENTEUPDATE_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.PRODUCTOXCLIENTEUPDATE_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.PRODUCTOXCLIENTEUPDATE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}

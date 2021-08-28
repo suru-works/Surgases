@@ -3,14 +3,13 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { lastProductPrice, productoxclientePrice, getServerIva } from '../redux/ActionCreators';
+import { lastProductPrice, productoxclientePrice, getServerIva,productoxclienteInsert,productoxclienteUpdate, productoxclientePriceReset,productoxclienteInsertReset,productoxclienteUpdateReset } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const NewProductModal = (props) => {
 
-    const [error, setError] = useState(false);
+const NewProductForm = ({props}) =>{
 
     const [nombre] = useState(props.product.nombre);
     const [tipo] = useState(props.product.tipo);
@@ -20,26 +19,9 @@ const NewProductModal = (props) => {
     const [inventario] = useState(props.product.inventario);
     const [iva] = useState(props.product.iva_incluido);
 
-    const userResult = useSelector(state => state.user.result);
-    const precioAnteriorResult = useSelector(state => state.lastProductPrice.result);
-    const precioAnteriorLoading = useSelector(state => state.lastProductPrice.loading);
-    const precioAnteriorError = useSelector(state => state.lastProductPrice.result);
+    const [error, setError] = useState(false);
 
-    const productoxclienteResult = useSelector(state => state.productoxcliente.result);
-    const productoxclienteLoading = useSelector(state => state.productoxcliente.loading);
-    const productoxclienteError = useSelector(state => state.productoxcliente.result);
 
-    const getServerIvaResult = useSelector(state => state.getServerIva.result);
-    const getServerIvaLoading = useSelector(state => state.getServerIva.loading);
-    const getServerIvaError = useSelector(state => state.getServerIva.result);
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(lastProductPrice({ product: props.product.codigo, client: props.client }));
-        dispatch(productoxclientePrice({ product: props.product.codigo, client: props.client }));
-        dispatch(getServerIva());
-    }, []);
 
     const validationSchema = yup.object(
         {
@@ -66,14 +48,41 @@ const NewProductModal = (props) => {
         }
     );
 
+    
+    const userResult = useSelector(state => state.user.result);
+    const precioAnteriorResult = useSelector(state => state.lastProductPrice.result);
+    const precioAnteriorLoading = useSelector(state => state.lastProductPrice.loading);
+    const precioAnteriorError = useSelector(state => state.lastProductPrice.result);
 
+    const productoxclienteResult = useSelector(state => state.productoxcliente.result);
+    const productoxclienteLoading = useSelector(state => state.productoxcliente.loading);
+    const productoxclienteError = useSelector(state => state.productoxcliente.result);
+
+    const getServerIvaResult = useSelector(state => state.getServerIva.result);
+    const getServerIvaLoading = useSelector(state => state.getServerIva.loading);
+    const getServerIvaError = useSelector(state => state.getServerIva.result);
+
+    const productoxclienteUpdateResult = useSelector(state => state.productoxclienteUpdate.result);
+    const productoxclienteUpdateLoading = useSelector(state => state.productoxclienteUpdate.loading);
+    const productoxclienteUpdateError = useSelector(state => state.productoxclienteUpdate.result);
+
+    const productoxclienteInsertResult = useSelector(state => state.productoxclienteInsert.result);
+    const productoxclienteInsertLoading = useSelector(state => state.productoxclienteInsert.loading);
+    const productoxclienteInsertError = useSelector(state => state.productoxclienteInsert.result);
+
+    const dispatch = useDispatch();
+
+    
 
     const getIva = () => {
         let i = iva;
         if (productoxclienteResult) {
-            if (productoxclienteResult.length > 0) {
-                if (productoxclienteResult.iva.data.value[0] == 1) {
+            if (productoxclienteResult.data.length > 0) {
+                if (productoxclienteResult.data[0].iva_incluido.data[0] == 1) {
                     i = 'Si';
+                }
+                else{
+                    i='No';
                 }
             }
         }
@@ -90,6 +99,27 @@ const NewProductModal = (props) => {
         return (p);
     }
 
+    const stringToBoolean= (string) =>{
+        if(string == "Si"){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    const getDescuentoCliente = () => {
+        if(productoxclienteResult){
+            console.log("paso por aqui idiota");
+            if(productoxclienteResult.data.length>0){
+                console.log("paso por aqui tambien idiota");
+                console.log(productoxclienteResult.data[0].descuento);
+                console.log(typeof(productoxclienteResult.data[0].descuento));
+                return productoxclienteResult.data[0].descuento;
+            }
+        }
+        console.log(productoxclienteResult);
+        return(0);
+    }
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -104,10 +134,19 @@ const NewProductModal = (props) => {
             cantidad: 1,
             iva: iva,
             ivaEnCompra: getIva(),
-            descuento: 0
+            descuento: getDescuentoCliente()
         },
         validationSchema,
         onSubmit(values) {
+
+            if (productoxclienteResult.data.length > 0) {
+                dispatch(productoxclienteUpdate({product: props.product.codigo, client: props.client,iva_incluido:stringToBoolean(values.ivaEnCompra),descuento:values.descuento}));
+            }
+            else{
+                dispatch(productoxclienteInsert({product: props.product.codigo, client: props.client,iva_incluido:stringToBoolean(values.ivaEnCompra),descuento: values.descuento}));
+            }
+
+            
             const productData = {
                 codigo: props.product.codigo,
                 nombre: nombre,
@@ -117,7 +156,7 @@ const NewProductModal = (props) => {
                 precio: values.precio,
                 cantidad: values.cantidad,
                 descuento:values.precio * values.descuento / 100,
-                iva:values.precio * 19/100
+                iva:values.precio * getServerIvaResult/100
             }
 
             let aux = props.addNewOrderProduct(productData);
@@ -127,29 +166,32 @@ const NewProductModal = (props) => {
             }
         }
     });
+
     const toogleAndReset = () => {
+        dispatch(productoxclientePriceReset());
+        dispatch(productoxclienteInsertReset());
+        dispatch(productoxclienteUpdateReset());
+
         setError(false);
         resetForm();
         props.toggle();
     }
 
-    if (precioAnteriorResult && productoxclienteResult && getServerIvaResult) {
-        if (error) {
-            return (
-                <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
-
-                    <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
-
-                    <ModalBody>
-                        El producto ya existia en los productos del pedido.
-                    </ModalBody>
-                </Modal>
-            );
-
-        }
+    if (error) {
         return (
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+
+                <ModalBody>
+                    El producto ya existia en los productos del pedido.
+                </ModalBody>
+            </Modal>
+        );
+
+    }
+    return(
+        <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
                 <ModalHeader toggle={props.toggle}>Añadir un producto al pedido</ModalHeader>
 
@@ -297,8 +339,60 @@ const NewProductModal = (props) => {
 
                 </ModalBody>
             </Modal>
+    );
+}
+
+const NewProductModal = (props) => {
+
+    
+
+    
+
+    const userResult = useSelector(state => state.user.result);
+    const precioAnteriorResult = useSelector(state => state.lastProductPrice.result);
+    const precioAnteriorLoading = useSelector(state => state.lastProductPrice.loading);
+    const precioAnteriorError = useSelector(state => state.lastProductPrice.result);
+
+    const productoxclienteResult = useSelector(state => state.productoxcliente.result);
+    const productoxclienteLoading = useSelector(state => state.productoxcliente.loading);
+    const productoxclienteError = useSelector(state => state.productoxcliente.result);
+
+    const getServerIvaResult = useSelector(state => state.getServerIva.result);
+    const getServerIvaLoading = useSelector(state => state.getServerIva.loading);
+    const getServerIvaError = useSelector(state => state.getServerIva.result);
+
+    const productoxclienteUpdateResult = useSelector(state => state.productoxclienteUpdate.result);
+    const productoxclienteUpdateLoading = useSelector(state => state.productoxclienteUpdate.loading);
+    const productoxclienteUpdateError = useSelector(state => state.productoxclienteUpdate.result);
+
+    const productoxclienteInsertResult = useSelector(state => state.productoxclienteInsert.result);
+    const productoxclienteInsertLoading = useSelector(state => state.productoxclienteInsert.loading);
+    const productoxclienteInsertError = useSelector(state => state.productoxclienteInsert.result);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(lastProductPrice({ product: props.product.codigo, client: props.client }));
+        dispatch(productoxclientePrice({ product: props.product.codigo, client: props.client }));
+        dispatch(getServerIva());
+    }, []);
 
 
+
+    
+
+    
+    const toogleAndReset = () => {
+        dispatch(productoxclientePriceReset());
+        dispatch(productoxclienteInsertReset());
+        dispatch(productoxclienteUpdateReset());
+        props.toggle();
+    }
+
+    if (precioAnteriorResult && productoxclienteResult && getServerIvaResult) {
+        
+        return (
+            <NewProductForm props={props}></NewProductForm>
         );
     }
     if (precioAnteriorLoading || productoxclienteLoading || getServerIvaLoading) {
