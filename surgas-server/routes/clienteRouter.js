@@ -30,12 +30,12 @@ clienteRouter.route("/")
 
         if (params.email) {
             conditions.push('email LIKE ?');
-            values.push('%' + params.email + '%');
+            values.push(`%${params.email}%`);
         }
 
         if (params.nombre) {
             conditions.push('nombre LIKE ?');
-            values.push('%' + params.nombre + '%');
+            values.push(`%${params.nombre}%`);
         }
 
         if (params.fechaRegistroMinima) {

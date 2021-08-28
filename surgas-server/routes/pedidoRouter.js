@@ -65,12 +65,12 @@ pedidoRouter.route("/")
 
         if (params.direccion) {
             conditions.push('direccion LIKE ?');
-            values.push('%' + params.direccion + '%');
+            values.push(`%${params.direccion}%`);
         }
 
         if (params.municipio) {
             conditions.push('municipio LIKE ?');
-            values.push('%' + params.municipio + '%');
+            values.push(`%${params.municipio}%`);
         }
 
         if (params.precioBrutoMinimo) {
@@ -100,7 +100,7 @@ pedidoRouter.route("/")
 
         if (params.bodega) {
             conditions.push('bodega LIKE ?');
-            values.push('%' + params.bodega + '%');
+            values.push(`%${params.bodega}%`);
         }
 
         if (params.puntosMinimos) {
@@ -120,13 +120,18 @@ pedidoRouter.route("/")
 
         if (params.nota) {
             conditions.push('nota LIKE ?');
-            values.push('%' + params.nota + '%');
+            values.push(`%${params.nota}%`);
         }
     }
 
     const [results,] = await pool.execute(query + conditions.join(' AND '), values);
+    let pedidos = utils.parseToJSON(results);
 
-    res.json(utils.parseToJSON(results));
+    for (let i = 0; i < pedidos.length; i++) {
+        pedidos[i].fecha = pedidos[i].fecha.substring(0, 10);
+    }
+
+    res.json(pedidos);
 }))
 .post(auth.isAuthenticated, asyncHandler(async (req, res, next) => {
     const pedido = req.body;

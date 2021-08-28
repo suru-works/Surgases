@@ -23,12 +23,12 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
 
     if (params.username) {
       conditions.push("username LIKE ?");
-      values.push('%' + params.username + '%');
+      values.push(`%${params.username}%`);
     }
 
     if (params.email) {
       conditions.push("email LIKE ?");
-      values.push('%' + params.email + '%');
+      values.push(`%${params.email}%`);
     }
 
     if (params.verificado) {

@@ -30,17 +30,17 @@ empleadoRouter.route("/")
 
         if (params.nombre) {
             conditions.push('nombre LIKE ?');
-            values.push('%' + params.nombre + '%');
+            values.push(`%${params.nombre}%`);
         }
 
         if (params.direccion) {
             conditions.push('direccion LIKE ?');
-            values.push('%' + params.direccion + '%');
+            values.push(`%${params.direccion}%`);
         }
 
         if (params.telefono) {
             conditions.push('telefono LIKE ?');
-            values.push('%' + params.telefono + '%');
+            values.push(`%${params.telefono}%`);
         }
         
         if (params.estado) {
