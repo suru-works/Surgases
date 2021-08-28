@@ -23,7 +23,7 @@ const SearchCriteria = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         let employeeData = [];
-        employeeData.push('tipo=' + ' repartidor,');
+        employeeData.push('tipo=' + 'repartidor,');
         employeeData.push('estado=' + 'activo');
         dispatch(newOrderEmployees(employeeData));
     }, []);
