@@ -10,6 +10,13 @@ const pool = db.pool;
 const systemRouter = require('express').Router();
 systemRouter.use(require('body-parser').json());
 
+systemRouter.get('/parameters/iva', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
+    const [result,] = await pool.execute('SELECT iva_actual FROM static WHERE codigo = 1', []);
+
+    res.json(utils.parseToJSON(result)[0]);
+}));
+
+
 systemRouter.route('/parameters/:codigo')
 .all(auth.isAuthenticated, auth.isAdmin)
 .get(asyncHandler(async (req, res, next) => {
@@ -25,12 +32,6 @@ systemRouter.route('/parameters/:codigo')
         success: true
     });
 }));
-
-systemRouter.get('/parameters/iva', auth.isAuthenticated, asyncHandler(async (req, res, next) => {
-    const [result,] = await pool.execute('SELECT iva_actual FROM static WHERE codigo = 1', []);
-
-    res.json(utils.parseToJSON(result)[0]);
-}))
 
 systemRouter.post('/backup', auth.isAuthenticated, auth.isAdmin, (req, res, next) => {
     childProcess.exec(`"${__dirname}\\backup.bat" ${process.env.DATABASE_USER} ${process.env.DATABASE_PASSWORD} ${process.env.DATABASE}`, (err, stdout, stderr) => {
