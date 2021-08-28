@@ -156,6 +156,9 @@ pedidoRouter.route("/")
         );
         const pk = utils.parseToJSON(results)[0][0];
 
+        const format = (new Intl.DateTimeFormat('hi')).formatToParts(pk.fecha);
+        const pedido_fecha = `${format[4].value}-${format[2].value}-${format[0].value}`;
+
         let precio_bruto = 0;
         let precio_final = 0;
 
@@ -164,7 +167,7 @@ pedidoRouter.route("/")
 
             [results, ] = await conn.execute(
                 'CALL proc_pedidoxproducto_insertar(?, ?, ?, ?, ?, ?)',
-                [producto.codigo, pk.fecha, pk.numero, producto.precio, producto.cantidad, pedido.cliente_pedidor]
+                [producto.codigo, pedido_fecha, pk.numero, producto.precio, producto.cantidad, pedido.cliente_pedidor]
             );
             const precios = utils.parseToJSON(results)[0][0];
 
@@ -174,14 +177,14 @@ pedidoRouter.route("/")
 
         await conn.execute(
             'UPDATE pedido SET precio_bruto = ?, precio_final = ? WHERE fecha = ? AND numero = ?',
-            [precio_bruto, precio_final, pk.fecha, pk.numero]
+            [precio_bruto, precio_final, pedido_fecha, pk.numero]
         );
 
         await conn.commit();
         conn.release();
 
         res.json({
-            fecha: pk.fecha,
+            fecha: pedido_fecha,
             numero: pk.numero
         });
     } catch(err) {
