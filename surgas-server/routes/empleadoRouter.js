@@ -61,6 +61,7 @@ empleadoRouter.route("/")
         }
     }
 
+    console.log(query);
     const [results,] = await pool.execute(query, values);
 
     res.json(utils.parseToJSON(results));

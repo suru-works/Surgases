@@ -24,7 +24,7 @@ const RenderLoginComponent = (props) => {
             <div>
     
                 <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                        <ModalHeader toggle={props.toggle}>Implementando modal de Soporte</ModalHeader>
+                        <ModalHeader toggle={props.toggle}>Soporte</ModalHeader>
     
                     <ModalBody>
                     

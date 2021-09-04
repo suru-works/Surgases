@@ -1,6 +1,6 @@
 DELIMITER $$
 
-CREATE OR REPLACE PROCED-RE proc_pedido_inventario_puntos (
+CREATE OR REPLACE PROCEDURE proc_pedido_inventario_puntos (
 	IN pedido_fecha TYPE OF pedido.fecha,
     IN pedido_numero TYPE OF pedido.numero
 )

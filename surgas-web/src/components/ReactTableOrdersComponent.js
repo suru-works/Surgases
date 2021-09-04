@@ -27,7 +27,7 @@ const ReactTableOrdersComponent = (props) => {
       style: {
         textAlign: "right"
       },
-      width: 250,
+      width: 110,
     },
     {
       Header: "#",
@@ -71,7 +71,7 @@ const ReactTableOrdersComponent = (props) => {
     },
     {
       Header: "Mensajero",
-      accessor: "empleado_despachador",
+      accessor: "empleado_repartidor",
     },
     {
       Header: "Hora registro",
