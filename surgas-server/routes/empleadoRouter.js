@@ -25,7 +25,7 @@ empleadoRouter.route("/")
 
         if (params.id) {
             conditions.push('id LIKE ?');
-            values.push(params.id);
+            values.push(`%${params.id}%`);
         }
 
         if (params.nombre) {

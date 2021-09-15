@@ -35,12 +35,12 @@ pagoRouter.route("/")
 
         if (params.montoMinimo) {
             conditions.push('monto >= ?');
-            values.push(params.montoMinimo);
+            values.push(parseInt(params.montoMinimo));
         }
 
         if (params.montoMaximo) {
             conditions.push('monto <= ?');
-            values.push(params.montoMaximo);
+            values.push(parseInt(params.montoMaximo));
         }
 
         if (params.registrador) {
