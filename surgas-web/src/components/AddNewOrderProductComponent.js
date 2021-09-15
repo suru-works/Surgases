@@ -156,7 +156,7 @@ const NewProductForm = ({props}) =>{
                 precio: values.precio,
                 cantidad: values.cantidad,
                 descuento:values.precio * values.descuento / 100,
-                iva:values.precio * getServerIvaResult/100
+                iva:values.precio * getServerIvaResult.data.iva_actual/100
             }
 
             let aux = props.addNewOrderProduct(productData);
