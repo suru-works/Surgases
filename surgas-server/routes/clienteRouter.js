@@ -24,8 +24,8 @@ clienteRouter.route("/")
         query = query + ' WHERE ';
 
         if (params.telefono) {
-            conditions.push('telefono = ?');
-            values.push(params.telefono);
+            conditions.push('telefono LIKE ?');
+            values.push(`%${params.telefono}%`);
         }
 
         if (params.email) {
@@ -50,12 +50,12 @@ clienteRouter.route("/")
 
         if (params.puntosMinimos) {
             conditions.push('puntos >= ?');
-            values.push(params.puntosMinimos);
+            values.push(parseInt(params.puntosMinimos));
         }
 
         if (params.puntosMaximos) {
             conditions.push('puntos <= ?');
-            values.push(params.puntosMaximos);
+            values.push(parseInt(params.puntosMaximos));
         }
 
         if (params.tipo) {
@@ -75,22 +75,22 @@ clienteRouter.route("/")
 
         if (params.numeroUltimoPedidoMinimo) {
             conditions.push('numero_ultimo_pedido >= ?');
-            values.push(params.numeroUltimoPedidoMinimo);
+            values.push(parseInt(params.numeroUltimoPedidoMinimo));
         }
 
         if (params.numeroUltimoPedidoMaximo) {
             conditions.push('numero_ultimo_pedido <= ?');
-            values.push(params.numeroUltimoPedidoMaximo);
+            values.push(parseInt(params.numeroUltimoPedidoMaximo));
         }
 
         if (params.numeroPedidosMinimo) {
             conditions.push('numero_pedidos >= ?');
-            values.push(params.numeroPedidosMinimo);
+            values.push(parseInt(params.numeroPedidosMinimo));
         }
 
         if (params.numeroPedidosMaximo) {
             conditions.push('numero_pedidos <= ?');
-            values.push(params.numeroPedidosMaximo);
+            values.push(parseInt(params.numeroPedidosMaximo));
         }
     }
 

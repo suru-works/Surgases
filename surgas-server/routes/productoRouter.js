@@ -41,12 +41,12 @@ productoRouter.route("/")
 
         if (params.pesoMinimo) {
             conditions.push('peso >= ?');
-            values.push(params.pesoMinimo);
+            values.push(parseFloat(params.pesoMinimo));
         }
 
         if (params.pesoMaximo) {
             conditions.push('peso <= ?');
-            values.push(params.pesoMaximo);
+            values.push(parseFloat(params.pesoMaximo));
         }
         
         if (params.tipo) {
@@ -56,32 +56,32 @@ productoRouter.route("/")
 
         if (params.precioMinimo) {
             conditions.push('precio >= ?');
-            values.push(params.precioMinimo);
+            values.push(parseInt(params.precioMinimo));
         }
 
         if (params.precioMaximo) {
             conditions.push('precio <= ?');
-            values.push(params.precioMaximo);
+            values.push(parseInt(params.precioMaximo));
         }
 
         if (params.inventarioMinimo) {
             conditions.push('inventario >= ?');
-            values.push(params.inventarioMinimo);
+            values.push(parseInt(params.inventarioMinimo));
         }
 
         if (params.inventarioMaximo) {
             conditions.push('inventario <= ?');
-            values.push(params.inventarioMaximo);
+            values.push(parseInt(params.inventarioMaximo));
         }
 
         if (params.disponible) {
             conditions.push('disponible = (?)');
-            values.push(params.disponible);
+            values.push(parseInt(params.disponible));
         }
 
         if (params.iva_incluido) {
             conditions.push('iva_incluido = (?)');
-            values.push(params.iva_incluido);
+            values.push(parseInt(params.iva_incluido));
         }
     }
 

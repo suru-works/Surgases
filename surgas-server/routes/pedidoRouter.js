@@ -45,12 +45,12 @@ pedidoRouter.route("/")
 
         if (params.numeroMinimo) {
             conditions.push('numero >= ?');
-            values.push(params.numeroMinimo);
+            values.push(parseInt(params.numeroMinimo));
         }
 
         if (params.numeroMaximo) {
             conditions.push('numero <= ?');
-            values.push(params.numeroMaximo);
+            values.push(parseInt(params.numeroMaximo));
         }
 
         if (params.horaMinima) {
@@ -75,22 +75,22 @@ pedidoRouter.route("/")
 
         if (params.precioBrutoMinimo) {
             conditions.push('precio_bruto >= ?');
-            values.push(params.precioBrutoMinimo);
+            values.push(parseInt(params.precioBrutoMinimo));
         }
 
         if (params.precioBrutoMaximo) {
             conditions.push('precio_bruto <= ?');
-            values.push(params.precioBrutoMaximo);
+            values.push(parseInt(params.precioBrutoMaximo));
         }
 
         if (params.precioFinalMinimo) {
             conditions.push('precio_final >= ?');
-            values.push(params.precioFinalMinimo);
+            values.push(parseFloat(params.precioFinalMinimo));
         }
 
         if (params.precioFinalMaximo) {
             conditions.push('precio_final <= ?');
-            values.push(params.precioFinalMaximo);
+            values.push(parseFloat(params.precioFinalMaximo));
         }
 
         if (params.estado) {
@@ -105,12 +105,12 @@ pedidoRouter.route("/")
 
         if (params.puntosMinimos) {
             conditions.push('puntos_compra >= ?');
-            values.push(params.puntosMinimos);
+            values.push(parseInt(params.puntosMinimos));
         }
 
         if (params.puntosMaximos) {
             conditions.push('puntos_compra <= ?');
-            values.push(params.puntosMaximos);
+            values.push(parseInt(params.puntosMaximos));
         }
 
         if (params.tipoCliente) {
