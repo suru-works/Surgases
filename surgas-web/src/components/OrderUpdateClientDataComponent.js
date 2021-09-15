@@ -64,7 +64,7 @@ const UpdateClientData = (props) => {
             puntos: orderUserResult.data[0].puntos,
             descuento: orderUserResult.data[0].descuento,
             numero_pedidos: orderUserResult.data[0].numero_pedidos,
-            username: orderUserResult.data[0].username
+            promotor: orderUserResult.data[0].promotor
         },
         validationSchema,
         onSubmit(values) {
@@ -215,18 +215,18 @@ const UpdateClientData = (props) => {
                 </FormGroup>
 
                 <FormGroup className='col-12 col-sm-6'>
-                    <Label htmlFor="username">Usuario</Label>
+                    <Label htmlFor="promotor">Promotor</Label>
                     <Input
                         type="text"
-                        id="username"
-                        name="username"
-                        value={values.username}
+                        id="promotor"
+                        name="promotor"
+                        value={values.promotor}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         disabled
                     >
                     </Input>
-                    {(touched.username && errors.username) ? (<Alert color="danger">{errors.username}</Alert>) : null}
+                    {(touched.promotor && errors.promotor) ? (<Alert color="danger">{errors.promotor}</Alert>) : null}
                 </FormGroup>
 
             </div>
