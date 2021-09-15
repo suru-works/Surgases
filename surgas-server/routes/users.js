@@ -32,15 +32,13 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
     }s
 
     if (params.verificado) {
-      console.log("llego1");
       conditions.push("verificado = (?)");
-      values.push(params.verificado);
-      console.log("llego");
+      values.push(parseInt(params.verificado));
     }
 
-    if (params.admin) {
+    if (params.es_admin) {
       conditions.push("es_admin = (?)");
-      values.push(params.es_admin);
+      values.push(parseInt(params.es_admin));
     }
 
     if (params.cliente) {

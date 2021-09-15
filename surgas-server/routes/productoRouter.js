@@ -76,12 +76,12 @@ productoRouter.route("/")
 
         if (params.disponible) {
             conditions.push('disponible = (?)');
-            values.push(params.disponible);
+            values.push(parseInt(params.disponible));
         }
 
         if (params.iva_incluido) {
             conditions.push('iva_incluido = (?)');
-            values.push(params.iva_incluido);
+            values.push(parseInt(params.iva_incluido));
         }
     }
 
