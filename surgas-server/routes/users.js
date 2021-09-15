@@ -29,7 +29,7 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
     if (params.email) {
       conditions.push("email LIKE ?");
       values.push(`%${params.email}%`);
-    }s
+    }
 
     if (params.verificado) {
       conditions.push("verificado = (?)");
