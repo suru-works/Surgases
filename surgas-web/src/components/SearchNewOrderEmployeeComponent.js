@@ -76,7 +76,7 @@ const SearchCriteria = () => {
                 <div className='row d-flex justify-content-center '>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label htmlFor="id">Identificacion</Label>
+                        <Label htmlFor="id">Identificación</Label>
                         <Input type="text" id="id" name="id" value={values.id}
                             onChange={handleChange}
                             onBlur={handleBlur} />
@@ -103,7 +103,7 @@ const SearchCriteria = () => {
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label htmlFor="telefono">Telefono</Label>
+                        <Label htmlFor="telefono">Teléfono</Label>
                         <Input type="telefono" id="telefono" name="telefono" value={values.telefono}
                             onChange={handleChange}
                             onBlur={handleBlur} />

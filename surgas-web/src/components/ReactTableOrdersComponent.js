@@ -62,7 +62,7 @@ const ReactTableOrdersComponent = (props) => {
       accessor: "puntos_compra",
     },
     {
-      Header: "Direccion",
+      Header: "Dirección",
       accessor: "direccion",
     },
     {

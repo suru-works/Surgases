@@ -29,21 +29,21 @@ const validationSchema = Yup.object(
             .required("Este campo es obligatorio"),
         password: Yup
             .string()
-            .min(8, "la contraseña debe ser de mínimo 8 caracteres")
-            .max(40, "la contraseña debe ser de máximo 40 caracteres")
+            .min(8, "La contraseña debe ser de mínimo 8 caracteres")
+            .max(40, "La contraseña debe ser de máximo 40 caracteres")
             .required("Este campo es obligatorio"),
         name: Yup
             .string(),
         phoneNumber: Yup
             .string()
-            .matches(phoneRegExp, 'Ingresa un teléfono valido'),
+            .matches(phoneRegExp, 'Ingresa un teléfono válido'),
     });
 
 const checkTelValidationSchema = Yup.object(
     {
         phoneNumber: Yup
             .string()
-            .matches(phoneRegExp, 'Ingresa un telefono valido'),
+            .matches(phoneRegExp, 'Ingresa un teléfono válido'),
     });
 
 

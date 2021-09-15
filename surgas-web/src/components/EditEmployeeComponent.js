@@ -128,7 +128,7 @@ const EmployeeModal = (props) => {
                         {values.vendedor}
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
-                                <CardTitle> Ingresa los datos del usuario con identificacion: {id}</CardTitle>
+                                <CardTitle> Ingresa los datos del usuario con identificación: {id}</CardTitle>
                                 <CardBody style={{ padding: 8 }}>
 
                                     <FormGroup>
@@ -142,7 +142,7 @@ const EmployeeModal = (props) => {
 
                                     <FormGroup>
 
-                                        <Label htmlFor="direccion">Direccion</Label>
+                                        <Label htmlFor="direccion">Dirección</Label>
                                         <Input type="direccion" id="direccion" name="direccion" value={values.direccion}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />
@@ -151,7 +151,7 @@ const EmployeeModal = (props) => {
 
                                     <FormGroup>
 
-                                        <Label htmlFor="telefono">Telefono</Label>
+                                        <Label htmlFor="telefono">Teléfono</Label>
                                         <Input type="telefono" id="telefono" name="telefono" value={values.telefono}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />

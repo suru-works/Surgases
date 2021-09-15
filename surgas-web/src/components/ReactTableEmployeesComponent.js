@@ -39,7 +39,7 @@ const ReactTableEmployeesComponent = (props) => {
       width: 200,
     },
     {
-      Header: "Telefono",
+      Header: "Teléfono",
       accessor: "telefono",
       style: {
         textAlign: "right"
@@ -47,7 +47,7 @@ const ReactTableEmployeesComponent = (props) => {
       width: 150,
     },
     {
-      Header: "Direccion",
+      Header: "Dirección",
       accessor: "direccion",
       style: {
         textAlign: "right"

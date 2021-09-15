@@ -91,7 +91,7 @@ const SearchCriteria = () => {
                 <div className='row d-flex justify-content-center '>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label htmlFor="id">Identificacion</Label>
+                        <Label htmlFor="id">Identificación</Label>
                         <Input type="text" id="id" name="id" value={values.id}
                             onChange={handleChange}
                             onBlur={handleBlur} />
@@ -118,7 +118,7 @@ const SearchCriteria = () => {
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label htmlFor="telefono">Telefono</Label>
+                        <Label htmlFor="telefono">Teléfono</Label>
                         <Input type="telefono" id="telefono" name="telefono" value={values.telefono}
                             onChange={handleChange}
                             onBlur={handleBlur} />
@@ -126,43 +126,37 @@ const SearchCriteria = () => {
 
                     </FormGroup>
 
-                    <FormGroup>
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
 
                         <Label htmlFor="tipo">Tipo:</Label>
                         <div className="l-flex ml-auto " class="col-12" >
-                            <div class="col-12 col-sm-8">
-                                <Label check  >
-                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" checked={values.vendedor}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />{' '}
-                                    Vendedor
-                                </Label>
-                            </div>
+                            <Label check>
+                                <Input type="checkbox" id="vendedor" name="vendedor" className="form-control checkbox-right m-0" checked={values.vendedor}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                Vendedor
+                            </Label>
                         </div>
                         <br />
                         <div className="l-flex ml-auto " class="col-12" >
-                            <div class="col-12 col-sm-8">
-                                <Label check  >
-                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" checked={values.repartidor}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />{' '}
-                                    Repartidor
-                                </Label>
-                            </div>
+                            <Label check>
+                                <Input type="checkbox" id="repartidor" name="repartidor" className="form-control checkbox-right  m-0" checked={values.repartidor}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                Repartidor
+                            </Label>
                         </div>
                         <br />
                         <div className="l-flex ml-auto " class="col-12" >
-                            <div class="col-12 col-sm-8">
-                                <Label check  >
-                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" checked={values.promotor}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />{' '}
-                                    Promotor
-                                </Label>
-                            </div>
+                            <Label check>
+                                <Input type="checkbox" id="promotor" name="promotor" className="form-control checkbox-right  m-0" checked={values.promotor}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                Promotor
+                            </Label>
                         </div>
                     </FormGroup>
 

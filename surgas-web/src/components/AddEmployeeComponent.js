@@ -151,7 +151,7 @@ const AddEmployeeComponent = (props) => {
                     </FormGroup>
 
                     <FormGroup>
-                        <Label htmlFor="direccion">Direccion</Label>
+                        <Label htmlFor="direccion">Dirección</Label>
                         <Input type="direccion" id="direccion" name="direccion" value={values.direccion}
                             onChange={handleChange}
                             onBlur={handleBlur} />
@@ -159,7 +159,7 @@ const AddEmployeeComponent = (props) => {
                     </FormGroup>
 
                     <FormGroup>
-                        <Label htmlFor="telefono">Telefono</Label>
+                        <Label htmlFor="telefono">Teléfono</Label>
                         <Input type="telefono" id="telefono" name="telefono" value={values.telefono}
                             onChange={handleChange}
                             onBlur={handleBlur} />

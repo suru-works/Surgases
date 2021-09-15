@@ -28,6 +28,12 @@
   border-radius: 50%;
 }
 
+.checkbox-right{
+  left: 40%;
+  justify-content: flex-end;
+  position: absolute;
+}
+
 .contieneBotones {
   
   display: flex;
