@@ -29,16 +29,18 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
     if (params.email) {
       conditions.push("email LIKE ?");
       values.push(`%${params.email}%`);
-    }
+    }s
 
     if (params.verificado) {
+      console.log("llego1");
       conditions.push("verificado = (?)");
-      values.push(params.verificado ? 1 : 0);
+      values.push(params.verificado);
+      console.log("llego");
     }
 
     if (params.admin) {
       conditions.push("es_admin = (?)");
-      values.push(params.admin ? 1 : 0);
+      values.push(params.es_admin);
     }
 
     if (params.cliente) {
@@ -50,7 +52,12 @@ router.get('/', auth.isAuthenticated, auth.isAdmin, asyncHandler(async (req, res
       conditions.push('empleado = ?');
       values.push(params.empleado);
     }
+
+
   }
+
+  console.log(query + conditions.join(' AND '));
+  console.log(values);  
 
   const [results,] = await pool.execute(query + conditions.join(' AND '), values);
 

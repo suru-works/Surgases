@@ -73,20 +73,22 @@ const SearchCriteria = () => {
             }
             if (values.es_admin != 'sin especificar'){
                 if(values.es_admin == 'si'){
-                    userData.push('es_admin = 1');
+                    userData.push('es_admin=' + 1);
                 }
                 else{
-                    userData.push('es_admin = 0');
+                    userData.push('es_admin=' + 0);
                 }
             }
             if (values.verificado != 'sin especificar'){
                 if(values.verificado == 'si'){
-                    userData.push('verificado = 1');
+                    userData.push('verificado=' + 1);
                 }
                 else{
-                    userData.push('verificado = 0');
+                    userData.push('verificado=' + 0);
                 }
             }
+
+            console.log(userData);
 
             doSearch(userData);
         }
