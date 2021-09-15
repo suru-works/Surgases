@@ -115,7 +115,7 @@ const SearchCriteria = () => {
 
             <div className='row d-flex justify-content-center'>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-4'>
+                <FormGroup className='col-xs-12 col-lg-8 col-xl-5'>
                     <Label htmlFor="nombre">Nombre</Label>
                     <Input type="text" id="nombre" name="nombre" value={values.nombre}
                         onChange={handleChange}
@@ -123,7 +123,7 @@ const SearchCriteria = () => {
                     {(touched.nombre && errors.nombre) ? (<Alert color="danger">{errors.nombre}</Alert>) : null}
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-3'>
                     <Label htmlFor="disponible">Disponible</Label>
 
                     <Input type="select" id="disponible" name="disponible" value={values.disponible}
@@ -139,7 +139,7 @@ const SearchCriteria = () => {
 
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-6 col-xl-4'>
                     <Label htmlFor="tipo">Tipo</Label>
                     <Input type="text" id="tipo" name="tipo" value={values.tipo}
                         onChange={handleChange}
@@ -147,7 +147,7 @@ const SearchCriteria = () => {
                     {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-3'>
+                <FormGroup className='col-xs-12 col-lg-6 col-xl-4'>
                     <Label htmlFor="color">Color</Label>
                     <Input type="text" id="color" name="color" value={values.color}
                         onChange={handleChange}
@@ -155,7 +155,7 @@ const SearchCriteria = () => {
                     {(touched.color && errors.color) ? (<Alert color="danger">{errors.color}</Alert>) : null}
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-4'>
                     <Label htmlFor="peso">Peso</Label>
                     <Input type="text" id="peso" name="peso" value={values.peso}
                         onChange={handleChange}
@@ -163,7 +163,7 @@ const SearchCriteria = () => {
                     {(touched.peso && errors.peso) ? (<Alert color="danger">{errors.peso}</Alert>) : null}
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-4'>
                     <Label htmlFor="precio">Precio</Label>
                     <Input type="text" id="precio" name="precio" value={values.precio}
                         onChange={handleChange}
@@ -172,7 +172,7 @@ const SearchCriteria = () => {
                 </FormGroup>
 
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4  col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-6'>
                     <Label htmlFor="inventario">Inventario</Label>
                     <Input type="text" id="inventario" name="inventario" value={values.inventario}
                         onChange={handleChange}
@@ -180,7 +180,7 @@ const SearchCriteria = () => {
                     {(touched.inventario && errors.inventario) ? (<Alert color="danger">{errors.inventario}</Alert>) : null}
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-5  col-lg-5'>
+                <FormGroup className='col-xs-12 col-lg-12 col-xl-6'>
 
                     <div class="d-flex justify-content-center"  >
                         <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Buscar</Button>
@@ -297,7 +297,7 @@ const NewOrder = (props) => {
             <hr />
 
             <div className='row d-flex justify-content-center '>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-12 col-xl-6 align-self-end'>
                     <Label htmlFor="fecha">Fecha</Label>
                     <Input type="date" id="fecha" name="fecha"
                         value={props.newOrderFecha}
@@ -305,21 +305,21 @@ const NewOrder = (props) => {
                     />
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-6 col-xl-6 align-self-end'>
                     <Label htmlFor="direccion">Dirección</Label>
                     <Input type="text" id="direccion" name="direccion"
                         value={props.newOrderDireccion}
                         onChange={(event) => { props.setNewOrderDireccion(event.target.value) }}
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-6 col-xl-6 align-self-end'>
                     <Label htmlFor="municipio">Municipio</Label>
                     <Input type="text" id="municipio" name="municipio"
                         value={props.newOrdermunicipio}
                         onChange={(event) => { props.setNewOrderMunicipio(event.target.value) }}
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-5 col-xl-6'>
                     <Label htmlFor="bodega">Bodega</Label>
                     <Input type="select" id="bodega" name="bodega"
                         value={props.newOrderBodega}
@@ -330,7 +330,7 @@ const NewOrder = (props) => {
                     </Input>
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-4  align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-7 col-xl-4 align-self-end'>
                     <Label htmlFor="tipoCliente">Tipo de cliente</Label>
                     <Input type="select" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderTipoCliente}
@@ -339,7 +339,7 @@ const NewOrder = (props) => {
                         <option>comun</option>
                     </Input>
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6  align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-8 col-xl-6  align-self-end'>
                     <Label htmlFor="repartidor">Repartidor</Label>
                     <Input type="Text" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderEmpleado.nombre + '(' + props.newOrderEmpleado.id + ')'}
@@ -347,12 +347,12 @@ const NewOrder = (props) => {
                     </Input>
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-2'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-2 '>
                     <button type="button" className="justify-self-center" class="btn" onClick={toogleSearchNewOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
                     <SearchNewOrderEmployee toggle={toogleSearchNewOrderEmployee} isOpen={isSearchNewOrderEmployeeModalOpen} setNewOrderEmpleado={props.setNewOrderEmpleado} />
                 </FormGroup>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-12 '>
+                <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
                     <Label htmlFor="nota">Nota</Label>
                     <Input type="textarea" id="nota" name="nota"
                         value={props.newOrderNota}
@@ -372,7 +372,7 @@ const NewOrder = (props) => {
 
             <div className='row d-flex justify-content-center '>
 
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-6  col-xl-4 align-self-end'>
                     <Label htmlFor="precioBruto">Precio bruto</Label>
                     <Input type="number" id="precioBruto" name="precioBruto"
                         value={props.newOrderPrecioBruto}
@@ -380,7 +380,7 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-6  col-xl-4 align-self-end'>
                     <Label htmlFor="precioFinal">Precio Final</Label>
                     <Input type="number" id="precioFinal" name="precioFinal"
                         value={props.newOrderPrecioFinal}
@@ -388,7 +388,7 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-4 align-self-end'>
                     <Label htmlFor="puntos">Puntos</Label>
                     <Input type="number" id="puntos" name="puntos"
                         value={props.newOrderPuntos}
@@ -396,7 +396,7 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-4 align-self-end'>
                     <Label htmlFor="descuento">Descuento total</Label>
                     <Input type="number" id="descuento" name="descuento"
                         value={props.newOrderDescuento}
@@ -404,7 +404,7 @@ const NewOrder = (props) => {
                         disabled
                     />
                 </FormGroup>
-                <FormGroup className='col-xs-12 col-sm-6 col-md-4 col-lg-4 align-self-end'>
+                <FormGroup className='col-xs-12 col-lg-4 col-xl-4 align-self-end'>
                     <Label newOrderTotalIva="">Iva total</Label>
                     <Input type="number" id="newOrderTotalIva" name="newOrderTotalIva"
                         value={props.newOrderTotalIva}
