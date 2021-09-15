@@ -24,7 +24,7 @@ empleadoRouter.route("/")
         query = query + ' WHERE ';
 
         if (params.id) {
-            conditions.push('id = ?');
+            conditions.push('id LIKE ?');
             values.push(params.id);
         }
 

@@ -50,7 +50,8 @@ const SearchCriteria = () => {
             email: '',
             empleado: '',
             cliente: '',
-            tipo: 'sin especificar'
+            es_admin: 'sin especificar',
+            verificado: 'sin especificar'
         },
         validationSchema,
         onSubmit(values) {
@@ -70,8 +71,21 @@ const SearchCriteria = () => {
             if (values.cliente != '') {
                 userData.push('cliente=' + values.cliente);
             }
-            if (values.tipo != 'sin especificar') {
-                userData.push('tipo=' + values.tipo);
+            if (values.es_admin != 'sin especificar'){
+                if(values.es_admin == 'si'){
+                    userData.push('es_admin = 1');
+                }
+                else{
+                    userData.push('es_admin = 0');
+                }
+            }
+            if (values.verificado != 'sin especificar'){
+                if(values.verificado == 'si'){
+                    userData.push('verificado = 1');
+                }
+                else{
+                    userData.push('verificado = 0');
+                }
             }
 
             doSearch(userData);
@@ -134,14 +148,24 @@ const SearchCriteria = () => {
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label for="tipo">Tipo</Label>
-                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
+                        <Label for="es_admin">Administrador</Label>
+                        <Input type="select" name="es_admin" id="es_admin" value={values.es_admin}
                             onChange={handleChange}
                             onBlur={handleBlur}>
                             <option>sin especificar</option>
-                            <option>vendedor</option>
-                            <option>administrador</option>
-                            <option>cliente</option>
+                            <option>si</option>
+                            <option>no</option>
+                        </Input>
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label for="verificado">Verificado</Label>
+                        <Input type="select" name="verificado" id="verificado" value={values.verificado}
+                            onChange={handleChange}
+                            onBlur={handleBlur}>
+                            <option>sin especificar</option>
+                            <option>si</option>
+                            <option>no</option>
                         </Input>
                     </FormGroup>
 
