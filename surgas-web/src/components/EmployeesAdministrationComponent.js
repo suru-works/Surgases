@@ -38,12 +38,14 @@ const SearchCriteria = () => {
             direccion: '',
             telefono: '',
             estado: 'sin especificar',
-            tipo: 'sin especificar'
+            vendedor: false,
+            repartidor: false,
+            promotor: false
 
         },
         validationSchema,
         onSubmit(values) {
-            let employeeData = []
+            let employeeData = [];
             if (values.id != '') {
                 employeeData.push('id=' + values.id);
             }
@@ -56,13 +58,23 @@ const SearchCriteria = () => {
             if (values.telefono != '') {
                 employeeData.push('telefono=' + (values.telefono));
             }
-            if (values.tipo != 'sin especificar') {
-                employeeData.push('tipo=' + values.tipo);
-            }
             if (values.estado != 'sin especificar') {
                 employeeData.push('estado=' + values.estado);
             }
 
+            if((values.vendedor || values.repartidor || values.promotor)){
+                let type = '';
+                if (values.vendedor) {
+                    type += 'vendedor,';
+                }
+                if (values.repartidor) {
+                    type += 'repartidor,';
+                }
+                if (values.promotor) {
+                    type += 'promotor,';
+                } 
+                employeeData.push('tipo=' + type);
+            }
 
             doSearch(employeeData);
         }
@@ -114,16 +126,44 @@ const SearchCriteria = () => {
 
                     </FormGroup>
 
-                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
-                        <Label for="tipo">Tipo</Label>
-                        <Input type="select" name="tipo" id="tipo" value={values.tipo}
-                            onChange={handleChange}
-                            onBlur={handleBlur}>
-                            <option>sin especificar</option>
-                            <option>vendedor</option>
-                            <option>administrador</option>
-                            <option>repartidor</option>
-                        </Input>
+                    <FormGroup>
+
+                        <Label htmlFor="tipo">Tipo:</Label>
+                        <div className="l-flex ml-auto " class="col-12" >
+                            <div class="col-12 col-sm-8">
+                                <Label check  >
+                                    <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" checked={values.vendedor}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />{' '}
+                                    Vendedor
+                                </Label>
+                            </div>
+                        </div>
+                        <br />
+                        <div className="l-flex ml-auto " class="col-12" >
+                            <div class="col-12 col-sm-8">
+                                <Label check  >
+                                    <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" checked={values.repartidor}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />{' '}
+                                    Repartidor
+                                </Label>
+                            </div>
+                        </div>
+                        <br />
+                        <div className="l-flex ml-auto " class="col-12" >
+                            <div class="col-12 col-sm-8">
+                                <Label check  >
+                                    <Input type="checkbox" id="promotor" name="promotor" className="form-control" checked={values.promotor}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />{' '}
+                                    Promotor
+                                </Label>
+                            </div>
+                        </div>
                     </FormGroup>
 
                     <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>

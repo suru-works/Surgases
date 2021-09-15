@@ -48,6 +48,8 @@ const SearchCriteria = () => {
             username: '',
             nombre: '',
             email: '',
+            empleado: '',
+            cliente: '',
             tipo: 'sin especificar'
         },
         validationSchema,
@@ -61,6 +63,12 @@ const SearchCriteria = () => {
             }
             if (values.email != '') {
                 userData.push('email=' + (values.email).replace('@', '%40'));
+            }
+            if (values.empleado != '') {
+                userData.push('empleado=' + values.empleado);
+            }
+            if (values.cliente != '') {
+                userData.push('cliente=' + values.cliente);
             }
             if (values.tipo != 'sin especificar') {
                 userData.push('tipo=' + values.tipo);
@@ -104,6 +112,24 @@ const SearchCriteria = () => {
                             onChange={handleChange}
                             onBlur={handleBlur} />
                         {(touched.email && errors.email) ? (<Alert color="danger">{errors.email}</Alert>) : null}
+
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label htmlFor="empleado">Id de empleado</Label>
+                        <Input type="empleado" id="empleado" name="empleado" value={values.empleado}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.empleado && errors.empleado) ? (<Alert color="danger">{errors.empleado}</Alert>) : null}
+
+                    </FormGroup>
+
+                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                        <Label htmlFor="cliente">Id de cliente</Label>
+                        <Input type="cliente" id="cliente" name="cliente" value={values.cliente}
+                            onChange={handleChange}
+                            onBlur={handleBlur} />
+                        {(touched.cliente && errors.cliente) ? (<Alert color="danger">{errors.cliente}</Alert>) : null}
 
                     </FormGroup>
 

@@ -46,19 +46,19 @@ empleadoRouter.route("/")
         if (params.estado) {
             conditions.push('estado = ?');
             values.push(params.estado);
-        }
-
-        query += conditions.join(' AND ');
+        }        
 
         if (params.tipo) {
-            query += ' AND (';
+            let queryTipos = '(';
             const tipos = params.tipo.split(',');
             for (let i = 0; i < tipos.length - 1; i++) {
-                query += 'tipo LIKE ?';
+                queryTipos += 'tipo LIKE ?';
                 values.push(`%${tipos[i]}%`);
-                query += i < tipos.length - 2 ? ' OR ' : ')';
+                queryTipos += i < tipos.length - 2 ? ' OR ' : ')';
             }
+            conditions.push(queryTipos);
         }
+        query += conditions.join(' AND ');
     }
 
     console.log(query);

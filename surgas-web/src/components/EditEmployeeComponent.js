@@ -128,7 +128,7 @@ const EmployeeModal = (props) => {
                         {values.vendedor}
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
                             <Card style={{ padding: 11 }}>
-                                <CardTitle> Ingresa los datos del usuario: {id}</CardTitle>
+                                <CardTitle> Ingresa los datos del usuario con identificacion: {id}</CardTitle>
                                 <CardBody style={{ padding: 8 }}>
 
                                     <FormGroup>
@@ -160,7 +160,7 @@ const EmployeeModal = (props) => {
 
                                     <FormGroup>
 
-                                        <Label htmlFor="nombre">Tipo:</Label>
+                                        <Label htmlFor="tipo">Tipo:</Label>
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
@@ -172,7 +172,7 @@ const EmployeeModal = (props) => {
                                                 </Label>
                                             </div>
                                         </div>
-                                        <br/>
+                                        <br />
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
@@ -184,7 +184,7 @@ const EmployeeModal = (props) => {
                                                 </Label>
                                             </div>
                                         </div>
-                                        <br/>
+                                        <br />
                                         <div className="l-flex ml-auto " class="col-12" >
                                             <div class="col-12 col-sm-8">
                                                 <Label check  >
@@ -198,7 +198,18 @@ const EmployeeModal = (props) => {
                                         </div>
                                     </FormGroup>
 
-                                    <br/>
+                                    <FormGroup className='col-xs-12 col-sm-6 col-md-3 col-lg-3 align-self-end'>
+                                        <Label for="estado">Estado</Label>
+                                        <Input type="select" name="estado" id="estado" value={values.estado}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}>
+                                            <option>activo</option>
+                                            <option>inactivo</option>
+                                            <option>despedido</option>
+                                        </Input>
+                                    </FormGroup>
+
+                                    <br />
 
                                     <div class="d-flex justify-content-center" >
                                         <Button style={{ backgroundColor: '#fdd835', color: '#000000' }} type="submit" value="submit">Actualizar</Button>

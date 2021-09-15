@@ -7,8 +7,6 @@ import { users, addUser, usersUpdateReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const crypto = require("crypto");
-
 const validationSchema = yup.object(
 
     {
@@ -26,7 +24,6 @@ const validationSchema = yup.object(
 );
 
 const AddUserComponent = (props) => {
-    const [password, setPassword] = useState('');
 
     const error = useSelector(state => state.usersUpdate.errMess);
     const result = useSelector(state => state.usersUpdate.result);
@@ -47,27 +44,13 @@ const AddUserComponent = (props) => {
     }
 
     const uploadChanges =  (values) => {
-        let tipo = '';
-        if(values.administrador){
-            tipo += 'administrador,';
-        }
-        if(values.vendedor){
-            tipo += 'vendedor,';
-        }
-        if(values.repartidor){
-            tipo += 'repartidor,';
-        }
-        if(values.cliente){
-            tipo += 'cliente,';
-        }
         const userData = {
             username: values.username,
             nombre: values.nombre,
             email: values.email,
-            tipo: tipo
+            es_admin: values.administrador
         }
-        userData.password= crypto.randomBytes(5).toString('hex');
-        setPassword(userData.password);
+        
         doAddUser(userData);        
     }
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
@@ -75,10 +58,7 @@ const AddUserComponent = (props) => {
             username:'',
             nombre: '',
             email: '',
-            administrador: false,
-            vendedor: false,
-            repartidor: false,
-            cliente: false
+            administrador: false
         },
         validationSchema,
         onSubmit(values) {
@@ -176,39 +156,7 @@ const AddUserComponent = (props) => {
                                 </Label>
                                     </div>
                                 </div>
-                                <div className="l-flex ml-auto " class="col-12" >
-                                    <div class="col-12 col-sm-8">
-                                        <Label check  >
-                                            <Input type="checkbox" id="vendedor" name="vendedor" className="form-control" values={values.vendedor}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />{' '}
-                                    Vendedor
-                                </Label>
-                                    </div>
-                                </div>
-                                <div className="l-flex ml-auto " class="col-12" >
-                                    <div class="col-12 col-sm-8">
-                                        <Label check  >
-                                            <Input type="checkbox" id="repartidor" name="repartidor" className="form-control" values={values.repartidor}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />{' '}
-                                    Repartidor
-                                </Label>
-                                    </div>
-                                </div>
-                                <div className="l-flex ml-auto " class="col-12" >
-                                    <div class="col-12 col-sm-8">
-                                        <Label check  >
-                                            <Input type="checkbox" id="cliente" name="cliente" className="form-control" values={values.cliente}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />{' '}
-                                    Cliente
-                                </Label>
-                                    </div>
-                                </div>
+                                
                             </FormGroup>
                             
                             <br></br>
