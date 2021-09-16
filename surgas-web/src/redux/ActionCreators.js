@@ -571,6 +571,66 @@ export const addOrder= (orderData) => async (dispatch) => {
     }
 }
 
+//OldOrder
+
+export const updateOrderOldOrderReset = () => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_RESET
+});
+
+export const updateOrderOldOrderRequest = () => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_REQUEST
+});
+
+export const updateOrderOldOrderSuccess = (result) => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_SUCCESS,
+    payload: result
+});
+
+export const updateOrderOldOrderFailed = (errmess) => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_FAILED,
+    payload: errmess
+});
+
+
+export const updateOrderOldOrder = (order) => async (dispatch) => {
+    dispatch(updateOrderOldOrderRequest());
+    try {
+        const res = await axios.get(baseBackUrl + 'pedidos/'+order.fecha+'/'+ order.numero);
+        dispatch(updateOrderOldOrderSuccess(res));
+    } catch (err) {
+        dispatch(updateOrderOldOrderFailed(err));
+    }
+}
+
+export const updateOrderOldOrderProductsReset = () => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_RESET
+});
+
+export const updateOrderOldOrderProductsRequest = () => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_REQUEST
+});
+
+export const updateOrderOldOrderProductsSuccess = (result) => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_SUCCESS,
+    payload: result
+});
+
+export const updateOrderOldOrderProductsFailed = (errmess) => ({
+    type: ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_FAILED,
+    payload: errmess
+});
+
+
+export const updateOrderOldOrderProducts = (order) => async (dispatch) => {
+    dispatch(updateOrderOldOrderProductsRequest());
+    try {
+        const res = await axios.get(baseBackUrl + 'pedidos/'+order.fecha+'/'+ order.numero);
+        dispatch(updateOrderOldOrderProductsSuccess(res));
+    } catch (err) {
+        dispatch(updateOrderOldOrderProductsFailed(err));
+    }
+}
+
 
 //trolleyProducts
 

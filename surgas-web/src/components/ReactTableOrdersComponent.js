@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import EditOrderComponent from './EditOrderComponent';
+
+import { updateOrderOldOrder, updateOrderOldOrderProducts } from '../redux/ActionCreators';
 
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
@@ -10,9 +13,11 @@ const ReactTableOrdersComponent = (props) => {
   const [isEditOrderModalOpen, setIsEditOrderModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState();
 
+  const dispatch = useDispatch();
+
   const toggleEditModal = () => {
 
-    if (isEditOrderModalOpen ){
+    if (isEditOrderModalOpen) {
       setSelectedOrder(null);
     }
 
@@ -104,12 +109,14 @@ const ReactTableOrdersComponent = (props) => {
             onClick: (e) => {
               try {
                 setSelectedOrder(props.original);
+                dispatch(updateOrderOldOrder(props.original));
+                dispatch(updateOrderOldOrderProducts(props.original));
                 toggleEditModal();
               } catch (error) {
                 console.log("No hay nada en esta fila");
               }
             }
-            
+
           }
         }}
       >

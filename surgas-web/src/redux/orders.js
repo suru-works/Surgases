@@ -36,3 +36,41 @@ export const OrdersUpdate = (state = {
             return state;
     }
 }
+
+export const OrderUpdateOldOrder = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
+
+export const OrderUpdateOldOrderProducts = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.ORDER_UPDATE_OLD_ORDER_PRODUCTS_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}

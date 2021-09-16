@@ -195,35 +195,6 @@ const SearchCriteria = () => {
     );
 }
 
-/*
-const RenderSearchResultTuple = (props) => {
-    const product = props.product;
-
-    const [isAddNewOrderModalOpen, setIsAddNewOrderModalOpen] = useState(false);
-
-    const toggleAddNewOrderProductModal = () => {
-        if (isAddNewOrderModalOpen) {
-            setIsAddNewOrderModalOpen(false);
-        } else {
-            setIsAddNewOrderModalOpen(true);
-        }
-    }
-
-    return (
-
-        <tr onClick={() => toggleAddNewOrderProductModal()}>
-            <th scope="row">{product.nombre}</th>
-            <td>{product.tipo}</td>
-            <td>{product.color}</td>
-            <td>{product.peso}</td>
-            <td>{product.precio}</td>
-            <td>{product.inventario}</td>
-
-            <AddNewOrderProductComponent addNewOrderProduct={props.addNewOrderProduct} product={product} isOpen={isAddNewOrderModalOpen} toggle={toggleAddNewOrderProductModal}></AddNewOrderProductComponent>
-        </tr>
-    );
-
-}*/
 
 const SearchResult = (props) => {
 
@@ -238,29 +209,14 @@ const SearchResult = (props) => {
 
     }
     if (result) {
-        /*const ResultTuples = result.data.map((product) => {
-            return (
-
-                <RenderSearchResultTuple addNewOrderProduct={props.addNewOrderProduct} product={product} key={product.codigo}></RenderSearchResultTuple>
-
-            );
-        })*/
-
-
-
         return (
-
             <ReactTableProductsForTrolleyComponent products={result.data} client={props.client} addNewOrderProduct={props.addNewOrderProduct} />
-
         );
     }
     if (error) {
-
         return (
             <div> hubo un error</div>
-
         );
-
     }
     return (
         <div></div>
