@@ -27,15 +27,7 @@ const validationSchema = yup.object(
             .number()
             .required("El cliente debe tener puntos definidos")
             .positive("No pueden haber puntos negativos")
-            .integer("Ingrese solo números enteros"),
-
-        descuento: yup
-            .number()
-            .required("El cliente debe tener descuento definido"),
-
-        tipo: yup
-            .string()
-            .required("El cliente debe tener un tipo")
+            .integer("Ingrese solo números enteros")
     }
 );
 
@@ -43,7 +35,6 @@ const ClientModal = (props) => {
     const [email] = useState(props.client.email);
     const [nombre] = useState(props.client.nombre);
     const [puntos] = useState(props.client.puntos);
-    const [descuento] = useState(props.client.descuento);
     const [tipo] = useState(props.client.tipo);
     
 
@@ -67,7 +58,6 @@ const ClientModal = (props) => {
             email: values.email,
             nombre: values.nombre,
             puntos: values.puntos,
-            descuento: values.descuento,
             tipo: values.tipo
         }
 
@@ -88,7 +78,6 @@ const ClientModal = (props) => {
             email: email,
             nombre: nombre,
             puntos: puntos,
-            descuento: descuento,
             tipo: tipo
         },
         validationSchema,
@@ -97,7 +86,6 @@ const ClientModal = (props) => {
                 email: values.email,
                 nombre: values.nombre,
                 puntos: values.puntos,
-                descuento: values.descuento,
                 tipo: values.tipo
             }
 
@@ -195,14 +183,16 @@ const ClientModal = (props) => {
                                         <FormGroup className='col-12 col-sm-6'>
                                             <Label htmlFor="tipo">Tipo</Label>
                                             <Input
-                                                type="tipo"
+                                                type="select"
                                                 id="tipo"
                                                 name="tipo"
                                                 value={values.tipo}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                            />
-                                            {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
+                                            >
+                                                <option>natural</option>
+                                                <option>juridica</option>
+                                            </Input>
                                         </FormGroup>
 
                                         <FormGroup className='col-12 col-sm-6'>
@@ -222,20 +212,7 @@ const ClientModal = (props) => {
 
                                     <div className="row">
 
-                                        <FormGroup className='col-12 col-sm-6'>
-                                            <Label htmlFor="descuento">Descuento (%)</Label>
-                                            <Input
-                                                type="number"
-                                                id="descuento"
-                                                name="descuento"
-                                                value={values.descuento}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                            {(touched.descuento && errors.descuento) ? (<Alert color="danger">{errors.descuento}</Alert>) : null}
-                                        </FormGroup>
-
-                                        <FormGroup className='col-12 col-sm-6'>
+                                        <FormGroup className='col-12 col-sm-12'>
                                             <br></br>
                                             <div class="d-flex justify-content-center"  >
                                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type="submit" value="submit"  >Actualizar</Button>

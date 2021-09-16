@@ -124,26 +124,26 @@ const OrderModal = (props) => {
 
                 <div className='col'>
 
-                    <CardTitle tag="h3"> Pedido numero: {editOrderNumero} de {editOrderFecha}</CardTitle>
+                    <CardTitle tag="h3"> Pedido número: {editOrderNumero} de {editOrderFecha}</CardTitle>
                     <hr />
 
                     <div className='row d-flex justify-content-center '>
 
-                        <FormGroup className='col-xs-12 col-lg-6 col-xl-6 align-self-end'>
+                        <FormGroup className='col-xs-12 col-lg-6 col-xl-4 align-self-end'>
                             <Label htmlFor="direccion">Dirección</Label>
                             <Input type="text" id="direccion" name="direccion"
                                 value={editOrderDireccion}
                                 onChange={(event) => { setEditOrderDireccion(event.target.value) }}
                             />
                         </FormGroup>
-                        <FormGroup className='col-xs-12 col-lg-6 col-xl-6 align-self-end'>
+                        <FormGroup className='col-xs-12 col-lg-6 col-xl-2 align-self-end'>
                             <Label htmlFor="municipio">Municipio</Label>
                             <Input type="text" id="municipio" name="municipio"
                                 value={editOrderMunicipio}
                                 onChange={(event) => { setEditOrderMunicipio(event.target.value) }}
                             />
                         </FormGroup>
-                        <FormGroup className='col-xs-12 col-lg-5 col-xl-6'>
+                        <FormGroup className='col-xs-12 col-lg-2 col-xl-2'>
                             <Label htmlFor="bodega">Bodega</Label>
                             <Input type="select" id="bodega" name="bodega"
                                 value={editOrderBodega}
@@ -154,7 +154,7 @@ const OrderModal = (props) => {
                             </Input>
                         </FormGroup>
 
-                        <FormGroup className='col-xs-12 col-lg-7 col-xl-4 align-self-end'>
+                        <FormGroup className='col-xs-12 col-lg-3 col-xl-4 align-self-end'>
                             <Label htmlFor="tipoCliente">Tipo de cliente</Label>
                             <Input type="select" id="tipoCliente" name="tipoCliente"
                                 value={editOrderTipoCliente}
@@ -163,7 +163,7 @@ const OrderModal = (props) => {
                                 <option>comun</option>
                             </Input>
                         </FormGroup>
-                        <FormGroup className='col-xs-12 col-lg-8 col-xl-6  align-self-end'>
+                        <FormGroup className='col-xs-3 col-lg-5 col-xl-4'>
                             <Label htmlFor="repartidor">Repartidor</Label>
                             <Input type="Text" id="repartidor" name="repartidor"
                                 value={editOrderEmpleado}
@@ -171,7 +171,12 @@ const OrderModal = (props) => {
                             </Input>
                         </FormGroup>
 
-                        <FormGroup className='col-xs-12 col-lg-8 col-xl-6  align-self-end'>
+                        <FormGroup className='col-xs-3 col-lg-2 col-xl-1'>
+                            <button type="button" className="justify-self-center" class="btn pl-0" onClick={toogleSearchEditOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
+                            <SearchNewOrderEmployee toggle={toogleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={setEditOrderEmpleado} />
+                        </FormGroup>
+
+                        <FormGroup className='col-xs-12 col-lg-6 col-xl-4  align-self-end'>
                             <Label htmlFor="vendedor">Vendedor</Label>
                             <Input type="Text" id="vendedor" name="vendedor"
                                 value={editOrderEmpleadoVendedor}
@@ -179,12 +184,7 @@ const OrderModal = (props) => {
                             </Input>
                         </FormGroup>
 
-                        <FormGroup className='col-xs-12 col-lg-4 col-xl-2 '>
-                            <button type="button" className="justify-self-center" class="btn" onClick={toogleSearchEditOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
-                            <SearchNewOrderEmployee toggle={toogleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={setEditOrderEmpleado} />
-                        </FormGroup>
-
-                        <FormGroup className='col-xs-12 col-lg-5 col-xl-6'>
+                        <FormGroup className='col-xs-12 col-lg-6 col-xl-3'>
                             <Label htmlFor="estado">Estado</Label>
                             {stateOptions()}
                         </FormGroup>
@@ -207,6 +207,12 @@ const OrderModal = (props) => {
                     <br />
 
                     <div className='row d-flex justify-content-center '>
+
+                        <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
+                            <div class="d-flex justify-content-end"  >
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Añadir producto</Button>
+                            </div>
+                        </FormGroup>
 
                         <FormGroup className='col-xs-12 col-lg-6  col-xl-4 align-self-end'>
                             <Label htmlFor="precioBruto">Precio bruto</Label>
@@ -247,6 +253,14 @@ const OrderModal = (props) => {
                                 onChange={(event) => { setEditOrderTotalIva(event.target.value) }}
                                 disabled>
                             </Input>
+                        </FormGroup>
+
+                        <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
+                            <div class="d-flex justify-content-around"  >
+                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cerrar</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Imprimir pedido</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Guardar cambios</Button>
+                            </div>
                         </FormGroup>
 
                     </div>
