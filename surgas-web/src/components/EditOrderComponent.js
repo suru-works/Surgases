@@ -38,6 +38,7 @@ const OrderModal = (props) => {
     const [editOrderPuntos, setEditOrderPuntos] = useState(props.order.puntos_compra);
     const [editOrderDescuento, setEditOrderDescuento] = useState(props.order.descuento);
     const [editOrderTotalIva, setEditOrderTotalIva] = useState(props.order.iva);
+    const [editOrderEstado, setEditOrderEstado] = useState(props.order.estado);
 
 
 
@@ -73,6 +74,48 @@ const OrderModal = (props) => {
 
     const handleSubmit = () => {
 
+    }
+
+    const editable = () => {
+        if (props.order.estado == 'pago' || props.order.estado == 'fiado') {
+            return (false);
+        }
+        return (true);
+    }
+
+    const stateOptions = () => {
+        if (props.order.estado == 'pago') {
+            return (
+                <Input type="select" id="estado" name="estado"
+                    value={editOrderEstado}
+                    onChange={(event) => { setEditOrderEstado(event.target.value) }}>
+                    <option>pago</option>
+                </Input>
+            );
+        }
+        else if (props.order.estado == 'fiado') {
+            return (
+                <Input type="select" id="estado" name="estado"
+                    value={editOrderEstado}
+                    onChange={(event) => { setEditOrderEstado(event.target.value) }}>
+                    <option>fiado</option>
+                    <option>pago</option>
+                </Input>
+            );
+        }
+        else {
+            return (
+                <Input type="select" id="estado" name="estado"
+                    value={editOrderEstado}
+                    onChange={(event) => { setEditOrderEstado(event.target.value) }}>
+                    <option>verificacion</option>
+                    <option>cola</option>
+                    <option>proceso</option>
+                    <option>fiado</option>
+                    <option>pago</option>
+                </Input>
+            );
+        }
     }
 
     return (
@@ -139,6 +182,11 @@ const OrderModal = (props) => {
                         <FormGroup className='col-xs-12 col-lg-4 col-xl-2 '>
                             <button type="button" className="justify-self-center" class="btn" onClick={toogleSearchEditOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
                             <SearchNewOrderEmployee toggle={toogleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={setEditOrderEmpleado} />
+                        </FormGroup>
+
+                        <FormGroup className='col-xs-12 col-lg-5 col-xl-6'>
+                            <Label htmlFor="estado">Estado</Label>
+                            {stateOptions()}
                         </FormGroup>
 
                         <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
