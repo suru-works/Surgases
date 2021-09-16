@@ -194,74 +194,169 @@ pedidoRouter.route("/")
 }));
 
 pedidoRouter.route('/:fecha/:numero')
-.all((req, res, next) => {
+.all(auth.isEmployee, (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     next();
 }, auth.isAuthenticated)
-.put(auth.isEmployee, asyncHandler(async (req, res, next) => {
+.get(asyncHandler(async (req, res, next) => {
+    const params = req.params;
+
+    const [result,] = await pool.execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [params.fecha, params.numero]);
+
+    res.json(utils.parseToJSON(result)[0]);
+}))
+.put(asyncHandler(async (req, res, next) => {
     const conn = await pool.getConnection();
 
-    const fecha = req.params.fecha;
-    const numero = req.params.numero;
-    const body = req.body;
-    let changes = [];
-    let values = [];
+    await conn.beginTransaction();
 
-    if (body.estado) {
-        const estado = body.estado;
-        changes.push('estado = ?');
-        values.push(estado);
+    try {
+        const fecha = req.params.fecha;
+        const numero = req.params.numero;
+        const body = req.body;
+        let changes = [];
+        let values = [];
 
-        const [result,] = await conn.execute('SELECT estado FROM pedido WHERE fecha = ? AND numero = ?', [fecha, numero]);
-        const estado_actual = utils.parseToJSON(result)[0];
+        let [results,] = await conn.execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [fecha, numero]);
+        const pedidos = utils.parseToJSON(results);
 
-        if (estado_actual && (!['fiado', 'pago'].includes(estado_actual.estado)) && (estado == 'fiado' || estado == 'pago')) {
-            await conn.execute(
-                'CALL proc_pedido_inventario_puntos(?, ?)',
-                [fecha, numero]
-            );
+        if (pedidos.length > 0) {
+            const estado_actual = pedidos[0].estado;
+            const cliente_pedidor = pedidos[0].cliente_pedidor;
+            const fiado = estado_actual == 'fiado';
+            const pago = estado_actual == 'pago';
+            const estado = body.estado;
+
+            if (!fiado && !pago) {
+                if (body.direccion) {
+                    changes.push('direccion = ?');
+                    values.push(body.direccion);
+                }
+
+                if (body.municipio) {
+                    changes.push('municipio = ?');
+                    values.push(body.municipio);
+                }
+        
+                if (body.bodega) {
+                    changes.push('bodega = ?');
+                    values.push(body.bodega);
+                }
+        
+                if (body.nota) {
+                    changes.push('nota = ?');
+                    values.push(body.nota);
+                }
+        
+                if (body.empleado_repartidor) {
+                    changes.push('empleado_repartidor = ?');
+                    values.push(body.empleado_repartidor);
+                }
+                
+                if (body.productos) {
+                    const productos = body.productos;
+    
+                    let precio_bruto = 0;
+                    let precio_final = 0;
+    
+                    for (let i = 0; i < productos.length; i++) {
+                        let precios;
+    
+                        let producto = productos[i];
+                        let modificacion = producto.modificacion;
+    
+                        if (modificacion == 'insert') {
+                            [results,] = await conn.execute(
+                                'CALL proc_pedidoxproducto_insertar(?, ?, ?, ?, ?, ?)',
+                                [producto.codigo, fecha, numero, producto.precio, producto.cantidad, cliente_pedidor]
+                            );
+                            precios = utils.parseToJSON(results)[0][0];
+    
+                            precio_bruto += precios.precio_bruto;
+                            precio_final += precios.precio_final;
+                        } else if (modificacion == 'update') {
+                            [results,] = await conn.execute(
+                                'CALL proc_pedidoxproducto_actualizar(?, ?, ?, ?, ?)',
+                                [producto.codigo, fecha, numero, producto.precio, producto.cantidad]
+                            );
+                            precios = utils.parseToJSON(results)[0][0];
+    
+                            precio_bruto -= precios.precio_bruto_original;
+                            precio_bruto += precios.precio_bruto_nuevo;
+                            precio_final -= precios.precio_final_original;
+                            precio_final += precios.precio_final_nuevo;
+                        } else if (modificacion == 'delete') {
+                            [results, ] = await conn.execute(
+                                'CALL proc_pedidoxproducto_eliminar(?, ?, ?)',
+                                [producto.codigo, fecha, numero]
+                            );
+                            const precios = utils.parseToJSON(results)[0][0];
+    
+                            precio_bruto -= precios.precio_bruto;
+                            precio_final -= precios.precio_final;
+                        }
+                    }
+    
+                    changes.push('precio_bruto = precio_bruto + ?');
+                    values.push(precio_bruto);
+    
+                    changes.push('precio_final = precio_final + ?');
+                    values.push(precio_final);
+                }
+
+                if (estado) {
+                    changes.push('estado = ?');
+                    values.push(estado);
+        
+                    if (estado == 'fiado' || estado == 'pago') {
+                        await conn.execute(
+                            'CALL proc_pedido_inventario_puntos(?, ?)',
+                            [fecha, numero]
+                        );
+                    }
+                }
+        
+                values.push(fecha);
+                values.push(numero);
+        
+                await conn.execute(
+                    'UPDATE pedido SET ' + changes.join(', ') + 'WHERE fecha = ? AND numero = ?',
+                    values
+                );
+        
+                await conn.commit();
+                
+                conn.release();
+                
+                res.json({
+                    success: true,
+                    msg: 'order updated successfully'
+                });
+            } else if (fiado && estado && estado == 'pago') {
+                await conn.execute("UPDATE pedido SET estado = 'pago' WHERE fecha = ? AND numero = ?", [fecha, numero]);
+
+                await conn.commit();
+
+                conn.release();
+
+                res.json({
+                    success: true
+                });
+            } else {
+                let error = new Error('No se puede modificar este pedido');
+                error.status = 403;
+                throw error;
+            }
+        } else {
+            let error = new Error('El pedido no existe');
+            error.status = 404;
+            throw error;
         }
+    } catch (err) {
+        await conn.rollback();
+        conn.release();
+        next(err);
     }
-
-    if (body.direccion) {
-        changes.push('direccion = ?');
-        values.push(body.direccion);
-    }
-
-    if (body.municipio) {
-        changes.push('municipio = ?');
-        values.push(body.municipio);
-    }
-
-    if (body.bodega) {
-        changes.push('bodega = ?');
-        values.push(body.bodega);
-    }
-
-    if (body.nota) {
-        changes.push('nota = ?');
-        values.push(body.nota);
-    }
-
-    if (body.empleado_repartidor) {
-        changes.push('empleado_repartidor = ?');
-        values.push(body.empleado_repartidor);
-    }
-
-    values.push(fecha);
-    values.push(numero);
-
-    await conn.execute(
-        'UPDATE pedido SET ' + changes.join(', ') + 'WHERE fecha = ? AND numero = ?',
-        values
-    );
-    
-    conn.release();
-    
-    res.json({
-        success: true,
-        msg: 'order updated successfully'
-    });
 }));
 
 pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, auth.isEmployee, asyncHandler(async (req, res, next) => {

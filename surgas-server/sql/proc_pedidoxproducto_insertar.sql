@@ -34,9 +34,9 @@ BEGIN
         pedidoxproducto_unidades
     );
 
-    SET precio_final := (pedidoxproducto_precio_venta + pedidoxproducto_valor_iva) * ((100 - pedidoxproducto_descuento) / 100);
+    SET precio_final := (pedidoxproducto_precio_venta + pedidoxproducto_valor_iva) * ((100 - pedidoxproducto_descuento) / 100) * pedidoxproducto_unidades;
 
-    SELECT pedidoxproducto_precio_venta AS precio_bruto, precio_final;
+    SELECT pedidoxproducto_precio_venta * pedidoxproducto_unidades AS precio_bruto, precio_final;
 END; $$
 
 DELIMITER ;
