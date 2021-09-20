@@ -204,7 +204,7 @@ pedidoRouter.route('/:fecha/:numero')
 
     const [result,] = await pool.execute('SELECT * FROM pedido WHERE fecha = ? AND numero = ?', [params.fecha, params.numero]);
 
-    res.json(utils.parseToJSON(result)[0]);
+    res.json(utils.soloFechas(result, 'fecha')[0]);
 }))
 .put(asyncHandler(async (req, res, next) => {
     const conn = await pool.getConnection();
