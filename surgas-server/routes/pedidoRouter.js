@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const asyncHandler = require('express-async-handler');
 
 const db = require('../db');
@@ -406,50 +406,38 @@ pedidoRouter.get('/last-product-price/:codigo/:telefono', auth.isAuthenticated, 
 pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
     const body = req.body;
     const [result,] = await pool.execute(
-        'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra, pe.empleado_repartidor AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.unidades AS unidades FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+        'SELECT pe.cliente_pedidor AS telefono, pe.direccion AS direccion, pe.nota AS nota, pe.precio_final AS precio_final, pe.puntos_compra AS puntos_compra, pe.empleado_repartidor AS empd, p.nombre AS nombre, p.color AS color, p.peso AS peso, pp.precio_venta AS precio, pp.valor_iva AS iva, pp.descuento AS descuento, pp.unidades AS unidades FROM (pedido pe INNER JOIN pedidoxproducto pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
         [body.fecha, body.numero]
     );
     const results = utils.parseToJSON(result);
     const ped = results[0];
 
-    let cabecera = ""+
-        "FECHA: "+body.fecha+"\n"+
-        "NUMERO DE PEDIDO: "+body.numero+"\n"+
-        "MENSAJERO: "+ped.empd+"\n"+
-        "===================================\n";
+    let cabecera = `FECHA: ${body.fecha}
+    NUMERO DE PEDIDO: ${body.numero}
+    MENSAJERO: ${ped.empd}
+    TELEFONO: ${ped.telefono}
+    DIRECCION: ${ped.direccion}
+    NOTA: ${ped.nota}
+    ===================================`;
     
-    let productos = "| Nombre\t| Color\t| Peso\t| Precio\t| Unidades\t|\n";
+    let productos = "| Nombre\t| Color\t| Peso\t| Precio\t| IVA\t| Descuento\t| Unidades\t| Valor Final\n";
     for (let i = 0; i < results.length; i++) {
         let prod = results[i];
-        productos += "| " + prod.nombre + "\t| " + prod.peso + "\t| " + prod.precio + "\t| " + prod.unidades + "\t|\n";
+        productos += `| ${prod.nombre}\t| ${prod.color}\t| ${prod.peso}\t| ${prod.precio}\t| ${prod.iva}\t| ${prod.descuento}\t| ${prod.unidades}\t| ${(prod.precio + prod.iva) * (100 - prod.descuento) / 100}`;
     }
     productos += "===================================\n";
-
-    let datos = ""+
-        "TELEFONO: "+ped.telefono+"\n"+
-        "DIRECCION:"+ped.direccion+"\n"+
-        "NOTA: "+ped.nota+"\n"+
-        "===================================\n";
     
-    let final = ""+
-        "TOTAL A PAGAR: "+ped.precio_final+"\n"+
-        "PUNTOS DESPUES DE COMPRA: "+ped.puntos_compra+"\n"+
-        "\n \n";
+    let final = `TOTAL A PAGAR: ${ped.precio_final}
+    PUNTOS DESPUES DE COMPRA: ${ped.puntos_compra}`
     
-    fs.writeFile(
-        'Z:\\Shared drives\\Surgas de Antioquia\\' + body.impresora + '\\' + body.fecha + '_' + body.numero +crypto.randomBytes(20).toString('hex')+ '.factura',
-        cabecera + datos + productos + final,
-        (err, file) => {
-            if (err) {
-                let error = new Error('error en el recibo');
-                error.status = 500;
-                next(error);
-            }
-            res.json({
-                msg: 'recibo creado correctamente'
-            });
-        }
+    await fs.writeFile(
+        `Z:\\Shared drives\\Surgas de Antioquia\\${body.impresora}\\${body.fecha}_${body.numero}_${crypto.randomBytes(20).toString('hex')}.factura`,
+        cabecera + productos + final
     );
+
+    res.json({
+        msg: 'recibo creado correctamente'
+    });
 }));
 
 module.exports = pedidoRouter;
