@@ -1,7 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import axios from 'axios';
 import { baseBackUrl } from '../shared/baseUrl';
-import ProductsAdministration from '../components/ProductsAdministrationComponent';
+
 
 axios.defaults.withCredentials = true;
 
@@ -631,6 +631,40 @@ export const updateOrderOldOrderProducts = (order) => async (dispatch) => {
     }
 }
 
+//printOrder
+
+export const printOrderReset = () => ({
+    type: ActionTypes.PRINT_ORDER_RESET
+});
+
+export const printOrderRequest = () => ({
+    type: ActionTypes.PRINT_ORDER_REQUEST
+});
+
+export const printOrderSuccess = (result) => ({
+    type: ActionTypes.PRINT_ORDER_SUCCESS,
+    payload: result
+});
+
+export const printOrderFailed = (errmess) => ({
+    type: ActionTypes.PRINT_ORDER_FAILED,
+    payload: errmess
+});
+
+export const printOrder= (order) => async (dispatch) => {
+    dispatch(printOrderRequest());
+    try {
+        const res = await axios.post(baseBackUrl + 'pedidos/print', order,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        dispatch(printOrderSuccess(res));
+    } catch (err) {
+        dispatch(printOrderFailed(err));
+    }
+}
 
 //trolleyProducts
 

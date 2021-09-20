@@ -74,3 +74,22 @@ export const OrderUpdateOldOrderProducts = (state = {
             return state;
     }
 }
+
+export const PrintOrder = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.PRINT_ORDER_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.PRINT_ORDER_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.PRINT_ORDER_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.PRINT_ORDER_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}

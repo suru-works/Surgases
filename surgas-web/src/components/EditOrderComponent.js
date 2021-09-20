@@ -3,7 +3,7 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { updateOrderOldOrder } from '../redux/ActionCreators';
+import { printOrder } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -40,7 +40,7 @@ const OrderModal = (props) => {
     const [editOrderTotalIva, setEditOrderTotalIva] = useState(props.order.iva);
     const [editOrderEstado, setEditOrderEstado] = useState(props.order.estado);
 
-
+    const dispatch = useDispatch();
 
     const toogleSearchEditOrderEmployee = () => {
         if (isSearchEditOrderEmployeeModalOpen) {
@@ -59,6 +59,9 @@ const OrderModal = (props) => {
         }
     }
 
+    const imprimirRecibo = () => {
+        dispatch(printOrder({fecha:editOrderFecha,numero:editOrderNumero}));
+    }
 
     const addEditOrderProduct = () => {
 
@@ -258,7 +261,7 @@ const OrderModal = (props) => {
                         <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
                             <div class="d-flex justify-content-around"  >
                                 <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cerrar</Button>
-                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Imprimir pedido</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick = {() => imprimirRecibo()} >Imprimir pedido</Button>
                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Guardar cambios</Button>
                             </div>
                         </FormGroup>

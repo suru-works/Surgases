@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const db = require('../db');
 const auth = require('../auth');
 const utils = require('../utils');
+const crypto = require('crypto');
 
 const { values } = require('mysql2/lib/constants/charset_encodings');
 const { ok } = require('assert');
@@ -436,7 +437,7 @@ pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
         "\n \n";
     
     fs.writeFile(
-        'G:\\Unidades compartidas\\suru-works\\surgas\\Impresoras\\' + body.impresora + '\\' + body.fecha + '_' + body.numero + '.txt',
+        'Z:\\Shared drives\\Surgas de Antioquia\\' + body.impresora + '\\' + body.fecha + '_' + body.numero +crypto.randomBytes(20).toString('hex')+ '.factura',
         cabecera + datos + productos + final,
         (err, file) => {
             if (err) {
