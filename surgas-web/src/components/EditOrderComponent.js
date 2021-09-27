@@ -272,7 +272,7 @@ const OrderModal = (props) => {
                                 <PrintOrderModal isOpen={isPrintOrderModalOpen} toggle={tooglePrintOrderModal} order={{numero: editOrderNumero, fecha: editOrderFecha}}/>
                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick = {() => tooglePrintOrderModal()} >Imprimir pedido</Button>
                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Guardar cambios</Button>
-                            </div>
+                            </div>                            
                         </FormGroup>
 
                     </div>

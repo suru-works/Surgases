@@ -651,10 +651,10 @@ export const printOrderFailed = (errmess) => ({
     payload: errmess
 });
 
-export const printOrder= (order) => async (dispatch) => {
+export const printOrder= (order, printings) => async (dispatch) => {
     dispatch(printOrderRequest());
     try {
-        const res = await axios.post(baseBackUrl + 'pedidos/print', order,{
+        const res = await axios.post(baseBackUrl + 'pedidos/print/'+printings, order,{
             headers: {
                 'Content-Type': 'application/json'
             },
