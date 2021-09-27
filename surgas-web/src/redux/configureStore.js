@@ -15,7 +15,7 @@ import { Verify } from './verify';
 import { ChangePassword } from './restore';
 import { Clients, ClientsUpdate, OrderClient, LastOrder} from './clients';
 import { Employees, EmployeesUpdate, NewOrderEmployees} from './employees';
-import { Printers, PrintersUpdate, Print} from './printers';
+import { Printers, PrintOrderPrinters, PrintersUpdate, Print} from './printers';
 import { OrderStats } from './orderStats';
 
  export const ConfigureStore = () => {
@@ -44,6 +44,7 @@ import { OrderStats } from './orderStats';
             orderUpdateOldOrder: OrderUpdateOldOrder,
             orderUpdateOldOrderProducts: OrderUpdateOldOrderProducts,
             printOrder: PrintOrder,
+            printOrderPrinters: PrintOrderPrinters,
             systemParameters: SystemParameters,
             systemParametersUpdate:SystemParametersUpdate,
             systemBackup: SystemBackup,

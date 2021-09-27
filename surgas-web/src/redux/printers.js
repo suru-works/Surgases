@@ -19,6 +19,25 @@ export const Printers = (state = {
     }
 }
 
+export const PrintOrderPrinters = (state = {
+    isLoading: false,
+    errMess: null,
+    result: null
+}, action) => {
+    switch(action.type) {
+        case ActionTypes.PRINT_ORDER_PRINTERS_RESET:
+            return {...state, isLoading: false, errMess: null, result: null}
+        case ActionTypes.PRINT_ORDER_PRINTERS_REQUEST:
+            return {...state, isLoading: true, errMess: null, result: null}
+        case ActionTypes.PRINT_ORDER_PRINTERS_SUCCESS:
+            return {...state, isLoading: false, errMess: null, result: action.payload};
+        case ActionTypes.PRINT_ORDER_PRINTERS_FAILED:
+            return {...state, isLoading: false, errMess: action.payload};
+        default:
+            return state;
+    }
+}
+
 export const PrintersUpdate = (state = {
     isLoading: false,
     errMess: null,

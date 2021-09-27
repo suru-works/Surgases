@@ -431,7 +431,7 @@ pedidoRouter.post('/print', asyncHandler(async (req, res, next) => {
     PUNTOS DESPUES DE COMPRA: ${ped.puntos_compra}`
     
     await fs.writeFile(
-        `Z:\\Shared drives\\Surgas de Antioquia\\${body.impresora}\\${body.fecha}_${body.numero}_${crypto.randomBytes(20).toString('hex')}.factura`,
+        `${process.env.PRINTERS_PATH}\\${body.impresora}\\${body.fecha}_${body.numero}_${crypto.randomBytes(20).toString('hex')}.factura`,
         cabecera + productos + final
     );
 

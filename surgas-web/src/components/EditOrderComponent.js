@@ -3,7 +3,6 @@ import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, 
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Loading } from './LoadingComponent';
-import { printOrder } from '../redux/ActionCreators';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -11,6 +10,8 @@ import * as yup from "yup";
 import SearchNewOrderEmployee from './SearchNewOrderEmployeeComponent';
 import ReactTableProductsForTrolleyComponent from './ReactTableProductsForTrolleyComponent';
 import ReactTableOrdersForTrolleyComponent from './ReactTableOrdersForTrolleyComponent';
+
+import PrintOrderModal from './PrintOrderModal';
 
 const validationSchema = yup.object(
     {
@@ -22,6 +23,8 @@ const OrderModal = (props) => {
 
     const [isSearchEditOrderEmployeeModalOpen, setIsSearchEditOrderEmployeeModalOpen] = useState(false);
     const [isSearchEditOrderNewProductOpen, setIsSearchEditOrderNewProductOpen] = useState(false);
+    const [isPrintOrderModalOpen, setIsPrintOrderModalOpen] = useState(false);
+
 
     const [editOrderFecha] = useState(props.order.fecha);
     const [editOrderNumero] = useState(props.order.numero);
@@ -59,8 +62,13 @@ const OrderModal = (props) => {
         }
     }
 
-    const imprimirRecibo = () => {
-        dispatch(printOrder({fecha:editOrderFecha,numero:editOrderNumero}));
+    const tooglePrintOrderModal = () => {
+        if (isPrintOrderModalOpen) {
+            setIsPrintOrderModalOpen(false);
+        }
+        else {
+            setIsPrintOrderModalOpen(true);
+        }
     }
 
     const addEditOrderProduct = () => {
@@ -261,7 +269,8 @@ const OrderModal = (props) => {
                         <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
                             <div class="d-flex justify-content-around"  >
                                 <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cerrar</Button>
-                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick = {() => imprimirRecibo()} >Imprimir pedido</Button>
+                                <PrintOrderModal isOpen={isPrintOrderModalOpen} toggle={tooglePrintOrderModal} order={{numero: editOrderNumero, fecha: editOrderFecha}}/>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick = {() => tooglePrintOrderModal()} >Imprimir pedido</Button>
                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Guardar cambios</Button>
                             </div>
                         </FormGroup>

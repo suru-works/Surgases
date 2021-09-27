@@ -1554,6 +1554,39 @@ export const printers = (args) => async (dispatch) => {
     }
 }
 
+export const getPrintOrderPrintersReset = () => ({
+    type: ActionTypes.PRINT_ORDER_PRINTERS_RESET
+});
+
+export const getPrintOrderPrintersRequest = () => ({
+    type: ActionTypes.PRINT_ORDER_PRINTERS_REQUEST
+});
+
+export const getPrintOrderPrintersSuccess = (result) => ({
+    type: ActionTypes.PRINT_ORDER_PRINTERS_SUCCESS,
+    payload: result
+});
+
+export const getPrintOrderPrintersFailed = (errmess) => ({
+    type: ActionTypes.PRINT_ORDER_PRINTERS_FAILED,
+    payload: errmess
+});
+
+export const getPrintOrderPrinters = (args) => async (dispatch) => {
+    dispatch(getPrintOrderPrintersRequest());
+    let urlparams = 'impresoras';
+    if(args){
+        urlparams += '?'+args.join('&');
+    }
+
+    try {
+        const res = await axios.get(baseBackUrl + urlparams);
+        dispatch(getPrintOrderPrintersSuccess(res));
+    } catch (err) {
+        dispatch(getPrintOrderPrintersFailed(err));
+    }
+}
+
 export const printersUpdateReset = () => ({
     type: ActionTypes.PRINTERS_UPDATE_RESET
 });
