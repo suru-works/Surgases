@@ -42,7 +42,7 @@ const AddEmployeeComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(employees());
         dispatch(employeesUpdateReset());
         props.toggle();
@@ -94,8 +94,8 @@ const AddEmployeeComponent = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un empleado</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Añadir un empleado</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -105,7 +105,7 @@ const AddEmployeeComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un empleado</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir un empleado</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -114,18 +114,18 @@ const AddEmployeeComponent = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un empleado</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Añadir un empleado</ModalHeader>
                 <ModalBody>
                     <p>Empleado añadido correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
     return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-            <ModalHeader toggle={toogleAndReset}>Añadir un empleado</ModalHeader>
+        <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+            <ModalHeader toggle={toggleAndReset}>Añadir un empleado</ModalHeader>
 
             <ModalBody>
 

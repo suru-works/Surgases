@@ -14,7 +14,7 @@ const SystemBackup = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(systemBackupReset());
         props.toggle();
     }
@@ -23,8 +23,8 @@ const SystemBackup = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Respaldar el sistema</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Respaldar el sistema</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -34,7 +34,7 @@ const SystemBackup = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Respaldar el sistema</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Respaldar el sistema</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -43,12 +43,12 @@ const SystemBackup = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Respaldar el sistema</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Respaldar el sistema</ModalHeader>
                 <ModalBody>
                     <p>Sistema respaldado correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
@@ -57,7 +57,7 @@ const SystemBackup = (props) => {
 
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Respaldar el sistema</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Respaldar el sistema</ModalHeader>
 
                 <ModalBody>
 

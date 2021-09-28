@@ -19,7 +19,7 @@ const SystemParametersUpdateModalAlert = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(systemParametersUpdateReset());
         dispatch(systemParameters());
         props.toggle();
@@ -27,8 +27,8 @@ const SystemParametersUpdateModalAlert = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Actualizar parámetros del sistema</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Actualizar parámetros del sistema</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -38,7 +38,7 @@ const SystemParametersUpdateModalAlert = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Actualizar parámetros del sistema  </ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Actualizar parámetros del sistema  </ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -47,12 +47,12 @@ const SystemParametersUpdateModalAlert = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Actualizar parámetros del sistema</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Actualizar parámetros del sistema</ModalHeader>
                 <ModalBody>
                     <p>Parámetros del sistema actualizados correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
@@ -61,7 +61,7 @@ const SystemParametersUpdateModalAlert = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Actualizar parámetros del sistema</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Actualizar parámetros del sistema</ModalHeader>
 
                 <ModalBody>
 

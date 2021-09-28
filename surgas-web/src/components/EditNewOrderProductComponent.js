@@ -77,11 +77,11 @@ const OrderProductModal = (props) => {
             let aux = props.UpdateNewOrderProduct({product, oldProduct});
             setError(aux);
             if(!aux){
-                toogleAndReset();
+                toggleAndReset();
             }
         }
     });
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         setError(false);
         resetForm();
         props.toggle();
@@ -97,9 +97,9 @@ const OrderProductModal = (props) => {
     }
     if (error) {
         return (
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
 
                 <ModalBody>
                     Hubo un error actualizando el producto del pedido.
@@ -110,9 +110,9 @@ const OrderProductModal = (props) => {
     }
     return (
 
-        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-            <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+            <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
 
             <ModalBody>
 
@@ -187,7 +187,7 @@ const OrderProductModal = (props) => {
                                         <div class="d-flex justify-content-center"  >
                                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Añadir</Button>
                                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={deleteProduct}>Eliminar producto</Button>
-                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toogleAndReset}>Cerrar</Button>
+                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toggleAndReset}>Cerrar</Button>
                                         </div>
 
                                     </FormGroup>

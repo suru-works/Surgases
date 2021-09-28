@@ -25,9 +25,9 @@ const ModalForm = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(printOrderReset());
-        props.toogleAndReset()
+        props.toggleAndReset()
     }
 
     const print = () => {
@@ -81,7 +81,7 @@ const ModalForm = (props) => {
                             <Label> Pedido imprimido corectamente.</Label>
                             <div className='col-xs-12 col-lg-12 col-xl-12'>
                                 <div class="d-flex justify-content-around"  >
-                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toogleAndReset()}>Cerrar</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toggleAndReset()}>Cerrar</Button>
                                     <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick={() => returnToPrint()} >Regresar</Button>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@ const ModalForm = (props) => {
                         </div>
                         <div className='col-xs-12 col-lg-12 col-xl-12'>
                             <div class="d-flex justify-content-around"  >
-                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toogleAndReset()}>Cancelar</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toggleAndReset()}>Cancelar</Button>
                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick={() => print()} >Imprimir pedido</Button>
                             </div>
                         </div>
@@ -156,7 +156,7 @@ const PrintOrderModal = (props) => {
     }, [props.isOpen]);
 
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(getPrintOrderPrintersReset());
         props.toggle();
     }
@@ -170,7 +170,7 @@ const PrintOrderModal = (props) => {
         }
         else if (GetPrintOrderPrintersResult) {
             return (
-                <ModalForm order={props.order} toogleAndReset={toogleAndReset} printers={GetPrintOrderPrintersResult.data}></ModalForm>
+                <ModalForm order={props.order} toggleAndReset={toggleAndReset} printers={GetPrintOrderPrintersResult.data}></ModalForm>
             );
         } else {
             return (
@@ -180,8 +180,8 @@ const PrintOrderModal = (props) => {
     }
 
     return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-            <ModalHeader toggle={toogleAndReset}>Imprimir un pedido</ModalHeader>
+        <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+            <ModalHeader toggle={toggleAndReset}>Imprimir un pedido</ModalHeader>
             <ModalBody>
                 {options()}
             </ModalBody>

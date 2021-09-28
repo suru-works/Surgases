@@ -4,7 +4,7 @@ import { Modal, ModalHeader, ModalBody} from 'reactstrap';
 
 const SessionExpiredComponent = (props) => {
 
-    const toogleAndDeleteTokenInfo = () => {
+    const toggleAndDeleteTokenInfo = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("admin");
         localStorage.removeItem("username");
@@ -12,8 +12,8 @@ const SessionExpiredComponent = (props) => {
     }
 
     return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndDeleteTokenInfo}>
-            <ModalHeader toggle={toogleAndDeleteTokenInfo}>Salir</ModalHeader>
+        <Modal isOpen={props.isOpen} toggle={toggleAndDeleteTokenInfo}>
+            <ModalHeader toggle={toggleAndDeleteTokenInfo}>Salir</ModalHeader>
             <ModalBody>
                 <p>Hubo un error, pues tu sesion ya estaba vencida</p>
                 <p>inicia sesion de nuevo.</p>

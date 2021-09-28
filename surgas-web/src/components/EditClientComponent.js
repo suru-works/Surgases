@@ -44,7 +44,7 @@ const ClientModal = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(clients());
         dispatch(clientsUpdateReset());
         props.toggle(props.client.telefono);
@@ -95,8 +95,8 @@ const ClientModal = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un cliente</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -106,7 +106,7 @@ const ClientModal = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Editar un cliente</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -115,14 +115,14 @@ const ClientModal = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un cliente</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un cliente</ModalHeader>
                 <ModalBody>
                     <p>Cliente editado correctamente.</p>
                 </ModalBody>
 
                 <div className="d-flex justify-content-center" >
-                    <Button onClick={toogleAndReset} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }}>Aceptar</Button>
+                    <Button onClick={toggleAndReset} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }}>Aceptar</Button>
                 </div>
 
 

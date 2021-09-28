@@ -29,7 +29,7 @@ const EmployeeModal = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(employees())
         dispatch(employeesUpdateReset());
         props.toggle();
@@ -86,8 +86,8 @@ const EmployeeModal = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -96,8 +96,8 @@ const EmployeeModal = (props) => {
     }
     else if (error) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -106,21 +106,21 @@ const EmployeeModal = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un empleado</ModalHeader>
                 <ModalBody>
                     <p>Empleado editado correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
     else {
         return (
 
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar un empleado</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Editar un empleado</ModalHeader>
 
                 <ModalBody>
 

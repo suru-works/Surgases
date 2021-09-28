@@ -162,12 +162,12 @@ const NewProductForm = ({props}) =>{
             let aux = props.addNewOrderProduct(productData);
             setError(aux);
             if (!aux) {
-                toogleAndReset();
+                toggleAndReset();
             }
         }
     });
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(productoxclientePriceReset());
         dispatch(productoxclienteInsertReset());
         dispatch(productoxclienteUpdateReset());
@@ -179,9 +179,9 @@ const NewProductForm = ({props}) =>{
 
     if (error) {
         return (
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
 
                 <ModalBody>
                     El producto ya existia en los productos del pedido.
@@ -322,7 +322,7 @@ const NewProductForm = ({props}) =>{
                                             <br></br>
                                             <div class="d-flex justify-content-center"  >
                                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Añadir</Button>
-                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toogleAndReset}>Cerrar</Button>
+                                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toggleAndReset}>Cerrar</Button>
                                             </div>
 
                                         </FormGroup>
@@ -382,7 +382,7 @@ const NewProductModal = (props) => {
     
 
     
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(productoxclientePriceReset());
         dispatch(productoxclienteInsertReset());
         dispatch(productoxclienteUpdateReset());
@@ -397,9 +397,9 @@ const NewProductModal = (props) => {
     }
     if (precioAnteriorLoading || productoxclienteLoading || getServerIvaLoading) {
         return (
-            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
 
                 <ModalBody>
                     <Loading></Loading>
@@ -409,9 +409,9 @@ const NewProductModal = (props) => {
     }
 
     return (
-        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+        <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-            <ModalHeader toggle={toogleAndReset}>Añadir un producto al pedido</ModalHeader>
+            <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
 
             <ModalBody>
                 Ha ocurrido un error en la carga de informacion.

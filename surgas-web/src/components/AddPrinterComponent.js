@@ -24,7 +24,7 @@ const AddUserComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(printers());
         dispatch(printersUpdateReset());
         props.toggle();
@@ -54,8 +54,8 @@ const AddUserComponent = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir una impresora</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Añadir una impresora</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -65,7 +65,7 @@ const AddUserComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Añadir una impresora</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir una impresora</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -74,12 +74,12 @@ const AddUserComponent = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir una impresora</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Añadir una impresora</ModalHeader>
                 <ModalBody>
                     <p>Impresora añadida correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
@@ -89,7 +89,7 @@ const AddUserComponent = (props) => {
             
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir una impresora</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir una impresora</ModalHeader>
 
                 <ModalBody>
 

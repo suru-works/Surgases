@@ -17,6 +17,7 @@ const AddOrderComponent = (props) => {
     const [updateClientDataModal, setUpdateClientDataModal] = useState(false);
     const [trollyModal, setTrollyDataModal] = useState(false);
     const [printModal, setPrintDataModal] = useState(false);
+    const [printOrderData, setPrintOrderData] = useState({});
 
     const [orderUserTel, setOrderUserTel] = useState('');
 
@@ -57,7 +58,8 @@ const AddOrderComponent = (props) => {
         setPrintDataModal(false);
     }
 
-    const goToPrintData = () => {
+    const goToPrintData = (order) => {
+        setPrintOrderData(order);
         setSetClientModal(false);
         setCreateClientDataModal(false);
         setUpdateClientDataModal(false);
@@ -117,8 +119,9 @@ const AddOrderComponent = (props) => {
         dispatch(lastOrderReset());
         goToUpdateClientData();
     }
-    const TrollySubmit = () => {
-        goToPrintData();
+    const TrollySubmit = (order) => {
+        console.log(order.data);
+        goToPrintData(order.data);
     }
 
     const PrintGoBack = () => {
@@ -157,7 +160,7 @@ const AddOrderComponent = (props) => {
         }
         if (printModal) {
             return (
-                <Print goBack={PrintGoBack} submit={goToUpdateClientData}></Print>
+                <Print goBack={PrintGoBack} submit={goToUpdateClientData} order={printOrderData}></Print>
             );
         }
     }

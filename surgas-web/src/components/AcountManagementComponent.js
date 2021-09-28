@@ -37,7 +37,7 @@ const AcountManagement = (props) => {
     const result = useSelector(state => state.userUpdate.result);
     const loading = useSelector(state => state.userUpdate.isLoading);
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         setRestorePasswordModal(true);
         dispatch(restoreReset());
         dispatch(userUpdateReset());
@@ -87,7 +87,7 @@ const AcountManagement = (props) => {
             if (restoreError) {
                 return (
                     <div>
-                        <ModalHeader toggle={toogleAndReset}>Cambiar contraseña</ModalHeader>
+                        <ModalHeader toggle={toggleAndReset}>Cambiar contraseña</ModalHeader>
                         <ModalBody>
                             <p>Hubo un error camabiando tu contraseña</p>
                         </ModalBody>
@@ -97,7 +97,7 @@ const AcountManagement = (props) => {
             if (restoreLoading) {
                 return (
                     <div>
-                        <ModalHeader toggle={toogleAndReset}>Cambiar contraseña</ModalHeader>
+                        <ModalHeader toggle={toggleAndReset}>Cambiar contraseña</ModalHeader>
                         <ModalBody>
                             <Loading />
                         </ModalBody>
@@ -109,7 +109,7 @@ const AcountManagement = (props) => {
                 return (
                     <div>
 
-                        <ModalHeader toggle={toogleAndReset}>Cambiar contraseña</ModalHeader>
+                        <ModalHeader toggle={toggleAndReset}>Cambiar contraseña</ModalHeader>
                         <ModalBody>
                             <p>Solicitud exitosa, en unos instantes te llegara un correo con las instrucciones para el cambio.</p>
                         </ModalBody>
@@ -123,7 +123,7 @@ const AcountManagement = (props) => {
             if (error) {
                 return (
                     <div>
-                        <ModalHeader toggle={toogleAndReset}>Gestionar cuenta</ModalHeader>
+                        <ModalHeader toggle={toggleAndReset}>Gestionar cuenta</ModalHeader>
                         <ModalBody>
                             <p>Hubo un error cargando tus datos</p>
                         </ModalBody>
@@ -133,7 +133,7 @@ const AcountManagement = (props) => {
             if (loading) {
                 return (
                     <div>
-                        <ModalHeader toggle={toogleAndReset}>Gestionar cuenta</ModalHeader>
+                        <ModalHeader toggle={toggleAndReset}>Gestionar cuenta</ModalHeader>
                         <ModalBody>
                             <Loading />
                         </ModalBody>
@@ -145,7 +145,7 @@ const AcountManagement = (props) => {
                 return (
                     <div>
 
-                        <ModalHeader toggle={toogleAndReset}>Gestionar cuenta</ModalHeader>
+                        <ModalHeader toggle={toggleAndReset}>Gestionar cuenta</ModalHeader>
                         <ModalBody>
                             <p>Actualizacion de datos exitosa</p>
                         </ModalBody>
@@ -159,7 +159,7 @@ const AcountManagement = (props) => {
             return (
                 <div>
 
-                    <ModalHeader toggle={toogleAndReset}>Editar un usuario</ModalHeader>
+                    <ModalHeader toggle={toggleAndReset}>Editar un usuario</ModalHeader>
 
                     <ModalBody>
 
@@ -216,7 +216,7 @@ const AcountManagement = (props) => {
         }
     };
     return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+        <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
             {options()}
         </Modal>
     );

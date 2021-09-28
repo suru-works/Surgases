@@ -129,7 +129,7 @@ const SearchCriteria = () => {
 const EmployeeRow = (props) => {
     const toggleAndSendEmployee = () => {
         props.setNewOrderEmpleado(props.employee);
-        props.toogleAndReset();
+        props.toggleAndReset();
     }
     return (
         <tr onClick={() => toggleAndSendEmployee()}>
@@ -147,7 +147,7 @@ const EmployeeRow = (props) => {
 const RenderSearchResultTuple = (props) => {
     const employeeData = props.employee;
     return (
-        <EmployeeRow employee={employeeData} setNewOrderEmpleado={props.setNewOrderEmpleado} toogleAndReset={props.toogleAndReset} />
+        <EmployeeRow employee={employeeData} setNewOrderEmpleado={props.setNewOrderEmpleado} toggleAndReset={props.toggleAndReset} />
     );
 
 }
@@ -168,7 +168,7 @@ const SearchResult = (props) => {
     if (result) {
         const ResultTuples = result.data.map((employee) => {
             return (
-                <RenderSearchResultTuple employee={employee} key={employee.id} setNewOrderEmpleado={props.setNewOrderEmpleado} toogleAndReset={props.toogleAndReset}></RenderSearchResultTuple>
+                <RenderSearchResultTuple employee={employee} key={employee.id} setNewOrderEmpleado={props.setNewOrderEmpleado} toggleAndReset={props.toggleAndReset}></RenderSearchResultTuple>
 
             );
         })
@@ -204,12 +204,12 @@ const SearchResult = (props) => {
 }
 
 const SearchNewOrderEmployee = (props) => {
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         props.toggle();
     }
     return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-            <ModalHeader toggle={toogleAndReset}>Buscar repartidor para el pedido</ModalHeader>
+        <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+            <ModalHeader toggle={toggleAndReset}>Buscar repartidor para el pedido</ModalHeader>
             <ModalBody>
                 <Card style={{ margin: "10px", padding: "7px" }}>
                     <CardBody>
@@ -221,7 +221,7 @@ const SearchNewOrderEmployee = (props) => {
                         <CardText>Empleados</CardText>
                     </CardTitle>
                     <CardBody>
-                        <SearchResult setNewOrderEmpleado={props.setNewOrderEmpleado} toogleAndReset={toogleAndReset}></SearchResult>
+                        <SearchResult setNewOrderEmpleado={props.setNewOrderEmpleado} toggleAndReset={toggleAndReset}></SearchResult>
                     </CardBody>
                 </Card>
             </ModalBody>

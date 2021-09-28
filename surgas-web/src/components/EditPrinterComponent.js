@@ -25,7 +25,7 @@ const EditPrinterComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(printers());
         dispatch(printersUpdateReset());
         props.toggle();
@@ -65,8 +65,8 @@ const EditPrinterComponent = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar una impresora</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar una impresora</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -75,8 +75,8 @@ const EditPrinterComponent = (props) => {
     }
     else if (error) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar una impresora</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar una impresora</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -85,12 +85,12 @@ const EditPrinterComponent = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar una impresora</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar una impresora</ModalHeader>
                 <ModalBody>
                     <p>Impresora editada correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
@@ -99,7 +99,7 @@ const EditPrinterComponent = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Editar una impresora</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Editar una impresora</ModalHeader>
 
                 <ModalBody>
 

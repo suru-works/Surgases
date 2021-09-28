@@ -16,7 +16,7 @@ const LogOutComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(userReset());
         dispatch(user());
         dispatch(logoutReset());
@@ -34,15 +34,15 @@ const LogOutComponent = (props) => {
         if (error.response) {
             if (error.response.status === 401) {
                 return (
-                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
+                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toggleAndReset} />
                 );
             }
         }
 
         else {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Salir</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error cerrando sesion.</p>
                     </ModalBody>
@@ -53,8 +53,8 @@ const LogOutComponent = (props) => {
     }
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Salir</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -63,8 +63,8 @@ const LogOutComponent = (props) => {
     }
     if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Salir</ModalHeader>
                 <ModalBody>
                     <p>Cierre de sesión exitoso</p>
                 </ModalBody>
@@ -74,8 +74,8 @@ const LogOutComponent = (props) => {
     }
     else {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Salir</ModalHeader>
 
                 <ModalBody>
                     <p>¿Está seguro de que quiere cerrar sesión?</p>

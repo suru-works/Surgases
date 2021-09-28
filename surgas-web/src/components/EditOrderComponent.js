@@ -45,7 +45,7 @@ const OrderModal = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleSearchEditOrderEmployee = () => {
+    const toggleSearchEditOrderEmployee = () => {
         if (isSearchEditOrderEmployeeModalOpen) {
             setIsSearchEditOrderEmployeeModalOpen(false);
         }
@@ -53,7 +53,7 @@ const OrderModal = (props) => {
             setIsSearchEditOrderEmployeeModalOpen(true);
         }
     }
-    const toogleSearchEditOrderNewProduct = () => {
+    const toggleSearchEditOrderNewProduct = () => {
         if (isSearchEditOrderNewProductOpen) {
             setIsSearchEditOrderNewProductOpen(false);
         }
@@ -62,7 +62,7 @@ const OrderModal = (props) => {
         }
     }
 
-    const tooglePrintOrderModal = () => {
+    const togglePrintOrderModal = () => {
         if (isPrintOrderModalOpen) {
             setIsPrintOrderModalOpen(false);
         }
@@ -183,8 +183,8 @@ const OrderModal = (props) => {
                         </FormGroup>
 
                         <FormGroup className='col-xs-3 col-lg-2 col-xl-1'>
-                            <button type="button" className="justify-self-center" class="btn pl-0" onClick={toogleSearchEditOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
-                            <SearchNewOrderEmployee toggle={toogleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={setEditOrderEmpleado} />
+                            <button type="button" className="justify-self-center" class="btn pl-0" onClick={toggleSearchEditOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
+                            <SearchNewOrderEmployee toggle={toggleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={setEditOrderEmpleado} />
                         </FormGroup>
 
                         <FormGroup className='col-xs-12 col-lg-6 col-xl-4  align-self-end'>
@@ -269,8 +269,8 @@ const OrderModal = (props) => {
                         <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
                             <div class="d-flex justify-content-around"  >
                                 <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" >Cerrar</Button>
-                                <PrintOrderModal isOpen={isPrintOrderModalOpen} toggle={tooglePrintOrderModal} order={{numero: editOrderNumero, fecha: editOrderFecha}}/>
-                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick = {() => tooglePrintOrderModal()} >Imprimir pedido</Button>
+                                <PrintOrderModal isOpen={isPrintOrderModalOpen} toggle={togglePrintOrderModal} order={{numero: editOrderNumero, fecha: editOrderFecha}}/>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick = {() => togglePrintOrderModal()} >Imprimir pedido</Button>
                                 <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Guardar cambios</Button>
                             </div>                            
                         </FormGroup>

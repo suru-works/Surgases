@@ -189,7 +189,7 @@ const EditAccountComponent = (props) => {
         dispatch(getAccountData());
     }, []);
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(user());
         dispatch(restoreReset());
         props.toggle();
@@ -212,8 +212,8 @@ const EditAccountComponent = (props) => {
     }
 
     return (
-        <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-            <ModalHeader toggle={toogleAndReset}>Gestionar cuenta</ModalHeader>
+        <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+            <ModalHeader toggle={toggleAndReset}>Gestionar cuenta</ModalHeader>
             <ModalBody>
                 {aux()}
             </ModalBody>

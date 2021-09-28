@@ -33,7 +33,7 @@ const AddUserComponent = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(users());
         dispatch(usersUpdateReset());
         props.toggle();
@@ -70,8 +70,8 @@ const AddUserComponent = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Añadir un usuario</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -81,7 +81,7 @@ const AddUserComponent = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir un usuario</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -90,12 +90,12 @@ const AddUserComponent = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Añadir un usuario</ModalHeader>
                 <ModalBody>
                     <p>Usuario añadido correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button onClick={toggleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
@@ -105,7 +105,7 @@ const AddUserComponent = (props) => {
             
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
 
-                <ModalHeader toggle={toogleAndReset}>Añadir un usuario</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Añadir un usuario</ModalHeader>
 
                 <ModalBody>
 

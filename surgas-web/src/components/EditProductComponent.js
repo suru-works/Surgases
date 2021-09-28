@@ -74,7 +74,7 @@ const ProductModal = (props) => {
 
     const dispatch = useDispatch();
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(products());
         dispatch(productsUpdateReset());
         props.toggle();
@@ -138,8 +138,8 @@ const ProductModal = (props) => {
 
     if (loading) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un producto</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -149,7 +149,7 @@ const ProductModal = (props) => {
     else if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={props.toggle}>
-                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Editar un producto</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error.</p>
                 </ModalBody>
@@ -158,14 +158,14 @@ const ProductModal = (props) => {
     }
     else if (result) {
         return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
+            <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                <ModalHeader toggle={toggleAndReset}>Editar un producto</ModalHeader>
                 <ModalBody>
                     <p>Producto editado correctamente.</p>
                 </ModalBody>
 
                 <div className="d-flex justify-content-center" >
-                    <Button onClick={toogleAndReset} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }}>Aceptar</Button>
+                    <Button onClick={toggleAndReset} style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }}>Aceptar</Button>
                 </div>
 
 
@@ -315,7 +315,7 @@ const ProductModal = (props) => {
 
                 <Modal className="modal-lg" isOpen={props.isOpen} toggle={props.toggle}>
 
-                    <ModalHeader toggle={toogleAndReset}>Editar un producto</ModalHeader>
+                    <ModalHeader toggle={toggleAndReset}>Editar un producto</ModalHeader>
 
                     <ModalBody>
 
@@ -396,7 +396,7 @@ const ProductModal = (props) => {
                                             <FormGroup className='col-12 col-sm-6'>
                                                 <br></br>
                                                 <div class="d-flex justify-content-center"  >
-                                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toogleAndReset}>Cerrar</Button>
+                                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toggleAndReset}>Cerrar</Button>
                                                 </div>
 
                                             </FormGroup>

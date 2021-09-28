@@ -238,7 +238,7 @@ const NewOrder = (props) => {
         }
     }, []);
 
-    const toogleSearchNewOrderEmployee = () => {
+    const toggleSearchNewOrderEmployee = () => {
         if (isSearchNewOrderEmployeeModalOpen) {
             setIsSearchNewOrderEmployeeModalOpen(false);
         }
@@ -304,8 +304,8 @@ const NewOrder = (props) => {
                 </FormGroup>
 
                 <FormGroup className='col-xs-12 col-lg-4 col-xl-2 '>
-                    <button type="button" className="justify-self-center" class="btn" onClick={toogleSearchNewOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
-                    <SearchNewOrderEmployee toggle={toogleSearchNewOrderEmployee} isOpen={isSearchNewOrderEmployeeModalOpen} setNewOrderEmpleado={props.setNewOrderEmpleado} />
+                    <button type="button" className="justify-self-center" class="btn" onClick={toggleSearchNewOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
+                    <SearchNewOrderEmployee toggle={toggleSearchNewOrderEmployee} isOpen={isSearchNewOrderEmployeeModalOpen} setNewOrderEmpleado={props.setNewOrderEmpleado} />
                 </FormGroup>
 
                 <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
@@ -518,7 +518,7 @@ const TrollyForm = (props) => {
 
     }
     else if (addOrderResult) {
-        props.submit();
+        props.submit(addOrderResult);
         return (
             <div></div>
         );
@@ -621,7 +621,7 @@ const Trolly = (props) => {
 
     if (orderClientResult && lastOrderResult) {
         return (
-            <TrollyForm goBack={props.goBack} />
+            <TrollyForm goBack={props.goBack} submit={props.submit}/>
         );
     }
     else if (orderClientError || lastOrderError) {

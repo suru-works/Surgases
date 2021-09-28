@@ -68,7 +68,7 @@ const RegisterComponent = (props) => {
     const registerResult = useSelector(state => state.register.result);
     const registerLoading = useSelector(state => state.register.isLoading);
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(registerReset());
         props.toggle();
     }
@@ -150,8 +150,8 @@ const RegisterComponent = (props) => {
 
         if (checkTelError) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error verificando el telefono.</p>
                     </ModalBody>
@@ -160,8 +160,8 @@ const RegisterComponent = (props) => {
         }
         if (checkTelLoading) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <Loading />
                     </ModalBody>
@@ -173,8 +173,8 @@ const RegisterComponent = (props) => {
             //Verificando si el telefono ya esta asignado a algun usuario
             if (checkTelResult.foundInUsers) {
                 return (
-                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                        <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                    <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                        <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                         <ModalBody>
                             <p>El telefono ingresado ya se encuentra registrado.</p>
                         </ModalBody>
@@ -194,8 +194,8 @@ const RegisterComponent = (props) => {
         }
         else {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
 
                     <ModalBody>
                         <Form onSubmit={checkTelFormik.handleSubmit}>
@@ -222,8 +222,8 @@ const RegisterComponent = (props) => {
         // si existe el telefono en la base clientes
         if (registerClientError) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error registrandose.</p>
                     </ModalBody>
@@ -232,8 +232,8 @@ const RegisterComponent = (props) => {
         }
         if (registerClientLoading) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <Loading />
                     </ModalBody>
@@ -242,8 +242,8 @@ const RegisterComponent = (props) => {
         }
         if (registerClientResult) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <p>Registro exitoso, verifica tu correo electronico para poder ingresar.</p>
                     </ModalBody>
@@ -252,8 +252,8 @@ const RegisterComponent = (props) => {
         }
         else {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
 
                     <ModalBody>
                         <Form onSubmit={registerClientFormik.handleSubmit}>
@@ -304,8 +304,8 @@ const RegisterComponent = (props) => {
     if (registerModal) {
         if (registerError) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error registrandose.</p>
                     </ModalBody>
@@ -314,8 +314,8 @@ const RegisterComponent = (props) => {
         }
         if (registerLoading) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <Loading />
                     </ModalBody>
@@ -324,8 +324,8 @@ const RegisterComponent = (props) => {
         }
         if (registerResult) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
                     <ModalBody>
                         <p>Registro exitoso, verifica tu correo electronico para poder ingresar.</p>
                     </ModalBody>
@@ -334,8 +334,8 @@ const RegisterComponent = (props) => {
         }
         else {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Registro</ModalHeader>
 
                     <ModalBody>
                         <Form onSubmit={handleSubmit}>

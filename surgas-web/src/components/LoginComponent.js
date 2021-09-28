@@ -43,7 +43,7 @@ const LoginComponent = (props) => {
     const restoreLoading = useSelector(state => state.restore.isLoading);
 
 
-    const toogleAndReset = () => {
+    const toggleAndReset = () => {
         dispatch(userReset());
         dispatch(user());
         dispatch(restoreReset());
@@ -91,8 +91,8 @@ const LoginComponent = (props) => {
     if (restore) {
         if (restoreError) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Restablecer contraseña</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error Restableciendo contraseña</p>
                     </ModalBody>
@@ -101,8 +101,8 @@ const LoginComponent = (props) => {
         }
         else if (restoreLoading) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Restablecer contraseña</ModalHeader>
                     <ModalBody>
                         <Loading />
                     </ModalBody>
@@ -111,8 +111,8 @@ const LoginComponent = (props) => {
         }
         else if (restoreResult) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Restablecer contraseña</ModalHeader>
                     <ModalBody>
                         <p>Si tu usuario es correcto y esta registrado con un correo valido, en breve recibiras las instrucciones para restablecer tu contraseña</p>
                     </ModalBody>
@@ -128,8 +128,8 @@ const LoginComponent = (props) => {
         if (error) {
             if(error.message === 'Request failed with status code 403'){
                 return (
-                    <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                        <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                    <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                        <ModalHeader toggle={toggleAndReset}>Ingresar</ModalHeader>
                         <ModalBody>
                             <p>Tu correo aun no ha sido verificado, revisa tu bandeja de entrada y sigue las instrucciones.</p>
                         </ModalBody>
@@ -137,8 +137,8 @@ const LoginComponent = (props) => {
                 );
             }
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Ingresar</ModalHeader>
                     <ModalBody>
                         <p>Hubo un error ingresando</p>
                     </ModalBody>
@@ -147,8 +147,8 @@ const LoginComponent = (props) => {
         }
         if (loading) {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Ingresar</ModalHeader>
                     <ModalBody>
                         <Loading />
                     </ModalBody>
@@ -158,9 +158,9 @@ const LoginComponent = (props) => {
         if (result) {
 
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
 
-                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                    <ModalHeader toggle={toggleAndReset}>Ingresar</ModalHeader>
                     <ModalBody>
                         <p>Ingreso exitoso</p>
                     </ModalBody>
@@ -173,8 +173,8 @@ const LoginComponent = (props) => {
         }
         else {
             return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                <Modal isOpen={props.isOpen} toggle={toggleAndReset}>
+                    <ModalHeader toggle={toggleAndReset}>Ingresar</ModalHeader>
 
                     <ModalBody>
                         <Form onSubmit={handleSubmit}>
