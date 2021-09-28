@@ -73,18 +73,22 @@ const ModalForm = (props) => {
         } else if (PrintOrderResult) {
             return (
                 <Card>
-                    <CardTitle>
-                        <CardText>Exito</CardText>
-                    </CardTitle>
                     <CardBody>
-                        <div className='col-xs-12 col-lg-12 col-xl-12'>
-                            <Label> Pedido imprimido corectamente.</Label>
-                            <div className='col-xs-12 col-lg-12 col-xl-12'>
-                                <div class="d-flex justify-content-around"  >
-                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toggleAndReset()}>Cerrar</Button>
-                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick={() => returnToPrint()} >Regresar</Button>
+                        <div className='row'>
+                            <FormGroup class="mt-1" className='col-xs-12 col-lg-12 col-xl-12 align-self-end'>
+                                <CardTitle tag="h3">Éxito</CardTitle>
+                            </FormGroup>
+                            <FormGroup className='col-xs-12 col-lg-6 col-xl-12  align-self-end'>
+                                <Label htmlFort="printer">Pedido imprimido corectamente.</Label>
+                            </FormGroup>
+                            <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
+                                <div className='col-xs-12 col-lg-12 col-xl-12'>
+                                    <div class="d-flex justify-content-around"  >
+                                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toggleAndReset()}>Cerrar</Button>
+                                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick={() => returnToPrint()} >Regresar</Button>
+                                    </div>
                                 </div>
-                            </div>
+                            </FormGroup>
                         </div>
                     </CardBody>
                 </Card>
@@ -92,40 +96,46 @@ const ModalForm = (props) => {
         } else {
             return (
                 <Card>
-                    <CardTitle>
-                        <CardText>Selecciona una impresora</CardText>
-                    </CardTitle>
                     <CardBody>
-                        <div className='col-xs-12 col-lg-8 col-xl-6  align-self-end'>
-                            <Label htmlFort="printer">Impresora</Label>
-                            <Input type="select" id="printer" name="printer"
-                                value={selectedPrinter} 
-                                onChange={(event) => { setSelectedPrinter(event.target.value) }}>
-                                {printers}
-                            </Input>
-                            <Label htmlFort="printings">Cantidad de impresiones</Label>
-                            <Input type="select" id="printings" name="printings"
-                                value={printings} 
-                                onChange={(event) => { setPrintings(event.target.value) }}>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </Input>
-                        </div>
-                        <div className='col-xs-12 col-lg-12 col-xl-12'>
-                            <Label htmlFort="printerDescription">Descripcion de la impresora</Label>
-                            <Input type="textarea" id="printerDescription" name="printerDescription"
-                                value={printerDescription}
-                                disabled
-                            />
-                        </div>
-                        <div className='col-xs-12 col-lg-12 col-xl-12'>
-                            <div class="d-flex justify-content-around"  >
-                                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toggleAndReset()}>Cancelar</Button>
-                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick={() => print()} >Imprimir pedido</Button>
-                            </div>
+                        <div className='row'>
+                            <FormGroup class="mt-1" className='col-xs-12 col-lg-12 col-xl-12 align-self-end'>
+                                <CardTitle tag="h3">Selecciona una impresora</CardTitle>
+                            </FormGroup>
+                            <FormGroup className='col-xs-12 col-lg-6 col-xl-6  align-self-end'>
+                                <Label htmlFort="printer">Impresora</Label>
+                                <Input type="select" id="printer" name="printer"
+                                    value={selectedPrinter} 
+                                    onChange={(event) => { setSelectedPrinter(event.target.value) }}>
+                                    {printers}
+                                </Input>
+                            </FormGroup>
+                            <br/>
+                            <FormGroup className='col-xs-12 col-lg-6 col-xl-6  align-self-end'>
+                                <Label htmlFort="printings">Cantidad de impresiones</Label>
+                                <Input type="select" id="printings" name="printings"
+                                    value={printings} 
+                                    onChange={(event) => { setPrintings(event.target.value) }}>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Input>
+                                </FormGroup>
+                            <br/>
+                            <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
+                                <Label htmlFort="printerDescription">Descripcion de la impresora</Label>
+                                <Input type="textarea" id="printerDescription" name="printerDescription"
+                                    value={printerDescription}
+                                    disabled
+                                />
+                            </FormGroup>
+                            <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
+                                <div class="d-flex justify-content-around mt-3"  >
+                                    <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="secondary-button" onClick={() => toggleAndReset()}>Cancelar</Button>
+                                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick={() => print()} >Imprimir pedido</Button>
+                                </div>
+                            </FormGroup>
                         </div>
                     </CardBody>
                 </Card>
