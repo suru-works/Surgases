@@ -14,7 +14,27 @@ impresoraRouter.route('/')
     next();
 })
 .get(asyncHandler(async (req, res, next) => {
-    const [results,] = await pool.execute('SELECT * FROM impresora');
+    let query = 'SELECT * FROM impresora';
+    const params = req.query;
+    let conditions = [];
+    let values = [];
+
+    if (params.codigo) {
+        conditions.push('codigo LIKE ?');
+        values.push(`%${params.codigo}%`);
+    }
+
+    if (params.descripcion) {
+        conditions.push('descripcion LIKE ?');
+        values.push(`%${params.descripcion}%`);
+    }
+
+    if (Object.keys(params).length !== 0) {
+        query = query + ' WHERE ';
+        query += conditions.join(' AND ');
+    }
+
+    const [results,] = await pool.execute(query, values);
 
     res.json(parseToJSON(results));
 }))
