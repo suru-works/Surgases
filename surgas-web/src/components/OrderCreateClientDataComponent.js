@@ -56,7 +56,7 @@ const CreateClientData = (props) => {
             telefono: props.telefono,
             email: '',
             nombre: '',
-            tipo: 'comun'
+            tipo: 'natural'
         },
         validationSchema,
         onSubmit(values) {

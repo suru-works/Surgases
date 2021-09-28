@@ -158,8 +158,8 @@ const UpdateClientData = (props) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                     >
-                        <option>comun</option>
-                        <option>empresarial</option>
+                        <option>natural</option>
+                        <option>juridica</option>
                     </Input>
                     {(touched.tipo && errors.tipo) ? (<Alert color="danger">{errors.tipo}</Alert>) : null}
                 </FormGroup>

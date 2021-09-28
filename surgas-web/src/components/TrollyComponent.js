@@ -230,11 +230,11 @@ const NewOrder = (props) => {
 
     const [isSearchNewOrderEmployeeModalOpen, setIsSearchNewOrderEmployeeModalOpen] = useState(false);
     useEffect(() => {
-        if (lastOrderResult.pedido) {
-            props.setNewOrderDireccion(lastOrderResult.pedido.direccion);
-            props.setNewOrderBodega(lastOrderResult.pedido.bodega);
-            props.setNewOrderNota(lastOrderResult.pedido.nota);
-            props.setNewOrderDescuento(orderClientResult.data[0].descuento);
+        if (lastOrderResult.data.pedido) {
+            props.setNewOrderDireccion(lastOrderResult.data.pedido.direccion);
+            props.setNewOrderMunicipio(lastOrderResult.data.pedido.municipio);
+            props.setNewOrderBodega(lastOrderResult.data.pedido.bodega);
+            props.setNewOrderNota(lastOrderResult.data.pedido.nota);
         }
     }, []);
 
@@ -271,7 +271,7 @@ const NewOrder = (props) => {
                 <FormGroup className='col-xs-12 col-lg-6 col-xl-6 align-self-end'>
                     <Label htmlFor="municipio">Municipio</Label>
                     <Input type="text" id="municipio" name="municipio"
-                        value={props.newOrdermunicipio}
+                        value={props.newOrderMunicipio}
                         onChange={(event) => { props.setNewOrderMunicipio(event.target.value) }}
                     />
                 </FormGroup>
@@ -291,8 +291,8 @@ const NewOrder = (props) => {
                     <Input type="select" id="tipoCliente" name="tipoCliente"
                         value={props.newOrderTipoCliente}
                         disabled>
-                        <option>empresarial</option>
-                        <option>comun</option>
+                        <option>natural</option>
+                        <option>juridica</option>
                     </Input>
                 </FormGroup>
                 <FormGroup className='col-xs-12 col-lg-8 col-xl-6  align-self-end'>
@@ -375,18 +375,11 @@ const NewOrder = (props) => {
     );
 }
 
-const Trolly = (props) => {
-    const orderClientError = useSelector(state => state.orderClient.errMess);
+const TrollyForm = (props) => {
+
     const orderClientResult = useSelector(state => state.orderClient.result);
-    const orderClientLoading = useSelector(state => state.orderClient.isLoading);
 
-    const newOrderEmployeesError = useSelector(state => state.newOrderEmployees.errMess);
-    const newOrderEmployeesResult = useSelector(state => state.newOrderEmployees.result);
-    const newOrderEmployeesLoading = useSelector(state => state.newOrderEmployees.isLoading);
-
-    const lastOrderError = useSelector(state => state.lastOrder.errMess);
     const lastOrderResult = useSelector(state => state.lastOrder.result);
-    const lastOrderLoading = useSelector(state => state.lastOrder.isLoading);
 
     const addOrderError = useSelector(state => state.ordersUpdate.errMess);
     const addOrderResult = useSelector(state => state.ordersUpdate.result);
@@ -417,6 +410,8 @@ const Trolly = (props) => {
     const [newOrderDescuento, setNewOrderDescuento] = useState(0.0);
     const [newOrderTotalIva, setNewOrderTotalIva] = useState(0.0);
     const [newOrderEmpleado, setNewOrderEmpleado] = useState('');
+
+
 
 
     function findByKey(key, value) {
@@ -479,13 +474,6 @@ const Trolly = (props) => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        let clientData = [];
-        clientData.push('telefono=' + props.telefono);
-        dispatch(orderClient(clientData));
-        dispatch(lastOrder(props.telefono));
-    }, []);
-
     const handleSubmit = () => {
 
         let newOrderProductsSimplified = [];
@@ -512,15 +500,13 @@ const Trolly = (props) => {
         dispatch(addOrder(newOrderData));
     }
 
-
-
-    if (orderClientLoading || lastOrderLoading || addOrderLoading) {
+    if (addOrderLoading) {
         return (
             <Loading />
         );
 
     }
-    if (orderClientError || lastOrderError || addOrderError) {
+    else if (addOrderError) {
 
         return (
             <div class="d-flex justify-content-center" >
@@ -531,83 +517,126 @@ const Trolly = (props) => {
         );
 
     }
-    if (addOrderResult) {
+    else if (addOrderResult) {
         props.submit();
         return (
             <div></div>
         );
     }
-    if (orderClientResult && lastOrderResult) {
+    else {
+        const hasLastOrder = () => {
+            if (lastOrderResult.data.pedido) {
+                return (
+                    <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Ver pedido anterior</Button>
+                );
+            }
+            return (
+                <div></div>
+            );
+        }
         return (
             <div className="container">
-                <Form onSubmit={handleSubmit}>
-                    <div className="row">
+                <div className="row">
 
 
-                        <div className="col-6">
+                    <div className="col-6">
 
-                            <NewOrder
-                                deleteNewOrderProduct={deleteNewOrderProduct}
-                                updateNewOrderProduct={updateNewOrderProduct}
-                                newOrderProducts={newOrderProducts}
-                                setNewOrderProducts={setNewOrderProducts}
-                                newOrderPrecioBruto={newOrderPrecioBruto}
-                                newOrderPrecioFinal={newOrderPrecioFinal}
-                                setNewOrderPrecioBruto={setNewOrderPrecioBruto}
-                                newOrderPuntos={newOrderPuntos}
-                                setNewOrderPuntos={setNewOrderPuntos}
-                                newOrderFecha={newOrderFecha}
-                                setNewOrderFecha={setNewOrderFecha}
-                                newOrderDireccion={newOrderDireccion}
-                                setNewOrderDireccion={setNewOrderDireccion}
-                                newOrderMunicipio={setNewOrderMunicipio}
-                                setNewOrderMunicipio={setNewOrderMunicipio}
-                                newOrderBodega={newOrderBodega}
-                                setNewOrderBodega={setNewOrderBodega}
-                                newOrderTipoCliente={newOrderTipoCliente}
-                                setNewOrderTipoCliente={setNewOrderTipoCliente}
-                                newOrderNota={newOrderNota}
-                                setNewOrderNota={setNewOrderNota}
-                                newOrderEstado={newOrderEstado}
-                                setNewOrderEstado={setNewOrderEstado}
-                                newOrderDescuento={newOrderDescuento}
-                                setNewOrderDescuento={setNewOrderDescuento}
-                                newOrderEmpleado={newOrderEmpleado}
-                                setNewOrderEmpleado={setNewOrderEmpleado}
-                                newOrderTotalIva={newOrderTotalIva}
-                                setNewOrderTotalIva={setNewOrderTotalIva}
-                            />
-                        </div>
+                        <NewOrder
+                            deleteNewOrderProduct={deleteNewOrderProduct}
+                            updateNewOrderProduct={updateNewOrderProduct}
+                            newOrderProducts={newOrderProducts}
+                            setNewOrderProducts={setNewOrderProducts}
+                            newOrderPrecioBruto={newOrderPrecioBruto}
+                            newOrderPrecioFinal={newOrderPrecioFinal}
+                            setNewOrderPrecioBruto={setNewOrderPrecioBruto}
+                            newOrderPuntos={newOrderPuntos}
+                            setNewOrderPuntos={setNewOrderPuntos}
+                            newOrderFecha={newOrderFecha}
+                            setNewOrderFecha={setNewOrderFecha}
+                            newOrderDireccion={newOrderDireccion}
+                            setNewOrderDireccion={setNewOrderDireccion}
+                            newOrderMunicipio={newOrderMunicipio}
+                            setNewOrderMunicipio={setNewOrderMunicipio}
+                            newOrderBodega={newOrderBodega}
+                            setNewOrderBodega={setNewOrderBodega}
+                            newOrderTipoCliente={newOrderTipoCliente}
+                            setNewOrderTipoCliente={setNewOrderTipoCliente}
+                            newOrderNota={newOrderNota}
+                            setNewOrderNota={setNewOrderNota}
+                            newOrderEstado={newOrderEstado}
+                            setNewOrderEstado={setNewOrderEstado}
+                            newOrderDescuento={newOrderDescuento}
+                            setNewOrderDescuento={setNewOrderDescuento}
+                            newOrderEmpleado={newOrderEmpleado}
+                            setNewOrderEmpleado={setNewOrderEmpleado}
+                            newOrderTotalIva={newOrderTotalIva}
+                            setNewOrderTotalIva={setNewOrderTotalIva}
+                        />
+                    </div>
 
-                        <div className="col-6">
+                    <div className="col-6">
 
-                            <SearchCriteria />
-                            <CardTitle tag="h5">Productos</CardTitle>
-                            <CardBody className='p-0'>
-                                <SearchResult addNewOrderProduct={addNewOrderProduct} client={orderClientResult.data[0].telefono}></SearchResult>
-                            </CardBody>
-
-                        </div>
+                        <SearchCriteria />
+                        <CardTitle tag="h5">Productos</CardTitle>
+                        <CardBody className='p-0'>
+                            <SearchResult addNewOrderProduct={addNewOrderProduct} client={orderClientResult.data[0].telefono}></SearchResult>
+                        </CardBody>
 
                     </div>
-                    <div className="row">
 
-                        <div className="col "  >
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" >Ver pedido anterior</Button>
-                        </div>
+                </div>
+                <div className="row">
 
-                        <div className="col contieneBotones"  >
-                            <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="justify-self-end secondary-button" >Cancelar</Button>
-                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="justify-self-end secondary-button" >Registrar pedido</Button>
-                        </div>
+                    <div className="col "  >
+                        {hasLastOrder()}
                     </div>
-                </Form>
+
+                    <div className="col contieneBotones"  >
+                        <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} className="justify-self-end secondary-button" onClick={props.goBack}>Cancelar</Button>
+                        <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="justify-self-end secondary-button" type="submit" value="submit" onClick={handleSubmit} >Registrar pedido</Button>
+                    </div>
+                </div>
             </div>
 
         );
     }
+}
 
-    return (<div></div>);
+const Trolly = (props) => {
+    const orderClientError = useSelector(state => state.orderClient.errMess);
+    const orderClientResult = useSelector(state => state.orderClient.result);
+    const orderClientLoading = useSelector(state => state.orderClient.isLoading);
+
+    const lastOrderError = useSelector(state => state.lastOrder.errMess);
+    const lastOrderResult = useSelector(state => state.lastOrder.result);
+    const lastOrderLoading = useSelector(state => state.lastOrder.isLoading);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        let clientData = [];
+        clientData.push('telefono=' + props.telefono);
+        dispatch(orderClient(clientData));
+        dispatch(lastOrder(props.telefono));
+    }, []);
+
+    if (orderClientResult && lastOrderResult) {
+        return (
+            <TrollyForm goBack={props.goBack} />
+        );
+    }
+    else if (orderClientError || lastOrderError) {
+
+        return (
+            <div class="d-flex justify-content-center" >
+                hubo un error
+                <Button style={{ margin: 10, backgroundColor: '#c6a700', color: '#000000' }} type="button" onClick={props.goBack}>Cerrar</Button>
+
+            </div>
+        );
+    }
+    return (
+        <Loading></Loading>
+    );
 }
 
 Trolly.propTypes = {};
