@@ -8,8 +8,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import SearchNewOrderEmployee from './SearchNewOrderEmployeeComponent';
-import ReactTableProductsForTrolleyComponent from './ReactTableProductsForTrolleyComponent';
-import ReactTableOrdersForTrolleyComponent from './ReactTableOrdersForTrolleyComponent';
+import ReactTableEditOldOrderProductsComponent from './ReactTableEditOldOrderProductsComponent';
 
 import PrintOrderModal from './PrintOrderModal';
 
@@ -35,7 +34,7 @@ const OrderModal = (props) => {
     const [editOrderEmpleado, setEditOrderEmpleado] = useState(props.order.empleado_repartidor);
     const [editOrderEmpleadoVendedor, setEditOrderEmpleadoVendedor] = useState(props.order.empleado_vendedor);
     const [editOrderNota, setEditOrderNota] = useState(props.order.nota);
-    const [editOrderProducts, setEditOrderProducts] = useState(props.products);
+    const [editOrderProducts, setEditOrderProducts] = useState(props.orderProducts);
     const [editOrderPrecioBruto, setEditOrderPrecioBruto] = useState(props.order.precio_bruto);
     const [editOrderPrecioFinal, setEditOrderPrecioFinal] = useState(props.order.precio_final);
     const [editOrderPuntos, setEditOrderPuntos] = useState(props.order.puntos_compra);
@@ -211,7 +210,7 @@ const OrderModal = (props) => {
                     </div>
                     <CardBody className='p-0'>
 
-                        <ReactTableOrdersForTrolleyComponent newOrderProducts={editOrderProducts} updateNewOrderProduct={updateEditOrderProduct} deleteNewOrderProduct={deleteEditOrderProduct} />
+                        <ReactTableEditOldOrderProductsComponent oldOrderProducts={editOrderProducts} updateOldOrderProduct={updateEditOrderProduct} deleteOldOrderProduct={deleteEditOrderProduct} />
 
                     </CardBody>
 
@@ -290,6 +289,9 @@ const EditOrderComponent = (props) => {
     const UpdateOrderOldOrderLoading = useSelector(state => state.orderUpdateOldOrder.loading);
     const UpdateOrderOldOrderError = useSelector(state => state.orderUpdateOldOrder.error);
 
+    const UpdateOrderOldOrderProductsResult = useSelector(state => state.orderUpdateOldOrderProducts.result);
+    const UpdateOrderOldOrderProductsLoading = useSelector(state => state.orderUpdateOldOrderProducts.loading);
+    const UpdateOrderOldOrderProductsError = useSelector(state => state.orderUpdateOldOrderProducts.error);
 
     const dispatch = useDispatch();
 
@@ -298,19 +300,19 @@ const EditOrderComponent = (props) => {
     }
 
     const viewState = () => {
-        if (UpdateOrderOldOrderResult) {
+        if (UpdateOrderOldOrderResult && UpdateOrderOldOrderProductsResult) {
             return (
-                <OrderModal order={UpdateOrderOldOrderResult.data} isOpen={props.isOpen} toggle={props.toggle}></OrderModal>
+                <OrderModal order={UpdateOrderOldOrderResult.data} orderProducts={UpdateOrderOldOrderProductsResult.data} isOpen={props.isOpen} toggle={props.toggle}></OrderModal>
             );
-        }
-        if (UpdateOrderOldOrderLoading) {
-            return (
-                <Loading />
-            );
-        }
-        if (UpdateOrderOldOrderError) {
+        }         
+        else if (UpdateOrderOldOrderError || UpdateOrderOldOrderProductsError) {
             return (
                 <div>Hubo un error, intentalo de nuevo.</div>
+            );
+        }
+        else {
+            return (
+                <Loading />
             );
         }
     }

@@ -624,7 +624,7 @@ export const updateOrderOldOrderProductsFailed = (errmess) => ({
 export const updateOrderOldOrderProducts = (order) => async (dispatch) => {
     dispatch(updateOrderOldOrderProductsRequest());
     try {
-        const res = await axios.get(baseBackUrl + 'pedidos/'+order.fecha+'/'+ order.numero);
+        const res = await axios.get(baseBackUrl + 'pedidos/'+order.fecha+'/'+ order.numero+'/productos');
         dispatch(updateOrderOldOrderProductsSuccess(res));
     } catch (err) {
         dispatch(updateOrderOldOrderProductsFailed(err));

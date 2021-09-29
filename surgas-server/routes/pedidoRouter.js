@@ -364,10 +364,9 @@ pedidoRouter.get('/:fecha/:numero/productos', auth.isAuthenticated, auth.isEmplo
     const pedido = req.params;
 
     const [results,] = await pool.execute(
-        'SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, p.tipo AS tipo, pp.precio_venta AS precio, pp.cantidad AS cantidad FROM (pedido pe INNER JOIN productoxpedido pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) INNER JOIN producto p ON pp.producto = p.codigo WHERE pe.fecha = ? AND pe.numero = ?',
+        'WITH pexpp AS (SELECT * FROM pedido pe INNER JOIN pedidoxproducto pp ON pe.fecha = pp.fecha_pedido AND pe.numero = pp.numero_pedido) SELECT p.codigo AS codigo, p.nombre AS nombre, p.color AS color, p.peso AS peso, p.tipo AS tipo, pexpp.precio_venta AS precio, pexpp.unidades AS cantidad FROM pexpp INNER JOIN producto p ON pexpp.producto = p.codigo WHERE pexpp.fecha = ? AND pexpp.numero = ?',
         [pedido.fecha, pedido.numero]
     );
-
     res.json(utils.parseToJSON(results));
 }));
 
