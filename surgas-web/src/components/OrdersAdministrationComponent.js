@@ -94,6 +94,57 @@ const SearchCriteria = () => {
         validationSchema,
         onSubmit(values) {
             let orderData = []
+            if (values.fechaMinima != '') {
+                orderData.push('fechaMinima=' + values.fechaMinima);
+            }
+            if (values.fechaMaxima != '') {
+                orderData.push('fechaMaxima=' + values.fechaMaxima);
+            }
+            if (values.numeroMinimo != '') {
+                orderData.push('numeroMinimo=' + values.numeroMinimo);
+            }
+            if (values.numeroMaximo != '') {
+                orderData.push('numeroMaximo=' + values.numeroMaximo);
+            }
+            if (values.horaMinima != '') {
+                orderData.push('horaMinima=' + values.horaMinima);
+            }
+            if (values.horaMaxima != '') {
+                orderData.push('horaMaxima=' + values.horaMaxima);
+            }
+            if (values.direccion != '') {
+                orderData.push('direccion=' + values.direccion);
+            }
+            if (values.precioBrutoMinimo != '') {
+                orderData.push('precioBrutoMinimo=' + values.precioBrutoMinimo);
+            }
+            if (values.precioBrutoMaximo != '') {
+                orderData.push('precioBrutoMaximo=' + values.precioBrutoMaximo);
+            }
+            if (values.precioFinalMinimo != '') {
+                orderData.push('precioFinalMinimo=' + values.precioFinalMinimo);
+            }
+            if (values.precioFinalMaximo != '') {
+                orderData.push('precioFinalMaximo=' + values.precioFinalMaximo);
+            }
+            if (values.estado != 'sin especificar') {
+                orderData.push('estado=' + values.estado);
+            }
+            if (values.bodega != 'sin especificar') {
+                orderData.push('bodega=' + values.bodega);
+            }
+            if (values.puntosMinimos != '') {
+                orderData.push('puntosMinimos=' + values.puntosMinimos);
+            }
+            if (values.puntosMaximos != '') {
+                orderData.push('puntosMaximos=' + values.puntosMaximos);
+            }
+            if (values.tipoCliente != 'sin especificar') {
+                orderData.push('tipoCliente=' + values.tipoCliente);
+            }
+            if (values.nota != '') {
+                orderData.push('nota=' + values.nota);
+            }
 
             doSearch(orderData);
         }
