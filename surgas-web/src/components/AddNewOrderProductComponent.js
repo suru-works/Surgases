@@ -109,15 +109,10 @@ const NewProductForm = ({props}) =>{
     }
     const getDescuentoCliente = () => {
         if(productoxclienteResult){
-            console.log("paso por aqui idiota");
             if(productoxclienteResult.data.length>0){
-                console.log("paso por aqui tambien idiota");
-                console.log(productoxclienteResult.data[0].descuento);
-                console.log(typeof(productoxclienteResult.data[0].descuento));
                 return productoxclienteResult.data[0].descuento;
             }
         }
-        console.log(productoxclienteResult);
         return(0);
     }
 
@@ -343,9 +338,6 @@ const NewProductForm = ({props}) =>{
 }
 
 const NewProductModal = (props) => {
-
-    
-
     
 
     const userResult = useSelector(state => state.user.result);
@@ -375,11 +367,7 @@ const NewProductModal = (props) => {
         dispatch(lastProductPrice({ product: props.product.codigo, client: props.client }));
         dispatch(productoxclientePrice({ product: props.product.codigo, client: props.client }));
         dispatch(getServerIva());
-    }, []);
-
-
-
-    
+    }, []); 
 
     
     const toggleAndReset = () => {

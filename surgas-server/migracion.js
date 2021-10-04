@@ -17,7 +17,7 @@ const conn2 = mysql.createConnection({
 async function migrar() {
     let results, rows, fields, i, tipo;
 
-    // Usuarios
+    /* // Usuarios
     results = await conn1.promise().execute('SELECT * FROM usuario');
     const usuarios = JSON.parse(JSON.stringify(results[0]));
     for (i = 0; i < usuarios.length; i++) {
@@ -50,16 +50,16 @@ async function migrar() {
             'INSERT INTO empleado VALUES(?, ?, ?, ?, ?, NULL)',
             [empleados[i].cedula, empleados[i].nombre, empleados[i].direccion, empleados[i].telefono, estado]
         );
-    }
+    } */
 
     // Clientes
     results = await conn1.promise().execute('SELECT * FROM cliente');
     const clientes = JSON.parse(JSON.stringify(results[0]));
     for (i = 0; i < clientes.length; i++) {
         if (clientes[i].empresarial === '1') {
-            tipo = 'empresarial';
+            tipo = 'juridica';
         } else {
-            tipo = 'vendedor';
+            tipo = 'natural';
         }
         [rows, fields] = await conn2.promise().execute(
             "INSERT INTO cliente VALUES(?, NULL, ?, ?, ?, 0.0, ?, ?, NULL, ?, NULL)",

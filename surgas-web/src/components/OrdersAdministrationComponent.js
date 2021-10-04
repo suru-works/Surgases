@@ -296,8 +296,8 @@ const SearchCriteria = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}>
                             <option>sin especificar</option>
-                            <option>empresarial</option>
-                            <option>común</option>
+                            <option>juridica</option>
+                            <option>natural</option>
                         </Input>
                         {(touched.tipoCliente && errors.tipoCliente) ? (<Alert color="danger">{errors.tipoCliente}</Alert>) : null}
                     </FormGroup>

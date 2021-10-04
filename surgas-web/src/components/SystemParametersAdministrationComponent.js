@@ -201,7 +201,7 @@ const RenderSystemParameters = (props) => {
                                 <div className='row'>
 
                                     <FormGroup className='col-12 col-sm-6'>
-                                        <Label htmlFor="descuento">Descuento por defecto a clientes empresariales</Label>
+                                        <Label htmlFor="descuento">Descuento por defecto a clientes persona juridica</Label>
                                         <Input type="text" id="descuento" name="descuento" value={values.descuento}
                                             onChange={handleChange}
                                             onBlur={handleBlur} />

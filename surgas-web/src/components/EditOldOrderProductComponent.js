@@ -99,7 +99,7 @@ const OrderProductModal = (props) => {
         return (
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-                <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
+                <ModalHeader toggle={toggleAndReset}>Editar un producto del pedido</ModalHeader>
 
                 <ModalBody>
                     Hubo un error actualizando el producto del pedido.
@@ -112,7 +112,7 @@ const OrderProductModal = (props) => {
 
         <Modal className="modal-lg" isOpen={props.isOpen} toggle={toggleAndReset}>
 
-            <ModalHeader toggle={toggleAndReset}>Añadir un producto al pedido</ModalHeader>
+            <ModalHeader toggle={toggleAndReset}>Editar un producto del pedido</ModalHeader>
 
             <ModalBody>
 
@@ -185,7 +185,7 @@ const OrderProductModal = (props) => {
                                     <FormGroup className='col-12 col-sm-6'>
                                         <br></br>
                                         <div class="d-flex justify-content-center"  >
-                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Añadir</Button>
+                                            <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" type='submit' value='submit'>Actualizar</Button>
                                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={deleteProduct}>Eliminar producto</Button>
                                             <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} color="secondary" onClick={toggleAndReset}>Cerrar</Button>
                                         </div>

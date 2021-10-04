@@ -169,8 +169,8 @@ const OrderModal = (props) => {
                             <Input type="select" id="tipoCliente" name="tipoCliente"
                                 value={editOrderTipoCliente}
                                 disabled>
-                                <option>empresarial</option>
-                                <option>comun</option>
+                                <option>natural</option>
+                                <option>juridica</option>
                             </Input>
                         </FormGroup>
                         <FormGroup className='col-xs-3 col-lg-5 col-xl-4'>
@@ -183,7 +183,7 @@ const OrderModal = (props) => {
 
                         <FormGroup className='col-xs-3 col-lg-2 col-xl-1'>
                             <button type="button" className="justify-self-center" class="btn pl-0" onClick={toggleSearchEditOrderEmployee}><i className="fa fa-search fa-2x botonCircular" ></i></button>
-                            <SearchNewOrderEmployee toggle={toggleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={setEditOrderEmpleado} />
+                            <SearchNewOrderEmployee toggle={toggleSearchEditOrderEmployee} isOpen={isSearchEditOrderEmployeeModalOpen} setNewOrderEmpleado={(employee)=> setEditOrderEmpleado(employee.id)} />
                         </FormGroup>
 
                         <FormGroup className='col-xs-12 col-lg-6 col-xl-4  align-self-end'>
@@ -220,7 +220,7 @@ const OrderModal = (props) => {
 
                         <FormGroup className='col-xs-12 col-lg-12 col-xl-12'>
                             <div class="d-flex justify-content-end"  >
-                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" type="submit" value="submit" >Añadir producto</Button>
+                                <Button style={{ margin: 10, backgroundColor: '#fdd835', color: '#000000' }} className="secondary-button" onClick= {()=>toggleSearchEditOrderNewProduct()} >Añadir producto</Button>
                             </div>
                         </FormGroup>
 

@@ -41,7 +41,47 @@ const OrderProductModal = (props) => {
 
     const userResult = useSelector(state => state.user.result);
 
+    const productoxclienteResult = useSelector(state => state.productoxcliente.result);
+    const productoxclienteLoading = useSelector(state => state.productoxcliente.loading);
+    const productoxclienteError = useSelector(state => state.productoxcliente.result);
+
+    const getServerIvaResult = useSelector(state => state.getServerIva.result);
+    const getServerIvaLoading = useSelector(state => state.getServerIva.loading);
+    const getServerIvaError = useSelector(state => state.getServerIva.result);
+
+    const productoxclienteUpdateResult = useSelector(state => state.productoxclienteUpdate.result);
+    const productoxclienteUpdateLoading = useSelector(state => state.productoxclienteUpdate.loading);
+    const productoxclienteUpdateError = useSelector(state => state.productoxclienteUpdate.result);
+
+    const productoxclienteInsertResult = useSelector(state => state.productoxclienteInsert.result);
+    const productoxclienteInsertLoading = useSelector(state => state.productoxclienteInsert.loading);
+    const productoxclienteInsertError = useSelector(state => state.productoxclienteInsert.result);
+
     const dispatch = useDispatch();
+
+    const getIva = () => {
+        let i = iva;
+        if (productoxclienteResult) {
+            if (productoxclienteResult.data.length > 0) {
+                if (productoxclienteResult.data[0].iva_incluido.data[0] == 1) {
+                    i = 'Si';
+                }
+                else{
+                    i='No';
+                }
+            }
+        }
+        return (i);
+    }
+
+    const stringToBoolean= (string) =>{
+        if(string == "Si"){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     const { handleSubmit, handleChange, handleBlur, resetForm, touched, values, errors } = useFormik({
         initialValues: {
@@ -50,12 +90,24 @@ const OrderProductModal = (props) => {
             tipo: tipo,
             color: color,
             peso: peso,
-            precio: precio,
+            precioSugerido: precio,
+            precio: getPrecioVenta(),
             inventario: inventario,
-            cantidad: 1
+            cantidad: 1,
+            iva: iva,
+            ivaEnCompra: getIva(),
+            descuento: getDescuentoCliente()
         },
         validationSchema,
         onSubmit(values) {
+
+            if (productoxclienteResult.data.length > 0) {
+                dispatch(productoxclienteUpdate({product: props.product.codigo, client: props.client,iva_incluido:stringToBoolean(values.ivaEnCompra),descuento:values.descuento}));
+            }
+            else{
+                dispatch(productoxclienteInsert({product: props.product.codigo, client: props.client,iva_incluido:stringToBoolean(values.ivaEnCompra),descuento: values.descuento}));
+            }
+
             const product = {
                 codigo: props.product.codigo,
                 nombre: nombre,
@@ -63,7 +115,9 @@ const OrderProductModal = (props) => {
                 color: color,
                 peso: peso,
                 precio: values.precio,
-                cantidad: values.cantidad
+                cantidad: values.cantidad,
+                descuento:values.precio * values.descuento / 100,
+                iva:values.precio * props.produt.valor_iva/100
             }
             const oldProduct = {
                 codigo: props.product.codigo,
@@ -73,6 +127,7 @@ const OrderProductModal = (props) => {
                 peso: peso,
                 precio: props.product.precio,
                 cantidad: props.product.cantidad
+                
             }
             let aux = props.UpdateNewOrderProduct({product, oldProduct});
             setError(aux);
@@ -82,6 +137,11 @@ const OrderProductModal = (props) => {
         }
     });
     const toggleAndReset = () => {
+
+        dispatch(productoxclientePriceReset());
+        dispatch(productoxclienteInsertReset());
+        dispatch(productoxclienteUpdateReset());
+
         setError(false);
         resetForm();
         props.toggle();
